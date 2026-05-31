@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota &mdash; Screen 16: Loading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #FFF8F2; color: #3D2C2E; font-family: 'Nunito', -apple-system, sans-serif; min-height: 100vh; transition: background 0.6s ease, color 0.6s ease; }
+body.dark { background: #1A1418; }
+:root { --brand-real: #F4A7B9; }
+
+/* === STUDIO === */
+.studio { max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; }
+.studio-header { text-align: center; margin-bottom: 36px; }
+.brand-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C4B5B7; margin-bottom: 10px; }
+.brand-title { font-size: 22px; font-weight: 700; color: #3D2C2E; margin-bottom: 8px; }
+.brand-title em { font-style: normal; font-size: 13px; font-weight: 400; color: #C4B5B7; display: block; margin-top: 5px; }
+.brand-sub { font-size: 13px; color: #C4B5B7; line-height: 1.65; max-width: 700px; margin: 0 auto; }
+.controls { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+.theme-btn { padding: 7px 18px; border: 1px solid rgba(61,44,46,0.10); border-radius: 999px; background: transparent; color: #9B8A8C; font-size: 12px; cursor: pointer; transition: all 0.2s ease; }
+.theme-btn:hover { border-color: #C4B5B7; color: rgba(61,44,46,0.70); }
+.state-sep { width: 1px; height: 20px; background: #FFFFFF; }
+.state-btn { padding: 7px 18px; border: 1px solid rgba(61,44,46,0.10); border-radius: 999px; background: transparent; color: #C4B5B7; font-size: 12px; cursor: pointer; transition: all 0.25s ease; }
+.state-btn.active { background: #FFFFFF; color: rgba(61,44,46,0.70); border-color: #C4B5B7; }
+.stage { display: flex; gap: 40px; justify-content: center; align-items: flex-start; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.10em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.42; max-width: 280px; line-height: 1.4; }
+.phone { width: 360px; height: 720px; background: #1A1A1A; border: 1px solid rgba(61,44,46,0.08); border-radius: 44px; overflow: hidden; position: relative; }
+.phone-screen { width: 100%; height: 100%; position: relative; overflow: hidden; border-radius: 44px; }
+.status-bar { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; position: absolute; top: 0; left: 0; right: 0; z-index: 10; }
+.status-bar .time { font-size: 15px; font-weight: 600; color: rgba(61,44,46,0.70); }
+.status-bar .icons { display: flex; gap: 5px; align-items: center; color: rgba(61,44,46,0.70); font-size: 11px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 34px; background: #000; border-radius: 999px; z-index: 20; }
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.screen.android-screen { background: #FFF8F2; }
+.screen.ios-screen { background: #FFF8F2; }
+
+/* ===================================================
+   KEYFRAMES
+=================================================== */
+
+/* Basics */
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:none;} }
+@keyframes connIn { from{opacity:0;} to{opacity:0.82;} }
+@keyframes heroIn {
+  0%   { opacity:0; transform:scale(0.78) translateY(14px); }
+  55%  { opacity:1; transform:scale(1.05) translateY(-3px); }
+  100% { opacity:1; transform:scale(1) translateY(0); }
+}
+@keyframes softPulse { 0%,100%{transform:scale(1) rotate(0deg);opacity:1;} 25%{transform:scale(1.06) rotate(2deg);} 50%{transform:scale(1.12) rotate(0deg);opacity:1;} 75%{transform:scale(1.06) rotate(-2deg);} }
+@keyframes glowBreath { 0%,100%{transform:scale(1);opacity:0.22;} 50%{transform:scale(1.18);opacity:0.4;} }
+@keyframes plantFloat { 0%,100%{transform:translateY(0) rotate(0deg);} 33%{transform:translateY(-3px) rotate(1.5deg);} 66%{transform:translateY(1px) rotate(-1deg);} }
+
+/* Conn dots */
+@keyframes dotBounce {
+  0%,55%,100%{ opacity:0.35; transform:translateY(0); }
+  28%        { opacity:1.00; transform:translateY(-3px); }
+}
+.dot1 { display:inline-block; animation:dotBounce 1.4s ease-in-out 0ms   infinite; }
+.dot2 { display:inline-block; animation:dotBounce 1.4s ease-in-out 220ms infinite; }
+.dot3 { display:inline-block; animation:dotBounce 1.4s ease-in-out 440ms infinite; }
+
+/* Ring fill (continuous, kicked off by JS) */
+@keyframes ringFill { from{stroke-dashoffset:427;} to{stroke-dashoffset:0;} }
+
+/* Item value */
+@keyframes valueSpringIn {
+  0%  {opacity:0;transform:scale(0.76) translateY(12px);}
+  52% {opacity:1;transform:scale(1.08) translateY(-3px);}
+  100%{opacity:1;transform:scale(1) translateY(0);}
+}
+@keyframes valueEaseIn {
+  from{opacity:0;transform:translateY(14px) scale(0.90);}
+  to  {opacity:1;transform:none;}
+}
+@keyframes commentIn { from{opacity:0;transform:translateY(9px);} to{opacity:0.84;transform:none;} }
+@keyframes checkSpring {
+  0%  {opacity:0;transform:scale(0.15) rotate(-24deg);}
+  58% {opacity:1;transform:scale(1.32) rotate(7deg);}
+  100%{opacity:1;transform:scale(1) rotate(0);}
+}
+@keyframes checkEase { from{opacity:0;transform:scale(0.5);} to{opacity:1;transform:scale(1);} }
+
+/* Hero glow — suave, sem flash agressivo */
+@keyframes glowPulseGentle {
+  0%  {transform:scale(1);   opacity:0.18;}
+  40% {transform:scale(1.25);opacity:0.36;}
+  100%{transform:scale(1.08);opacity:0.22;}
+}
+
+/* Completion hero */
+@keyframes glowBurst {
+  0%  {transform:scale(1);   opacity:0.18;}
+  40% {transform:scale(1.8); opacity:0.42;}
+  100%{transform:scale(1.3); opacity:0.28;}
+}
+@keyframes ringFlash {
+  0%  {filter:drop-shadow(0 0 0px var(--plant-color));}
+  40% {filter:drop-shadow(0 0 16px var(--plant-color));}
+  100%{filter:drop-shadow(0 0 6px var(--plant-color));}
+}
+@keyframes emojiCelebrate {
+  0%  {transform:scale(1);}
+  30% {transform:scale(1.22);}
+  55% {transform:scale(0.94);}
+  75% {transform:scale(1.08);}
+  100%{transform:scale(1);}
+}
+
+/* Completion screen shimmer sweep */
+@keyframes shimmerSweep {
+  from{transform:translateX(-100%) rotate(14deg); opacity:0.80;}
+  to  {transform:translateX(700px) rotate(14deg); opacity:0;}
+}
+
+/* Soft ring glow on item confirm */
+@keyframes ringGlowSoft {
+  0%  {filter:drop-shadow(0 0 0 transparent);}
+  35% {filter:drop-shadow(0 0 12px var(--plant-color));}
+  100%{filter:drop-shadow(0 0 4px transparent);}
+}
+
+/* Completion — plant name reveal */
+@keyframes plantNameIn {
+  0%  {opacity:0;transform:scale(0.78) translateY(16px);filter:blur(4px);}
+  54% {opacity:1;transform:scale(1.07) translateY(-3px);filter:blur(0);}
+  100%{opacity:1;transform:scale(1) translateY(0);filter:blur(0);}
+}
+@keyframes plantNameInHIG {
+  from{opacity:0;transform:translateY(18px);filter:blur(3px);}
+  to  {opacity:1;transform:none;filter:blur(0);}
+}
+
+/* Completion — word-by-word message */
+@keyframes wordUp {
+  from{opacity:0;transform:translateY(11px) scale(0.86);}
+  to  {opacity:1;transform:none;}
+}
+@keyframes wordUpHIG {
+  from{opacity:0;transform:translateY(9px);}
+  to  {opacity:1;transform:none;}
+}
+/* Glow that pulses once after message appears */
+@keyframes msgGlow {
+  0%  {text-shadow:0 0 0 rgba(244,167,185,0);}
+  40% {text-shadow:0 0 24px rgba(244,167,185,0.40), 0 0 48px var(--plant-color);}
+  100%{text-shadow:0 0 8px rgba(244,167,185,0.10);}
+}
+
+@keyframes ctaIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:none;} }
+
+/* Completion particles */
+@keyframes particleBurst {
+  0% { opacity:1; transform:translate(0,0) scale(1); }
+  100% { opacity:0; transform:translate(var(--px),var(--py)) scale(0); }
+}
+.particle {
+  position:absolute; border-radius:50%; pointer-events:none; z-index:50;
+  animation:particleBurst 0.9s cubic-bezier(0.32,0.72,0,1) forwards;
+}
+
+/* Blobs / Orbs */
+@keyframes aBlob1 { 0%,100%{border-radius:56% 44% 50% 50%;transform:rotate(0) scale(1);} 33%{border-radius:44% 56% 62% 38%;transform:rotate(-6deg) scale(1.08);} 66%{border-radius:62% 38% 44% 56%;transform:rotate(3deg) scale(0.95);} }
+@keyframes aBlob2 { 0%,100%{border-radius:40% 60% 55% 45%;} 40%{border-radius:60% 40% 45% 55%;transform:rotate(7deg) scale(1.06);} 70%{border-radius:50% 50% 60% 40%;transform:rotate(-3deg) scale(0.96);} }
+@keyframes aBlob3 { 0%,100%{border-radius:50% 50%;transform:translate(-50%,-50%) scale(1);} 50%{border-radius:58% 42% 54% 46%;transform:translate(-50%,-50%) scale(1.16);} }
+@keyframes orbPulse { 0%,100%{opacity:0.16;transform:scale(1);} 50%{opacity:0.30;transform:scale(1.14);} }
+
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+}
+
+/* ===================================================
+   ANDROID — BACKGROUND
+=================================================== */
+.a-blob-1 { position:absolute;z-index:0;pointer-events:none;width:600px;height:600px;background:var(--brand-real);opacity:0.10;filter:blur(96px);border-radius:56% 44% 50% 50%;top:-230px;left:-210px;animation:aBlob1 22s ease-in-out infinite; }
+.a-blob-2 { position:absolute;z-index:0;pointer-events:none;width:440px;height:440px;background:var(--plant-color,#C4B0E0);opacity:0.09;filter:blur(84px);border-radius:40% 60% 55% 45%;bottom:-90px;right:-150px;animation:aBlob2 28s ease-in-out infinite;transition:background 0.7s ease; }
+.a-blob-3 { position:absolute;z-index:0;pointer-events:none;width:360px;height:360px;background:var(--brand-real);opacity:0.06;filter:blur(76px);top:50%;left:50%;animation:aBlob3 19s ease-in-out infinite; }
+
+/* ===================================================
+   ANDROID — BODY
+=================================================== */
+.a-body {
+  position:relative; z-index:2; flex:1;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  padding:52px 24px 104px; gap:26px;
+}
+.a-conn {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 100,'wght' 400,'opsz' 13;
+  font-size:13px; color:rgba(244,167,185,0.80); text-align:center;
+  line-height:1.5; max-width:260px;
+  opacity:0; animation:connIn 0.55s ease-out 0.25s forwards;
+  transition:opacity 0.38s ease;
+}
+.a-hero {
+  position:relative; width:160px; height:160px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  opacity:0; animation:heroIn 0.80s cubic-bezier(0.34,1.56,0.64,1) 0.45s forwards;
+}
+.a-hero-glow {
+  position:absolute; width:110px; height:110px; border-radius:50%;
+  background:var(--plant-color,#C4B0E0); filter:blur(32px);
+  animation:glowBreath 2.8s ease-in-out infinite; transition:background 0.7s ease;
+}
+.a-ring-svg { position:absolute; top:0; left:0; width:160px; height:160px; overflow:visible; }
+.a-ring-track { stroke:rgba(61,44,46,0.10); fill:none; stroke-width:3.5; stroke-linecap:round; }
+.a-ring-fill {
+  fill:none; stroke:var(--plant-color,#C4B0E0); stroke-width:3.5; stroke-linecap:round;
+  stroke-dasharray:427; stroke-dashoffset:427;
+  transform-origin:80px 80px; transform:rotate(-90deg);
+  transition:stroke 0.7s ease;
+}
+.a-spark-glow { transition:fill 0.7s ease; }
+.a-spark-core { transition:fill 0.7s ease; }
+.a-plant-emoji {
+  font-size:0; width:86px; height:86px; border-radius:50%; position:relative; z-index:1;
+  animation:softPulse 3.2s ease-in-out 1.4s infinite;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(var(--plant-rgb,196,176,224),0.2);
+  box-shadow: 0 0 32px rgba(var(--plant-rgb,196,176,224),0.28), inset 0 0 14px rgba(var(--plant-rgb,196,176,224),0.08);
+}
+.a-plant-emoji svg { width:74px; height:74px; filter: drop-shadow(0 2px 8px rgba(var(--plant-rgb,196,176,224),0.4)); animation: plantFloat 4.5s ease-in-out infinite; }
+
+/* ===================================================
+   ANDROID — ITEM ZONE
+=================================================== */
+.a-item-zone {
+  position:relative; width:100%; min-height:172px;
+  display:flex; align-items:center; justify-content:center;
+}
+.a-item-display {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:9px; text-align:center; padding:0 18px;
+  opacity:0;
+  transition:opacity 0.38s ease, transform 0.44s cubic-bezier(0.34,1.56,0.64,1);
+}
+.a-item-label {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 100,'wght' 450,'opsz' 11;
+  font-size:10px; text-transform:uppercase; letter-spacing:0.12em;
+  color:rgba(244,167,185,0.78);
+}
+.a-item-value {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 108,'wght' 660,'opsz' 26;
+  font-size:26px; line-height:1.15; color:#3D2C2E; letter-spacing:-0.022em;
+  opacity:0;
+}
+.a-item-comment {
+  font-family:'Instrument Serif',serif; font-style:italic;
+  font-size:15px; color:var(--plant-color,#C4B0E0); line-height:1.45;
+  opacity:0; transition:color 0.7s ease; max-width:240px;
+}
+.a-item-check { display:none; }
+
+/* ===================================================
+   ANDROID — COMPLETE (two-phase, same zone)
+=================================================== */
+.a-complete {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; text-align:center; padding:0 20px;
+  pointer-events:none;
+}
+.a-complete.show-ready { pointer-events:auto; }
+
+.a-cp-name {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 108,'wght' 640,'opsz' 20;
+  font-size:20px; color:var(--plant-color,#C4B0E0);
+  letter-spacing:-0.01em; line-height:1;
+  opacity:0; transition:color 0.7s ease;
+}
+.a-complete.show-plant .a-cp-name {
+  animation:plantNameIn 0.72s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+.a-cp-msg {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 104,'wght' 640,'opsz' 24;
+  font-size:24px; color:#3D2C2E;
+  letter-spacing:-0.028em; line-height:1.26;
+  max-width:272px;
+  opacity:0;
+}
+.a-complete.show-ready .a-cp-msg {
+  opacity:1;
+  animation:msgGlow 1.80s ease-out 0.80s forwards;
+}
+
+/* Android CTA */
+.a-cta {
+  position:absolute; bottom:28px; left:16px; right:16px;
+  height:52px; border:none; border-radius:28px;
+  background:var(--plant-color,#C4B0E0); color:white; cursor:pointer;
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 108,'wght' 600,'opsz' 17;
+  font-size:17px; z-index:5; opacity:0;
+  transition:background 0.7s ease, box-shadow 0.7s ease, border-radius 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+.a-cta.visible { animation:ctaIn 0.50s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.a-cta:active { border-radius:18px; transform:scale(0.97); }
+
+/* ===================================================
+   iOS — BACKGROUND
+=================================================== */
+.ios-orb { position:absolute; border-radius:50%; filter:blur(76px); pointer-events:none; z-index:0; }
+.ios-orb.a { width:500px;height:500px;background:var(--brand-real);opacity:0.09;top:-170px;left:-170px;animation:orbPulse 5.8s ease-in-out infinite; }
+.ios-orb.b { width:340px;height:340px;background:var(--plant-color,#C4B0E0);opacity:0.08;bottom:-70px;right:-90px;animation:orbPulse 7.2s ease-in-out 1.8s infinite;transition:background 0.7s ease; }
+.ios-orb.c { width:250px;height:250px;background:var(--brand-real);opacity:0.05;top:42%;left:36%;animation:orbPulse 6.1s ease-in-out 3.4s infinite; }
+
+/* ===================================================
+   iOS — BODY
+=================================================== */
+.ios-body {
+  position:relative; z-index:2; flex:1;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  padding:52px 24px 104px; gap:26px;
+}
+.ios-conn {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:13px; font-weight:400; letter-spacing:-0.08px;
+  color:rgba(244,167,185,0.80); text-align:center;
+  line-height:1.5; max-width:260px;
+  opacity:0; animation:connIn 0.50s cubic-bezier(0.32,0.72,0,1) 0.25s forwards;
+  transition:opacity 0.38s ease;
+}
+.ios-hero {
+  position:relative; width:160px; height:160px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  opacity:0; animation:fadeUp 0.60s cubic-bezier(0.32,0.72,0,1) 0.45s forwards;
+}
+.ios-hero-glow {
+  position:absolute; width:110px; height:110px; border-radius:50%;
+  background:var(--plant-color,#C4B0E0); filter:blur(32px);
+  animation:glowBreath 3.4s ease-in-out infinite; transition:background 0.7s ease;
+}
+.ios-ring-svg { position:absolute; top:0; left:0; width:160px; height:160px; overflow:visible; }
+.ios-ring-track { stroke:rgba(61,44,46,0.10); fill:none; stroke-width:3; stroke-linecap:round; }
+.ios-ring-fill {
+  fill:none; stroke:var(--plant-color,#C4B0E0); stroke-width:3; stroke-linecap:round;
+  stroke-dasharray:427; stroke-dashoffset:427;
+  transform-origin:80px 80px; transform:rotate(-90deg);
+  transition:stroke 0.7s ease;
+}
+.ios-spark-glow { transition:fill 0.7s ease; }
+.ios-spark-core { transition:fill 0.7s ease; }
+.ios-plant-emoji {
+  font-size:0; width:86px; height:86px; border-radius:50%; position:relative; z-index:1;
+  animation:softPulse 3.6s ease-in-out 1.4s infinite;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(var(--plant-rgb,196,176,224),0.16);
+  box-shadow: 0 0 28px rgba(var(--plant-rgb,196,176,224),0.22), inset 0 0 12px rgba(var(--plant-rgb,196,176,224),0.06);
+}
+.ios-plant-emoji svg { width:74px; height:74px; filter: drop-shadow(0 2px 8px rgba(var(--plant-rgb,196,176,224),0.35)); animation: plantFloat 5s ease-in-out 0.5s infinite; }
+
+/* ===================================================
+   iOS — ITEM ZONE
+=================================================== */
+.ios-item-zone {
+  position:relative; width:100%; min-height:172px;
+  display:flex; align-items:center; justify-content:center;
+}
+.ios-item-display {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:9px; text-align:center; padding:0 18px;
+  opacity:0;
+  transition:opacity 0.36s ease, transform 0.38s cubic-bezier(0.32,0.72,0,1);
+}
+.ios-item-label {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.12em;
+  color:rgba(244,167,185,0.76);
+}
+.ios-item-value {
+  font-family:-apple-system,'SF Pro Display',system-ui,sans-serif;
+  font-size:26px; font-weight:700; line-height:1.15; letter-spacing:-0.5px;
+  color:#3D2C2E; opacity:0;
+}
+.ios-item-comment {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:15px; font-weight:400; font-style:italic; letter-spacing:-0.22px;
+  color:var(--plant-color,#C4B0E0); line-height:1.45; opacity:0;
+  transition:color 0.7s ease; max-width:240px;
+}
+.ios-item-check { display:none; }
+
+/* ===================================================
+   iOS — COMPLETE
+=================================================== */
+.ios-complete {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; text-align:center; padding:0 20px;
+  pointer-events:none;
+}
+.ios-complete.show-ready { pointer-events:auto; }
+
+.ios-cp-name {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:17px; font-weight:600; letter-spacing:-0.3px; line-height:1;
+  color:var(--plant-color,#C4B0E0);
+  opacity:0; transition:color 0.7s ease;
+}
+.ios-complete.show-plant .ios-cp-name {
+  animation:plantNameInHIG 0.58s cubic-bezier(0.32,0.72,0,1) forwards;
+}
+
+.ios-cp-msg {
+  font-family:-apple-system,'SF Pro Display',system-ui,sans-serif;
+  font-size:24px; font-weight:700; letter-spacing:-0.5px; line-height:1.26;
+  color:#3D2C2E;
+  max-width:272px;
+  opacity:0;
+}
+.ios-complete.show-ready .ios-cp-msg { opacity:1; }
+
+/* iOS CTA */
+.ios-cta {
+  position:absolute; bottom:28px; left:16px; right:16px;
+  height:52px; border:none; border-radius:999px;
+  background:rgba(155,143,212,0.82);
+  backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 4px 28px rgba(155,143,212,0.38);
+  color:white; cursor:pointer;
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:17px; font-weight:600; letter-spacing:-0.25px; z-index:5; opacity:0;
+  transition:background 0.7s ease, box-shadow 0.7s ease;
+}
+.ios-cta.visible { animation:ctaIn 0.46s cubic-bezier(0.32,0.72,0,1) forwards; }
+.ios-cta:active { transform:scale(0.96); opacity:0.86; }
+
+/* ===================================================
+   CICLO STEP — special visual treatment (idx 3)
+=================================================== */
+.a-item-display.ciclo-moment {
+  background: rgba(var(--plant-rgb,196,176,224), 0.07);
+  border-radius: 20px;
+  border: 1px solid rgba(var(--plant-rgb,196,176,224), 0.18);
+  box-shadow: 0 0 32px rgba(var(--plant-rgb,196,176,224), 0.12);
+}
+.a-item-display.ciclo-moment .a-item-label {
+  color: var(--plant-color, #C4B0E0);
+}
+.ios-item-display.ciclo-moment {
+  background: rgba(var(--plant-rgb,196,176,224), 0.06);
+  border-radius: 18px;
+  border: 1px solid rgba(var(--plant-rgb,196,176,224), 0.14);
+  box-shadow: 0 0 24px rgba(var(--plant-rgb,196,176,224), 0.10);
+}
+.ios-item-display.ciclo-moment .ios-item-label {
+  color: var(--plant-color, #C4B0E0);
+}
+
+/* ===================================================
+   ANNOTATIONS
+=================================================== */
+.annotations { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:40px; max-width:740px; margin-left:auto; margin-right:auto; }
+.note { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px; }
+.note.android { border-top:3px solid #34A853; }
+.note.ios { border-top:3px solid #636366; }
+.note h4 { font-size:13px; font-weight:600; margin-bottom:10px; color:rgba(255,255,255,0.70); }
+.note ul { list-style:disc; padding-left:18px; }
+.note li { font-size:12px; color:rgba(255,255,255,0.44); line-height:1.68; margin-bottom:7px; }
+.note code { background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:4px; font-size:11px; }
+</style>
+</head>
+<body>
+<div class="studio">
+
+  <div class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; Onboarding &middot; Screen 16 de 18 &middot; O16-Loading</div>
+    <h1 class="brand-title">Calculando seu plano. <em>spark vivo no anel &middot; glow reativo por item &middot; flash de confirmação &middot; mensagem palavra por palavra &middot; shimmer na conclusão</em></h1>
+    <p class="brand-sub">
+      Anel com spark luminoso que percorre a borda em tempo real (rAF). A cada item confirmado: hero glow pulsa, tela faz flash sutil na cor da planta.
+      Conclusão: nome da planta revela, mensagem do arquétipo surge palavra por palavra com glow pulse, shimmer diagonal varre a tela.
+    </p>
+  </div>
+
+  <div class="controls">
+    <button class="theme-btn" onclick="document.body.classList.toggle('dark')">&#9790; Tema</button>
+    <div class="state-sep"></div>
+    <button class="state-btn active" data-s="s1" onclick="setState('s1')">Lavanda</button>
+    <button class="state-btn" data-s="s2" onclick="setState('s2')">Girassol</button>
+    <button class="state-btn" data-s="s3" onclick="setState('s3')">Cacto</button>
+    <button class="state-btn" data-s="s4" onclick="setState('s4')">Cerejeira</button>
+    <button class="state-btn" data-s="s5" onclick="setState('s5')">Lotus</button>
+    <div class="state-sep"></div>
+    <button class="theme-btn" onclick="restartAll()">&#8635; Reiniciar</button>
+  </div>
+
+  <div class="stage">
+
+    <!-- ═══ ANDROID ═══ -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill android">Android &middot; M3 Expressive</span>
+        <span class="desc">Spark M3E no anel. Spring em tudo. Flash + glow reativo. Mensagem em Roboto Flex 24pt.</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span class="time">9:41</span>
+            <span class="icons">&#9650; &#9723;</span>
+          </div>
+          <div class="screen android-screen" id="a-screen"
+               style="--plant-color:#C4B0E0;--plant-glow:rgba(196,176,224,0.38);">
+            <div class="a-blob-1"></div>
+            <div class="a-blob-2"></div>
+            <div class="a-blob-3"></div>
+            <div class="a-body">
+
+              <p class="a-conn" id="a-conn">Calculando seu plano<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></p>
+
+              <div class="a-hero" id="a-hero">
+                <div class="a-hero-glow" id="a-hero-glow"></div>
+                <svg class="a-ring-svg" id="a-ring-svg" viewBox="0 0 160 160">
+                  <defs>
+                    <filter id="a-spark-filter" x="-120%" y="-120%" width="340%" height="340%">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="2.8"/>
+                    </filter>
+                  </defs>
+                  <circle class="a-ring-track" cx="80" cy="80" r="68"/>
+                  <circle class="a-ring-fill" id="a-ring-fill" cx="80" cy="80" r="68"/>
+                  <circle class="a-spark-glow" id="a-spark-glow" cx="80" cy="12" r="8" fill="white" opacity="0" filter="url(#a-spark-filter)"/>
+                  <circle class="a-spark-core" id="a-spark-core" cx="80" cy="12" r="3.2" fill="white" opacity="0"/>
+                </svg>
+                <div class="a-plant-emoji" id="a-emoji"></div>
+              </div>
+
+              <div class="a-item-zone">
+                <div class="a-item-display" id="a-item-display">
+                  <span class="a-item-label"   id="a-item-label"></span>
+                  <span class="a-item-value"   id="a-item-value"></span>
+                  <span class="a-item-comment" id="a-item-comment"></span>
+                  <span class="a-item-check"   id="a-item-check">&#10003;</span>
+                </div>
+                <div class="a-complete" id="a-complete">
+                  <p class="a-cp-name" id="a-cp-name">Lavanda</p>
+                  <p class="a-cp-msg"  id="a-cp-msg">Montei algo especial para voc&ecirc;.</p>
+                </div>
+              </div>
+
+            </div>
+            <button class="a-cta" id="a-cta">Ver meu plano</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ iOS ═══ -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill ios">iOS 26+ &middot; Liquid Glass / HIG</span>
+        <span class="desc">Spark HIG no anel. Ease sem overshoot. Flash + glow. Mensagem SF Pro Display 24pt.</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
+          <div class="screen ios-screen" id="ios-screen"
+               style="--plant-color:#C4B0E0;--plant-glow:rgba(196,176,224,0.38);">
+            <div class="ios-orb a"></div>
+            <div class="ios-orb b"></div>
+            <div class="ios-orb c"></div>
+            <div class="ios-body">
+
+              <p class="ios-conn" id="ios-conn">Calculando seu plano<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></p>
+
+              <div class="ios-hero" id="ios-hero">
+                <div class="ios-hero-glow" id="ios-hero-glow"></div>
+                <svg class="ios-ring-svg" id="ios-ring-svg" viewBox="0 0 160 160">
+                  <defs>
+                    <filter id="ios-spark-filter" x="-120%" y="-120%" width="340%" height="340%">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="2.4"/>
+                    </filter>
+                  </defs>
+                  <circle class="ios-ring-track" cx="80" cy="80" r="68"/>
+                  <circle class="ios-ring-fill" id="ios-ring-fill" cx="80" cy="80" r="68"/>
+                  <circle class="ios-spark-glow" id="ios-spark-glow" cx="80" cy="12" r="7" fill="white" opacity="0" filter="url(#ios-spark-filter)"/>
+                  <circle class="ios-spark-core" id="ios-spark-core" cx="80" cy="12" r="2.8" fill="white" opacity="0"/>
+                </svg>
+                <div class="ios-plant-emoji" id="ios-emoji"></div>
+              </div>
+
+              <div class="ios-item-zone">
+                <div class="ios-item-display" id="ios-item-display">
+                  <span class="ios-item-label"   id="ios-item-label"></span>
+                  <span class="ios-item-value"   id="ios-item-value"></span>
+                  <span class="ios-item-comment" id="ios-item-comment"></span>
+                  <span class="ios-item-check"   id="ios-item-check">&#10003;</span>
+                </div>
+                <div class="ios-complete" id="ios-complete">
+                  <p class="ios-cp-name" id="ios-cp-name">Lavanda</p>
+                  <p class="ios-cp-msg"  id="ios-cp-msg">Montei algo especial para voc&ecirc;.</p>
+                </div>
+              </div>
+
+            </div>
+            <button class="ios-cta" id="ios-cta">Ver meu plano</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stage -->
+
+  <section class="annotations">
+    <div class="note android">
+      <h4>Android &middot; M3 Expressive</h4>
+      <ul>
+        <li><strong>Spark no anel</strong>: <code>requestAnimationFrame</code> loop calcula posição XY do ponto líder da arc (angle = -90 + pct×360°) e move dois circles SVG (halo blur + core branco). Percorre 334px em 11.2s — referencia <strong>Apple Fitness</strong> (leading edge glow na ring close animation).</li>
+        <li><strong>Reativo por item</strong>: no check (1500ms), hero glow faz <code>glowPulseGentle</code> (scale 1→1.25, opacity 0.18→0.36) + ring glow suave. Sem flash de tela — feedback gentil, nunca invasivo. Referencia <strong>Gentler Streak</strong>.</li>
+        <li><strong>Mensagem palavra por palavra</strong>: <code>innerHTML</code> splittado em <code>&lt;span&gt;</code> com <code>animation-delay</code> escalonado (90ms entre palavras). <code>wordUp</code> spring: scale(0.86)→overshoot. <code>msgGlow</code> text-shadow pulse 1.8s. Roboto Flex 24pt 640 weight. Referencia <strong>Calm</strong>.</li>
+        <li><strong>Shimmer de conclusão</strong>: div 40% width + 200% height com <code>shimmerSweep</code> — gradiente diagonal varre a tela em 1.0s ease-out. Remove-se do DOM após 1.5s. Referencia <strong>Procreate Dreams</strong> (2024 ADA Innovation).</li>
+      </ul>
+    </div>
+    <div class="note ios">
+      <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
+      <ul>
+        <li><strong>Spark HIG</strong>: mesmo rAF loop, mesma lógica. Halo com <code>feGaussianBlur stdDeviation=2.4</code> (ligeiramente mais suave que Android). Core r=2.8 vs 3.2 no Android — minimalismo HIG. Referencia <strong>Apple Health</strong> (activity rings).</li>
+        <li><strong>Reativo sem overshoot</strong>: <code>glowPulseGentle</code> identico. Ring glow suave via <code>ringGlowSoft</code>. HIG evita spring em feedback passivo — tudo ease-out.</li>
+        <li><strong>Mensagem palavra por palavra</strong>: <code>wordUpHIG</code> translateY(9px)→0 sem scale, sem overshoot. SF Pro Display 24pt 700. HIG: motion em conteúdo sempre com cubic-bezier(0.32,0.72,0,1). Referencia <strong>Day One</strong> (2024 ADA).</li>
+        <li>CTA: <code>backdrop-filter: blur(24px) saturate(180%)</code> + specular inset. Sem <code>.glassEffect()</code> em conteúdo — regra de ouro HIG. Referencia <strong>Things 3</strong>.</li>
+      </ul>
+    </div>
+  </section>
+
+</div><!-- /studio -->
+
+<script src="../shared/plant-svgs.js"></script>
+<script>
+/* ─────────────────────────────────────────────
+   CONFIG
+───────────────────────────────────────────── */
+var CIRC = 427;
+var SEQ_MS = 14000; // 5 items × 2800ms
+
+var states = {
+  s1: {
+    name:'Lavanda', emoji:'\u{1F33F}',
+    color:'#C4B0E0', glow:'rgba(196,176,224,0.38)', ctaRgba:'rgba(196,176,224,0.82)',
+    redes:'Instagram \u00B7 TikTok',
+    horario:'A noite, antes de dormir',
+    goal:'Parar de me comparar',
+    ciclo:'Fase pr\u00e9-menstrual',
+    msg:'Montei algo especial para voc\u00ea.',
+    comments:{
+      redes:  'A maioria das meninas come\u00e7a por a\u00ed.',
+      horario:'A noite \u00e9 quando a gente est\u00e1 mais vulner\u00e1vel.',
+      goal:   'Esse \u00e9 o objetivo certo. Vamos focar nisso juntas.',
+      ciclo:  'Vou ficar mais perto nos seus dias mais dif\u00edceis.',
+      plant:  'Ela vai cuidar de voc\u00ea do jeito que voc\u00ea precisa.'
+    }
+  },
+  s2: {
+    name:'Girassol', emoji:'\u{1F33B}',
+    color:'#F2CE6B', glow:'rgba(242,206,107,0.38)', ctaRgba:'rgba(242,206,107,0.82)',
+    redes:'TikTok \u00B7 Pinterest',
+    horario:'De manh\u00e3, ao acordar',
+    goal:'Comparar menos meu corpo',
+    ciclo:'Fase luteal',
+    msg:'Esse plano foi feito s\u00f3 pra voc\u00ea.',
+    comments:{
+      redes:  'Dois dos apps mais visuais. Faz todo o sentido.',
+      horario:'Come\u00e7ar o dia assim puxa o humor l\u00e1 pra baixo.',
+      goal:   'Compara\u00e7\u00e3o corporal \u00e9 das mais pesadas. Cuido disso.',
+      ciclo:  'Nos seus dias mais sens\u00edveis, fico extra atenta.',
+      plant:  'Ela tem a energia que voc\u00ea precisa agora.'
+    }
+  },
+  s3: {
+    name:'Cacto', emoji:'\u{1F335}',
+    color:'#8CC5A0', glow:'rgba(140,197,160,0.38)', ctaRgba:'rgba(140,197,160,0.82)',
+    redes:'Instagram \u00B7 Twitter/X',
+    horario:'Nos intervalos do dia',
+    goal:'Usar menos as redes',
+    ciclo:'No meio do ciclo',
+    msg:'Direto ao ponto. Pronto para come\u00e7ar.',
+    comments:{
+      redes:  'Dois mundos diferentes, a mesma armadilha.',
+      horario:'Aquele \u201cs\u00f3 um minuto\u201d que vira meia hora.',
+      goal:   'Simples e honesto. Gosto disso em voc\u00ea.',
+      ciclo:  'Sem susto, sem drama. S\u00f3 mais cuidado quando precisar.',
+      plant:  'Ela \u00e9 t\u00e3o direta quanto voc\u00ea. Combinam.'
+    }
+  },
+  s4: {
+    name:'Cerejeira', emoji:'\u{1F338}',
+    color:'#F2B5C4', glow:'rgba(242,181,196,0.38)', ctaRgba:'rgba(242,181,196,0.82)',
+    redes:'Instagram \u00B7 Pinterest',
+    horario:'Antes de dormir',
+    goal:'Me aceitar como sou',
+    ciclo:'Fase pre-menstrual',
+    msg:'Seu plano tem a gentileza que voc\u00ea merece.',
+    comments:{
+      redes:  'Dois espa\u00e7os visuais com muita press\u00e3o est\u00e9tica.',
+      horario:'\u00c9 quando os pensamentos ficam mais altos.',
+      goal:   'Aceita\u00e7\u00e3o \u00e9 o primeiro passo. Estou com voc\u00ea.',
+      ciclo:  'Nos dias mais sens\u00edveis, fico mais perto de voc\u00ea.',
+      plant:  'Ela floresce mesmo quando ningu\u00e9m est\u00e1 olhando.'
+    }
+  },
+  s5: {
+    name:'Lotus', emoji:'\u{1FAB7}',
+    color:'#D4B8D4', glow:'rgba(212,184,212,0.38)', ctaRgba:'rgba(212,184,212,0.82)',
+    redes:'TikTok \u00B7 YouTube',
+    horario:'Quando sente ansiedade',
+    goal:'Descansar a mente',
+    ciclo:'Fase menstrual',
+    msg:'Um plano calmo, feito para voc\u00ea respirar.',
+    comments:{
+      redes:  'Scroll infinito e ansiedade andam juntos.',
+      horario:'A ansiedade pede cuidado, n\u00e3o mais est\u00edmulo.',
+      goal:   'Descansar \u00e9 um ato de coragem. Vamos juntas.',
+      ciclo:  'Vou ficar ainda mais calma nos seus dias de recolhimento.',
+      plant:  'Ela cresce na calma. Assim como voc\u00ea vai crescer.'
+    }
+  }
+};
+
+var sequenceKeys = [
+  { label:'Suas redes',                  key:'redes',   getVal:function(s){ return s.redes; } },
+  { label:'Hor\u00e1rio de risco',       key:'horario', getVal:function(s){ return s.horario; } },
+  { label:'Seu objetivo',                key:'goal',    getVal:function(s){ return s.goal; } },
+  { label:'Quando fico mais pertinho',    key:'ciclo',   getVal:function(s){ return s.ciclo; } },
+  { label:'Sua planta',                  key:'plant',   getVal:function(s){ return s.name+' '+s.emoji; } }
+];
+
+var currentState = 's1';
+var timers = [];
+var sparkRAF = null;
+
+/* ─────────────────────────────────────────────
+   UTILS
+───────────────────────────────────────────── */
+function clearTimers() { timers.forEach(function(id){ clearTimeout(id); }); timers=[]; }
+function addT(fn, ms) { timers.push(setTimeout(fn, ms)); }
+function setText(id, val) { var el=document.getElementById(id); if(el) el.textContent=val; }
+
+/* ─────────────────────────────────────────────
+   SPARK — rAF loop that follows leading edge
+───────────────────────────────────────────── */
+function setSpark(pct, opacity) {
+  var angle = (-90 + pct * 360) * Math.PI / 180;
+  var cx = (80 + 68 * Math.cos(angle)).toFixed(2);
+  var cy = (80 + 68 * Math.sin(angle)).toFixed(2);
+  ['a','ios'].forEach(function(p) {
+    var glow = document.getElementById(p+'-spark-glow');
+    var core = document.getElementById(p+'-spark-core');
+    if (glow) { glow.setAttribute('cx',cx); glow.setAttribute('cy',cy); glow.setAttribute('opacity', (opacity * 0.45).toFixed(2)); }
+    if (core) { core.setAttribute('cx',cx); core.setAttribute('cy',cy); core.setAttribute('opacity', (opacity * 0.95).toFixed(2)); }
+  });
+}
+
+function startSparkLoop() {
+  var t0 = performance.now();
+  function loop() {
+    var pct = Math.min((performance.now()-t0) / SEQ_MS, 1);
+    setSpark(pct, 1);
+    if (pct < 1) { sparkRAF = requestAnimationFrame(loop); }
+    else { setSpark(1, 0); } // fade spark at completion
+  }
+  sparkRAF = requestAnimationFrame(loop);
+}
+
+function stopSparkLoop() {
+  if (sparkRAF) { cancelAnimationFrame(sparkRAF); sparkRAF=null; }
+  setSpark(0, 0);
+}
+
+/* ─────────────────────────────────────────────
+   RING
+───────────────────────────────────────────── */
+function startRing() {
+  ['a','ios'].forEach(function(p) {
+    var el = document.getElementById(p+'-ring-fill');
+    if (!el) return;
+    el.style.animation = 'none';
+    el.style.strokeDashoffset = CIRC+'';
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      el.style.animation = 'ringFill '+(SEQ_MS/1000).toFixed(1)+'s linear forwards';
+    }); });
+  });
+}
+
+function snapRingFull() {
+  ['a','ios'].forEach(function(p) {
+    var el = document.getElementById(p+'-ring-fill');
+    if (!el) return;
+    el.style.animation='none';
+    el.style.strokeDashoffset='0';
+  });
+}
+
+function resetRing() {
+  ['a','ios'].forEach(function(p) {
+    var el = document.getElementById(p+'-ring-fill');
+    if (!el) return;
+    el.style.animation='none';
+    el.style.strokeDashoffset=CIRC+'';
+  });
+}
+
+/* ─────────────────────────────────────────────
+   HERO GLOW PULSE (on each item confirm)
+───────────────────────────────────────────── */
+function heroGlowPulse() {
+  ['a','ios'].forEach(function(p) {
+    var glow = document.getElementById(p+'-hero-glow');
+    var ringSvg = document.getElementById(p+'-ring-svg');
+    if (!glow) return;
+    // Gentle glow expansion
+    glow.style.animation='none';
+    requestAnimationFrame(function(){
+      glow.style.animation='glowPulseGentle 0.90s ease-out forwards';
+      setTimeout(function(){
+        glow.style.animation = (p==='a')
+          ? 'glowBreath 2.8s ease-in-out infinite'
+          : 'glowBreath 3.4s ease-in-out infinite';
+      }, 950);
+    });
+    // Soft ring glow
+    if(ringSvg) {
+      ringSvg.style.animation='none';
+      requestAnimationFrame(function(){
+        ringSvg.style.animation='ringGlowSoft 0.80s ease-out forwards';
+        setTimeout(function(){ ringSvg.style.animation=''; }, 850);
+      });
+    }
+  });
+}
+
+/* ─────────────────────────────────────────────
+   SHIMMER SWEEP (on completion)
+───────────────────────────────────────────── */
+function triggerShimmer() {
+  ['a','ios'].forEach(function(p) {
+    var screen = document.getElementById(p+'-screen');
+    if (!screen) return;
+    var div = document.createElement('div');
+    div.style.cssText = [
+      'position:absolute','top:-50%','left:-20%',
+      'width:38%','height:200%',
+      'background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)',
+      'z-index:30','pointer-events:none',
+      'animation:shimmerSweep 1.10s ease-out 0.20s forwards'
+    ].join(';');
+    screen.appendChild(div);
+    setTimeout(function(){ if(div.parentNode) div.parentNode.removeChild(div); }, 1600);
+  });
+}
+
+/* ─────────────────────────────────────────────
+   WORD-BY-WORD message reveal
+───────────────────────────────────────────── */
+function revealWordByWord(elId, text, isIOS) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  var kf   = isIOS ? 'wordUpHIG' : 'wordUp';
+  var ease = isIOS ? 'cubic-bezier(0.32,0.72,0,1)' : 'cubic-bezier(0.34,1.56,0.64,1)';
+  var words = text.split(' ');
+  el.innerHTML = words.map(function(word, i) {
+    return '<span style="display:inline-block;opacity:0;animation:'+kf+' 0.52s '+ease+' '+(i*88)+'ms forwards">'
+      + word + (i < words.length-1 ? '&nbsp;' : '') + '</span>';
+  }).join('');
+}
+
+/* ─────────────────────────────────────────────
+   CONN — reset to animated dots state
+───────────────────────────────────────────── */
+function setConnLoading() {
+  ['a','ios'].forEach(function(p) {
+    var el = document.getElementById(p+'-conn');
+    if (!el) return;
+    el.style.animation='none';
+    el.style.transition='none';
+    el.style.opacity='0.82';
+    el.style.color='';
+    el.innerHTML='Calculando seu plano'
+      +'<span class="dot1">.</span>'
+      +'<span class="dot2">.</span>'
+      +'<span class="dot3">.</span>';
+  });
+}
+
+/* ─────────────────────────────────────────────
+   ITEM REVEAL
+───────────────────────────────────────────── */
+function revealItem(idx) {
+  var st  = states[currentState];
+  var sk  = sequenceKeys[idx];
+  var val = sk.getVal(st);
+  var com = st.comments[sk.key];
+  var lbl = sk.label;
+  var isCiclo = (idx === 3);
+
+  ['a','ios'].forEach(function(p) {
+    setText(p+'-item-label',  lbl);
+    setText(p+'-item-value',  val);
+    setText(p+'-item-comment',com);
+
+    // Ciclo step: special visual treatment
+    var disp = document.getElementById(p+'-item-display');
+    if (disp) {
+      if (isCiclo) disp.classList.add('ciclo-moment');
+      else         disp.classList.remove('ciclo-moment');
+    }
+
+    ['value','comment','check'].forEach(function(part) {
+      var el = document.getElementById(p+'-item-'+part);
+      if(el){ el.style.opacity='0'; el.style.animation='none'; el.style.transform=''; }
+    });
+
+    var disp = document.getElementById(p+'-item-display');
+    if(disp){ disp.style.transition='none'; disp.style.opacity='0'; disp.style.transform='translateY(22px)'; }
+  });
+
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+
+    // Container enters
+    ['a','ios'].forEach(function(p) {
+      var disp  = document.getElementById(p+'-item-display');
+      var ease  = p==='ios' ? 'cubic-bezier(0.32,0.72,0,1)' : 'cubic-bezier(0.34,1.56,0.64,1)';
+      if(disp){ disp.style.transition='opacity 0.42s ease, transform 0.46s '+ease; disp.style.opacity='1'; disp.style.transform='translateY(0)'; }
+    });
+
+    // Value at 280ms
+    addT(function(){
+      ['a','ios'].forEach(function(p){
+        var el = document.getElementById(p+'-item-value');
+        if(!el) return;
+        el.style.animation='none';
+        requestAnimationFrame(function(){
+          el.style.animation = p==='ios'
+            ? 'valueEaseIn 0.50s cubic-bezier(0.32,0.72,0,1) forwards'
+            : 'valueSpringIn 0.56s cubic-bezier(0.34,1.56,0.64,1) forwards';
+        });
+      });
+    }, 280);
+
+    // Comment at 900ms
+    addT(function(){
+      ['a','ios'].forEach(function(p){
+        var el = document.getElementById(p+'-item-comment');
+        if(!el) return;
+        el.style.animation='none';
+        requestAnimationFrame(function(){ el.style.animation='commentIn 0.48s ease-out forwards'; });
+      });
+    }, 900);
+
+    // Check at 1500ms + hero pulse + confirm flash
+    addT(function(){
+      ['a','ios'].forEach(function(p){
+        var el = document.getElementById(p+'-item-check');
+        if(!el) return;
+        el.style.animation='none';
+        requestAnimationFrame(function(){
+          el.style.animation = p==='ios'
+            ? 'checkEase 0.32s cubic-bezier(0.32,0.72,0,1) forwards'
+            : 'checkSpring 0.44s cubic-bezier(0.34,1.56,0.64,1) forwards';
+        });
+      });
+      heroGlowPulse();
+    }, 1500);
+
+    // Exit at 2400ms — suave, sem pulo brusco
+    addT(function(){
+      ['a','ios'].forEach(function(p){
+        var disp = document.getElementById(p+'-item-display');
+        if(disp){ disp.classList.remove('ciclo-moment'); disp.style.transition='opacity 0.44s ease-out, transform 0.48s ease-out'; disp.style.opacity='0'; disp.style.transform='translateY(-10px) scale(0.98)'; }
+      });
+      // Next / complete
+      addT(function(){
+        if(idx < sequenceKeys.length-1){ revealItem(idx+1); }
+        else { triggerComplete(); }
+      }, 400);
+    }, 2400);
+
+  }); });
+}
+
+/* ─────────────────────────────────────────────
+   COMPLETION
+───────────────────────────────────────────── */
+function spawnParticles(screenId) {
+  var screen = document.getElementById(screenId);
+  if (!screen) return;
+  var st = states[currentState];
+  var cx = screen.offsetWidth / 2;
+  var cy = screen.offsetHeight * 0.32;
+  for (var i = 0; i < 12; i++) {
+    var dot = document.createElement('div');
+    var angle = (i / 12) * Math.PI * 2;
+    var dist = 40 + Math.random() * 60;
+    var px = Math.cos(angle) * dist;
+    var py = Math.sin(angle) * dist;
+    var size = 3 + Math.random() * 5;
+    dot.className = 'particle';
+    dot.style.cssText = 'width:'+size+'px;height:'+size+'px;left:'+(cx-size/2)+'px;top:'+(cy-size/2)+'px;background:'+st.color+';--px:'+px.toFixed(0)+'px;--py:'+py.toFixed(0)+'px;animation-delay:'+(i*40)+'ms;opacity:0.8;';
+    screen.appendChild(dot);
+    (function(d){ setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d); }, 1200); })(dot);
+  }
+}
+
+function triggerComplete() {
+  stopSparkLoop();
+  snapRingFull();
+  triggerShimmer();
+
+  // Particles
+  spawnParticles('a-screen');
+  spawnParticles('ios-screen');
+
+  // Hero celebration
+  ['a','ios'].forEach(function(p){
+    var glow    = document.getElementById(p+'-hero-glow');
+    var ringSvg = document.getElementById(p+'-ring-svg');
+    var emoji   = document.getElementById(p+'-emoji');
+    if(glow)   { glow.style.animation='none';    requestAnimationFrame(function(){ glow.style.animation='glowBurst 1.10s cubic-bezier(0.34,1.56,0.64,1) forwards'; }); }
+    if(ringSvg){ ringSvg.style.animation='none'; requestAnimationFrame(function(){ ringSvg.style.animation='ringFlash 1.10s ease forwards'; }); }
+    if(emoji && p==='a'){ emoji.style.animation='none'; requestAnimationFrame(function(){ emoji.style.animation='emojiCelebrate 0.88s cubic-bezier(0.34,1.56,0.64,1) forwards'; }); }
+  });
+
+  // Phase 1 — plant name (300ms)
+  addT(function(){
+    ['a','ios'].forEach(function(p){
+      var c = document.getElementById(p+'-complete');
+      if(c) c.classList.add('show-plant');
+    });
+  }, 300);
+
+  // Phase 2 — word-by-word message (1100ms)
+  addT(function(){
+    var st = states[currentState];
+    ['a','ios'].forEach(function(p){
+      var c = document.getElementById(p+'-complete');
+      if(c) c.classList.add('show-ready');
+    });
+    // Reveal words
+    revealWordByWord('a-cp-msg',   states[currentState].msg, false);
+    revealWordByWord('ios-cp-msg', states[currentState].msg, true);
+
+    // CTA (500ms after message starts)
+    addT(function(){
+      ['a','ios'].forEach(function(p){
+        var cta = document.getElementById(p+'-cta');
+        if(cta) cta.classList.add('visible');
+      });
+    }, 500);
+  }, 1100);
+}
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+function resetPlatform(platform) {
+  // Item display
+  var disp = document.getElementById(platform+'-item-display');
+  if(disp){ disp.classList.remove('ciclo-moment'); disp.style.transition='none'; disp.style.opacity='0'; disp.style.transform='translateY(20px)'; }
+  ['value','comment','check'].forEach(function(part){
+    var el = document.getElementById(platform+'-item-'+part);
+    if(el){ el.style.opacity='0'; el.style.animation='none'; el.style.transform=''; }
+  });
+
+  // Complete
+  var c = document.getElementById(platform+'-complete');
+  if(c){ c.classList.remove('show-plant'); c.classList.remove('show-ready'); }
+
+  // CTA
+  var cta = document.getElementById(platform+'-cta');
+  if(cta) cta.classList.remove('visible');
+
+  // Hero
+  var glow    = document.getElementById(platform+'-hero-glow');
+  var ringSvg = document.getElementById(platform+'-ring-svg');
+  var emoji   = document.getElementById(platform+'-emoji');
+  if(glow)    glow.style.animation='';
+  if(ringSvg) ringSvg.style.animation='';
+  if(emoji)   emoji.style.animation='';
+}
+
+function restartAll() {
+  clearTimers();
+  stopSparkLoop();
+  resetRing();
+  resetPlatform('a');
+  resetPlatform('ios');
+  setConnLoading();
+  setTimeout(function(){
+    startRing();
+    startSparkLoop();
+    revealItem(0);
+  }, 160);
+}
+
+/* ─────────────────────────────────────────────
+   STATE
+───────────────────────────────────────────── */
+var plantSVGs = window.plantSVGs;  /* fonte unica: ../shared/plant-svgs.js */
+
+function updatePlantSVG(st) {
+  var svg = plantSVGs[st.name];
+  if (!svg) return;
+  var rendered = svg.replace(/__CLR__/g, st.color);
+  var aEl = document.getElementById('a-emoji');
+  var iosEl = document.getElementById('ios-emoji');
+  if (aEl) aEl.innerHTML = rendered;
+  if (iosEl) iosEl.innerHTML = rendered;
+}
+
+function setState(s) {
+  currentState = s;
+  document.querySelectorAll('.state-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.s === s);
+  });
+
+  var st = states[s];
+
+  var rgb = st.color.match(/\w{2}/g).map(function(h){return parseInt(h,16);}).join(',');
+  ['a-screen','ios-screen'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.style.setProperty('--plant-color', st.color); el.style.setProperty('--plant-glow', st.glow); el.style.setProperty('--plant-rgb', rgb); }
+  });
+
+  updatePlantSVG(st);
+
+  ['a','ios'].forEach(function(p){
+    setText(p+'-cp-name', st.name);
+    // Restore cp-msg as plain text (word-by-word will replace on completion)
+    var msgEl = document.getElementById(p+'-cp-msg');
+    if(msgEl) msgEl.textContent = st.msg;
+
+    var cta = document.getElementById(p+'-cta');
+    if(cta){
+      if(p==='a'){
+        cta.style.background = st.color;
+        cta.style.boxShadow  = '0 6px 32px '+st.glow;
+      } else {
+        cta.style.background = st.ctaRgba;
+        cta.style.boxShadow  = 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 4px 28px '+st.glow;
+      }
+    }
+  });
+
+  restartAll();
+}
+
+setState('s1');
+</script>
+</body>
+</html>

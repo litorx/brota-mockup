@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — W1-W2: Widgets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:720px;margin:0 auto;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+
+.controls-divider{width:1px;height:28px;background:var(--border);margin:0 4px;}
+
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;flex-wrap:wrap;}
+
+/* ── PHONE ── */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:280px;line-height:1.4;}
+.phone{width:375px;height:740px;border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.18),0 0 0 1px rgba(61,44,46,0.08);overflow:hidden;position:relative;}
+
+/* ── HOME SCREEN WALLPAPER ── */
+.homescreen{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#2D1B3D 0%,#1E1235 35%,#1A1A2E 70%,#141428 100%);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+/* Subtle star-like particles */
+.homescreen::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.06) 1px, transparent 1px),
+    radial-gradient(circle at 78% 14%, rgba(255,255,255,0.05) 1px, transparent 1px),
+    radial-gradient(circle at 42% 8%, rgba(255,255,255,0.04) 1px, transparent 1px),
+    radial-gradient(circle at 88% 35%, rgba(255,255,255,0.04) 1px, transparent 1px),
+    radial-gradient(circle at 5% 60%, rgba(255,255,255,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 65% 75%, rgba(255,255,255,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 30% 85%, rgba(255,255,255,0.04) 1px, transparent 1px),
+    radial-gradient(circle at 92% 80%, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size:100% 100%;
+  pointer-events:none;
+}
+/* Soft nebula glow */
+.homescreen::after{
+  content:'';position:absolute;
+  width:280px;height:280px;border-radius:50%;
+  top:-60px;left:-60px;
+  background:radial-gradient(circle, rgba(196,176,224,0.10) 0%, transparent 70%);
+  transition:background 0.7s;
+  pointer-events:none;
+}
+
+.homescreen-glow{
+  position:absolute;
+  width:240px;height:240px;border-radius:50%;
+  bottom:-40px;right:-40px;
+  background:radial-gradient(circle, rgba(var(--plant-color-rgb),0.08) 0%, transparent 70%);
+  transition:background 0.7s;
+  pointer-events:none;
+}
+
+/* ── STATUS BAR (dark homescreen) ── */
+.hs-statusbar{
+  position:absolute;top:0;left:0;right:0;
+  height:54px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;z-index:10;pointer-events:none;
+}
+.hs-time{font-size:15px;font-weight:700;color:rgba(255,255,255,0.90);}
+.hs-icons{display:flex;gap:5px;color:rgba(255,255,255,0.60);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(0,0,0,0.5);border-radius:999px;z-index:30;pointer-events:none;}
+
+/* ── DOCK ── */
+.hs-dock{
+  position:absolute;bottom:20px;left:20px;right:20px;
+  height:90px;
+  background:rgba(255,255,255,0.10);
+  backdrop-filter:blur(20px) saturate(180%);
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,0.14);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 16px;
+}
+.dock-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+}
+/* Android dock: bottom nav bar */
+.a-homescreen .hs-dock{
+  bottom:0;left:0;right:0;border-radius:0;height:68px;
+  background:rgba(30,18,53,0.92);
+  border-top:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+  box-shadow:0 -2px 16px rgba(0,0,0,0.20);
+}
+.a-homescreen .dock-icon{border-radius:12px;width:48px;height:48px;}
+
+/* ── APP GRID (background icons) ── */
+.app-grid{
+  position:absolute;top:70px;left:0;right:0;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:16px;padding:0 20px;
+  pointer-events:none;opacity:0.35;
+}
+.app-icon-bg{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.app-icon-bg .icon-sq{
+  width:54px;height:54px;border-radius:14px;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.app-icon-bg .icon-lbl{font-size:9px;color:rgba(255,255,255,0.55);font-weight:500;}
+
+/* ── WIDGET CONTAINER ── */
+.widget-area{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;
+  z-index:5;
+}
+
+/* ── W1: 2x2 SMALL WIDGET ── */
+.widget-2x2{
+  width:170px;height:170px;border-radius:24px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:16px;
+  cursor:pointer;
+  transition:transform 0.2s;
+}
+.widget-2x2:active{transform:scale(0.96);}
+
+.a-widget-2x2{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(20px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.16);
+  box-shadow:0 8px 32px rgba(0,0,0,0.30),0 1px 0 rgba(255,255,255,0.08) inset;
+}
+.ios-widget-2x2{
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(30px) saturate(200%);
+  border:1px solid rgba(255,255,255,0.22);
+  box-shadow:0 8px 40px rgba(0,0,0,0.28),0 1px 0 rgba(255,255,255,0.14) inset;
+}
+
+.w2x2-plant{
+  width:72px;height:72px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.w2x2-plant svg{width:72px;height:72px;filter:drop-shadow(0 4px 12px rgba(var(--plant-color-rgb),0.35));}
+.w2x2-greeting{
+  font-size:13px;font-weight:700;color:rgba(255,255,255,0.92);
+  text-align:center;line-height:1.2;
+}
+.w2x2-plantname{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:11px;color:rgba(var(--plant-color-rgb),0.85);
+  text-align:center;
+  transition:color 0.7s;
+}
+
+/* ── W2: 4x2 LARGE WIDGET ── */
+.widget-4x2{
+  width:336px;height:170px;border-radius:24px;
+  display:flex;align-items:center;
+  padding:18px 20px;gap:16px;
+  cursor:pointer;
+  transition:transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.widget-4x2:active{transform:scale(0.98);}
+
+.a-widget-4x2{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(20px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.16);
+  box-shadow:0 8px 32px rgba(0,0,0,0.30),0 1px 0 rgba(255,255,255,0.08) inset;
+}
+.ios-widget-4x2{
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(30px) saturate(200%);
+  border:1px solid rgba(255,255,255,0.22);
+  box-shadow:0 8px 40px rgba(0,0,0,0.28),0 1px 0 rgba(255,255,255,0.14) inset;
+}
+
+/* Subtle shimmer overlay on 4x2 */
+.widget-4x2::before{
+  content:'';position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%, rgba(var(--plant-color-rgb),0.04) 100%);
+  pointer-events:none;
+  transition:background 0.7s;
+}
+
+.w4x2-left{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  flex-shrink:0;
+}
+.w4x2-plant{
+  width:68px;height:68px;
+  display:flex;align-items:center;justify-content:center;
+}
+.w4x2-plant svg{width:68px;height:68px;filter:drop-shadow(0 4px 14px rgba(var(--plant-color-rgb),0.35));}
+.w4x2-plantname{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:10.5px;color:rgba(var(--plant-color-rgb),0.85);
+  text-align:center;
+  transition:color 0.7s;
+}
+
+.w4x2-center{
+  flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;
+}
+.w4x2-greeting{
+  font-size:11px;font-weight:600;color:rgba(255,255,255,0.55);
+  line-height:1.2;
+}
+.w4x2-phrase{
+  font-size:14.5px;font-weight:700;color:rgba(255,255,255,0.92);
+  line-height:1.35;
+}
+.w4x2-tap-hint{
+  font-size:10px;font-weight:500;color:rgba(255,255,255,0.35);
+  margin-top:2px;
+}
+
+.w4x2-right{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;flex-shrink:0;
+}
+.w4x2-action{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(var(--plant-color-rgb),0.22);
+  border:1px solid rgba(var(--plant-color-rgb),0.30);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;cursor:pointer;
+  transition:background 0.2s, transform 0.2s;
+  transition:background 0.7s;
+}
+.w4x2-action:hover{transform:scale(1.08);}
+/* Android: CSS circle for mood icon */
+.a-homescreen .w4x2-action-icon{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(var(--plant-color-rgb),0.80);
+  font-size:0;
+  transition:background 0.7s;
+}
+.ios-homescreen .w4x2-action-icon{font-size:18px;}
+
+.w4x2-streak{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.w4x2-streak-num{
+  font-size:18px;font-weight:800;color:rgba(255,255,255,0.90);line-height:1;
+}
+.w4x2-streak-label{
+  font-size:9px;font-weight:600;color:rgba(255,255,255,0.45);
+  text-transform:uppercase;letter-spacing:0.06em;
+}
+.streak-flame{font-size:14px;line-height:1;}
+/* Android: CSS circle for flame */
+.a-homescreen .streak-flame{
+  width:16px;height:16px;border-radius:50% 50% 40% 40%;
+  background:linear-gradient(160deg,#FFD07A,#F4A7B9);
+  font-size:0;display:inline-block;
+  vertical-align:middle;
+}
+
+/* Vertical separator */
+.w4x2-sep{
+  width:1px;height:80px;
+  background:rgba(255,255,255,0.10);
+  flex-shrink:0;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes plantBounce{
+  0%,100%{transform:translateY(0) scale(1);}
+  25%{transform:translateY(-5px) scale(1.04);}
+  50%{transform:translateY(-2px) scale(1.01);}
+  75%{transform:translateY(-4px) scale(1.03);}
+}
+@keyframes glowPulse{
+  0%,100%{opacity:0.5;transform:scale(0.94);}
+  50%{opacity:0.8;transform:scale(1.02);}
+}
+@keyframes widgetFadeIn{
+  from{opacity:0;transform:translate(-50%,-50%) scale(0.94);}
+  to{opacity:1;transform:translate(-50%,-50%) scale(1);}
+}
+
+.widget-area{animation:widgetFadeIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-homescreen .widget-area{animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+
+.plant-bounce svg{animation:plantBounce 3.5s ease-in-out infinite;}
+
+/* ── WIDGET TOGGLE ── */
+.widget-2x2-wrap,.widget-4x2-wrap{display:none;}
+.widget-2x2-wrap.active,.widget-4x2-wrap.active{display:flex;}
+
+/* ── CONTEXT NOTE ── */
+.context-note{
+  text-align:center;margin-top:24px;
+  font-size:11.5px;color:var(--text3);line-height:1.5;
+}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+</style>
+</head>
+<body>
+<div class="studio">
+
+<div class="studio-header">
+  <div class="brand-eyebrow">Brota &middot; Widgets &middot; W1-W2</div>
+  <div class="brand-title">Widgets &mdash; Home screen <em>2x2 e 4x2 widgets para tela inicial do celular</em></div>
+  <div class="brand-sub">
+    Widgets aparecem na tela inicial do celular. O 2x2 mostra a planta e uma sauda&ccedil;&atilde;o. O 4x2 exibe a frase di&aacute;ria, streak e acesso r&aacute;pido ao mood check-in.
+  </div>
+</div>
+
+<div class="controls">
+  <button class="state-btn active" onclick="setWidget('2x2',this)">Widget 2x2</button>
+  <button class="state-btn" onclick="setWidget('4x2',this)">Widget 4x2</button>
+  <div class="controls-divider"></div>
+  <button class="state-btn active" id="pbtn-s1" onclick="setPlant('s1',this)">Lavanda</button>
+  <button class="state-btn" id="pbtn-s2" onclick="setPlant('s2',this)">Girassol</button>
+  <button class="state-btn" id="pbtn-s3" onclick="setPlant('s3',this)">Cacto</button>
+  <button class="state-btn" id="pbtn-s4" onclick="setPlant('s4',this)">Cerejeira</button>
+  <button class="state-btn" id="pbtn-s5" onclick="setPlant('s5',this)">Lotus</button>
+</div>
+
+<div class="stage">
+
+<!-- ═══════ ANDROID ═══════ -->
+<div class="phone-wrapper">
+  <div class="phone-label">
+    <span class="pill android">Android &middot; Nunito</span>
+    <span class="desc">Widget glass · CSS circles · Spring bounce</span>
+  </div>
+  <div class="phone">
+    <div class="homescreen a-homescreen" id="a-homescreen">
+      <!-- Status bar -->
+      <div class="hs-statusbar">
+        <span class="hs-time">9:41</span>
+        <span class="hs-icons">&#9679; &#9679; &#9679;</span>
+      </div>
+
+      <!-- Nebula glow -->
+      <div class="homescreen-glow"></div>
+
+      <!-- App grid (background, decorative) -->
+      <div class="app-grid">
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Fotos</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Camera</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Maps</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Musica</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Clima</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Notas</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Saude</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Brota</div></div>
+      </div>
+
+      <!-- Widget area (centered) -->
+      <div class="widget-area" id="a-widget-area">
+
+        <!-- W1: 2x2 -->
+        <div class="widget-2x2-wrap active" id="a-w2x2-wrap">
+          <div class="widget-2x2 a-widget-2x2" onclick="this.style.transform='scale(0.94)';setTimeout(()=>this.style.transform='',180)">
+            <div class="w2x2-plant plant-bounce" id="a-w2x2-plant"></div>
+            <div class="w2x2-greeting" id="a-w2x2-greeting">Oi, Ana</div>
+            <div class="w2x2-plantname" id="a-w2x2-name">Lavanda</div>
+          </div>
+        </div>
+
+        <!-- W2: 4x2 -->
+        <div class="widget-4x2-wrap" id="a-w4x2-wrap">
+          <div class="widget-4x2 a-widget-4x2">
+            <!-- Left: plant -->
+            <div class="w4x2-left">
+              <div class="w4x2-plant plant-bounce" id="a-w4x2-plant"></div>
+              <div class="w4x2-plantname" id="a-w4x2-name">Lavanda</div>
+            </div>
+            <!-- Sep -->
+            <div class="w4x2-sep"></div>
+            <!-- Center: phrase -->
+            <div class="w4x2-center" onclick="">
+              <div class="w4x2-greeting" id="a-w4x2-greeting">Lavanda diz:</div>
+              <div class="w4x2-phrase" id="a-w4x2-phrase">Respira fundo. Eu to aqui.</div>
+              <div class="w4x2-tap-hint">Toque para abrir</div>
+            </div>
+            <!-- Sep -->
+            <div class="w4x2-sep"></div>
+            <!-- Right: action + streak -->
+            <div class="w4x2-right">
+              <div class="w4x2-action" onclick="this.style.transform='scale(0.90)';setTimeout(()=>this.style.transform='',180)">
+                <div class="w4x2-action-icon a-screen"></div>
+              </div>
+              <div class="w4x2-streak">
+                <div class="streak-flame a-screen"></div>
+                <div class="w4x2-streak-num">5</div>
+                <div class="w4x2-streak-label">dias</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /widget-area -->
+
+      <!-- Dock -->
+      <div class="hs-dock">
+        <div class="dock-icon" style="background:rgba(52,168,83,0.3);"><i data-icon="phone"></i></div>
+        <div class="dock-icon" style="background:rgba(66,133,244,0.3);"><i data-icon="globe"></i></div>
+        <div class="dock-icon" style="background:rgba(var(--plant-color-rgb),0.30);transition:background 0.7s;"><i data-icon="grow"></i></div>
+        <div class="dock-icon" style="background:rgba(234,67,53,0.3);"><i data-icon="envelope"></i>&#65039;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ iOS ═══════ -->
+<div class="phone-wrapper">
+  <div class="phone-label">
+    <span class="pill ios">iOS 26 &middot; SF Rounded</span>
+    <span class="desc">Liquid Glass widget · Native emoji · HIG bezier</span>
+  </div>
+  <div class="phone">
+    <div class="homescreen ios-homescreen" id="ios-homescreen">
+      <!-- Dynamic island -->
+      <div class="dyna"></div>
+      <!-- Status bar -->
+      <div class="hs-statusbar">
+        <span class="hs-time">9:41</span>
+        <span class="hs-icons">&#9679; &#9679; &#9679;</span>
+      </div>
+
+      <!-- Nebula glow -->
+      <div class="homescreen-glow"></div>
+
+      <!-- App grid (background, decorative) -->
+      <div class="app-grid">
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Fotos</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Camera</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Maps</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Musica</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Clima</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Notas</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Saude</div></div>
+        <div class="app-icon-bg"><div class="icon-sq"></div><div class="icon-lbl">Brota</div></div>
+      </div>
+
+      <!-- Widget area (centered) -->
+      <div class="widget-area" id="ios-widget-area">
+
+        <!-- W1: 2x2 -->
+        <div class="widget-2x2-wrap active" id="ios-w2x2-wrap">
+          <div class="widget-2x2 ios-widget-2x2" onclick="this.style.transform='scale(0.94)';setTimeout(()=>this.style.transform='',180)">
+            <div class="w2x2-plant plant-bounce" id="ios-w2x2-plant"></div>
+            <div class="w2x2-greeting" id="ios-w2x2-greeting">Oi, Ana</div>
+            <div class="w2x2-plantname" id="ios-w2x2-name">Lavanda</div>
+          </div>
+        </div>
+
+        <!-- W2: 4x2 -->
+        <div class="widget-4x2-wrap" id="ios-w4x2-wrap">
+          <div class="widget-4x2 ios-widget-4x2">
+            <!-- Left: plant -->
+            <div class="w4x2-left">
+              <div class="w4x2-plant plant-bounce" id="ios-w4x2-plant"></div>
+              <div class="w4x2-plantname" id="ios-w4x2-name">Lavanda</div>
+            </div>
+            <!-- Sep -->
+            <div class="w4x2-sep"></div>
+            <!-- Center: phrase -->
+            <div class="w4x2-center">
+              <div class="w4x2-greeting" id="ios-w4x2-greeting">Lavanda diz:</div>
+              <div class="w4x2-phrase" id="ios-w4x2-phrase">Respira fundo. Eu to aqui.</div>
+              <div class="w4x2-tap-hint">Toque para abrir</div>
+            </div>
+            <!-- Sep -->
+            <div class="w4x2-sep"></div>
+            <!-- Right: action + streak -->
+            <div class="w4x2-right">
+              <div class="w4x2-action" onclick="this.style.transform='scale(0.90)';setTimeout(()=>this.style.transform='',180)">
+                <div class="w4x2-action-icon ios-screen"><i data-icon="heart"></i></div>
+              </div>
+              <div class="w4x2-streak">
+                <span class="streak-flame ios-screen"><i data-icon="fire"></i></span>
+                <div class="w4x2-streak-num">5</div>
+                <div class="w4x2-streak-label">dias</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /widget-area -->
+
+      <!-- Dock -->
+      <div class="hs-dock" style="bottom:20px;left:20px;right:20px;border-radius:28px;">
+        <div class="dock-icon"><i data-icon="phone"></i></div>
+        <div class="dock-icon"><i data-icon="globe"></i></div>
+        <div class="dock-icon"><i data-icon="grow"></i></div>
+        <div class="dock-icon"><i data-icon="envelope"></i>&#65039;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /stage -->
+
+<div class="context-note">
+  W1 (2x2): abre o app ao tocar. W2 (4x2): toque no corpo abre o app; toque no icone de coracao abre o mood check-in.
+</div>
+
+</div><!-- /studio -->
+
+<script>
+var plants = {
+  s1:{name:'Ana',  plant:'Lavanda',   color:'#C4B0E0',rgb:'196,176,224',
+      phrase:'Respira fundo. Eu to aqui.'},
+  s2:{name:'Bia',  plant:'Girassol',  color:'#F2CE6B',rgb:'242,206,107',
+      phrase:'Brilha, que o sol e seu!'},
+  s3:{name:'Carol',plant:'Cacto',     color:'#8CC5A0',rgb:'140,197,160',
+      phrase:'Fica firme. Voce consegue.'},
+  s4:{name:'Dani', plant:'Cerejeira', color:'#F2B5C4',rgb:'242,181,196',
+      phrase:'Cada momento e uma petala.'},
+  s5:{name:'Eva',  plant:'Lotus',     color:'#D4B8D4',rgb:'212,184,212',
+      phrase:'Paz interior, paz exterior.'}
+};
+
+/* ── Plant SVGs (from e1) ── */
+var FACE_HAPPY = ''
+  +'<ellipse cx="36" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+  +'<ellipse cx="44" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+  +'<circle cx="37" cy="37" r="1" fill="white" opacity="0.95"/>'
+  +'<circle cx="45" cy="37" r="1" fill="white" opacity="0.95"/>'
+  +'<path d="M37 43C38.5 45.5 41.5 45.5 43 43" stroke="#4A3728" stroke-width="1.5" stroke-linecap="round" fill="none"><animate attributeName="d" values="M37 43C38.5 45.5 41.5 45.5 43 43;M37.5 43.5C38.5 45 41.5 45 42.5 43.5;M37 43C38.5 45.5 41.5 45.5 43 43" dur="4s" begin="3s" repeatCount="indefinite"/></path>'
+  +'<circle cx="32.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="47.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>';
+
+var SPARKLES = ''
+  +'<circle cx="18" cy="18" r="1.5" fill="white"><animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/><animate attributeName="r" values="1.5;2;1.5" dur="2.5s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="62" cy="15" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.7;0" dur="3s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.8;1.2" dur="3s" begin="0.8s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="14" cy="35" r="1" fill="white"><animate attributeName="opacity" values="0;0.6;0" dur="3.5s" begin="1.6s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="65" cy="40" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.65;0" dur="2.8s" begin="0.4s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="22" cy="8" r="0.8" fill="white"><animate attributeName="opacity" values="0;0.5;0" dur="4s" begin="2.2s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="58" cy="42" r="0.9" fill="white"><animate attributeName="opacity" values="0;0.45;0" dur="3.2s" begin="1.2s" repeatCount="indefinite"/></circle>';
+
+var POT = '<path d="M28 70C28 70 26 73 27.5 75C29 76.5 51 76.5 52.5 75C54 73 52 70 52 70" fill="#E8C4A0"/>'
+  +'<path d="M26 70H54" stroke="#D4A574" stroke-width="2.2" stroke-linecap="round"/>'
+  +'<ellipse cx="40" cy="70" rx="13" ry="2" fill="#C49468" opacity="0.25"/>';
+
+var plantSVGs = {
+  Lavanda: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68V32" stroke="#6BA068" stroke-width="3" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.5,40,68;0,40,68;-0.5,40,68;0,40,68" dur="6s" repeatCount="indefinite"/></path>'
+    +'<ellipse cx="40" cy="69" rx="10" ry="1.5" fill="#6BAF68" opacity="0.15"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-2,40,55;4,40,55;-2,40,55" dur="3.5s" repeatCount="indefinite"/>'
+    +'<path d="M40 54C35 52 30 50 26 42" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M33 48C28 47 23 48 20 51C24 51.5 29 50 33 48Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M29 43C24 42 19 43 17 46C21 46.5 25 45 29 43Z" fill="#8CC5A0" opacity="0.7"/>'
+    +'<path d="M31 52C26 52 21 53 19 56C23 56 28 54 31 52Z" fill="#7DB87A" opacity="0.6"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="2,40,55;-4,40,55;2,40,55" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M40 50C45 48 50 46 54 39" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M47 44C52 43 57 44 59 47C55 47.5 51 46 47 44Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M51 40C56 39 61 40 63 43C59 43.5 55 42 51 40Z" fill="#8CC5A0" opacity="0.7"/>'
+    +'<path d="M49 53C54 52 59 53 61 56C57 56 52 55 49 53Z" fill="#7DB87A" opacity="0.6"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-1.5,40,30;1.5,40,30;-1.5,40,30" dur="3s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="28" rx="5" ry="6.5" fill="__CLR__"><animate attributeName="ry" values="6.5;7;6.5" dur="3s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="40" cy="21" rx="4.5" ry="5.5" fill="__CLR__" opacity="0.95"/>'
+    +'<ellipse cx="40" cy="14.5" rx="3.8" ry="4.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="40" cy="9" rx="3" ry="3.5" fill="__CLR__" opacity="0.82"/>'
+    +'<ellipse cx="40" cy="5" rx="2.2" ry="2.5" fill="__CLR__" opacity="0.7"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,34;-6,28,34;0,28,34" dur="3.8s" repeatCount="indefinite"/>'
+    +'<ellipse cx="28" cy="32" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="28" cy="26" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="28" cy="20.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/>'
+    +'<ellipse cx="28" cy="15.5" rx="2.3" ry="2.8" fill="__CLR__" opacity="0.65"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,33;6,52,33;0,52,33" dur="3.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="52" cy="31" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="52" cy="25" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="52" cy="19.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/>'
+    +'<ellipse cx="52" cy="14.5" rx="2.3" ry="2.8" fill="__CLR__" opacity="0.65"/></g>'
+    +FACE_HAPPY+SPARKLES+'</svg>',
+
+  Girassol: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68C40 64 39.5 56 40 50C40.5 44 40 40 40 38" stroke="#5A9E54" stroke-width="3.5" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.6,40,68;0,40,68;-0.6,40,68;0,40,68" dur="5s" repeatCount="indefinite"/></path>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-1,40,56;5,40,56;-1,40,56" dur="3.5s" repeatCount="indefinite"/>'
+    +'<path d="M40 56C35 55 28 54.5 23 57C26 59 32 58 40 56Z" fill="#7DB87A" opacity="0.9"/>'
+    +'<path d="M38 60C33 60 26 60 22 62C25 64 32 63 38 60Z" fill="#8CC5A0" opacity="0.65"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="1,40,62;-5,40,62;1,40,62" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M40 62C45 61 52 60.5 57 63C54 65 48 64 40 62Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M42 57C47 56 54 56 58 58C55 60 48 59 42 57Z" fill="#8CC5A0" opacity="0.6"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-3,40,24;3,40,24;-3,40,24" dur="4s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="12" rx="5.5" ry="10" fill="__CLR__"><animate attributeName="ry" values="10;11.5;10" dur="2.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="18" cy="24" rx="12" ry="5.5" fill="__CLR__"><animate attributeName="rx" values="12;14;12" dur="2.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="62" cy="24" rx="12" ry="5.5" fill="__CLR__"><animate attributeName="rx" values="12;14;12" dur="3s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="24" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(-45 24 14)"><animate attributeName="ry" values="11;12.5;11" dur="2.6s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="56" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(45 56 14)"><animate attributeName="ry" values="11;12.5;11" dur="2.9s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="40" cy="38" rx="5.5" ry="10" fill="__CLR__" opacity="0.85"><animate attributeName="ry" values="10;11.5;10" dur="2.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="24" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(45 24 38)"/>'
+    +'<ellipse cx="56" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(-45 56 38)"/>'
+    +'<ellipse cx="28" cy="8" rx="5" ry="9" fill="__CLR__" opacity="0.88" transform="rotate(-25 28 8)"/>'
+    +'<ellipse cx="52" cy="8" rx="5" ry="9" fill="__CLR__" opacity="0.88" transform="rotate(25 52 8)"/>'
+    +'<ellipse cx="20" cy="36" rx="4.5" ry="9" fill="__CLR__" opacity="0.75" transform="rotate(65 20 36)"/>'
+    +'<ellipse cx="60" cy="36" rx="4.5" ry="9" fill="__CLR__" opacity="0.75" transform="rotate(-65 60 36)"/>'
+    +'<circle cx="40" cy="24" r="12.5" fill="#D4960A"/>'
+    +'<circle cx="40" cy="24" r="10" fill="#C48A08"/>'
+    +'<ellipse cx="36" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="44" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="36.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
+    +'<circle cx="44.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
+    +'<path d="M37 27.5C38.5 29.5 41.5 29.5 43 27.5" stroke="#5A3800" stroke-width="1.4" stroke-linecap="round" fill="none"><animate attributeName="d" values="M37 27.5C38.5 29.5 41.5 29.5 43 27.5;M37.5 28C38.5 29 41.5 29 42.5 28;M37 27.5C38.5 29.5 41.5 29.5 43 27.5" dur="4s" begin="3s" repeatCount="indefinite"/></path>'
+    +'<circle cx="33" cy="26" r="2.8" fill="#F4A7B9" opacity="0.22"><animate attributeName="opacity" values="0.22;0.38;0.22" dur="3s" repeatCount="indefinite"/></circle>'
+    +'<circle cx="47" cy="26" r="2.8" fill="#F4A7B9" opacity="0.22"><animate attributeName="opacity" values="0.22;0.38;0.22" dur="3s" repeatCount="indefinite"/></circle>'
+    +'</g>'+SPARKLES+'</svg>',
+
+  Cacto: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,68;-0.8,40,68;0,40,68;0.8,40,68;0,40,68" dur="5s" repeatCount="indefinite"/>'
+    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" fill="__CLR__" opacity="0.55"/>'
+    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" stroke="__CLR__" stroke-width="2.5" fill="none"/>'
+    +'<path d="M34 16C35 12 37 9 40 8" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.2" fill="none"/>'
+    +'<line x1="33" y1="25" x2="33" y2="55" stroke="white" stroke-width="0.8" opacity="0.1"/>'
+    +'<line x1="47" y1="23" x2="47" y2="57" stroke="white" stroke-width="0.8" opacity="0.1"/>'
+    +'<line x1="30" y1="24" x2="26" y2="23" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +'<line x1="50" y1="26" x2="54" y2="25" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +'<line x1="30" y1="38" x2="26" y2="37" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +'<line x1="50" y1="40" x2="54" y2="39" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +FACE_HAPPY+'</g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,42;-5,28,42;0,28,42" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" fill="__CLR__" opacity="0.5"/>'
+    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,36;5,52,36;0,52,36" dur="3.8s" repeatCount="indefinite"/>'
+    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" fill="__CLR__" opacity="0.5"/>'
+    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
+    +'<g><animateTransform attributeName="transform" type="translate" values="0,0;0,-1.5;0,0" dur="2.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="6" rx="7.5" ry="6.5" fill="#F4A7B9"><animate attributeName="ry" values="6.5;7.2;6.5" dur="2s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="40" cy="6.5" r="3.8" fill="#E8889E" opacity="0.9"/>'
+    +'<circle cx="40" cy="6.5" r="2" fill="#C96078" opacity="0.7"/>'
+    +'<circle cx="38" cy="5" r="0.8" fill="white" opacity="0.5"/></g>'
+    +SPARKLES+'</svg>',
+
+  Cerejeira: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68C40 64 38 58 36 54C34 50 35 46 38 44C41 42 42 38 41 35" stroke="#7A5840" stroke-width="5" stroke-linecap="round"/>'
+    +'<path d="M36 54C31 52 26 50 22 49C18 48.5 14 49 13 50" stroke="#7A5840" stroke-width="3" stroke-linecap="round"/>'
+    +'<path d="M38 46C42 44 47 42 52 40C55 38.5 58 38 60 39" stroke="#7A5840" stroke-width="2.8" stroke-linecap="round"/>'
+    +'<path d="M41 35C43 30 47 25 49 22C51 19 52 16 51 14" stroke="#7A5840" stroke-width="2.5" stroke-linecap="round"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,16,46;-5,16,46;1,16,46;0,16,46" dur="4s" repeatCount="indefinite"/>'
+    +'<ellipse cx="15" cy="46" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.88"/>'
+    +'<ellipse cx="21" cy="44" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="11" cy="43" rx="6" ry="5" fill="__CLR__" opacity="0.78"/>'
+    +'<circle cx="16" cy="45.5" r="2.8" fill="#C95578" opacity="0.65"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,60,36;5,60,36;-1,60,36;0,60,36" dur="3.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="60" cy="36" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="65" cy="34" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.87"/>'
+    +'<ellipse cx="57" cy="33.5" rx="6" ry="5" fill="__CLR__" opacity="0.82"/>'
+    +'<circle cx="61" cy="36" r="2.8" fill="#C95578" opacity="0.68"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,51,14;3,51,14;-1,51,14;0,51,14" dur="3.2s" repeatCount="indefinite"/>'
+    +'<ellipse cx="51" cy="13" rx="7" ry="6" fill="__CLR__" opacity="0.92"/>'
+    +'<ellipse cx="47" cy="11" rx="6" ry="5.5" fill="__CLR__" opacity="0.88"/>'
+    +'<ellipse cx="55" cy="10" rx="5.5" ry="4.8" fill="__CLR__" opacity="0.84"/>'
+    +'<circle cx="50" cy="13" r="2.8" fill="#C95578" opacity="0.7"/></g>'
+    +'<ellipse cx="26" cy="25" rx="2.2" ry="1.4" fill="__CLR__" opacity="0"><animate attributeName="cy" values="25;68" dur="5s" repeatCount="indefinite"/><animate attributeName="cx" values="26;32" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.65;0.55;0" dur="5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="55" cy="20" rx="2" ry="1.2" fill="__CLR__" opacity="0"><animate attributeName="cy" values="20;65" dur="6s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="cx" values="55;48" dur="6s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0.5;0" dur="6s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="39" cy="52" rx="6.5" ry="5" fill="#F2E8E0" opacity="0.35"/>'
+    +'<ellipse cx="37" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="42" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="37.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
+    +'<circle cx="42.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
+    +'<path d="M37.5 54C38.5 55.5 41 55.5 42 54" stroke="#5A4030" stroke-width="1.3" stroke-linecap="round" fill="none"/>'
+    +'<circle cx="34.5" cy="52.5" r="2.5" fill="#F4A7B9" opacity="0.2"/>'
+    +'<circle cx="44.5" cy="52.5" r="2.5" fill="#F4A7B9" opacity="0.2"/>'
+    +SPARKLES+'</svg>',
+
+  Lotus: '<svg viewBox="4 4 72 72" fill="none">'
+    +POT
+    +'<ellipse cx="40" cy="69" rx="14" ry="3.5" fill="#D4EEF8" opacity="0.45"><animate attributeName="rx" values="14;18;14" dur="3.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="28" cy="68" rx="6.5" ry="2.5" fill="#7EC47A" opacity="0.55"><animateTransform attributeName="transform" type="rotate" values="-2,28,68;4,28,68;-2,28,68" dur="4.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="52" cy="67.5" rx="6" ry="2.2" fill="#7EC47A" opacity="0.45"><animateTransform attributeName="transform" type="rotate" values="2,52,67.5;-4,52,67.5;2,52,67.5" dur="5s" repeatCount="indefinite"/></ellipse>'
+    +'<path d="M40 66Q39 58 40 52" stroke="#6EAA68" stroke-width="2.2" stroke-linecap="round" opacity="0.55" fill="none"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;-5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q26 54 16 47Q14 45 18 44Q28 45 40 49Z" fill="__CLR__" opacity="0.35"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q54 54 64 47Q66 45 62 44Q52 45 40 49Z" fill="__CLR__" opacity="0.35"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;-4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q28 44 22 35Q21 32 25 33Q32 36 40 44Z" fill="#E8CCE8" opacity="0.55"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q52 44 58 35Q59 32 55 33Q48 36 40 44Z" fill="#E8CCE8" opacity="0.55"/></g>'
+    +'<path d="M40 42Q32 36 30 26Q29.5 20 34 23Q37 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
+    +'<path d="M40 42Q48 36 50 26Q50.5 20 46 23Q43 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
+    +'<path d="M40 36Q38 28 38.2 18Q38.5 12 40 10Q41.5 12 41.8 18Q42 28 40 36Z" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="40" cy="46" rx="6" ry="4" fill="#FFE082" opacity="0.95"><animate attributeName="rx" values="6;7;6" dur="2.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="40" cy="46" rx="4" ry="2.8" fill="#FFC837" opacity="0.85"/>'
+    +'<ellipse cx="38" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="42" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="38.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
+    +'<circle cx="42.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
+    +'<path d="M39 47.5C39.5 48.8 40.5 48.8 41 47.5" stroke="#8B6F00" stroke-width="1" stroke-linecap="round" fill="none"/>'
+    +'<circle cx="37" cy="46.5" r="1.5" fill="#F4A7B9" opacity="0.15"/>'
+    +'<circle cx="43" cy="46.5" r="1.5" fill="#F4A7B9" opacity="0.15"/>'
+    +'</svg>'
+};
+
+var currentPlant = plants.s1;
+var currentWidget = '2x2';
+
+function renderSVG(plant){
+  var raw = plantSVGs[plant.plant];
+  if(!raw) return '';
+  return raw.replace(/__CLR__/g, plant.color);
+}
+
+function applyState(){
+  var s = currentPlant;
+  var r = document.documentElement;
+  r.style.setProperty('--plant-color', s.color);
+  r.style.setProperty('--plant-color-rgb', s.rgb);
+
+  var svg = renderSVG(s);
+
+  // W1 2x2
+  ['a','ios'].forEach(function(p){
+    var pe = document.getElementById(p+'-w2x2-plant');
+    if(pe) pe.innerHTML = svg;
+    var gr = document.getElementById(p+'-w2x2-greeting');
+    if(gr) gr.textContent = 'Oi, '+s.name;
+    var nm = document.getElementById(p+'-w2x2-name');
+    if(nm) nm.textContent = s.plant;
+  });
+
+  // W2 4x2
+  ['a','ios'].forEach(function(p){
+    var pe = document.getElementById(p+'-w4x2-plant');
+    if(pe) pe.innerHTML = svg;
+    var nm = document.getElementById(p+'-w4x2-name');
+    if(nm) nm.textContent = s.plant;
+    var gr = document.getElementById(p+'-w4x2-greeting');
+    if(gr) gr.textContent = s.plant+' diz:';
+    var ph = document.getElementById(p+'-w4x2-phrase');
+    if(ph) ph.textContent = s.phrase;
+  });
+}
+
+function setPlant(key, btn){
+  currentPlant = plants[key];
+  // Update plant button active state (only plant buttons — after divider)
+  document.querySelectorAll('[id^="pbtn-"]').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyState();
+}
+
+function setWidget(type, btn){
+  currentWidget = type;
+  // Only toggle widget buttons (first two)
+  var allBtns = document.querySelectorAll('.state-btn');
+  allBtns[0].classList.remove('active');
+  allBtns[1].classList.remove('active');
+  if(btn) btn.classList.add('active');
+
+  ['a','ios'].forEach(function(p){
+    var w2 = document.getElementById(p+'-w2x2-wrap');
+    var w4 = document.getElementById(p+'-w4x2-wrap');
+    if(type === '2x2'){
+      w2.classList.add('active'); w4.classList.remove('active');
+    } else {
+      w4.classList.add('active'); w2.classList.remove('active');
+    }
+  });
+}
+
+// Init
+applyState();
+</script>
+<script src="../shared/icons.js"></script>
+</body>
+</html>

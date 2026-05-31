@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 14B: Ciclo Opt-in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand-real: #F4A7B9;
+  --brand-real-deep: #E8889E;
+  --brand-ai: #A8D5A2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #EDF0EB; color: #1A1714;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #090E09; color: #E4EAE4; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* STUDIO */
+.studio-header { position: relative; z-index: 10; padding: 32px 48px 16px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.brand-block { max-width: 640px; }
+.brand-eyebrow { font-variation-settings: 'wdth' 105, 'wght' 600, 'opsz' 11; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.5; margin-bottom: 10px; }
+.brand-title { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-variation-settings: 'wdth' 100, 'wght' 200; font-size: 0.65em; vertical-align: 0.1em; opacity: 0.5; }
+.brand-sub { font-size: 14px; line-height: 1.6; opacity: 0.65; max-width: 600px; }
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7; transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn { background: transparent; border: 1px solid currentColor; color: inherit; font: inherit; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer; opacity: 0.5; transition: all 0.25s ease; }
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: currentColor; opacity: 1; }
+.state-btn.active span { mix-blend-mode: difference; color: white; }
+
+/* STAGE */
+.stage { position: relative; z-index: 1; padding: 24px 24px 80px; display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.5; max-width: 280px; line-height: 1.4; }
+.phone { width: 380px; height: 800px; border-radius: 56px; background: #1A1A1A; padding: 14px; flex-shrink: 0; box-shadow: 0 60px 100px -20px rgba(0,0,0,0.32), 0 30px 60px -30px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A; }
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+.status-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none; color: #9B8A8C; }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200; }
+.screen { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+
+/* KEYFRAMES */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes speakerPop {
+  from { opacity: 0; transform: scale(0.88); }
+  60%  { transform: scale(1.08); opacity: 1; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes ctaIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes phaseReveal {
+  from { opacity: 0; max-height: 0; margin-bottom: 0; transform: translateY(-6px); }
+  to   { opacity: 1; max-height: 300px; margin-bottom: 8px; transform: translateY(0); }
+}
+@keyframes phaseHide {
+  from { opacity: 1; max-height: 300px; margin-bottom: 8px; }
+  to   { opacity: 0; max-height: 0; margin-bottom: 0; }
+}
+@keyframes aBlob1 { 0%,100% { border-radius: 56% 44% 50% 50%; transform: rotate(0deg) scale(1); } 33% { border-radius: 44% 56% 62% 38%; transform: rotate(-6deg) scale(1.07); } 66% { border-radius: 62% 38% 44% 56%; transform: rotate(3deg) scale(0.96); } }
+@keyframes aBlob2 { 0%,100% { border-radius: 44% 56% 40% 60%; transform: rotate(0deg) scale(1); } 50% { border-radius: 62% 38% 52% 48%; transform: rotate(8deg) scale(1.09); } }
+@keyframes aBlob3 { 0%,100% { border-radius: 50% 50% 45% 55%; transform: translate(-50%,-50%) scale(1) rotate(0deg); } 50% { border-radius: 42% 58% 60% 40%; transform: translate(-50%,-50%) scale(1.10) rotate(12deg); } }
+@keyframes orbPulse { 0%,100% { opacity: 0.14; transform: scale(1); } 50% { opacity: 0.09; transform: scale(1.12); } }
+
+/* ─── ANDROID ─── */
+.android-screen {
+  background: #FFF8F2; color: #3D2C2E;
+  --plant-color: #9B8FD4;
+  --plant-glow: rgba(155,143,212,0.38);
+}
+.a-blob-1 { position: absolute; z-index: 0; pointer-events: none; width: 560px; height: 560px; background: var(--plant-color); opacity: 0.26; filter: blur(120px); border-radius: 56% 44% 50% 50%; top: -220px; left: -200px; animation: aBlob1 22s ease-in-out infinite; transition: background 0.7s ease; }
+.a-blob-2 { position: absolute; z-index: 0; pointer-events: none; width: 420px; height: 420px; background: var(--plant-color); opacity: 0.04; filter: blur(100px); border-radius: 44% 56% 40% 60%; bottom: -150px; right: -120px; animation: aBlob2 28s ease-in-out infinite; transition: background 0.7s ease; }
+.a-blob-3 { position: absolute; z-index: 0; pointer-events: none; width: 300px; height: 300px; background: var(--brand-real); opacity: 0.05; filter: blur(80px); border-radius: 50%; top: 50%; left: 50%; animation: aBlob3 18s ease-in-out infinite; }
+
+.a-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: flex-start; text-align: left;
+  padding: 68px 22px 90px;
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.a-body::-webkit-scrollbar { display: none; }
+
+.a-speaker {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-bottom: 14px;
+  opacity: 0; animation: speakerPop 0.50s cubic-bezier(0.34, 1.56, 0.64, 1) 0.20s forwards;
+}
+.a-speaker-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--plant-color); flex-shrink: 0; transition: background 0.7s ease; }
+.a-speaker-name { font-family: 'Nunito', sans-serif; font-variation-settings: 'wdth' 108, 'wght' 580, 'opsz' 13; font-size: 13px; color: var(--plant-color); transition: color 0.7s ease; }
+
+.a-conn-plant {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 420, 'opsz' 13;
+  font-size: 13px; color: var(--plant-color); opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.72s forwards;
+  margin-bottom: 10px; line-height: 1.4; transition: color 0.7s ease;
+}
+
+.a-h1 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 106, 'wght' 680, 'opsz' 26;
+  font-size: 28px; line-height: 1.18; letter-spacing: -0.02em;
+  color: #3D2C2E; margin-bottom: 6px;
+}
+.a-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.80s forwards; }
+.a-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 1.00s forwards; }
+
+.a-explain {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 400, 'opsz' 15;
+  font-size: 15px; color: #9B8A8C; line-height: 1.55; margin-bottom: 22px;
+  opacity: 0; animation: fadeUp 0.55s ease-out 1.20s forwards;
+}
+.a-explain strong { font-variation-settings: 'wdth' 100, 'wght' 560, 'opsz' 15; color: #3D2C2E; }
+
+/* Toggle row */
+.a-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px; border-radius: 16px;
+  background: rgba(255,255,255,0.90);
+  margin-bottom: 18px;
+  opacity: 0; animation: fadeUp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.50s forwards;
+}
+.a-toggle-label {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 104, 'wght' 500, 'opsz' 15;
+  font-size: 15px; color: #3D2C2E; flex: 1; padding-right: 12px;
+}
+.a-toggle {
+  position: relative; width: 52px; height: 30px; border-radius: 999px;
+  background: #D8CDD0; border: none; cursor: pointer; flex-shrink: 0;
+  transition: background 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.a-toggle::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 24px; height: 24px; border-radius: 50%; background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.a-toggle.on { background: var(--plant-color); }
+.a-toggle.on::after { transform: translateX(22px); }
+
+/* Phase section — hidden by default, revealed on toggle ON */
+.a-phase-section {
+  overflow: hidden; max-height: 0; opacity: 0;
+  transition: max-height 400ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 300ms ease;
+}
+.a-phase-section.visible { max-height: 400px; opacity: 1; }
+
+.a-phase-q {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 400, 'opsz' 13;
+  font-size: 13px; color: #C4B5B7; margin-bottom: 10px; margin-top: 2px;
+}
+
+.a-phases { display: flex; flex-direction: column; gap: 9px; margin-bottom: 8px; }
+
+.a-phase {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-radius: 16px;
+  background: rgba(255,255,255,0.90);
+  border-left: 5px solid transparent;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 102, 'wght' 440, 'opsz' 16;
+  font-size: 16px; color: #3D2C2E; line-height: 1.3;
+  transition: background 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 260ms ease;
+}
+.a-phase:hover { transform: scale(1.012); background: #FFFFFF; }
+.a-phase:active { transform: scale(0.97); }
+.a-phase.selected { font-variation-settings: 'wdth' 108, 'wght' 580, 'opsz' 16; }
+
+/* "Nao sei" inline response */
+.a-nasei-resp {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 420, 'opsz' 13;
+  font-size: 13px; color: var(--plant-color); line-height: 1.4;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 350ms ease, opacity 280ms ease;
+  margin-top: 6px;
+}
+.a-nasei-resp.visible { max-height: 40px; opacity: 1; }
+
+/* Opt-out plant response (toggle OFF) */
+.a-optout-msg {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 420, 'opsz' 15;
+  font-size: 14px; color: var(--plant-color); line-height: 1.5;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 400ms ease, opacity 300ms ease;
+}
+.a-optout-msg.visible { max-height: 60px; opacity: 1; margin-top: 4px; }
+
+.a-cta {
+  position: absolute; bottom: 32px; left: 22px; right: 22px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  background: var(--plant-color);
+  box-shadow: 0 6px 32px var(--plant-glow);
+  color: #FFFFFF;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 600, 'opsz' 16;
+  font-size: 16px; cursor: pointer; text-align: center;
+  transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1), background 0.7s ease, box-shadow 0.7s ease;
+  opacity: 0; transform: translateY(10px) scale(0.97); pointer-events: none;
+}
+.a-cta.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; animation: ctaIn 0.44s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.a-cta:hover { transform: scale(1.02) translateY(0); filter: brightness(1.08); }
+.a-cta:active { transform: scale(0.97); }
+
+/* ─── iOS ─── */
+.ios-screen {
+  background: #FFF8F2; color: #3D2C2E;
+  --plant-color: #9B8FD4;
+  --plant-glow: rgba(155,143,212,0.38);
+}
+.ios-orb { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; transition: background 0.7s ease; }
+.ios-orb.a { background: var(--plant-color); width: 480px; height: 480px; top: -170px; right: -140px; opacity: 0.32; filter: blur(88px); animation: orbPulse 9s ease-in-out infinite; }
+.ios-orb.b { background: var(--plant-color); width: 330px; height: 330px; bottom: -110px; left: -90px; opacity: 0.18; filter: blur(74px); animation: orbPulse 12s ease-in-out 3s infinite; }
+.ios-orb.c { background: var(--brand-real); width: 240px; height: 240px; top: 44%; left: 50%; transform: translate(-50%,-50%); opacity: 0.05; filter: blur(60px); animation: orbPulse 15s ease-in-out 5s infinite; }
+
+.ios-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: flex-start; text-align: left;
+  padding: 60px 22px 90px;
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.ios-body::-webkit-scrollbar { display: none; }
+
+.ios-speaker {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-bottom: 14px;
+  opacity: 0; animation: speakerPop 0.46s cubic-bezier(0.32, 0.72, 0, 1) 0.20s forwards;
+}
+.ios-speaker-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--plant-color); flex-shrink: 0; transition: background 0.7s ease; }
+.ios-speaker-name { font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: -0.08px; color: var(--plant-color); transition: color 0.7s ease; }
+
+.ios-conn-plant {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.08px;
+  color: var(--plant-color); opacity: 0;
+  animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 0.72s forwards;
+  margin-bottom: 10px; line-height: 1.4; transition: color 0.7s ease;
+}
+
+.ios-h1 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 28px; font-weight: 700; line-height: 1.18; letter-spacing: -0.6px;
+  color: #3D2C2E; margin-bottom: 6px;
+}
+.ios-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 0.80s forwards; }
+.ios-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 1.00s forwards; }
+
+.ios-explain {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 15px; font-weight: 400; letter-spacing: -0.2px;
+  color: #9B8A8C; line-height: 1.55; margin-bottom: 22px;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.20s forwards;
+}
+.ios-explain strong { font-weight: 600; color: #3D2C2E; }
+
+/* iOS toggle row */
+.ios-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 18px; border-radius: 14px;
+  background: rgba(61,44,46,0.04);
+  border: 1px solid rgba(61,44,46,0.08);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  margin-bottom: 18px;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.50s forwards;
+}
+.ios-toggle-label {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 15px; font-weight: 400; letter-spacing: -0.2px; color: #3D2C2E;
+  flex: 1; padding-right: 12px;
+}
+.ios-toggle {
+  position: relative; width: 51px; height: 31px; border-radius: 999px;
+  background: #D8CDD0; border: none; cursor: pointer; flex-shrink: 0;
+  transition: background 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ios-toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 27px; height: 27px; border-radius: 50%; background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ios-toggle.on { background: var(--plant-color); }
+.ios-toggle.on::after { transform: translateX(20px); }
+
+/* iOS phase section */
+.ios-phase-section {
+  overflow: hidden; max-height: 0; opacity: 0;
+  transition: max-height 400ms cubic-bezier(0.32, 0.72, 0, 1), opacity 300ms ease;
+}
+.ios-phase-section.visible { max-height: 400px; opacity: 1; }
+
+.ios-phase-q {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.08px;
+  color: #C4B5B7; margin-bottom: 10px; margin-top: 2px;
+}
+
+.ios-phases { display: flex; flex-direction: column; gap: 9px; margin-bottom: 8px; }
+
+.ios-phase {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-radius: 14px;
+  background: rgba(61,44,46,0.04);
+  border: 1px solid rgba(61,44,46,0.08);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  cursor: pointer; position: relative;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 16px; font-weight: 400; letter-spacing: -0.25px;
+  color: #3D2C2E; line-height: 1.3;
+  transition: background 240ms cubic-bezier(0.32, 0.72, 0, 1),
+              border-color 220ms ease,
+              transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ios-phase:hover { transform: scale(1.01); background: #FFFFFF; }
+.ios-phase:active { transform: scale(0.98); }
+.ios-phase.selected { font-weight: 500; }
+
+.ios-nasei-resp {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.08px;
+  color: var(--plant-color); line-height: 1.4;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 350ms ease, opacity 280ms ease;
+  margin-top: 6px;
+}
+.ios-nasei-resp.visible { max-height: 40px; opacity: 1; }
+
+.ios-optout-msg {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 14px; font-weight: 400; letter-spacing: -0.2px;
+  color: var(--plant-color); line-height: 1.5;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 400ms ease, opacity 300ms ease;
+}
+.ios-optout-msg.visible { max-height: 60px; opacity: 1; margin-top: 4px; }
+
+.ios-cta {
+  position: absolute; bottom: 32px; left: 22px; right: 22px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: rgba(155,143,212,0.82);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10), 0 4px 28px var(--plant-glow);
+  color: #FFFFFF;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.25px;
+  cursor: pointer; text-align: center;
+  transition: all 300ms cubic-bezier(0.32, 0.72, 0, 1), background 0.7s ease;
+  opacity: 0; transform: translateY(10px) scale(0.97); pointer-events: none;
+}
+.ios-cta.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; animation: ctaIn 0.40s cubic-bezier(0.32, 0.72, 0, 1) both; }
+.ios-cta:hover { transform: scale(1.01) translateY(0); filter: brightness(1.06); }
+.ios-cta:active { transform: scale(0.97); }
+
+/* ANNOTATIONS */
+.annotations { max-width: 1280px; margin: 0 auto; padding: 0 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.note { padding: 22px; border-radius: 18px; background: rgba(0,0,0,0.04); }
+body.dark .note { background: rgba(255,255,255,0.88); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; opacity: 0.78; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+.note.android li::before { background: #34A853; opacity: 0.75; }
+.note.ios li::before { background: var(--brand-ai); opacity: 0.75; }
+.note li code { font-family: monospace; font-size: 11px; background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 4px; }
+body.dark .note li code { background: rgba(255,255,255,0.1); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota · Onboarding · Screen 14B de 19 · O14B-Ciclo Opt-in · V2.4</div>
+    <h1 class="brand-title">Posso ficar mais perto nesses dias? <em>toggle explicito · fases inline · opt-out gentil · re-offer pos-paywall</em></h1>
+    <p class="brand-sub">
+      Agora sim vem o convite. Toggle explicito: "Adaptar [Planta] ao meu ciclo" — on/off.
+      Se ON, fases revelam inline com spring. Se OFF, planta responde com acolhimento e flag para re-offer pos-paywall.
+      Dado coletado: cycle_opted_in (bool) + fase_atual (se ON).
+    </p>
+  </div>
+  <div class="controls-col">
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark')" aria-label="Toggle tema"><span class="dot"></span> Tema</button>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" data-s="s1" onclick="setArch('s1')" role="tab"><span>Lavanda</span></button>
+      <button class="state-btn" data-s="s2" onclick="setArch('s2')" role="tab"><span>Girassol</span></button>
+      <button class="state-btn" data-s="s3" onclick="setArch('s3')" role="tab"><span>Cacto</span></button>
+    </div>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" data-v="on-selected" onclick="setView('on-selected')" role="tab"><span>ON + fase</span></button>
+      <button class="state-btn" data-v="on-nasei" onclick="setView('on-nasei')" role="tab"><span>ON + nao sei</span></button>
+      <button class="state-btn" data-v="off" onclick="setView('off')" role="tab"><span>OFF</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="stage">
+
+  <!-- ANDROID -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android · M3 Expressive</span>
+      <span class="desc">Toggle M3E. Fases revelam com spring quando ON. Mensagem calorosa quando OFF.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.5C5.5 4.5 18.5 4.5 22.5 8.5L20.5 10.5C17.5 7.5 6.5 7.5 3.5 10.5L1.5 8.5ZM5.5 12.5C8.5 9.5 15.5 9.5 18.5 12.5L16.5 14.5C14.5 12.5 9.5 12.5 7.5 14.5L5.5 12.5ZM9.5 16.5C11 15 13 15 14.5 16.5L12 19L9.5 16.5Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="8" rx="2"/><rect x="20" y="10" width="2" height="4" rx="1"/></svg>
+          </span>
+        </div>
+        <div class="screen android-screen" id="a-screen">
+          <div class="a-blob-1"></div>
+          <div class="a-blob-2"></div>
+          <div class="a-blob-3"></div>
+          <div class="a-body">
+            <div class="a-speaker">
+              <div class="a-speaker-dot"></div>
+              <span class="a-speaker-name" id="a-speaker-name">Lavanda</span>
+            </div>
+            <p class="a-conn-plant" id="a-conn">Porque eu presto atencao.</p>
+            <h1 class="a-h1">
+              <span class="a-h1-l1">Posso ficar mais perto</span>
+              <span class="a-h1-l2">nesses dias?</span>
+            </h1>
+
+            <p class="a-explain">Quando essa semana chegar, eu fico mais gentil. <strong>Menos cobranca, mais presenca.</strong> Sem nenhum dado clinico — so eu adaptando meu jeito de cuidar de voce.</p>
+
+            <div class="a-toggle-row">
+              <span class="a-toggle-label" id="a-toggle-label">Adaptar Lavanda ao meu ciclo</span>
+              <button class="a-toggle on" id="a-toggle" onclick="toggleCycle('a')"></button>
+            </div>
+
+            <div class="a-phase-section visible" id="a-phase-section">
+              <p class="a-phase-q">Mais ou menos quando essa semana costuma vir?</p>
+              <div class="a-phases" id="a-phases">
+                <div class="a-phase" data-val="menstruando" onclick="pickPhase('a',this)">Menstruando agora</div>
+                <div class="a-phase" data-val="acabou" onclick="pickPhase('a',this)">Acabou ha pouco</div>
+                <div class="a-phase" data-val="meio" onclick="pickPhase('a',this)">No meio do ciclo</div>
+                <div class="a-phase" data-val="esperando" onclick="pickPhase('a',this)">Esperando a proxima</div>
+                <div class="a-phase" data-val="nasei" onclick="pickPhase('a',this)">Nao sei bem</div>
+              </div>
+              <p class="a-nasei-resp" id="a-nasei-resp">Tudo bem, eu aprendo com o tempo.</p>
+            </div>
+
+            <p class="a-optout-msg" id="a-optout-msg">Tudo bem. Quando quiser, e so me pedir.</p>
+          </div>
+          <button class="a-cta" id="a-cta">Fica mais perto nesses dias</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26+ · Liquid Glass / HIG</span>
+      <span class="desc">Toggle UISwitch HIG. Cards regularMaterial. Fases revelam com bezier HIG.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="screen ios-screen" id="ios-screen">
+          <div class="ios-orb a"></div>
+          <div class="ios-orb b"></div>
+          <div class="ios-orb c"></div>
+          <div class="ios-body">
+            <div class="ios-speaker">
+              <div class="ios-speaker-dot"></div>
+              <span class="ios-speaker-name" id="ios-speaker-name">Lavanda</span>
+            </div>
+            <p class="ios-conn-plant" id="ios-conn">Porque eu presto atencao.</p>
+            <h1 class="ios-h1">
+              <span class="ios-h1-l1">Posso ficar mais perto</span>
+              <span class="ios-h1-l2">nesses dias?</span>
+            </h1>
+
+            <p class="ios-explain">Quando essa semana chegar, eu fico mais gentil. <strong>Menos cobranca, mais presenca.</strong> Sem nenhum dado clinico — so eu adaptando meu jeito de cuidar de voce.</p>
+
+            <div class="ios-toggle-row">
+              <span class="ios-toggle-label" id="ios-toggle-label">Adaptar Lavanda ao meu ciclo</span>
+              <button class="ios-toggle on" id="ios-toggle" onclick="toggleCycle('ios')"></button>
+            </div>
+
+            <div class="ios-phase-section visible" id="ios-phase-section">
+              <p class="ios-phase-q">Mais ou menos quando essa semana costuma vir?</p>
+              <div class="ios-phases" id="ios-phases">
+                <div class="ios-phase" data-val="menstruando" onclick="pickPhase('ios',this)">Menstruando agora</div>
+                <div class="ios-phase" data-val="acabou" onclick="pickPhase('ios',this)">Acabou ha pouco</div>
+                <div class="ios-phase" data-val="meio" onclick="pickPhase('ios',this)">No meio do ciclo</div>
+                <div class="ios-phase" data-val="esperando" onclick="pickPhase('ios',this)">Esperando a proxima</div>
+                <div class="ios-phase" data-val="nasei" onclick="pickPhase('ios',this)">Nao sei bem</div>
+              </div>
+              <p class="ios-nasei-resp" id="ios-nasei-resp">Tudo bem, eu aprendo com o tempo.</p>
+            </div>
+
+            <p class="ios-optout-msg" id="ios-optout-msg">Tudo bem. Quando quiser, e so me pedir.</p>
+          </div>
+          <button class="ios-cta" id="ios-cta">Fica mais perto nesses dias</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="annotations">
+  <div class="note android">
+    <h4>Android · M3 Expressive</h4>
+    <ul>
+      <li><strong>Toggle explicito.</strong> "Adaptar [Planta] ao meu ciclo" — decisao binaria clara. Diferente da V2.3 onde selecionar fase = ativacao implicita. Agora a usuaria escolhe conscientemente.</li>
+      <li><strong>Toggle ON:</strong> fases revelam inline com spring M3E (<code>max-height</code> transition). Mesmas 5 opcoes em linguagem natural. "Nao sei bem" → resposta calorosa inline.</li>
+      <li><strong>Toggle OFF:</strong> fases escondem. Planta responde: <em>"Tudo bem. Quando quiser, e so me pedir."</em> CTA muda para "Continuar". Flag <code>cycle_opted_out=true</code> salva para re-offer pos-paywall.</li>
+      <li><strong>Separacao insight vs. acao.</strong> O14A criou o "aha moment". O14B e so o convite. A usuaria ja entende POR QUE antes de decidir SE QUER. Conversao do toggle deve ser maior que a do opt-in implicito da V2.3.</li>
+      <li><strong>CTA muda por estado:</strong> ON + fase = "Fica mais perto nesses dias" · ON + nao sei = "Me ensina com o tempo" · OFF = "Continuar"</li>
+      <li>Connector per arch: Lavanda <em>"Porque eu presto atencao."</em> · Girassol <em>"Porque eu te observo."</em> · Cacto <em>"Porque eu noto as coisas."</em></li>
+    </ul>
+  </div>
+  <div class="note ios">
+    <h4>iOS 26+ · Liquid Glass / HIG</h4>
+    <ul>
+      <li><strong>UISwitch HIG:</strong> 51x31px, thumb 27px. <code>.on</code> = cor da planta. Semantica identica a Settings do iOS — a usuaria ja sabe usar.</li>
+      <li>Fases: cards <code>.regularMaterial</code> — <code>backdrop-filter: blur(20px) saturate(150%)</code>. Border na cor da planta quando selected.</li>
+      <li>Opt-out message: SF Pro Text 14pt, cor da planta. Tom identico ao Android — caloroso, sem guilt, sem perda.</li>
+      <li>CTA Liquid Glass: <code>rgba(plant-color, 0.82)</code> + specular. Aparece apos toggle interaction (ON com fase ou OFF).</li>
+      <li><strong>Dado coletado:</strong> <code>cycle_opted_in</code> (bool) + <code>current_phase</code> (enum, se ON). Se OFF, <code>cycle_reoffer_eligible=true</code> para trigger pos-paywall.</li>
+      <li>Refs: <strong>Stardust</strong> (toggle de tracking sem pressao), <strong>Gentler Streak</strong> (zero culpa), <strong>Finch</strong> (companion adapta).</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+var archetypes = {
+  s1: { name: 'Lavanda',  color: '#9B8FD4', glow: 'rgba(155,143,212,0.38)', ctaRgba: 'rgba(155,143,212,0.82)', conn: 'Porque eu presto atencao.' },
+  s2: { name: 'Girassol', color: '#E8A830', glow: 'rgba(232,168,48,0.38)',  ctaRgba: 'rgba(232,168,48,0.82)',  conn: 'Porque eu te observo.' },
+  s3: { name: 'Cacto',    color: '#6BAF7A', glow: 'rgba(107,175,122,0.38)', ctaRgba: 'rgba(107,175,122,0.82)', conn: 'Porque eu noto as coisas.' }
+};
+var currentArch = 's1';
+var cycleState = { a: true, ios: true };
+
+function hexToRgba(hex, alpha) {
+  var r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+function toggleCycle(platform) {
+  var toggle = document.getElementById(platform + '-toggle');
+  var section = document.getElementById(platform + '-phase-section');
+  var msg = document.getElementById(platform + '-optout-msg');
+  var cta = document.getElementById(platform + '-cta');
+  var nasei = document.getElementById(platform + '-nasei-resp');
+
+  cycleState[platform] = !cycleState[platform];
+  toggle.classList.toggle('on', cycleState[platform]);
+
+  if (cycleState[platform]) {
+    section.classList.add('visible');
+    msg.classList.remove('visible');
+    // Check if a phase is already selected
+    var sel = section.querySelector('.' + (platform === 'a' ? 'a' : 'ios') + '-phase.selected');
+    if (sel) {
+      cta.textContent = sel.dataset.val === 'nasei' ? 'Me ensina com o tempo' : 'Fica mais perto nesses dias';
+      cta.classList.add('visible');
+    } else {
+      cta.classList.remove('visible');
+    }
+  } else {
+    section.classList.remove('visible');
+    nasei.classList.remove('visible');
+    msg.classList.add('visible');
+    cta.textContent = 'Continuar';
+    cta.classList.add('visible');
+    clearPhases(platform);
+  }
+}
+
+function pickPhase(platform, el) {
+  var st = archetypes[currentArch];
+  var prefix = platform === 'a' ? '.a-phase' : '.ios-phase';
+  var cta = document.getElementById(platform + '-cta');
+  var nasei = document.getElementById(platform + '-nasei-resp');
+
+  document.querySelectorAll(prefix).forEach(function(p) {
+    p.classList.remove('selected');
+    p.style.removeProperty('background');
+    p.style.removeProperty('border-left-color');
+    p.style.removeProperty('border-color');
+    p.style.removeProperty('box-shadow');
+  });
+
+  el.classList.add('selected');
+  if (platform === 'a') {
+    el.style.background = st.color;
+    el.style.borderLeftColor = st.color;
+    el.style.boxShadow = '0 2px 16px ' + st.glow;
+  } else {
+    el.style.borderColor = st.color;
+    el.style.background = hexToRgba(st.color, 0.10);
+  }
+
+  var ctaText = el.dataset.val === 'nasei' ? 'Me ensina com o tempo' : 'Fica mais perto nesses dias';
+  cta.textContent = ctaText;
+  cta.classList.add('visible');
+  if (el.dataset.val === 'nasei') { nasei.classList.add('visible'); }
+  else { nasei.classList.remove('visible'); }
+}
+
+function clearPhases(platform) {
+  var prefix = platform === 'a' ? '.a-phase' : '.ios-phase';
+  document.querySelectorAll(prefix).forEach(function(p) {
+    p.classList.remove('selected');
+    p.style.removeProperty('background');
+    p.style.removeProperty('border-left-color');
+    p.style.removeProperty('border-color');
+    p.style.removeProperty('box-shadow');
+  });
+  var nasei = document.getElementById(platform + '-nasei-resp');
+  if (nasei) nasei.classList.remove('visible');
+}
+
+function setArch(s) {
+  currentArch = s;
+  document.querySelectorAll('[data-s]').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.s === s);
+  });
+  var st = archetypes[s];
+  ['a', 'ios'].forEach(function(p) {
+    document.getElementById(p + '-screen').style.setProperty('--plant-color', st.color);
+    document.getElementById(p + '-screen').style.setProperty('--plant-glow', st.glow);
+    document.getElementById(p + '-speaker-name').textContent = st.name;
+    document.getElementById(p + '-conn').textContent = st.conn;
+    document.getElementById(p + '-toggle-label').textContent = 'Adaptar ' + st.name + ' ao meu ciclo';
+  });
+  document.getElementById('a-cta').style.background = st.color;
+  document.getElementById('a-cta').style.boxShadow = '0 6px 32px ' + st.glow;
+  document.getElementById('ios-cta').style.background = st.ctaRgba;
+  document.getElementById('ios-cta').style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10), 0 4px 28px ' + st.glow;
+
+  // Reset
+  ['a', 'ios'].forEach(function(p) {
+    cycleState[p] = true;
+    document.getElementById(p + '-toggle').classList.add('on');
+    document.getElementById(p + '-phase-section').classList.add('visible');
+    document.getElementById(p + '-optout-msg').classList.remove('visible');
+    clearPhases(p);
+    document.getElementById(p + '-cta').classList.remove('visible');
+  });
+  // Apply current view
+  var activeView = document.querySelector('[data-v].active');
+  if (activeView) setView(activeView.dataset.v);
+}
+
+function setView(v) {
+  document.querySelectorAll('[data-v]').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.v === v);
+  });
+  ['a', 'ios'].forEach(function(p) {
+    clearPhases(p);
+    var toggle = document.getElementById(p + '-toggle');
+    var section = document.getElementById(p + '-phase-section');
+    var msg = document.getElementById(p + '-optout-msg');
+    var cta = document.getElementById(p + '-cta');
+    var nasei = document.getElementById(p + '-nasei-resp');
+
+    if (v === 'on-selected') {
+      cycleState[p] = true;
+      toggle.classList.add('on');
+      section.classList.add('visible');
+      msg.classList.remove('visible');
+      nasei.classList.remove('visible');
+      var demo = document.querySelector((p === 'a' ? '.a-phase' : '.ios-phase') + '[data-val="acabou"]');
+      if (demo) pickPhase(p, demo);
+    } else if (v === 'on-nasei') {
+      cycleState[p] = true;
+      toggle.classList.add('on');
+      section.classList.add('visible');
+      msg.classList.remove('visible');
+      var ns = document.querySelector((p === 'a' ? '.a-phase' : '.ios-phase') + '[data-val="nasei"]');
+      if (ns) pickPhase(p, ns);
+    } else if (v === 'off') {
+      cycleState[p] = false;
+      toggle.classList.remove('on');
+      section.classList.remove('visible');
+      nasei.classList.remove('visible');
+      msg.classList.add('visible');
+      cta.textContent = 'Continuar';
+      cta.classList.add('visible');
+    }
+  });
+}
+
+setArch('s1');
+setView('on-selected');
+</script>
+</body>
+</html>

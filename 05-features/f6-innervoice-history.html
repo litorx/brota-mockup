@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — F6: Inner Voice History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --cycle-accent:#F4A7B9;--cycle-accent-rgb:244,167,185;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:720px;margin:0 auto;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* ── PHONE ── */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:280px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.screen{position:absolute;inset:0;background:var(--bg);}
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* ── SCROLL BODY ── */
+.scroll-body{
+  position:absolute;top:44px;left:0;right:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;
+  padding:16px 20px 100px;
+  display:flex;flex-direction:column;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.scroll-body::-webkit-scrollbar{display:none;}
+.scroll-body>*{flex-shrink:0;}
+.ios-screen .scroll-body{top:0;padding-top:60px;}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes plantBreathe{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-3px) scale(1.01);}
+}
+@keyframes glowSoft{
+  0%,100%{opacity:0.45;transform:scale(0.94);}
+  50%{opacity:0.7;transform:scale(1.02);}
+}
+@keyframes shimmer{
+  0%{transform:translateX(-200%) skewX(-14deg);}
+  40%,100%{transform:translateX(200%) skewX(-14deg);}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+/* ── ANIM ELEMENTS ── */
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+.reinit{animation:none!important;opacity:0!important;transition:none!important;}
+
+/* ── SOFT BLOBS ── */
+.blob{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);transition:background 0.7s,opacity 0.7s;}
+.blob1{width:320px;height:320px;top:-120px;left:-80px;background:var(--cycle-accent);opacity:0.06;}
+.blob2{width:260px;height:260px;bottom:40px;right:-60px;background:var(--plant-color);opacity:0.06;}
+.blob3{width:180px;height:180px;top:300px;left:-40px;background:var(--brand-ai);opacity:0.04;}
+.ios-screen .blob1{opacity:0.05;filter:blur(90px);}
+.ios-screen .blob2{opacity:0.04;filter:blur(84px);}
+
+/* ── TOP HEADER ── */
+.top-header{
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:14px;z-index:1;position:relative;
+}
+.mini-plant-wrap{
+  position:relative;width:90px;height:90px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:8px;
+}
+.mini-plant-wrap::before{
+  content:'';position:absolute;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle, rgba(var(--plant-color-rgb),0.12) 0%, rgba(var(--plant-color-rgb),0) 70%);
+  animation:glowSoft 4s ease-in-out infinite;
+  transition:background 0.7s;
+}
+.mini-pemoji{
+  font-size:0;display:flex;align-items:center;justify-content:center;
+  animation:plantBreathe 5s ease-in-out infinite;
+}
+.mini-pemoji svg{
+  width:72px;height:72px;
+  filter:drop-shadow(0 4px 14px rgba(var(--plant-color-rgb),0.28));
+}
+.page-title{font-size:20px;font-weight:800;color:var(--text);line-height:1.2;}
+.page-sub{font-size:12.5px;color:var(--text2);margin-top:3px;line-height:1.4;}
+
+/* ── FILTER PILLS ── */
+.filter-row{
+  display:flex;gap:8px;justify-content:center;
+  margin-bottom:16px;z-index:1;position:relative;
+  flex-wrap:wrap;
+}
+.filter-pill{
+  padding:6px 16px;border-radius:999px;
+  border:1.5px solid var(--border);
+  background:transparent;
+  font-family:inherit;font-size:12px;font-weight:600;
+  color:var(--text2);cursor:pointer;
+  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+}
+.filter-pill.active{
+  background:var(--plant-color);color:white;border-color:var(--plant-color);
+}
+.filter-pill:hover:not(.active){border-color:rgba(var(--plant-color-rgb),0.3);color:var(--text);}
+.ios-screen .filter-pill{
+  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.55);
+}
+.ios-screen .filter-pill.active{
+  backdrop-filter:blur(12px) saturate(140%);
+  background:rgba(var(--plant-color-rgb),0.85);
+}
+
+/* ── SESSION CARDS ── */
+.sessions-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;z-index:1;position:relative;}
+.session-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  box-shadow:var(--shadow);padding:12px 14px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;
+  transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+.session-card:hover{
+  border-color:rgba(var(--plant-color-rgb),0.25);
+  transform:translateY(-1px);
+  box-shadow:var(--shadow2);
+}
+.ios-screen .session-card{
+  backdrop-filter:blur(10px) saturate(130%);
+  background:rgba(255,255,255,0.85);
+  box-shadow:var(--shadow),0 1px 0 rgba(255,255,255,0.55) inset;
+}
+
+/* Mood circle */
+.mood-circle{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+/* Android: CSS colored circle */
+.a-screen .mood-circle{font-size:0;}
+.a-screen .mood-circle::after{
+  content:'';width:14px;height:14px;border-radius:50%;
+  background:var(--mc-bg,#C4B0E0);opacity:0.7;
+}
+.a-screen .mood-circle.pesada{--mc-bg:#B5A0D8;}
+.a-screen .mood-circle.meh{--mc-bg:#C4A8B8;}
+.a-screen .mood-circle.ok{--mc-bg:#A8D5A2;}
+.a-screen .mood-circle.bem{--mc-bg:#F2CE6B;}
+
+.session-info{flex:1;min-width:0;}
+.session-date{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:3px;display:flex;align-items:center;gap:4px;}
+.session-plant-text{font-size:13px;color:var(--text2);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-plant-text strong{color:var(--plant-color);font-weight:700;transition:color 0.7s;}
+
+.session-arrow{font-size:14px;color:var(--text3);flex-shrink:0;}
+
+/* ── INSIGHT CARD ── */
+.insight-card{
+  background:var(--card);
+  border:1px solid rgba(var(--plant-color-rgb),0.20);
+  border-left:3px solid var(--plant-color);
+  border-radius:var(--r);
+  box-shadow:var(--shadow);
+  padding:14px 16px;
+  margin-bottom:12px;
+  z-index:1;position:relative;
+  transition:border-color 0.7s;
+}
+.ios-screen .insight-card{
+  backdrop-filter:blur(10px) saturate(130%);
+  background:rgba(255,255,255,0.88);
+  box-shadow:var(--shadow),0 1px 0 rgba(255,255,255,0.55) inset;
+}
+.insight-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px;}
+.insight-text{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:15px;color:var(--text);line-height:1.45;
+}
+
+/* ── STATS MINI ROW ── */
+.stats-row{
+  display:flex;gap:6px;justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:6px;z-index:1;position:relative;
+}
+.stat-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:999px;
+  background:rgba(var(--plant-color-rgb),0.08);
+  border:1px solid rgba(var(--plant-color-rgb),0.14);
+  font-size:11.5px;font-weight:600;color:var(--text2);
+  white-space:nowrap;
+  transition:background 0.7s,border-color 0.7s;
+}
+.stat-chip-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--plant-color);flex-shrink:0;
+  transition:background 0.7s;
+}
+.ios-screen .stat-chip{
+  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.65);
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;z-index:20;
+  pointer-events:none;
+}
+.a-screen .bottom-nav{
+  height:68px;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  box-shadow:0 -2px 12px rgba(61,44,46,0.05);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 8px;
+  pointer-events:auto;
+}
+.a-screen .nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 12px;border-radius:16px;cursor:pointer;
+  transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+.a-screen .nav-item.active{
+  background:rgba(var(--plant-color-rgb),0.10);
+}
+.a-screen .nav-item .nav-icon{font-size:20px;line-height:1;}
+.a-screen .nav-item .nav-label{font-size:10px;font-weight:600;color:var(--text2);}
+.a-screen .nav-item.active .nav-label{color:var(--plant-color);font-weight:700;}
+
+.ios-screen .bottom-nav{
+  bottom:20px;left:20px;right:20px;
+  height:56px;
+  background:rgba(255,255,255,0.72);
+  backdrop-filter:blur(24px) saturate(180%);
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.45);
+  box-shadow:0 8px 32px rgba(61,44,46,0.10),0 1px 0 rgba(255,255,255,0.60) inset;
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 12px;
+  pointer-events:auto;
+}
+.ios-screen .nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:4px 10px;cursor:pointer;
+  transition:all 0.25s;
+}
+.ios-screen .nav-item .nav-icon{font-size:19px;line-height:1;}
+.ios-screen .nav-item .nav-label{font-size:9.5px;font-weight:600;color:var(--text2);}
+.ios-screen .nav-item.active .nav-label{color:var(--plant-color);font-weight:700;}
+.nav-item.active .nav-icon{position:relative;}
+.nav-item.active .nav-icon::after{
+  content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--plant-color);
+  transition:background 0.7s;
+}
+
+/* ── FAB PAUSE ── */
+.fab-pause{
+  position:absolute;bottom:80px;right:16px;z-index:15;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--brand-real);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(244,167,185,0.30);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.fab-pause:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(244,167,185,0.40);}
+.fab-pause:active{transform:scale(0.94);}
+.ios-screen .fab-pause{
+  bottom:92px;right:18px;
+  backdrop-filter:blur(20px) saturate(180%);
+  background:rgba(232,136,158,0.88);
+  border:1px solid rgba(255,255,255,0.30);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(244,167,185,0.28);
+}
+</style>
+</head>
+<body>
+<div class="studio">
+
+<div class="studio-header">
+  <div class="brand-eyebrow">Brota &middot; Features &middot; F6-InnerVoiceHistory</div>
+  <div class="brand-title">Inner Voice &mdash; Hist&oacute;rico <em>Suas conversas com a planta. Um esp&eacute;lho gentil do seu caminho emocional.</em></div>
+  <div class="brand-sub">
+    Lista de sess&otilde;es passadas do Inner Voice. Filtro por per&iacute;odo, mood indicator, trecho da conversa. Insight da planta sobre padr&otilde;es detectados. Mini stats discretas no rodap&eacute;.
+  </div>
+</div>
+
+<div class="controls">
+  <button class="state-btn active" onclick="setPlant('s1',this)">Lavanda / Ana</button>
+  <button class="state-btn" onclick="setPlant('s2',this)">Girassol / Bia</button>
+  <button class="state-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
+  <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira / Dani</button>
+  <button class="state-btn" onclick="setPlant('s5',this)">Lotus / Eva</button>
+</div>
+
+<div class="stage">
+
+<!-- ═══════ ANDROID ═══════ -->
+<div class="phone-wrapper">
+  <div class="phone-label">
+    <span class="pill android">Android &middot; Nunito</span>
+    <span class="desc">M3 Expressive &middot; Short Bottom Bar &middot; Spring bounce &middot; FAB Pause</span>
+  </div>
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="screen a-screen" id="ascreen">
+        <div class="statusbar">
+          <span class="stime">9:41</span>
+          <span class="sicons">&#9679; &#9679; &#9679;</span>
+        </div>
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+
+        <div class="scroll-body" id="abody">
+
+          <!-- Top header: small plant + title -->
+          <div class="top-header anim-el" style="animation-delay:0.15s">
+            <div class="mini-plant-wrap">
+              <span class="mini-pemoji" id="amini-pemoji"></span>
+            </div>
+            <div class="page-title">Suas conversas</div>
+            <div class="page-sub" id="apage-sub">Com a <span id="aplant-name">Lavanda</span></div>
+          </div>
+
+          <!-- Filter pills -->
+          <div class="filter-row anim-el" style="animation-delay:0.28s">
+            <button class="filter-pill active" onclick="setFilter(this,'a')">Esta semana</button>
+            <button class="filter-pill" onclick="setFilter(this,'a')">Este m&ecirc;s</button>
+            <button class="filter-pill" onclick="setFilter(this,'a')">Tudo</button>
+          </div>
+
+          <!-- Sessions list -->
+          <div class="sessions-list">
+            <!-- Card 1 -->
+            <div class="session-card anim-el" style="animation-delay:0.38s">
+              <div class="mood-circle pesada" style="background:rgba(181,160,216,0.18);"><i data-face="down"></i></div>
+              <div class="session-info">
+                <div class="session-date">Ontem, 22:14</div>
+                <div class="session-plant-text"><strong id="aplant1">Lavanda</strong> sobre: insegurança. Lembra do reframe?</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 2 -->
+            <div class="session-card anim-el" style="animation-delay:0.46s">
+              <div class="mood-circle meh" style="background:rgba(196,168,184,0.18);"><i data-face="meh"></i></div>
+              <div class="session-info">
+                <div class="session-date">3 dias atr&aacute;s, 19:30</div>
+                <div class="session-plant-text"><strong id="aplant2">Lavanda</strong> sobre: Instagram te incomodou.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 3 -->
+            <div class="session-card anim-el" style="animation-delay:0.54s">
+              <div class="mood-circle ok" style="background:rgba(168,213,162,0.18);"><i data-face="ok"></i></div>
+              <div class="session-info">
+                <div class="session-date">5 dias atr&aacute;s, 08:12</div>
+                <div class="session-plant-text"><strong id="aplant3">Lavanda</strong>: Voc&ecirc; fez o CBT completo.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 4 -->
+            <div class="session-card anim-el" style="animation-delay:0.62s">
+              <div class="mood-circle pesada" style="background:rgba(181,160,216,0.18);"><i data-face="down"></i></div>
+              <div class="session-info">
+                <div class="session-date">1 semana, 21:45</div>
+                <div class="session-plant-text"><strong id="aplant4">Lavanda</strong>: Voc&ecirc; ficou quieta comigo.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 5 -->
+            <div class="session-card anim-el" style="animation-delay:0.70s">
+              <div class="mood-circle bem" style="background:rgba(242,206,107,0.18);"><i data-face="good"></i></div>
+              <div class="session-info">
+                <div class="session-date">10 dias, 14:20</div>
+                <div class="session-plant-text"><strong id="aplant5">Lavanda</strong>: Voc&ecirc; compartilhou uma vit&oacute;ria.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+          </div>
+
+          <!-- Insight card -->
+          <div class="insight-card anim-el" style="animation-delay:0.82s">
+            <div class="insight-label">Padr&atilde;o detectado</div>
+            <div class="insight-text" id="ainsight-text">Voc&ecirc; tende a escrever mais &agrave; noite.</div>
+          </div>
+
+          <!-- Stats mini row -->
+          <div class="stats-row anim-el" style="animation-delay:0.92s">
+            <div class="stat-chip"><div class="stat-chip-dot"></div>12 sess&otilde;es</div>
+            <div class="stat-chip"><div class="stat-chip-dot"></div>Padr&atilde;o: noturna</div>
+            <div class="stat-chip"><div class="stat-chip-dot"></div>Emo&ccedil;&atilde;o: Meh</div>
+          </div>
+
+          <div style="height:20px;"></div>
+        </div>
+
+        <!-- FAB Pause -->
+        <div class="fab-pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="pause"></i></div>
+
+        <!-- Bottom Nav (Grow active) -->
+        <div class="bottom-nav">
+          <div class="nav-item"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
+          <div class="nav-item active"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ iOS ═══════ -->
+<div class="phone-wrapper">
+  <div class="phone-label">
+    <span class="pill ios">iOS 26 &middot; SF Rounded</span>
+    <span class="desc">Liquid Glass capsule nav &middot; HIG bezier &middot; Glass cards &middot; FAB Pause</span>
+  </div>
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="screen ios-screen" id="iosscreen">
+        <div class="dyna"></div>
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+
+        <div class="scroll-body" id="iosbody">
+
+          <!-- Top header -->
+          <div class="top-header anim-el" style="animation-delay:0.15s">
+            <div class="mini-plant-wrap">
+              <span class="mini-pemoji" id="iosmini-pemoji"></span>
+            </div>
+            <div class="page-title">Suas conversas</div>
+            <div class="page-sub" id="iospage-sub">Com a <span id="iosplant-name">Lavanda</span></div>
+          </div>
+
+          <!-- Filter pills -->
+          <div class="filter-row anim-el" style="animation-delay:0.28s">
+            <button class="filter-pill active" onclick="setFilter(this,'ios')">Esta semana</button>
+            <button class="filter-pill" onclick="setFilter(this,'ios')">Este m&ecirc;s</button>
+            <button class="filter-pill" onclick="setFilter(this,'ios')">Tudo</button>
+          </div>
+
+          <!-- Sessions list -->
+          <div class="sessions-list">
+            <!-- Card 1 -->
+            <div class="session-card anim-el" style="animation-delay:0.38s">
+              <div class="mood-circle pesada"><i data-face="down" data-face-style="sf"></i></div>
+              <div class="session-info">
+                <div class="session-date">Ontem, 22:14</div>
+                <div class="session-plant-text"><strong id="iosplant1">Lavanda</strong> sobre: insegurança. Lembra do reframe?</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 2 -->
+            <div class="session-card anim-el" style="animation-delay:0.46s">
+              <div class="mood-circle meh"><i data-face="meh" data-face-style="sf"></i></div>
+              <div class="session-info">
+                <div class="session-date">3 dias atr&aacute;s, 19:30</div>
+                <div class="session-plant-text"><strong id="iosplant2">Lavanda</strong> sobre: Instagram te incomodou.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 3 -->
+            <div class="session-card anim-el" style="animation-delay:0.54s">
+              <div class="mood-circle ok"><i data-face="ok" data-face-style="sf"></i></div>
+              <div class="session-info">
+                <div class="session-date">5 dias atr&aacute;s, 08:12</div>
+                <div class="session-plant-text"><strong id="iosplant3">Lavanda</strong>: Voc&ecirc; fez o CBT completo.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 4 -->
+            <div class="session-card anim-el" style="animation-delay:0.62s">
+              <div class="mood-circle pesada"><i data-face="down" data-face-style="sf"></i></div>
+              <div class="session-info">
+                <div class="session-date">1 semana, 21:45</div>
+                <div class="session-plant-text"><strong id="iosplant4">Lavanda</strong>: Voc&ecirc; ficou quieta comigo.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+            <!-- Card 5 -->
+            <div class="session-card anim-el" style="animation-delay:0.70s">
+              <div class="mood-circle bem"><i data-face="good" data-face-style="sf"></i></div>
+              <div class="session-info">
+                <div class="session-date">10 dias, 14:20</div>
+                <div class="session-plant-text"><strong id="iosplant5">Lavanda</strong>: Voc&ecirc; compartilhou uma vit&oacute;ria.</div>
+              </div>
+              <div class="session-arrow">›</div>
+            </div>
+          </div>
+
+          <!-- Insight card -->
+          <div class="insight-card anim-el" style="animation-delay:0.82s">
+            <div class="insight-label">Padr&atilde;o detectado</div>
+            <div class="insight-text" id="iosinsight-text">Voc&ecirc; tende a escrever mais &agrave; noite.</div>
+          </div>
+
+          <!-- Stats mini row -->
+          <div class="stats-row anim-el" style="animation-delay:0.92s">
+            <div class="stat-chip"><div class="stat-chip-dot"></div>12 sess&otilde;es</div>
+            <div class="stat-chip"><div class="stat-chip-dot"></div>Padr&atilde;o: noturna</div>
+            <div class="stat-chip"><div class="stat-chip-dot"></div>Emo&ccedil;&atilde;o: Meh</div>
+          </div>
+
+          <div style="height:20px;"></div>
+        </div>
+
+        <!-- FAB Pause -->
+        <div class="fab-pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="pause"></i></div>
+
+        <!-- Bottom Nav (Grow active) -->
+        <div class="bottom-nav">
+          <div class="nav-item"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
+          <div class="nav-item active"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /stage -->
+</div><!-- /studio -->
+
+<script>
+var plants = {
+  s1:{name:'Ana',  plant:'Lavanda',   color:'#C4B0E0',rgb:'196,176,224'},
+  s2:{name:'Bia',  plant:'Girassol',  color:'#F2CE6B',rgb:'242,206,107'},
+  s3:{name:'Carol',plant:'Cacto',     color:'#8CC5A0',rgb:'140,197,160'},
+  s4:{name:'Dani', plant:'Cerejeira', color:'#F2B5C4',rgb:'242,181,196'},
+  s5:{name:'Eva',  plant:'Lotus',     color:'#D4B8D4',rgb:'212,184,212'}
+};
+
+var insightTexts = {
+  Lavanda: 'Voc\u00ea tende a escrever mais \u00e0 noite.',
+  Girassol: 'Voc\u00ea chega mais animada de manh\u00e3.',
+  Cacto: 'Voc\u00ea \u00e9 mais honesta quando est\u00e1 cansada.',
+  Cerejeira: 'Seus momentos mais bonitos surgem no silencio.',
+  Lotus: 'Voc\u00ea floresce quando para de se cobrar.'
+};
+
+/* ── Plant SVGs ── */
+var FACE_HAPPY = ''
+  +'<ellipse cx="36" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+  +'<ellipse cx="44" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+  +'<circle cx="37" cy="37" r="1" fill="white" opacity="0.95"/>'
+  +'<circle cx="45" cy="37" r="1" fill="white" opacity="0.95"/>'
+  +'<path d="M37 43C38.5 45.5 41.5 45.5 43 43" stroke="#4A3728" stroke-width="1.5" stroke-linecap="round" fill="none"/>'
+  +'<circle cx="32.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="47.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>';
+
+var SPARKLES = ''
+  +'<circle cx="18" cy="18" r="1.5" fill="white"><animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="62" cy="15" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.7;0" dur="3s" begin="0.8s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="14" cy="35" r="1" fill="white"><animate attributeName="opacity" values="0;0.6;0" dur="3.5s" begin="1.6s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="65" cy="40" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.65;0" dur="2.8s" begin="0.4s" repeatCount="indefinite"/></circle>';
+
+var POT = '<path d="M28 70C28 70 26 73 27.5 75C29 76.5 51 76.5 52.5 75C54 73 52 70 52 70" fill="#E8C4A0"/>'
+  +'<path d="M26 70H54" stroke="#D4A574" stroke-width="2.2" stroke-linecap="round"/>'
+  +'<ellipse cx="40" cy="70" rx="13" ry="2" fill="#C49468" opacity="0.25"/>';
+
+var plantSVGs = {
+  Lavanda: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68V32" stroke="#6BA068" stroke-width="3" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.5,40,68;0,40,68;-0.5,40,68;0,40,68" dur="6s" repeatCount="indefinite"/></path>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-2,40,55;4,40,55;-2,40,55" dur="3.5s" repeatCount="indefinite"/>'
+    +'<path d="M40 54C35 52 30 50 26 42" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M33 48C28 47 23 48 20 51C24 51.5 29 50 33 48Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M29 43C24 42 19 43 17 46C21 46.5 25 45 29 43Z" fill="#8CC5A0" opacity="0.7"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="2,40,55;-4,40,55;2,40,55" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M40 50C45 48 50 46 54 39" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M47 44C52 43 57 44 59 47C55 47.5 51 46 47 44Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M51 40C56 39 61 40 63 43C59 43.5 55 42 51 40Z" fill="#8CC5A0" opacity="0.7"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-1.5,40,30;1.5,40,30;-1.5,40,30" dur="3s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="28" rx="5" ry="6.5" fill="__CLR__"/>'
+    +'<ellipse cx="40" cy="21" rx="4.5" ry="5.5" fill="__CLR__" opacity="0.95"/>'
+    +'<ellipse cx="40" cy="14.5" rx="3.8" ry="4.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="40" cy="9" rx="3" ry="3.5" fill="__CLR__" opacity="0.82"/>'
+    +'<ellipse cx="40" cy="5" rx="2.2" ry="2.5" fill="__CLR__" opacity="0.7"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,34;-6,28,34;0,28,34" dur="3.8s" repeatCount="indefinite"/>'
+    +'<ellipse cx="28" cy="32" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="28" cy="26" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="28" cy="20.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,33;6,52,33;0,52,33" dur="3.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="52" cy="31" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="52" cy="25" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="52" cy="19.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/></g>'
+    +FACE_HAPPY+SPARKLES+'</svg>',
+
+  Girassol: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68C40 64 39.5 56 40 50C40.5 44 40 40 40 38" stroke="#5A9E54" stroke-width="3.5" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.6,40,68;0,40,68;-0.6,40,68;0,40,68" dur="5s" repeatCount="indefinite"/></path>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-1,40,56;5,40,56;-1,40,56" dur="3.5s" repeatCount="indefinite"/>'
+    +'<path d="M40 56C35 55 28 54.5 23 57C26 59 32 58 40 56Z" fill="#7DB87A" opacity="0.9"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="1,40,62;-5,40,62;1,40,62" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M40 62C45 61 52 60.5 57 63C54 65 48 64 40 62Z" fill="#7DB87A" opacity="0.85"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-3,40,24;3,40,24;-3,40,24" dur="4s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="12" rx="5.5" ry="10" fill="__CLR__"/>'
+    +'<ellipse cx="18" cy="24" rx="12" ry="5.5" fill="__CLR__"/>'
+    +'<ellipse cx="62" cy="24" rx="12" ry="5.5" fill="__CLR__"/>'
+    +'<ellipse cx="24" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(-45 24 14)"/>'
+    +'<ellipse cx="56" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(45 56 14)"/>'
+    +'<ellipse cx="40" cy="38" rx="5.5" ry="10" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="24" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(45 24 38)"/>'
+    +'<ellipse cx="56" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(-45 56 38)"/>'
+    +'<circle cx="40" cy="24" r="12.5" fill="#D4960A"/>'
+    +'<circle cx="40" cy="24" r="10" fill="#C48A08"/>'
+    +'<ellipse cx="36" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="44" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="36.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
+    +'<circle cx="44.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
+    +'<path d="M37 27.5C38.5 29.5 41.5 29.5 43 27.5" stroke="#5A3800" stroke-width="1.4" stroke-linecap="round" fill="none"/>'
+    +'</g>'+SPARKLES+'</svg>',
+
+  Cacto: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,68;-0.8,40,68;0,40,68;0.8,40,68;0,40,68" dur="5s" repeatCount="indefinite"/>'
+    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" fill="__CLR__" opacity="0.55"/>'
+    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" stroke="__CLR__" stroke-width="2.5" fill="none"/>'
+    +'<line x1="33" y1="25" x2="33" y2="55" stroke="white" stroke-width="0.8" opacity="0.1"/>'
+    +'<line x1="47" y1="23" x2="47" y2="57" stroke="white" stroke-width="0.8" opacity="0.1"/>'
+    +'<line x1="30" y1="24" x2="26" y2="23" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +'<line x1="50" y1="26" x2="54" y2="25" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +'<line x1="30" y1="38" x2="26" y2="37" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +'<line x1="50" y1="40" x2="54" y2="39" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
+    +FACE_HAPPY+'</g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,42;-5,28,42;0,28,42;2,28,42;0,28,42" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" fill="__CLR__" opacity="0.5"/>'
+    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,36;5,52,36;0,52,36;-2,52,36;0,52,36" dur="3.8s" repeatCount="indefinite"/>'
+    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" fill="__CLR__" opacity="0.5"/>'
+    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
+    +'<g><animateTransform attributeName="transform" type="translate" values="0,0;0,-1.5;0,0" dur="2.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="6" rx="7.5" ry="6.5" fill="#F4A7B9"/>'
+    +'<circle cx="40" cy="6.5" r="3.8" fill="#E8889E" opacity="0.9"/>'
+    +'<circle cx="40" cy="6.5" r="2" fill="#C96078" opacity="0.7"/>'
+    +'<circle cx="38" cy="5" r="0.8" fill="white" opacity="0.5"/></g>'
+    +SPARKLES+'</svg>',
+
+  Cerejeira: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68C40 64 38 58 36 54C34 50 35 46 38 44C41 42 42 38 41 35" stroke="#7A5840" stroke-width="5" stroke-linecap="round"/>'
+    +'<path d="M36 54C31 52 26 50 22 49C18 48.5 14 49 13 50" stroke="#7A5840" stroke-width="3" stroke-linecap="round"/>'
+    +'<path d="M38 46C42 44 47 42 52 40C55 38.5 58 38 60 39" stroke="#7A5840" stroke-width="2.8" stroke-linecap="round"/>'
+    +'<path d="M41 35C43 30 47 25 49 22C51 19 52 16 51 14" stroke="#7A5840" stroke-width="2.5" stroke-linecap="round"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,16,46;-5,16,46;1,16,46;0,16,46" dur="4s" repeatCount="indefinite"/>'
+    +'<ellipse cx="15" cy="46" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.88"/>'
+    +'<ellipse cx="21" cy="44" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="11" cy="43" rx="6" ry="5" fill="__CLR__" opacity="0.78"/>'
+    +'<circle cx="16" cy="45.5" r="2.8" fill="#C95578" opacity="0.65"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,60,36;5,60,36;-1,60,36;0,60,36" dur="3.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="60" cy="36" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="65" cy="34" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.87"/>'
+    +'<ellipse cx="57" cy="33.5" rx="6" ry="5" fill="__CLR__" opacity="0.82"/>'
+    +'<circle cx="61" cy="36" r="2.8" fill="#C95578" opacity="0.68"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,51,14;3,51,14;-1,51,14;0,51,14" dur="3.2s" repeatCount="indefinite"/>'
+    +'<ellipse cx="51" cy="13" rx="7" ry="6" fill="__CLR__" opacity="0.92"/>'
+    +'<ellipse cx="47" cy="11" rx="6" ry="5.5" fill="__CLR__" opacity="0.88"/>'
+    +'<ellipse cx="55" cy="10" rx="5.5" ry="4.8" fill="__CLR__" opacity="0.84"/>'
+    +'<circle cx="50" cy="13" r="2.8" fill="#C95578" opacity="0.7"/></g>'
+    +'<ellipse cx="26" cy="25" rx="2.2" ry="1.4" fill="__CLR__" opacity="0"><animate attributeName="cy" values="25;68" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.65;0.55;0" dur="5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="55" cy="20" rx="2" ry="1.2" fill="__CLR__" opacity="0"><animate attributeName="cy" values="20;65" dur="6s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0.5;0" dur="6s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="39" cy="52" rx="6.5" ry="5" fill="#F2E8E0" opacity="0.35"/>'
+    +'<ellipse cx="37" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="42" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="37.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
+    +'<circle cx="42.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
+    +'<path d="M37.5 54C38.5 55.5 41 55.5 42 54" stroke="#5A4030" stroke-width="1.3" stroke-linecap="round" fill="none"/>'
+    +SPARKLES+'</svg>',
+
+  Lotus: '<svg viewBox="4 4 72 72" fill="none">'
+    +POT
+    +'<ellipse cx="40" cy="69" rx="14" ry="3.5" fill="#D4EEF8" opacity="0.45"><animate attributeName="rx" values="14;18;14" dur="3.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="28" cy="68" rx="6.5" ry="2.5" fill="#7EC47A" opacity="0.55"><animateTransform attributeName="transform" type="rotate" values="-2,28,68;4,28,68;-2,28,68" dur="4.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="52" cy="67.5" rx="6" ry="2.2" fill="#7EC47A" opacity="0.45"><animateTransform attributeName="transform" type="rotate" values="2,52,67.5;-4,52,67.5;2,52,67.5" dur="5s" repeatCount="indefinite"/></ellipse>'
+    +'<path d="M40 66Q39 58 40 52" stroke="#6EAA68" stroke-width="2.2" stroke-linecap="round" opacity="0.55" fill="none"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;-5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q26 54 16 47Q14 45 18 44Q28 45 40 49Z" fill="__CLR__" opacity="0.35"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q54 54 64 47Q66 45 62 44Q52 45 40 49Z" fill="__CLR__" opacity="0.35"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;-4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q28 44 22 35Q21 32 25 33Q32 36 40 44Z" fill="#E8CCE8" opacity="0.55"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q52 44 58 35Q59 32 55 33Q48 36 40 44Z" fill="#E8CCE8" opacity="0.55"/></g>'
+    +'<path d="M40 42Q32 36 30 26Q29.5 20 34 23Q37 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
+    +'<path d="M40 42Q48 36 50 26Q50.5 20 46 23Q43 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
+    +'<path d="M40 36Q38 28 38.2 18Q38.5 12 40 10Q41.5 12 41.8 18Q42 28 40 36Z" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="40" cy="46" rx="6" ry="4" fill="#FFE082" opacity="0.95"><animate attributeName="rx" values="6;7;6" dur="2.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="40" cy="46" rx="4" ry="2.8" fill="#FFC837" opacity="0.85"/>'
+    +'<ellipse cx="38" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="42" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="38.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
+    +'<circle cx="42.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
+    +'<path d="M39 47.5C39.5 48.8 40.5 48.8 41 47.5" stroke="#8B6F00" stroke-width="1" stroke-linecap="round" fill="none"/>'
+    +'<circle cx="18" cy="22" r="1.3" fill="white"><animate attributeName="opacity" values="0;0.6;0" dur="3.5s" repeatCount="indefinite"/><animate attributeName="cy" values="22;16" dur="3.5s" repeatCount="indefinite"/></circle>'
+    +'</svg>'
+};
+
+var currentPlant = plants.s1;
+
+function updatePlantSVGs(s){
+  var svg = plantSVGs[s.plant];
+  if(!svg) return;
+  var rendered = svg.replace(/__CLR__/g, s.color);
+  var a = document.getElementById('amini-pemoji');
+  var i = document.getElementById('iosmini-pemoji');
+  if(a) a.innerHTML = rendered;
+  if(i) i.innerHTML = rendered;
+}
+
+function restartAnims(){
+  var els=document.querySelectorAll('.anim-el');
+  els.forEach(function(el){el.classList.add('reinit');void el.offsetWidth;});
+  setTimeout(function(){els.forEach(function(el){el.classList.remove('reinit');});},30);
+  document.querySelectorAll('.scroll-body').forEach(function(sb){sb.scrollTop=0;});
+}
+
+function setPlant(key,btn){
+  currentPlant = plants[key];
+  document.querySelectorAll('.state-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyState();
+}
+
+function applyState(){
+  var s = currentPlant;
+  var r = document.documentElement;
+  r.style.setProperty('--plant-color', s.color);
+  r.style.setProperty('--plant-color-rgb', s.rgb);
+  updatePlantSVGs(s);
+
+  // Plant name in header
+  ['a','ios'].forEach(function(p){
+    document.getElementById(p+'plant-name').textContent = s.plant;
+    document.getElementById(p+'insight-text').textContent = insightTexts[s.plant];
+  });
+
+  // Plant name in session cards
+  for(var i=1;i<=5;i++){
+    var a = document.getElementById('aplant'+i);
+    var ios = document.getElementById('iosplant'+i);
+    if(a) a.textContent = s.plant;
+    if(ios) ios.textContent = s.plant;
+  }
+
+  restartAnims();
+}
+
+function setFilter(btn, platform){
+  var parent = btn.closest('.filter-row');
+  parent.querySelectorAll('.filter-pill').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+// Init
+applyState();
+</script>
+<script src="../shared/icons.js"></script>
+</body>
+</html>

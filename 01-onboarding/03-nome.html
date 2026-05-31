@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 03: Nome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root { --brand-real: #F4A7B9; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #F0EBE8; color: #1A1714;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #1A1418; color: #E8E4DA; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* STUDIO HEADER */
+.studio-header { position: relative; z-index: 10; padding: 32px 48px 16px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.brand-block { max-width: 640px; }
+.brand-eyebrow { font-variation-settings: 'wdth' 105, 'wght' 600, 'opsz' 11; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.5; margin-bottom: 10px; }
+.brand-title { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-variation-settings: 'wdth' 100, 'wght' 200; font-size: 0.65em; vertical-align: 0.1em; opacity: 0.5; }
+.brand-sub { font-size: 14px; line-height: 1.6; opacity: 0.65; max-width: 600px; }
+.brand-sub em { font-family: 'Instrument Serif', serif; font-style: italic; }
+.brand-sub code { font-family: monospace; font-size: 12px; background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 3px; }
+body.dark .brand-sub code { background: rgba(255,255,255,0.1); }
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7; transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn { background: transparent; border: 1px solid currentColor; color: inherit; font: inherit; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer; opacity: 0.5; transition: all 0.25s ease; }
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: currentColor; opacity: 1; }
+.state-btn.active span { mix-blend-mode: difference; color: white; }
+
+/* STAGE */
+.stage { position: relative; z-index: 1; padding: 24px 24px 80px; display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.5; max-width: 280px; line-height: 1.4; }
+.phone { width: 380px; height: 800px; border-radius: 56px; background: #1A1A1A; padding: 14px; flex-shrink: 0; box-shadow: 0 60px 100px -20px rgba(0,0,0,0.32), 0 30px 60px -30px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A; }
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+.status-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none; color: rgba(61,44,46,0.70); }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200; }
+.screen { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ ANDROID ============ */
+.android-screen { background: #FFF8F2; color: #3D2C2E; }
+
+.a-blob-1 { position: absolute; z-index: 0; pointer-events: none; width: 560px; height: 560px; background: var(--brand-real); opacity: 0.05; filter: blur(100px); border-radius: 60% 40% 54% 46%; top: -230px; left: -230px; animation: aB1 22s ease-in-out infinite; }
+.a-blob-2 { position: absolute; z-index: 0; pointer-events: none; width: 420px; height: 420px; background: var(--brand-real); opacity: 0.08; filter: blur(82px); border-radius: 44% 56% 40% 60%; bottom: -160px; right: -150px; animation: aB2 30s ease-in-out infinite; }
+.a-blob-3 { position: absolute; z-index: 0; pointer-events: none; width: 240px; height: 240px; background: var(--brand-real); opacity: 0.05; filter: blur(58px); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: aB3 18s ease-in-out infinite; }
+@keyframes aB1 { 0%,100% { border-radius: 60% 40% 54% 46%; transform: rotate(0deg) scale(1); } 33% { border-radius: 48% 52% 44% 56%; transform: rotate(5deg) scale(1.06); } 66% { border-radius: 42% 58% 62% 38%; transform: rotate(-4deg) scale(0.96); } }
+@keyframes aB2 { 0%,100% { border-radius: 44% 56% 40% 60%; transform: rotate(0deg) scale(1); } 50% { border-radius: 62% 38% 52% 48%; transform: rotate(-8deg) scale(1.07); } }
+@keyframes aB3 { 0%,100% { border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0.05; } 45% { border-radius: 60% 40% 55% 45%; transform: translate(-50%,-50%) scale(1.2); opacity: 0.04; } }
+
+.a-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 64px 26px 110px; gap: 20px;
+}
+
+.a-conn-block { display: flex; flex-direction: column; gap: 4px; }
+.a-conn-1 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 500, 'opsz' 14;
+  font-size: 14px; color: rgba(244,167,185,0.86);
+  opacity: 0; animation: fadeUp 0.70s ease-out 0.15s forwards;
+}
+.a-conn-2 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 360, 'opsz' 13;
+  font-size: 13px; line-height: 1.5; color: #C4B5B7;
+  opacity: 0; animation: fadeUp 0.70s ease-out 1.65s forwards;
+}
+
+.a-h1 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 110, 'wght' 620, 'opsz' 26;
+  font-size: 26px; line-height: 1.2; letter-spacing: -0.015em;
+  color: #3D2C2E; white-space: nowrap;
+  opacity: 0; animation: fadeUp 0.72s ease-out 1.65s forwards;
+}
+
+.a-input-wrap {
+  opacity: 0; animation: fadeUp 0.65s ease-out 2.75s forwards;
+}
+.a-input {
+  width: 100%; padding: 0 0 14px; border: none; outline: none;
+  background: transparent;
+  border-bottom: 2px solid rgba(244,167,185,0.22);
+  color: #3D2C2E;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 340, 'opsz' 24;
+  font-size: 26px; letter-spacing: -0.02em;
+  caret-color: var(--brand-real);
+  transition: border-color 0.3s ease;
+}
+.a-input::placeholder { color: #C4B5B7; }
+.a-input:focus { border-bottom-color: var(--brand-real); }
+
+.a-cta {
+  position: absolute; bottom: 40px; left: 26px; right: 26px;
+  padding: 18px 32px; border-radius: 999px; border: none;
+  background: var(--brand-real); color: #FFFFFF;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 600, 'opsz' 16;
+  font-size: 16px; cursor: pointer; text-align: center;
+  box-shadow: 0 4px 28px rgba(244,167,185,0.42);
+  transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+}
+.a-cta.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.a-cta:hover { transform: scale(1.02) translateY(0); box-shadow: 0 8px 40px rgba(244,167,185,0.58); }
+.a-cta:active { transform: scale(0.97) translateY(0); }
+
+/* ============ iOS ============ */
+.ios-screen { background: #FFF8F2; color: #3D2C2E; }
+.ios-orb { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; }
+.ios-orb.a { background: var(--brand-real); width: 420px; height: 420px; top: -140px; right: -130px; opacity: 0.29; filter: blur(78px); }
+.ios-orb.b { background: var(--brand-real); width: 320px; height: 320px; bottom: -100px; left: -100px; opacity: 0.04; filter: blur(66px); }
+.ios-orb.c { background: var(--brand-real); width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.08; filter: blur(52px); }
+
+.ios-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 64px 24px 110px; gap: 18px;
+}
+
+.ios-conn-block { display: flex; flex-direction: column; gap: 4px; }
+.ios-conn-1 {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 14px; font-weight: 500; letter-spacing: -0.1px;
+  color: rgba(244,167,185,0.86);
+  opacity: 0; animation: fadeUp 0.70s cubic-bezier(0.32, 0.72, 0, 1) 0.15s forwards;
+}
+.ios-conn-2 {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.1px; line-height: 1.5;
+  color: #C4B5B7;
+  opacity: 0; animation: fadeUp 0.70s cubic-bezier(0.32, 0.72, 0, 1) 1.65s forwards;
+}
+
+.ios-h1 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 26px; font-weight: 600; line-height: 1.2; letter-spacing: -0.4px;
+  color: #3D2C2E; white-space: nowrap;
+  opacity: 0; animation: fadeUp 0.72s cubic-bezier(0.32, 0.72, 0, 1) 1.65s forwards;
+}
+
+.ios-input-wrap {
+  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 2.75s forwards;
+  border-bottom: 1px solid rgba(244,167,185,0.22);
+  padding-bottom: 12px;
+  transition: border-color 0.3s ease;
+}
+.ios-input-wrap:focus-within { border-bottom-color: var(--brand-real); }
+.ios-input {
+  width: 100%; padding: 6px 0; border: none; outline: none;
+  background: transparent;
+  color: #3D2C2E;
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 26px; font-weight: 300; letter-spacing: -0.3px;
+  caret-color: var(--brand-real);
+}
+.ios-input::placeholder { color: #C4B5B7; font-weight: 300; }
+
+.ios-cta {
+  position: absolute; bottom: 40px; left: 24px; right: 24px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  background: rgba(232,136,158,0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.12), 0 4px 28px rgba(244,167,185,0.42);
+  color: #FFFFFF;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.25px;
+  cursor: pointer; text-align: center;
+  transition: all 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+}
+.ios-cta.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.ios-cta:hover { background: rgba(244,167,185,0.92); transform: scale(1.01) translateY(0); }
+.ios-cta:active { transform: scale(0.97) translateY(0); }
+
+/* ANNOTATIONS */
+.annotations { max-width: 1280px; margin: 0 auto; padding: 0 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.note { padding: 22px; border-radius: 18px; background: rgba(0,0,0,0.04); }
+body.dark .note { background: rgba(255,255,255,0.88); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; opacity: 0.78; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+.note.android li::before { background: #34A853; opacity: 0.75; }
+.note.ios li::before { background: var(--brand-real); opacity: 0.75; }
+.note li code { font-family: monospace; font-size: 11px; background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 4px; }
+body.dark .note li code { background: rgba(255,255,255,0.1); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota · Onboarding · Screen 03 de 18</div>
+    <h1 class="brand-title">Nome <em>conector de validação + pergunta pessoal na mesma tela</em></h1>
+    <p class="brand-sub">
+      Conector 2 linhas (rose + dimmed) valida emocionalmente, então <em>"Como posso te chamar?"</em>
+      flui como continuação natural — íntima, não instrucional.
+      Input grande sem label, placeholder discreto. CTA ao digitar.
+    </p>
+  </div>
+  <div class="controls-col">
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark')" aria-label="Toggle studio theme"><span class="dot"></span> Tema</button>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" data-state="sim" onclick="setState('sim',this)" role="tab"><span>Sim, sempre</span></button>
+      <button class="state-btn" data-state="as_vezes" onclick="setState('as_vezes',this)" role="tab"><span>Às vezes</span></button>
+      <button class="state-btn" data-state="entender" onclick="setState('entender',this)" role="tab"><span>Quero entender</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+
+  <!-- ANDROID -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android · Material 3 Expressive</span>
+      <span class="desc">conector rose → H1 íntimo → input sem label → CTA ao digitar</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen android-screen" aria-label="Brota Nome — Android">
+          <div class="a-blob-1"></div><div class="a-blob-2"></div><div class="a-blob-3"></div>
+          <div class="a-body">
+            <div class="a-conn-block">
+              <span class="a-conn-1" id="a-conn">Você não está sozinha.</span>
+              <span class="a-conn-2">Mais de 1 em cada 3 mulheres sente o mesmo. E o Brota te ajuda a mudar isso.</span>
+            </div>
+            <h1 class="a-h1">Como posso te chamar?</h1>
+            <div class="a-input-wrap">
+              <input class="a-input" id="a-name" type="text"
+                     placeholder="Escreve aqui..."
+                     autocomplete="off"
+                     oninput="handleInput(this,'a')"
+                     aria-label="Seu nome">
+            </div>
+          </div>
+          <button class="a-cta" id="a-cta">Pode me chamar assim</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26 · Liquid Glass / HIG</span>
+      <span class="desc">conector rose → SF Pro Display → input plain HIG → CTA glass</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen ios-screen" aria-label="Brota Nome — iOS">
+          <div class="ios-orb a"></div><div class="ios-orb b"></div><div class="ios-orb c"></div>
+          <div class="ios-body">
+            <div class="ios-conn-block">
+              <span class="ios-conn-1" id="ios-conn">Você não está sozinha.</span>
+              <span class="ios-conn-2">Mais de 1 em cada 3 mulheres sente o mesmo. E o Brota te ajuda a mudar isso.</span>
+            </div>
+            <h1 class="ios-h1">Como posso te chamar?</h1>
+            <div class="ios-input-wrap">
+              <input class="ios-input" id="ios-name" type="text"
+                     placeholder="Escreve aqui..."
+                     autocomplete="off"
+                     oninput="handleInput(this,'ios')"
+                     aria-label="Seu nome">
+            </div>
+          </div>
+          <button class="ios-cta" id="ios-cta">Pode me chamar assim</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<section class="annotations">
+  <div class="note android">
+    <h4>Android · Material 3 Expressive</h4>
+    <ul>
+      <li>Conector 2 linhas: <em>"Você não está sozinha."</em> rose 86% → stat 36% white — valida antes de pedir qualquer coisa, sem abrir tela separada</li>
+      <li>H1 <em>"Como posso te chamar?"</em> — íntimo, no tom do app que está pedindo permissão para te conhecer, não um campo de formulário exigindo dado</li>
+      <li>Input 26sp Roboto Flex <code>wght 340</code> — leve contra o H1 620; sem label, sem container — só linha inferior 2px rose no foco</li>
+      <li>CTA aparece com spring M3E ao digitar a primeira letra — feedback imediato de que o app está ouvindo</li>
+    </ul>
+  </div>
+  <div class="note ios">
+    <h4>iOS 26 · Liquid Glass / HIG</h4>
+    <ul>
+      <li>Mesma estrutura e copy — conector valida, H1 pergunta de forma pessoal, input responde</li>
+      <li>TextField HIG plain: sem container, <code>border-bottom 1px</code> na wrap; satura para brand-real no <code>:focus-within</code></li>
+      <li>SF Pro Display 26pt <code>weight 300</code> — ultra-light para o nome contrasta com o 600 do H1</li>
+      <li>CTA glass aprovado: <code>rgba(244,167,185,0.82)</code> + specular, aparece com <code>cubic-bezier(0.32,0.72,0,1)</code> ao digitar</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+function handleInput(input, platform) {
+  var cta = document.getElementById(platform === 'a' ? 'a-cta' : 'ios-cta');
+  var hasTxt = input.value.trim().length > 0;
+  cta.classList.toggle('visible', hasTxt);
+  document.querySelectorAll('.state-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.state === (hasTxt ? 'filled' : 'empty'));
+  });
+}
+
+var conns = {
+  sim:      "Você não está sozinha.",
+  as_vezes: "'Às vezes' já é sinal suficiente para prestar atenção.",
+  entender: "Isso já mostra que você se conhece mais do que imagina."
+};
+
+function setState(state, btnEl) {
+  document.querySelectorAll('.state-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btnEl) btnEl.classList.add('active');
+  var txt = conns[state] || conns.sim;
+  document.getElementById('a-conn').textContent   = txt;
+  document.getElementById('ios-conn').textContent = txt;
+  document.getElementById('a-name').value   = '';
+  document.getElementById('ios-name').value = '';
+  document.getElementById('a-cta').classList.remove('visible');
+  document.getElementById('ios-cta').classList.remove('visible');
+}
+</script>
+
+</body>
+</html>

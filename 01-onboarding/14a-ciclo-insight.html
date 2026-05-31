@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 14A: Ciclo Insight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand-real: #F4A7B9;
+  --brand-real-deep: #E8889E;
+  --brand-ai: #A8D5A2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #EDF0EB; color: #1A1714;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #090E09; color: #E4EAE4; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* STUDIO */
+.studio-header { position: relative; z-index: 10; padding: 32px 48px 16px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.brand-block { max-width: 640px; }
+.brand-eyebrow { font-variation-settings: 'wdth' 105, 'wght' 600, 'opsz' 11; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.5; margin-bottom: 10px; }
+.brand-title { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-variation-settings: 'wdth' 100, 'wght' 200; font-size: 0.65em; vertical-align: 0.1em; opacity: 0.5; }
+.brand-sub { font-size: 14px; line-height: 1.6; opacity: 0.65; max-width: 600px; }
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7; transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn { background: transparent; border: 1px solid currentColor; color: inherit; font: inherit; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer; opacity: 0.5; transition: all 0.25s ease; }
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: currentColor; opacity: 1; }
+.state-btn.active span { mix-blend-mode: difference; color: white; }
+
+/* STAGE */
+.stage { position: relative; z-index: 1; padding: 24px 24px 80px; display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.5; max-width: 280px; line-height: 1.4; }
+.phone { width: 380px; height: 800px; border-radius: 56px; background: #1A1A1A; padding: 14px; flex-shrink: 0; box-shadow: 0 60px 100px -20px rgba(0,0,0,0.32), 0 30px 60px -30px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A; }
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+.status-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none; color: #9B8A8C; }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200; }
+.screen { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+
+/* KEYFRAMES */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes speakerPop {
+  from { opacity: 0; transform: scale(0.88); }
+  60%  { transform: scale(1.08); opacity: 1; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes ctaIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes aBlob1 { 0%,100% { border-radius: 56% 44% 50% 50%; transform: rotate(0deg) scale(1); } 33% { border-radius: 44% 56% 62% 38%; transform: rotate(-6deg) scale(1.07); } 66% { border-radius: 62% 38% 44% 56%; transform: rotate(3deg) scale(0.96); } }
+@keyframes aBlob2 { 0%,100% { border-radius: 44% 56% 40% 60%; transform: rotate(0deg) scale(1); } 50% { border-radius: 62% 38% 52% 48%; transform: rotate(8deg) scale(1.09); } }
+@keyframes aBlob3 { 0%,100% { border-radius: 50% 50% 45% 55%; transform: translate(-50%,-50%) scale(1) rotate(0deg); } 50% { border-radius: 42% 58% 60% 40%; transform: translate(-50%,-50%) scale(1.10) rotate(12deg); } }
+@keyframes orbPulse { 0%,100% { opacity: 0.14; transform: scale(1); } 50% { opacity: 0.09; transform: scale(1.12); } }
+@keyframes dotIn {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: var(--dot-opacity, 0.22); transform: scale(1); }
+}
+@keyframes dotGlow {
+  0%,100% { filter: blur(0px); transform: scale(1); }
+  50% { filter: blur(1px); transform: scale(1.15); }
+}
+
+/* ─── ANDROID ─── */
+.android-screen {
+  background: #FFF8F2; color: #3D2C2E;
+  --plant-color: #9B8FD4;
+  --plant-glow: rgba(155,143,212,0.38);
+}
+.a-blob-1 { position: absolute; z-index: 0; pointer-events: none; width: 560px; height: 560px; background: var(--plant-color); opacity: 0.26; filter: blur(120px); border-radius: 56% 44% 50% 50%; top: -220px; left: -200px; animation: aBlob1 22s ease-in-out infinite; transition: background 0.7s ease; }
+.a-blob-2 { position: absolute; z-index: 0; pointer-events: none; width: 420px; height: 420px; background: var(--plant-color); opacity: 0.04; filter: blur(100px); border-radius: 44% 56% 40% 60%; bottom: -150px; right: -120px; animation: aBlob2 28s ease-in-out infinite; transition: background 0.7s ease; }
+.a-blob-3 { position: absolute; z-index: 0; pointer-events: none; width: 300px; height: 300px; background: var(--brand-real); opacity: 0.05; filter: blur(80px); border-radius: 50%; top: 50%; left: 50%; animation: aBlob3 18s ease-in-out infinite; }
+
+.a-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; text-align: left;
+  padding: 72px 22px 108px;
+}
+
+.a-speaker {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-bottom: 14px;
+  opacity: 0; animation: speakerPop 0.50s cubic-bezier(0.34, 1.56, 0.64, 1) 0.20s forwards;
+}
+.a-speaker-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--plant-color); flex-shrink: 0;
+  transition: background 0.7s ease;
+}
+.a-speaker-name {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 580, 'opsz' 13;
+  font-size: 13px; color: var(--plant-color);
+  transition: color 0.7s ease;
+}
+
+.a-conn-plant {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 420, 'opsz' 13;
+  font-size: 13px; color: var(--plant-color); opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.72s forwards;
+  margin-bottom: 10px; line-height: 1.4; transition: color 0.7s ease;
+}
+
+.a-h1 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 106, 'wght' 680, 'opsz' 26;
+  font-size: 28px; line-height: 1.18; letter-spacing: -0.02em;
+  color: #3D2C2E; margin-bottom: 16px;
+}
+.a-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.80s forwards; }
+.a-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 1.00s forwards; }
+
+/* 28 Cycle Dots */
+.a-cycle-dots {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  padding: 18px 16px; border-radius: 16px;
+  background: rgba(255,255,255,0.80);
+  margin-bottom: 18px;
+  opacity: 0; animation: fadeUp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.20s forwards;
+}
+.a-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #D8CDD0; opacity: 0;
+  transition: background 0.7s ease;
+}
+.a-dot.lit {
+  background: var(--brand-real);
+  animation: dotGlow 3s ease-in-out infinite;
+}
+.a-dot-label {
+  width: 100%; display: flex; justify-content: space-between;
+  margin-top: 4px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px; font-weight: 500; color: #C4B5B7;
+  letter-spacing: 0.02em;
+}
+.a-dot-label .lit-label { color: var(--brand-real); font-weight: 600; }
+
+.a-explain {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 400, 'opsz' 15;
+  font-size: 15px; color: #9B8A8C; line-height: 1.55;
+  opacity: 0; animation: fadeUp 0.55s ease-out 1.80s forwards;
+}
+.a-explain strong {
+  font-variation-settings: 'wdth' 100, 'wght' 560, 'opsz' 15;
+  color: #3D2C2E;
+}
+
+.a-cta {
+  position: absolute; bottom: 32px; left: 22px; right: 22px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  background: var(--plant-color);
+  box-shadow: 0 6px 32px var(--plant-glow);
+  color: #FFFFFF;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 600, 'opsz' 16;
+  font-size: 16px; cursor: pointer; text-align: center;
+  transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1), background 0.7s ease, box-shadow 0.7s ease;
+  opacity: 0; animation: ctaIn 0.44s cubic-bezier(0.34, 1.56, 0.64, 1) 2.30s forwards;
+}
+.a-cta:hover { transform: scale(1.02) translateY(0); filter: brightness(1.08); }
+.a-cta:active { transform: scale(0.97); }
+
+/* ─── iOS ─── */
+.ios-screen {
+  background: #FFF8F2; color: #3D2C2E;
+  --plant-color: #9B8FD4;
+  --plant-glow: rgba(155,143,212,0.38);
+}
+.ios-orb { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; transition: background 0.7s ease; }
+.ios-orb.a { background: var(--plant-color); width: 480px; height: 480px; top: -170px; right: -140px; opacity: 0.32; filter: blur(88px); animation: orbPulse 9s ease-in-out infinite; }
+.ios-orb.b { background: var(--plant-color); width: 330px; height: 330px; bottom: -110px; left: -90px; opacity: 0.18; filter: blur(74px); animation: orbPulse 12s ease-in-out 3s infinite; }
+.ios-orb.c { background: var(--brand-real); width: 240px; height: 240px; top: 44%; left: 50%; transform: translate(-50%,-50%); opacity: 0.05; filter: blur(60px); animation: orbPulse 15s ease-in-out 5s infinite; }
+
+.ios-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; text-align: left;
+  padding: 64px 22px 108px;
+}
+
+.ios-speaker {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-bottom: 14px;
+  opacity: 0; animation: speakerPop 0.46s cubic-bezier(0.32, 0.72, 0, 1) 0.20s forwards;
+}
+.ios-speaker-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--plant-color); flex-shrink: 0;
+  transition: background 0.7s ease;
+}
+.ios-speaker-name {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 500; letter-spacing: -0.08px;
+  color: var(--plant-color); transition: color 0.7s ease;
+}
+
+.ios-conn-plant {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.08px;
+  color: var(--plant-color); opacity: 0;
+  animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 0.72s forwards;
+  margin-bottom: 10px; line-height: 1.4; transition: color 0.7s ease;
+}
+
+.ios-h1 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 28px; font-weight: 700; line-height: 1.18; letter-spacing: -0.6px;
+  color: #3D2C2E; margin-bottom: 16px;
+}
+.ios-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 0.80s forwards; }
+.ios-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 1.00s forwards; }
+
+/* iOS Cycle Dots */
+.ios-cycle-dots {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  padding: 18px 16px; border-radius: 14px;
+  background: rgba(61,44,46,0.04);
+  border: 1px solid rgba(61,44,46,0.06);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  margin-bottom: 18px;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.20s forwards;
+}
+.ios-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #D8CDD0; opacity: 0;
+  transition: background 0.7s ease;
+}
+.ios-dot.lit {
+  background: var(--brand-real);
+  animation: dotGlow 3s ease-in-out infinite;
+}
+.ios-dot-label {
+  width: 100%; display: flex; justify-content: space-between;
+  margin-top: 4px;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 10px; font-weight: 400; letter-spacing: -0.08px; color: #C4B5B7;
+}
+.ios-dot-label .lit-label { color: var(--brand-real); font-weight: 500; }
+
+.ios-explain {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 15px; font-weight: 400; letter-spacing: -0.2px;
+  color: #9B8A8C; line-height: 1.55;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.80s forwards;
+}
+.ios-explain strong { font-weight: 600; color: #3D2C2E; }
+
+.ios-cta {
+  position: absolute; bottom: 32px; left: 22px; right: 22px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: rgba(155,143,212,0.82);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10), 0 4px 28px var(--plant-glow);
+  color: #FFFFFF;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.25px;
+  cursor: pointer; text-align: center;
+  transition: all 300ms cubic-bezier(0.32, 0.72, 0, 1), background 0.7s ease;
+  opacity: 0; animation: ctaIn 0.40s cubic-bezier(0.32, 0.72, 0, 1) 2.30s forwards;
+}
+.ios-cta:hover { transform: scale(1.01) translateY(0); filter: brightness(1.06); }
+.ios-cta:active { transform: scale(0.97); }
+
+/* ANNOTATIONS */
+.annotations { max-width: 1280px; margin: 0 auto; padding: 0 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.note { padding: 22px; border-radius: 18px; background: rgba(0,0,0,0.04); }
+body.dark .note { background: rgba(255,255,255,0.88); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; opacity: 0.78; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+.note.android li::before { background: #34A853; opacity: 0.75; }
+.note.ios li::before { background: var(--brand-ai); opacity: 0.75; }
+.note li code { font-family: monospace; font-size: 11px; background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 4px; }
+body.dark .note li code { background: rgba(255,255,255,0.1); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota · Onboarding · Screen 14A de 19 · O14A-Ciclo Insight · V2.4</div>
+    <h1 class="brand-title">Tem uma semana que tudo pesa mais, ne? <em>revelacao emocional · 28 dots visuais · zero pedido · zero configuracao</em></h1>
+    <p class="brand-sub">
+      Tela de puro reconhecimento. A planta nomeia a experiencia antes de pedir qualquer coisa.
+      28 dots — os ultimos 8 acesos em blush — mostram "tem uma janela, todo mes" sem texto clinico.
+      Nenhuma interacao de dados aqui. So o "aha moment." O convite vem na proxima tela (O14B).
+    </p>
+  </div>
+  <div class="controls-col">
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark')" aria-label="Toggle tema"><span class="dot"></span> Tema</button>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" data-s="s1" onclick="setArch('s1')" role="tab"><span>Lavanda</span></button>
+      <button class="state-btn" data-s="s2" onclick="setArch('s2')" role="tab"><span>Girassol</span></button>
+      <button class="state-btn" data-s="s3" onclick="setArch('s3')" role="tab"><span>Cacto</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="stage">
+
+  <!-- ANDROID -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android · M3 Expressive</span>
+      <span class="desc">Revelacao emocional. 28 dots com glow nos ultimos 8. Sem interacao de dados.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.5C5.5 4.5 18.5 4.5 22.5 8.5L20.5 10.5C17.5 7.5 6.5 7.5 3.5 10.5L1.5 8.5ZM5.5 12.5C8.5 9.5 15.5 9.5 18.5 12.5L16.5 14.5C14.5 12.5 9.5 12.5 7.5 14.5L5.5 12.5ZM9.5 16.5C11 15 13 15 14.5 16.5L12 19L9.5 16.5Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="8" rx="2"/><rect x="20" y="10" width="2" height="4" rx="1"/></svg>
+          </span>
+        </div>
+        <div class="screen android-screen" id="a-screen">
+          <div class="a-blob-1"></div>
+          <div class="a-blob-2"></div>
+          <div class="a-blob-3"></div>
+          <div class="a-body">
+            <div class="a-speaker">
+              <div class="a-speaker-dot"></div>
+              <span class="a-speaker-name" id="a-speaker-name">Lavanda</span>
+            </div>
+            <p class="a-conn-plant" id="a-conn">Tem algo sobre voce que aprendi.</p>
+            <h1 class="a-h1">
+              <span class="a-h1-l1">Tem uma semana</span>
+              <span class="a-h1-l2">que tudo pesa mais, ne?</span>
+            </h1>
+
+            <div class="a-cycle-dots" id="a-dots">
+              <!-- 28 dots rendered by JS -->
+            </div>
+
+            <p class="a-explain">Nao e fraqueza, nao e exagero. <strong>E previsivel.</strong> Nesses dias, tudo que voce ve nas redes pesa mais — seu corpo, as comparacoes, a ansiedade. E isso tem um porque.</p>
+          </div>
+          <button class="a-cta" id="a-cta">E da pra fazer algo?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26+ · Liquid Glass / HIG</span>
+      <span class="desc">Revelacao emocional. Dots com blur suave HIG. Sem interacao de dados.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="screen ios-screen" id="ios-screen">
+          <div class="ios-orb a"></div>
+          <div class="ios-orb b"></div>
+          <div class="ios-orb c"></div>
+          <div class="ios-body">
+            <div class="ios-speaker">
+              <div class="ios-speaker-dot"></div>
+              <span class="ios-speaker-name" id="ios-speaker-name">Lavanda</span>
+            </div>
+            <p class="ios-conn-plant" id="ios-conn">Tem algo sobre voce que aprendi.</p>
+            <h1 class="ios-h1">
+              <span class="ios-h1-l1">Tem uma semana</span>
+              <span class="ios-h1-l2">que tudo pesa mais, ne?</span>
+            </h1>
+
+            <div class="ios-cycle-dots" id="ios-dots">
+              <!-- 28 dots rendered by JS -->
+            </div>
+
+            <p class="ios-explain">Nao e fraqueza, nao e exagero. <strong>E previsivel.</strong> Nesses dias, tudo que voce ve nas redes pesa mais — seu corpo, as comparacoes, a ansiedade. E isso tem um porque.</p>
+          </div>
+          <button class="ios-cta" id="ios-cta">E da pra fazer algo?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="annotations">
+  <div class="note android">
+    <h4>Android · M3 Expressive</h4>
+    <ul>
+      <li><strong>Tela de puro reconhecimento.</strong> Nenhum dado coletado. Nenhuma interacao. So a planta nomeando algo que a usuaria sente mas nunca viu explicado assim. O "aha moment" precisa de espaco proprio — por isso virou tela separada do opt-in.</li>
+      <li><strong>28 dots visuais.</strong> Dias 1-20 em cinza muted. Dias 21-28 em blush (<code>#F4A7B9</code>) com glow pulsante. Comunicam "tem uma janela, todo mes" em 2 segundos, sem nenhuma palavra clinica. Sem rotulo "fase lutea". Sem calendario.</li>
+      <li><strong>Dots aparecem em sequencia</strong> — cada dot anima com 40ms de delay, criando efeito de "preenchimento" do ciclo. Os ultimos 8 acendem com glow. Efeito emocional: a usuaria ve o padrao antes de ler.</li>
+      <li><strong>CTA "E da pra fazer algo?"</strong> — a usuaria entendeu o problema, agora quer solucao. Transicao natural para O14B onde a planta oferece: "Posso ficar mais perto nesses dias?"</li>
+      <li>Connector per arch: Lavanda <em>"Tem algo sobre voce que aprendi."</em> · Girassol <em>"Uma coisa que notei sobre voce."</em> · Cacto <em>"Preciso te contar uma coisa."</em></li>
+    </ul>
+  </div>
+  <div class="note ios">
+    <h4>iOS 26+ · Liquid Glass / HIG</h4>
+    <ul>
+      <li><strong>Mesmo principio:</strong> revelacao emocional pura. Zero coleta de dados. A tela existe para criar o "aha" que torna o opt-in da proxima tela (O14B) significativo em vez de burocratico.</li>
+      <li>Dots container: <code>.regularMaterial</code> com <code>backdrop-filter: blur(20px) saturate(150%)</code>. Dots lit com <code>dotGlow</code> suave (blur 0→1px, scale 1→1.15). Mais contido que Android.</li>
+      <li>Labels abaixo dos dots: "dia 1" e "essa semana" em <code>#C4B5B7</code>. Label dos lit days em <code>--brand-real</code>. Minimo de texto.</li>
+      <li>CTA Liquid Glass: <code>rgba(plant-color, 0.82)</code> + specular. Auto-reveal aos 2.30s — tela nao exige nenhuma acao da usuaria para progredir.</li>
+      <li>Refs: <strong>Stardust</strong> (ciclo sem linguagem medica), <strong>Flo</strong> (ciclo visual mas com excesso de UI clinica — Brota faz o oposto).</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+var archetypes = {
+  s1: { name: 'Lavanda',  color: '#9B8FD4', glow: 'rgba(155,143,212,0.38)', ctaRgba: 'rgba(155,143,212,0.82)', conn: 'Tem algo sobre voce que aprendi.' },
+  s2: { name: 'Girassol', color: '#E8A830', glow: 'rgba(232,168,48,0.38)',  ctaRgba: 'rgba(232,168,48,0.82)',  conn: 'Uma coisa que notei sobre voce.' },
+  s3: { name: 'Cacto',    color: '#6BAF7A', glow: 'rgba(107,175,122,0.38)', ctaRgba: 'rgba(107,175,122,0.82)', conn: 'Preciso te contar uma coisa.' }
+};
+
+function renderDots(containerId, prefix) {
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  for (var i = 0; i < 28; i++) {
+    var dot = document.createElement('div');
+    dot.className = prefix + '-dot' + (i >= 20 ? ' lit' : '');
+    var baseDelay = 1.20;
+    var dotDelay = baseDelay + (i * 0.04);
+    var opacity = i >= 20 ? 1 : (0.18 + (i * 0.012));
+    dot.style.cssText = '--dot-opacity:' + opacity + '; animation: dotIn 0.3s cubic-bezier(0.34,1.56,0.64,1) ' + dotDelay.toFixed(2) + 's forwards' + (i >= 20 ? ', dotGlow 3s ease-in-out ' + (dotDelay + 0.3).toFixed(2) + 's infinite' : '') + ';';
+    container.appendChild(dot);
+  }
+  // Labels
+  var label = document.createElement('div');
+  label.className = prefix + '-dot-label';
+  label.innerHTML = '<span>dia 1</span><span class="lit-label">essa semana</span>';
+  container.appendChild(label);
+}
+
+renderDots('a-dots', 'a');
+renderDots('ios-dots', 'ios');
+
+function setArch(s) {
+  document.querySelectorAll('[data-s]').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.s === s);
+  });
+  var st = archetypes[s];
+  document.getElementById('a-screen').style.setProperty('--plant-color', st.color);
+  document.getElementById('a-screen').style.setProperty('--plant-glow', st.glow);
+  document.getElementById('ios-screen').style.setProperty('--plant-color', st.color);
+  document.getElementById('ios-screen').style.setProperty('--plant-glow', st.glow);
+  document.getElementById('a-speaker-name').textContent = st.name;
+  document.getElementById('ios-speaker-name').textContent = st.name;
+  document.getElementById('a-conn').textContent = st.conn;
+  document.getElementById('ios-conn').textContent = st.conn;
+  document.getElementById('a-cta').style.background = st.color;
+  document.getElementById('a-cta').style.boxShadow = '0 6px 32px ' + st.glow;
+  document.getElementById('ios-cta').style.background = st.ctaRgba;
+  document.getElementById('ios-cta').style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10), 0 4px 28px ' + st.glow;
+}
+
+setArch('s1');
+</script>
+</body>
+</html>

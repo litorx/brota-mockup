@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 11: Arquetipo da Planta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand-real: #F4A7B9;
+  --brand-ai:   #A8D5A2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #FFF8F2; color: #3D2C2E;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #1A1418; color: #E4E0DE; }
+
+/* STUDIO */
+.studio-header { position: relative; z-index: 10; padding: 32px 48px 16px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.brand-block { max-width: 640px; }
+.brand-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: #C4B5B7; margin-bottom: 10px; }
+.brand-title { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-weight: 300; font-size: 0.65em; vertical-align: 0.1em; color: #C4B5B7; }
+.brand-sub { font-size: 14px; line-height: 1.6; color: #9B8A8C; max-width: 600px; }
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(61,44,46,0.12); background: transparent; color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7; transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn { background: transparent; border: 1px solid rgba(61,44,46,0.12); color: inherit; font: inherit; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer; opacity: 0.5; transition: all 0.25s ease; }
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: var(--brand-real); color: white; opacity: 1; border-color: var(--brand-real); }
+
+/* STAGE */
+.stage { position: relative; z-index: 1; padding: 24px 24px 80px; display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; color: #C4B5B7; max-width: 280px; line-height: 1.4; }
+.phone { width: 380px; height: 800px; border-radius: 56px; background: #1A1A1A; padding: 14px; flex-shrink: 0; box-shadow: 0 60px 100px -20px rgba(0,0,0,0.18), 0 30px 60px -30px rgba(0,0,0,0.10), inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A; }
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+.status-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none; color: #9B8A8C; }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200; }
+.screen { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+
+/* KEYFRAMES */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes checkIn {
+  from { transform: scale(0) rotate(-15deg); opacity: 0; }
+  60%  { transform: scale(1.3) rotate(5deg); opacity: 1; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes ctaUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes aBlob1 { 0%,100% { border-radius: 56% 44% 50% 50%; transform: rotate(0deg) scale(1); } 33% { border-radius: 44% 56% 62% 38%; transform: rotate(-6deg) scale(1.06); } 66% { border-radius: 62% 38% 44% 56%; transform: rotate(3deg) scale(0.97); } }
+@keyframes aBlob2 { 0%,100% { border-radius: 44% 56% 40% 60%; transform: rotate(0deg) scale(1); } 50% { border-radius: 62% 38% 52% 48%; transform: rotate(8deg) scale(1.08); } }
+@keyframes orbPulse { 0%,100% { opacity: 0.06; transform: scale(1); } 50% { opacity: 0.10; transform: scale(1.08); } }
+@keyframes iconFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+
+/* ANDROID */
+.android-screen { background: #FFF8F2; color: #3D2C2E; }
+.a-blob-1 { position: absolute; z-index: 0; pointer-events: none; width: 580px; height: 580px; background: var(--brand-ai); opacity: 0.06; filter: blur(110px); border-radius: 56% 44% 50% 50%; top: -230px; left: -200px; animation: aBlob1 22s ease-in-out infinite; }
+.a-blob-2 { position: absolute; z-index: 0; pointer-events: none; width: 420px; height: 420px; background: var(--brand-real); opacity: 0.08; filter: blur(90px); border-radius: 44% 56% 40% 60%; bottom: -150px; right: -120px; animation: aBlob2 28s ease-in-out infinite; }
+
+.a-body { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left; padding: 72px 22px 108px; }
+
+.a-conn {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 400; color: var(--brand-real); margin-bottom: 12px;
+  opacity: 0; animation: fadeUp 0.60s cubic-bezier(0.34, 1.56, 0.64, 1) 0.20s forwards;
+}
+.a-h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em;
+  color: #3D2C2E; margin-bottom: 6px;
+}
+.a-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.82s forwards; }
+.a-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 1.02s forwards; }
+.a-sub {
+  font-family: 'Nunito', sans-serif;
+  font-size: 17px; font-weight: 400; color: #C4B5B7; margin-bottom: 22px;
+  opacity: 0; animation: fadeUp 0.55s ease-out 1.44s forwards;
+}
+
+.a-cards { display: flex; flex-direction: column; gap: 9px; }
+.a-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: 16px;
+  background: rgba(255,255,255,0.90);
+  border: none; border-left: 5px solid transparent;
+  cursor: pointer; position: relative;
+  transition: background 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 280ms ease;
+  opacity: 0;
+}
+.a-card:nth-child(1) { animation: cardIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 2.00s forwards; }
+.a-card:nth-child(2) { animation: cardIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 2.14s forwards; }
+.a-card:nth-child(3) { animation: cardIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 2.28s forwards; }
+.a-card:nth-child(4) { animation: cardIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 2.42s forwards; }
+.a-card:nth-child(5) { animation: cardIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 2.56s forwards; }
+.a-card:hover { transform: scale(1.015); background: #FFFFFF; }
+.a-card:active { transform: scale(0.97); }
+
+/* Android plant icon containers */
+.card-emoji { font-size: 26px; line-height: 1; flex-shrink: 0; }
+.a-card .card-emoji {
+  font-size: 0; width: 44px; height: 44px; border-radius: 14px;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background 300ms ease, box-shadow 300ms ease;
+}
+.a-card .card-emoji svg { width: 32px; height: 32px; animation: iconFloat 3.6s ease-in-out infinite; transition: filter 300ms ease; }
+.a-card[data-id="lavanda"] .card-emoji { background: rgba(196,176,224,0.15); }
+.a-card[data-id="cacto"] .card-emoji { background: rgba(140,197,160,0.15); }
+.a-card[data-id="girassol"] .card-emoji { background: rgba(242,206,107,0.15); }
+.a-card[data-id="cerejeira"] .card-emoji { background: rgba(242,181,196,0.15); }
+.a-card[data-id="lotus"] .card-emoji { background: rgba(212,184,212,0.15); }
+.a-card[data-id="lotus"] .card-emoji { background: rgba(212,184,212,0.15); }
+/* Selected state */
+.a-card.selected .card-emoji { background: rgba(255,255,255,0.35); box-shadow: 0 0 16px rgba(255,255,255,0.25); }
+.a-card.selected .card-emoji svg { transform: scale(1.15); filter: drop-shadow(0 2px 6px rgba(255,255,255,0.4)); }
+
+.card-text { flex: 1; min-width: 0; }
+.a-card .card-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 17px; font-weight: 600; color: #3D2C2E; line-height: 1.2;
+  transition: color 0.25s;
+}
+.a-card .card-tag {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 400; color: #C4B5B7; margin-top: 2px;
+  transition: color 0.25s;
+}
+.a-card.selected .card-name { color: white; }
+.a-card.selected .card-tag  { color: rgba(255,255,255,0.72); }
+
+.a-cta-arch {
+  position: absolute; bottom: 32px; left: 20px; right: 20px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  color: #FFFFFF;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px; font-weight: 600; cursor: pointer; text-align: center;
+  transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0; transform: translateY(14px); pointer-events: none;
+}
+.a-cta-arch.visible { opacity: 1; transform: translateY(0); pointer-events: auto; animation: ctaUp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.a-cta-arch:hover { transform: scale(1.02) translateY(0); filter: brightness(1.08); }
+.a-cta-arch:active { transform: scale(0.97); }
+
+/* iOS */
+.ios-screen { background: #FFF8F2; color: #3D2C2E; }
+.ios-orb { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; }
+.ios-orb.a { background: var(--brand-ai); width: 480px; height: 480px; top: -170px; right: -150px; opacity: 0.07; filter: blur(86px); animation: orbPulse 8s ease-in-out infinite; }
+.ios-orb.b { background: var(--brand-real); width: 320px; height: 320px; bottom: -110px; left: -90px; opacity: 0.06; filter: blur(72px); animation: orbPulse 11s ease-in-out 2s infinite; }
+
+.ios-body { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left; padding: 64px 22px 108px; }
+
+.ios-conn {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.1px;
+  color: var(--brand-real); margin-bottom: 12px;
+  opacity: 0; animation: fadeUp 0.55s cubic-bezier(0.32, 0.72, 0, 1) 0.20s forwards;
+}
+.ios-h1 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 28px; font-weight: 700; line-height: 1.18; letter-spacing: -0.6px;
+  color: #3D2C2E; margin-bottom: 6px;
+}
+.ios-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 0.82s forwards; }
+.ios-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 1.02s forwards; }
+.ios-sub {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 400; letter-spacing: -0.25px;
+  color: #C4B5B7; margin-bottom: 22px;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.44s forwards;
+}
+
+/* iOS plant icon containers */
+.ios-card .card-emoji {
+  font-size: 0; width: 44px; height: 44px; border-radius: 14px;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background 260ms ease, box-shadow 260ms ease;
+}
+.ios-card .card-emoji svg { width: 32px; height: 32px; animation: iconFloat 3.6s ease-in-out infinite; transition: filter 260ms ease; }
+.ios-card[data-id="lavanda"] .card-emoji { background: rgba(196,176,224,0.12); }
+.ios-card[data-id="cacto"] .card-emoji { background: rgba(140,197,160,0.12); }
+.ios-card[data-id="girassol"] .card-emoji { background: rgba(242,206,107,0.12); }
+.ios-card[data-id="cerejeira"] .card-emoji { background: rgba(242,181,196,0.12); }
+.ios-card[data-id="lotus"] .card-emoji { background: rgba(212,184,212,0.12); }
+.ios-card[data-id="lotus"] .card-emoji { background: rgba(212,184,212,0.12); }
+.ios-card.selected .card-emoji { background: rgba(255,255,255,0.35); box-shadow: 0 0 16px rgba(255,255,255,0.25); }
+.ios-card.selected .card-emoji svg { transform: scale(1.15); filter: drop-shadow(0 2px 6px rgba(255,255,255,0.4)); }
+
+.ios-cards { display: flex; flex-direction: column; gap: 9px; }
+.ios-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: 16px;
+  background: rgba(255,255,255,0.90);
+  border: none; border-left: 5px solid transparent;
+  cursor: pointer; position: relative;
+  transition: background 260ms cubic-bezier(0.32, 0.72, 0, 1),
+              transform 200ms cubic-bezier(0.32, 0.72, 0, 1),
+              box-shadow 260ms ease;
+  opacity: 0;
+}
+.ios-card:nth-child(1) { animation: cardIn 0.50s cubic-bezier(0.32, 0.72, 0, 1) 2.00s forwards; }
+.ios-card:nth-child(2) { animation: cardIn 0.50s cubic-bezier(0.32, 0.72, 0, 1) 2.14s forwards; }
+.ios-card:nth-child(3) { animation: cardIn 0.50s cubic-bezier(0.32, 0.72, 0, 1) 2.28s forwards; }
+.ios-card:nth-child(4) { animation: cardIn 0.50s cubic-bezier(0.32, 0.72, 0, 1) 2.42s forwards; }
+.ios-card:nth-child(5) { animation: cardIn 0.50s cubic-bezier(0.32, 0.72, 0, 1) 2.56s forwards; }
+.ios-card:hover { transform: scale(1.015); background: #FFFFFF; }
+.ios-card:active { transform: scale(0.97); }
+
+.ios-card .card-name {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 500; letter-spacing: -0.25px;
+  color: #3D2C2E; line-height: 1.2;
+  transition: color 0.25s;
+}
+.ios-card .card-tag {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.08px;
+  color: #C4B5B7; margin-top: 2px;
+  transition: color 0.25s;
+}
+.ios-card.selected .card-name { color: white; }
+.ios-card.selected .card-tag  { color: rgba(255,255,255,0.72); }
+
+.ios-check {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: white;
+  opacity: 0; transition: opacity 0.2s ease;
+}
+.ios-card.selected .ios-check {
+  opacity: 1;
+  animation: checkIn 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.ios-cta-arch {
+  position: absolute; bottom: 32px; left: 20px; right: 20px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  color: #FFFFFF;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.25px;
+  cursor: pointer; text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10), 0 4px 28px rgba(0,0,0,0.18);
+  transition: all 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  opacity: 0; transform: translateY(14px); pointer-events: none;
+}
+.ios-cta-arch.visible { opacity: 1; transform: translateY(0); pointer-events: auto; animation: ctaUp 0.42s cubic-bezier(0.32, 0.72, 0, 1) both; }
+.ios-cta-arch:hover { transform: scale(1.01) translateY(0); filter: brightness(1.06); }
+.ios-cta-arch:active { transform: scale(0.97); }
+
+/* ANNOTATIONS */
+.annotations { max-width: 1280px; margin: 0 auto; padding: 0 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.note { padding: 22px; border-radius: 18px; background: rgba(61,44,46,0.04); }
+body.dark .note { background: rgba(255,255,255,0.06); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #9B8A8C; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; color: #9B8A8C; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; }
+.note.android li::before { background: #34A853; }
+.note.ios li::before { background: #636366; }
+.note li code { font-family: monospace; font-size: 11px; background: rgba(61,44,46,0.06); padding: 1px 5px; border-radius: 4px; }
+body.dark .note li code { background: rgba(255,255,255,0.1); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota &middot; Onboarding &middot; Screen 12 de 19 &middot; O12-Arquetipo</div>
+    <h1 class="brand-title">Qual flor ela vai se tornar? <em>5 arquetipos &middot; SVG botanico Android &middot; emoji nativo iOS</em></h1>
+    <p class="brand-sub">
+      A semente brotou em O11. Agora a usuaria escolhe o arquetipo da sua planta &mdash; cada uma com tom, cor e mecanismo psicologico proprios.
+      Android usa icones SVG botanicos personalizados. iOS usa emoji nativo.
+    </p>
+  </div>
+  <div class="controls-col">
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark')" aria-label="Toggle tema"><span class="dot"></span> Tema</button>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" data-s="s1" onclick="setState('s1')" role="tab"><span>Lavanda</span></button>
+      <button class="state-btn" data-s="s2" onclick="setState('s2')" role="tab"><span>Girassol</span></button>
+      <button class="state-btn" data-s="s3" onclick="setState('s3')" role="tab"><span>Cacto</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="stage">
+
+  <!-- ANDROID -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android &middot; M3 Expressive</span>
+      <span class="desc">Icones SVG botanicos. Card preenche com cor do arquetipo. Spring M3E.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.5C5.5 4.5 18.5 4.5 22.5 8.5L20.5 10.5C17.5 7.5 6.5 7.5 3.5 10.5L1.5 8.5ZM5.5 12.5C8.5 9.5 15.5 9.5 18.5 12.5L16.5 14.5C14.5 12.5 9.5 12.5 7.5 14.5L5.5 12.5ZM9.5 16.5C11 15 13 15 14.5 16.5L12 19L9.5 16.5Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="8" rx="2"/><rect x="20" y="10" width="2" height="4" rx="1"/></svg>
+          </span>
+        </div>
+        <div class="screen android-screen">
+          <div class="a-blob-1"></div>
+          <div class="a-blob-2"></div>
+          <div class="a-body">
+            <div class="a-conn" id="a-conn">Ela ja brotou. Agora decide quem ela vai ser.</div>
+            <h1 class="a-h1">
+              <span class="a-h1-l1">Qual flor ela</span>
+              <span class="a-h1-l2">vai se tornar?</span>
+            </h1>
+            <p class="a-sub">Nao tem resposta certa.</p>
+
+            <div class="a-cards">
+              <!-- Lavanda -->
+              <div class="a-card" data-id="lavanda" onclick="pick('lavanda')" style="border-left-color: #C4B0E0">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Lavanda</div><div class="card-tag">Quero paz</div></div>
+              </div>
+              <!-- Cacto -->
+              <div class="a-card" data-id="cacto" onclick="pick('cacto')" style="border-left-color: #8CC5A0">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Cacto</div><div class="card-tag">Quero ser real</div></div>
+              </div>
+              <!-- Girassol -->
+              <div class="a-card" data-id="girassol" onclick="pick('girassol')" style="border-left-color: #F2CE6B">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Girassol</div><div class="card-tag">Quero alegria</div></div>
+              </div>
+              <!-- Cerejeira -->
+              <div class="a-card" data-id="cerejeira" onclick="pick('cerejeira')" style="border-left-color: #F2B5C4">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Cerejeira</div><div class="card-tag">Quero me aceitar</div></div>
+              </div>
+              <!-- Lotus -->
+              <div class="a-card" data-id="lotus" onclick="pick('lotus')" style="border-left-color: #D4B8D4">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Lotus</div><div class="card-tag">Quero descansar</div></div>
+              </div>
+            </div>
+          </div>
+          <button class="a-cta-arch" id="a-cta-arch">Essa e minha planta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26+ &middot; Liquid Glass / HIG</span>
+      <span class="desc">Emoji nativo Apple. Borda colorida + tint + checkmark spring.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="screen ios-screen">
+          <div class="ios-orb a"></div>
+          <div class="ios-orb b"></div>
+          <div class="ios-body">
+            <div class="ios-conn">Ela ja brotou. Agora decide quem ela vai ser.</div>
+            <h1 class="ios-h1">
+              <span class="ios-h1-l1">Qual flor ela</span>
+              <span class="ios-h1-l2">vai se tornar?</span>
+            </h1>
+            <p class="ios-sub">Nao tem resposta certa.</p>
+
+            <div class="ios-cards">
+              <div class="ios-card" data-id="lavanda" onclick="pick('lavanda')" style="border-left-color: #C4B0E0">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Lavanda</div><div class="card-tag">Quero paz</div></div>
+                <div class="ios-check" style="background: #C4B0E0">&#10003;</div>
+              </div>
+              <div class="ios-card" data-id="cacto" onclick="pick('cacto')" style="border-left-color: #8CC5A0">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Cacto</div><div class="card-tag">Quero ser real</div></div>
+                <div class="ios-check" style="background: #8CC5A0">&#10003;</div>
+              </div>
+              <div class="ios-card" data-id="girassol" onclick="pick('girassol')" style="border-left-color: #F2CE6B">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Girassol</div><div class="card-tag">Quero alegria</div></div>
+                <div class="ios-check" style="background: #F2CE6B">&#10003;</div>
+              </div>
+              <div class="ios-card" data-id="cerejeira" onclick="pick('cerejeira')" style="border-left-color: #F2B5C4">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Cerejeira</div><div class="card-tag">Quero me aceitar</div></div>
+                <div class="ios-check" style="background: #F2B5C4">&#10003;</div>
+              </div>
+              <div class="ios-card" data-id="lotus" onclick="pick('lotus')" style="border-left-color: #D4B8D4">
+                <span class="card-emoji"></span>
+                <div class="card-text"><div class="card-name">Lotus</div><div class="card-tag">Quero descansar</div></div>
+                <div class="ios-check" style="background: #D4B8D4">&#10003;</div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <button class="ios-cta-arch" id="ios-cta-arch">Essa e minha planta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="annotations">
+  <div class="note android">
+    <h4>Android &middot; M3 Expressive</h4>
+    <ul>
+      <li>Icones SVG botanicos personalizados por arquetipo — <strong>Lavanda</strong>: 3 espigas com flores miudas. <strong>Cacto</strong>: saguaro com bracos e florzinha rosa. <strong>Girassol</strong>: vista frontal com petalas radiadas. <strong>Cerejeira</strong>: galho com 3 flores de 5 petalas + petalas caindo. <strong>Lotus</strong>: flor abrindo sobre agua.</li>
+      <li>Containers <code>40x40 border-radius:14px</code> com <code>rgba(cor,0.15)</code>. SVGs em <code>26x26</code> com <code>iconFloat</code> — micro-flutuacao 1.5px continua.</li>
+      <li>Selecao: card preenche com cor. Icone inverte para branco via <code>filter: brightness(0) invert(1)</code>. Background do container muda para <code>rgba(255,255,255,0.22)</code>.</li>
+      <li>Spring <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> em tudo. Stagger +140ms por card.</li>
+    </ul>
+  </div>
+  <div class="note ios">
+    <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
+    <ul>
+      <li>Emoji nativo Apple. iOS renderiza todos os emoji corretamente — nenhuma substituicao necessaria.</li>
+      <li>Cards <code>.regularMaterial</code> com <code>blur(20px) saturate(160%)</code>.</li>
+      <li>Selecao: borda colorida + tint + checkmark com spring. HIG pattern.</li>
+      <li>CTA <code>backdrop-filter: blur(24px) saturate(180%)</code> + specular inset.</li>
+    </ul>
+  </div>
+</section>
+
+<script src="../shared/plant-svgs.js"></script>
+<script>
+var archetypes = [
+  { id: 'lavanda',   color: '#C4B0E0', glow: 'rgba(196,176,224,0.38)' },
+  { id: 'cacto',     color: '#8CC5A0', glow: 'rgba(140,197,160,0.38)' },
+  { id: 'girassol',  color: '#F2CE6B', glow: 'rgba(242,206,107,0.38)' },
+  { id: 'cerejeira', color: '#F2B5C4', glow: 'rgba(242,181,196,0.38)' },
+  { id: 'lotus',     color: '#D4B8D4', glow: 'rgba(212,184,212,0.38)' }
+];
+
+function hexToRgba(hex, alpha) {
+  var r = parseInt(hex.slice(1,3), 16);
+  var g = parseInt(hex.slice(3,5), 16);
+  var b = parseInt(hex.slice(5,7), 16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+function pick(id) {
+  var arch = archetypes.find(function(a) { return a.id === id; });
+
+  // Android
+  document.querySelectorAll('.a-card').forEach(function(c) {
+    c.classList.remove('selected');
+    c.style.removeProperty('background');
+    c.style.removeProperty('box-shadow');
+  });
+  var aCard = document.querySelector('.a-card[data-id="' + id + '"]');
+  if (aCard) {
+    aCard.classList.add('selected');
+    aCard.style.background = arch.color;
+    aCard.style.boxShadow = '0 6px 28px ' + arch.glow;
+  }
+
+  // iOS — same style as Android
+  document.querySelectorAll('.ios-card').forEach(function(c) {
+    c.classList.remove('selected');
+    c.style.removeProperty('background');
+    c.style.removeProperty('box-shadow');
+  });
+  var iosCard = document.querySelector('.ios-card[data-id="' + id + '"]');
+  if (iosCard) {
+    iosCard.classList.add('selected');
+    iosCard.style.background = arch.color;
+    iosCard.style.boxShadow = '0 6px 28px ' + arch.glow;
+  }
+
+  // CTA Android
+  var aCta = document.getElementById('a-cta-arch');
+  aCta.style.background = arch.color;
+  aCta.style.boxShadow = '0 6px 32px ' + arch.glow;
+  if (!aCta.classList.contains('visible')) aCta.classList.add('visible');
+
+  // CTA iOS
+  var iCta = document.getElementById('ios-cta-arch');
+  iCta.style.background = hexToRgba(arch.color, 0.82);
+  if (!iCta.classList.contains('visible')) iCta.classList.add('visible');
+}
+
+var stateMap = { s1: 'lavanda', s2: 'girassol', s3: 'cacto' };
+function setState(s) {
+  document.querySelectorAll('.state-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.s === s);
+  });
+  pick(stateMap[s]);
+}
+
+/* Preenche os cards com a arte padronizada (fonte unica: ../shared/plant-svgs.js),
+   cada arquetipo na sua cor de accent. */
+function renderCards() {
+  archetypes.forEach(function(a) {
+    var html = renderPlantSVG(a.id, a.color, false);
+    document.querySelectorAll(
+      '.a-card[data-id="' + a.id + '"] .card-emoji, .ios-card[data-id="' + a.id + '"] .card-emoji'
+    ).forEach(function(span) { span.innerHTML = html; });
+  });
+}
+
+renderCards();
+setState('s1');
+</script>
+</body>
+</html>

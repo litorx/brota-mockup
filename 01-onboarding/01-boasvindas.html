@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 01: Abertura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================ TOKENS */
+:root {
+  --brand-real: #F4A7B9;
+  --brand-real-deep: #E8889E;
+  --brand-ai: #A8D5A2;
+  --brand-correct: #7DD4A3;
+  --brand-warning: #FFD07A;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #F0EBE8; color: #1A1714;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #1A1418; color: #E8E4DA; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================ STUDIO HEADER */
+.studio-header {
+  position: relative; z-index: 10; padding: 32px 48px 16px;
+  display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start;
+}
+.brand-block { max-width: 640px; }
+.brand-eyebrow {
+  font-variation-settings: 'wdth' 105, 'wght' 600, 'opsz' 11;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.5; margin-bottom: 10px;
+}
+.brand-title {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px;
+}
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-variation-settings: 'wdth' 100, 'wght' 200; font-size: 0.65em; vertical-align: 0.1em; opacity: 0.5; }
+.brand-sub { font-size: 14px; line-height: 1.6; opacity: 0.65; max-width: 600px; }
+.brand-sub em { font-family: 'Instrument Serif', serif; font-style: italic; }
+.brand-sub code { font-family: monospace; font-size: 12px; background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 3px; }
+body.dark .brand-sub code { background: rgba(255,255,255,0.1); }
+
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.controls-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
+  border-radius: 999px; border: 1px solid currentColor; background: transparent;
+  color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7;
+  transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+
+.play-btn {
+  display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px;
+  border-radius: 999px; border: none;
+  background: var(--brand-real); color: rgba(61,44,46,0.70);
+  font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 18px rgba(244,167,185,0.35);
+}
+.play-btn:hover { transform: scale(1.04); box-shadow: 0 6px 24px rgba(244,167,185,0.5); }
+.play-btn:active { transform: scale(0.97); }
+
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn {
+  background: transparent; border: 1px solid currentColor; color: inherit; font: inherit;
+  font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  opacity: 0.5; transition: all 0.25s ease;
+}
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: currentColor; opacity: 1; }
+.state-btn.active span { mix-blend-mode: difference; color: white; }
+
+/* Timing legend */
+.timing-legend {
+  display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end;
+  margin-top: 4px;
+}
+.timing-chip {
+  font-size: 10px; padding: 3px 9px; border-radius: 999px;
+  background: rgba(244,167,185,0.1); color: var(--brand-real);
+  font-variation-settings: 'wdth' 100, 'wght' 500, 'opsz' 10;
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================ STAGE */
+.stage {
+  position: relative; z-index: 1; padding: 24px 24px 80px;
+  display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap;
+}
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.5; max-width: 280px; line-height: 1.4; }
+
+.phone {
+  width: 380px; height: 800px; border-radius: 56px; background: #1A1A1A; padding: 14px; flex-shrink: 0;
+  box-shadow: 0 60px 100px -20px rgba(0,0,0,0.32), 0 30px 60px -30px rgba(0,0,0,0.18),
+              inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A;
+}
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+
+.status-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none;
+  color: #9B8A8C;
+}
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200;
+}
+
+.screen {
+  width: 100%; height: 100%; position: relative; overflow: hidden;
+  isolation: isolate; display: flex; flex-direction: column;
+}
+
+/* ============================================================ ANDROID — Material 3 Expressive
+   Background: #0D0A0B — rose-botanical dark
+   3 rosa blobs morfando em ritmos diferentes
+   Beats: Roboto Flex com spring overshoot M3E na entrada
+*/
+.android-screen { background: #FFF8F2; color: #3D2C2E; }
+
+.a-blob-1 {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 560px; height: 560px; background: var(--brand-real); opacity: 0.19; filter: blur(100px);
+  border-radius: 60% 40% 54% 46%; top: -230px; left: -230px;
+  animation: aB1 20s ease-in-out infinite;
+}
+.a-blob-2 {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 410px; height: 410px; background: var(--brand-real); opacity: 0.11; filter: blur(80px);
+  border-radius: 44% 56% 40% 60%; bottom: -150px; right: -140px;
+  animation: aB2 28s ease-in-out infinite;
+}
+.a-blob-3 {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 230px; height: 230px; background: var(--brand-real); opacity: 0.04; filter: blur(58px);
+  border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  animation: aB3 16s ease-in-out infinite;
+}
+
+@keyframes aB1 {
+  0%,100% { border-radius: 60% 40% 54% 46%; transform: rotate(0deg) scale(1); }
+  33%      { border-radius: 48% 52% 44% 56%; transform: rotate(5deg) scale(1.06); }
+  66%      { border-radius: 42% 58% 62% 38%; transform: rotate(-4deg) scale(0.96); }
+}
+@keyframes aB2 {
+  0%,100% { border-radius: 44% 56% 40% 60%; transform: rotate(0deg) scale(1); }
+  50%     { border-radius: 62% 38% 52% 48%; transform: rotate(-8deg) scale(1.07); }
+}
+@keyframes aB3 {
+  0%,100% { border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0.04; }
+  40%     { border-radius: 60% 40% 55% 45%; transform: translate(-50%,-50%) scale(1.18); opacity: 0.11; }
+  80%     { border-radius: 45% 55% 50% 50%; transform: translate(-50%,-50%) scale(0.92); opacity: 0.04; }
+}
+
+/* ============================================================ BEATS — shared base */
+.beat {
+  opacity: 0;
+  will-change: opacity, transform;
+  /* default transition — overridden per platform */
+  transition: opacity 0.55s ease, transform 0.65s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.beat.b1 { transform: translateY(14px); }
+.beat.b2 { transform: translateY(18px); }
+.beat.b3 { transform: translateY(18px); }
+
+/* M3E spring on Android */
+.android-screen .beat { transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* HIG bezier on iOS — no overshoot */
+.ios-screen .beat { transition: opacity 0.58s ease, transform 0.68s cubic-bezier(0.32, 0.72, 0, 1); }
+
+/* Visible state */
+.beat.visible { opacity: 1; transform: translateY(0) !important; }
+
+/* Exit — overrides, same curve for both (no bouncy exit) */
+.beat.exiting {
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+  transition: opacity 0.75s ease, transform 0.75s ease !important;
+}
+
+/* ============================================================ SEQUENCE BODY — Android */
+.a-seq-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 64px 32px 56px; gap: 30px; text-align: center;
+}
+
+.a-b1 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 105, 'wght' 600, 'opsz' 11;
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--brand-real);
+}
+
+.a-b2 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 340, 'opsz' 33;
+  font-size: 33px; line-height: 1.22;
+  color: #3D2C2E; letter-spacing: -0.015em;
+}
+
+.a-b3 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 340, 'opsz' 33;
+  font-size: 33px; line-height: 1.22;
+  color: #3D2C2E; letter-spacing: -0.015em;
+}
+.a-b3 .accent {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-variation-settings: normal; color: var(--brand-real);
+}
+
+/* ============================================================ iOS SCREEN */
+.ios-screen { background: #FFF8F2; color: #3D2C2E; }
+
+.ios-orb {
+  position: absolute; z-index: 0; pointer-events: none;
+  border-radius: 50%;
+}
+.ios-orb.a { background: var(--brand-real); width: 420px; height: 420px; top: -140px; right: -130px; opacity: 0.05; filter: blur(78px); }
+.ios-orb.b { background: var(--brand-real); width: 320px; height: 320px; bottom: -90px; left: -100px; opacity: 0.15; filter: blur(66px); }
+.ios-orb.c { background: var(--brand-real); width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.08; filter: blur(52px); }
+
+.ios-seq-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 64px 30px 56px; gap: 28px; text-align: center;
+}
+
+.ios-b1 {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+  color: var(--brand-real);
+}
+
+.ios-b2 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 31px; font-weight: 400; line-height: 1.22; letter-spacing: -0.5px;
+  color: #3D2C2E;
+}
+
+.ios-b3 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 31px; font-weight: 400; line-height: 1.22; letter-spacing: -0.5px;
+  color: #3D2C2E;
+}
+.ios-b3 .accent {
+  font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;
+  color: var(--brand-real);
+}
+
+/* ============================================================ SCREEN TRANSITION OVERLAY
+   Fades in after exit to simulate auto-advance to next screen
+*/
+.screen-next {
+  position: absolute; inset: 0; z-index: 60;
+  background: #080608;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.8s ease;
+  display: flex; align-items: center; justify-content: center;
+}
+.screen-next.visible { opacity: 1; }
+.next-arrow {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 300, 'opsz' 14;
+  font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: #C4B5B7;
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+.ios-screen .next-arrow {
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 13px; font-weight: 300;
+}
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.2; } 50% { opacity: 0.5; }
+}
+
+/* ============================================================ ANNOTATIONS */
+.annotations {
+  max-width: 1280px; margin: 0 auto; padding: 0 48px 80px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px;
+}
+.note { padding: 22px; border-radius: 18px; background: rgba(0,0,0,0.04); }
+body.dark .note { background: rgba(255,255,255,0.88); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; opacity: 0.78; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+.note.android li::before { background: #34A853; opacity: 0.75; }
+.note.ios li::before { background: var(--brand-real); opacity: 0.75; }
+.note li code { font-family: monospace; font-size: 11px; background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 4px; }
+body.dark .note li code { background: rgba(255,255,255,0.1); }
+
+/* Timing table */
+.timing-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+.timing-table td { font-size: 12px; padding: 7px 8px; border-bottom: 1px solid rgba(0,0,0,0.06); line-height: 1.4; }
+body.dark .timing-table td { border: 1px solid rgba(61,44,46,0.08); }
+.timing-table td:first-child { font-variation-settings: 'wdth' 100, 'wght' 600; opacity: 0.45; width: 70px; }
+.timing-table td:nth-child(2) { color: var(--brand-real); font-size: 11px; font-family: monospace; width: 55px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .beat { opacity: 1 !important; transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota · Onboarding · Screen 01 de 18</div>
+    <h1 class="brand-title">Abertura <em>sequência cinematográfica · sem botão</em></h1>
+    <p class="brand-sub">
+      3 frases aparecem na velocidade da leitura, empilhando. Depois some tudo — auto-avança para O2.
+      Android: Roboto Flex <code>wght 340</code>, M3E spring na entrada <code>(0.34,1.56,0.64,1)</code>.
+      iOS: SF Pro Display 31pt, HIG bezier sem overshoot <code>(0.32,0.72,0,1)</code>.
+      <em>"florescer"</em> em Instrument Serif italic rose — o único acento emocional da tela.
+      Referência: <em>Calm</em> (onboarding full-dark) · <em>Apple TV+</em> (text reveal cinematográfico).
+    </p>
+  </div>
+  <div class="controls-col">
+    <div class="controls-row">
+      <button class="play-btn" onclick="playSequence()" aria-label="Animar sequência">&#9654; Animar</button>
+      <button class="theme-toggle" onclick="document.body.classList.toggle('dark')" aria-label="Toggle studio theme">
+        <span class="dot"></span> Tema
+      </button>
+    </div>
+    <div class="state-toggle" role="tablist" aria-label="Beat da sequência">
+      <button class="state-btn" data-state="b1" onclick="setState('b1',this)" role="tab"><span>Beat 1</span></button>
+      <button class="state-btn" data-state="b2" onclick="setState('b2',this)" role="tab"><span>Beat 2</span></button>
+      <button class="state-btn active" data-state="b3" onclick="setState('b3',this)" role="tab"><span>Completa</span></button>
+      <button class="state-btn" data-state="saida" onclick="setState('saida',this)" role="tab"><span>Saída</span></button>
+    </div>
+    <div class="timing-legend">
+      <span class="timing-chip">0.4s — Bem-vinda.</span>
+      <span class="timing-chip">1.9s — frase 2</span>
+      <span class="timing-chip">3.6s — florescer</span>
+      <span class="timing-chip">5.4s — saída</span>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+
+  <!-- ANDROID -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android · Material 3 Expressive</span>
+      <span class="desc">Spring overshoot M3E · 3 blobs rosa morfando · sem botão</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen android-screen" aria-label="Brota Abertura — Android">
+          <div class="a-blob-1"></div>
+          <div class="a-blob-2"></div>
+          <div class="a-blob-3"></div>
+
+          <div class="a-seq-body">
+            <p class="a-b1 beat b1" id="a-b1">Bem-vinda.</p>
+
+            <p class="a-b2 beat b2" id="a-b2">Você não precisa ser diferente aqui.</p>
+
+            <p class="a-b3 beat b3" id="a-b3">Pode só <span class="accent">florescer.</span></p>
+          </div>
+
+          <div class="screen-next" id="a-next">
+            <span class="next-arrow">continuando &rarr;</span>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26 · Liquid Glass / HIG</span>
+      <span class="desc">HIG bezier sem overshoot · 3 orbs rosa estáticos · sem botão</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen ios-screen" aria-label="Brota Abertura — iOS">
+          <div class="ios-orb a"></div>
+          <div class="ios-orb b"></div>
+          <div class="ios-orb c"></div>
+
+          <div class="ios-seq-body">
+            <p class="ios-b1 beat b1" id="ios-b1">Bem-vinda.</p>
+
+            <p class="ios-b2 beat b2" id="ios-b2">Você não precisa ser diferente aqui.</p>
+
+            <p class="ios-b3 beat b3" id="ios-b3">Pode só <span class="accent">florescer.</span></p>
+          </div>
+
+          <div class="screen-next" id="ios-next">
+            <span class="next-arrow">continuando &rarr;</span>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<section class="annotations">
+  <div class="note android">
+    <h4>Android · Material 3 Expressive · Sequência</h4>
+    <ul>
+      <li>Background <code>#0D0A0B</code> — rose-botanical dark; 3 blobs rosa morfando em 3 ritmos (20s / 28s / 16s) — ambiência viva durante os 6s da sequência</li>
+      <li>Entrada de cada beat: <code>cubic-bezier(0.34,1.56,0.64,1)</code> — micro spring-overshoot M3E, suave e vivo — referência <strong>Gentler Streak</strong> (2024 ADA Social Impact)</li>
+      <li>Beat 1 — Roboto Flex <code>wdth 105, wght 600, opsz 11</code>, 12px, uppercase, brand-real rose: tom íntimo, quase sussurrado</li>
+      <li>Beats 2+3 — Roboto Flex <code>wdth 108, wght 340, opsz 33</code>, 33px: peso leve deliberado — conversa, não declaração</li>
+      <li>"florescer" — Instrument Serif italic + brand-real: único acento emocional da tela, recebe a atenção máxima</li>
+      <li>Saída: <code>translateY(-10px) + opacity 0</code> em 0.75s ease — movimento para cima evoca leveza, não queda</li>
+      <li>Auto-avança para O2 após ~6.2s — sem input do usuário, sem botão, sem pressão</li>
+    </ul>
+    <table class="timing-table">
+      <tr><td>T+0.4s</td><td>0.6s</td><td>Beat 1 — "Bem-vinda."</td></tr>
+      <tr><td>T+1.9s</td><td>0.8s</td><td>Beat 2 — "Você não precisa ser diferente aqui."</td></tr>
+      <tr><td>T+3.6s</td><td>0.8s</td><td>Beat 3 — "Pode só florescer."</td></tr>
+      <tr><td>T+5.4s</td><td>0.75s</td><td>Todos saem — crossfade para O2</td></tr>
+    </table>
+  </div>
+  <div class="note ios">
+    <h4>iOS 26 · Liquid Glass / HIG · Sequência</h4>
+    <ul>
+      <li>Background <code>#0B090C</code> — deep dark com undertone rose; 3 orbs estáticos (HIG spec): 420pt 28% + 320pt 15% + 200pt 8%</li>
+      <li>Entrada de cada beat: <code>cubic-bezier(0.32,0.72,0,1)</code> — HIG padrão, sem overshoot: digno, controlado, merecido</li>
+      <li>Beat 1 — SF Pro Text 12pt, 600 weight, uppercase: toque humano, quase um abraço textual</li>
+      <li>Beats 2+3 — SF Pro Display 31pt Regular, tracking -0.5px: peso 400 intencional — HIG para onboarding emocional, não instrucional</li>
+      <li>"florescer" — Instrument Serif italic rose: os dois platforms compartilham este acento visual — coerência de marca across platforms</li>
+      <li>Timing idêntico ao Android: a experiência emocional é a mesma, a linguagem de motion é nativa de cada plataforma</li>
+      <li>Referência: <strong>Apple TV+</strong> (text reveal cinematográfico) · <strong>Calm</strong> (onboarding dark full-screen sem prompt) · <strong>Headspace</strong> (personagem first, zero quiz nos primeiros segundos)</li>
+    </ul>
+    <table class="timing-table">
+      <tr><td>T+0.4s</td><td>0.58s</td><td>Beat 1 — "Bem-vinda."</td></tr>
+      <tr><td>T+1.9s</td><td>0.68s</td><td>Beat 2 — "Você não precisa ser diferente aqui."</td></tr>
+      <tr><td>T+3.6s</td><td>0.68s</td><td>Beat 3 — "Pode só florescer."</td></tr>
+      <tr><td>T+5.4s</td><td>0.75s</td><td>Saída suave → O2 auto-advance</td></tr>
+    </table>
+  </div>
+</section>
+
+<script>
+var timeouts = [];
+
+function clearTimeouts() {
+  timeouts.forEach(function(t) { clearTimeout(t); });
+  timeouts = [];
+}
+
+function hideAll() {
+  ['a-b1','a-b2','a-b3','ios-b1','ios-b2','ios-b3'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.remove('visible','exiting'); }
+  });
+  document.getElementById('a-next').classList.remove('visible');
+  document.getElementById('ios-next').classList.remove('visible');
+}
+
+function show(ids) {
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.add('visible');
+  });
+}
+
+function exit(ids) {
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.add('exiting'); }
+  });
+}
+
+function setState(state, btnEl) {
+  clearTimeouts();
+  hideAll();
+  document.querySelectorAll('.state-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btnEl) btnEl.classList.add('active');
+
+  if (state === 'b1') {
+    show(['a-b1','ios-b1']);
+  } else if (state === 'b2') {
+    show(['a-b1','a-b2','ios-b1','ios-b2']);
+  } else if (state === 'b3') {
+    show(['a-b1','a-b2','a-b3','ios-b1','ios-b2','ios-b3']);
+  } else if (state === 'saida') {
+    show(['a-b1','a-b2','a-b3','ios-b1','ios-b2','ios-b3']);
+    // Delay exit slightly so visible class is applied first (CSS transition fires)
+    setTimeout(function() {
+      exit(['a-b1','a-b2','a-b3','ios-b1','ios-b2','ios-b3']);
+    }, 32);
+  }
+}
+
+function playSequence() {
+  clearTimeouts();
+  hideAll();
+  document.querySelectorAll('.state-btn').forEach(function(b) { b.classList.remove('active'); });
+
+  timeouts.push(setTimeout(function() {
+    show(['a-b1','ios-b1']);
+  }, 400));
+
+  timeouts.push(setTimeout(function() {
+    show(['a-b2','ios-b2']);
+  }, 1900));
+
+  timeouts.push(setTimeout(function() {
+    show(['a-b3','ios-b3']);
+    // Activate "Completa" state button
+    var btn = document.querySelector('[data-state="b3"]');
+    if (btn) { document.querySelectorAll('.state-btn').forEach(function(b) { b.classList.remove('active'); }); btn.classList.add('active'); }
+  }, 3600));
+
+  timeouts.push(setTimeout(function() {
+    exit(['a-b1','a-b2','a-b3','ios-b1','ios-b2','ios-b3']);
+    var btn = document.querySelector('[data-state="saida"]');
+    if (btn) { document.querySelectorAll('.state-btn').forEach(function(b) { b.classList.remove('active'); }); btn.classList.add('active'); }
+  }, 5400));
+
+  timeouts.push(setTimeout(function() {
+    document.getElementById('a-next').classList.add('visible');
+    document.getElementById('ios-next').classList.add('visible');
+  }, 6200));
+}
+
+// Init: show completa state
+setState('b3', document.querySelector('[data-state="b3"]'));
+</script>
+
+</body>
+</html>

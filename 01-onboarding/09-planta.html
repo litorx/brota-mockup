@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 09: Revelação da Planta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root { --brand-real: #F4A7B9; --brand-ai: #A8D5A2; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #EDF0EB; color: #1A1714;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #1A1418; color: #E4EAE4; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* STUDIO */
+.studio-header { position: relative; z-index: 10; padding: 32px 48px 16px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.brand-block { max-width: 640px; }
+.brand-eyebrow { font-variation-settings: 'wdth' 105, 'wght' 600, 'opsz' 11; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.5; margin-bottom: 10px; }
+.brand-title { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-variation-settings: 'wdth' 100, 'wght' 200; font-size: 0.65em; vertical-align: 0.1em; opacity: 0.5; }
+.brand-sub { font-size: 14px; line-height: 1.6; opacity: 0.65; max-width: 600px; }
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7; transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn { background: transparent; border: 1px solid currentColor; color: inherit; font: inherit; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer; opacity: 0.5; transition: all 0.25s ease; }
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: currentColor; opacity: 1; }
+.state-btn.active span { mix-blend-mode: difference; color: white; }
+
+/* STAGE */
+.stage { position: relative; z-index: 1; padding: 24px 24px 80px; display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.5; max-width: 280px; line-height: 1.4; }
+.phone { width: 380px; height: 800px; border-radius: 56px; background: #1A1A1A; padding: 14px; flex-shrink: 0; box-shadow: 0 60px 100px -20px rgba(0,0,0,0.32), 0 30px 60px -30px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A; }
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+.status-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none; color: #9B8A8C; }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200; }
+.screen { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+
+/* ─── SHARED KEYFRAMES ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.04); }
+}
+
+/* Seed SVG draw-on animations */
+@keyframes seedBodyIn {
+  0%   { transform: scale(0.3) translateY(12px); opacity: 0; }
+  65%  { transform: scale(1.14) translateY(-3px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes drawStem {
+  from { stroke-dashoffset: 72; opacity: 0; }
+  5%   { opacity: 1; }
+  to   { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes unfoldLeafL {
+  from { transform-origin: 100% 80%; transform: scaleX(0) scaleY(0.3); opacity: 0; }
+  to   { transform-origin: 100% 80%; transform: scaleX(1) scaleY(1); opacity: 1; }
+}
+@keyframes unfoldLeafR {
+  from { transform-origin: 0% 80%; transform: scaleX(0) scaleY(0.3); opacity: 0; }
+  to   { transform-origin: 0% 80%; transform: scaleX(1) scaleY(1); opacity: 1; }
+}
+@keyframes rootFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── BLOBS/ORBS ─── */
+.a-blob-rose { position: absolute; z-index: 0; pointer-events: none; width: 440px; height: 440px; background: var(--brand-real); opacity: 0.05; filter: blur(100px); border-radius: 52% 48% 60% 40%; top: -180px; left: -180px; animation: bR 26s ease-in-out infinite; }
+.a-blob-sage { position: absolute; z-index: 0; pointer-events: none; width: 500px; height: 500px; background: var(--brand-ai); opacity: 0.08; filter: blur(110px); border-radius: 44% 56% 40% 60%; bottom: -200px; right: -160px; animation: bS 30s ease-in-out infinite; }
+@keyframes bR { 0%,100% { border-radius: 52% 48% 60% 40%; transform: rotate(0deg) scale(1); } 50% { border-radius: 40% 60% 44% 56%; transform: rotate(6deg) scale(1.06); } }
+@keyframes bS { 0%,100% { border-radius: 44% 56% 40% 60%; transform: rotate(0deg) scale(1); } 50% { border-radius: 60% 40% 54% 46%; transform: rotate(-5deg) scale(1.04); } }
+
+/* ─── ANDROID ─── */
+.android-screen { background: #FFF8F2; color: #3D2C2E; }
+
+.a-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 80px 28px 108px; gap: 0; text-align: center;
+}
+
+.a-conn {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 500, 'opsz' 14;
+  font-size: 14px; color: rgba(244,167,185,0.86); margin-bottom: 18px;
+  opacity: 0; animation: fadeUp 0.65s ease-out 0.20s forwards;
+}
+
+/* Conceito — o porquê, antes do reveal */
+.a-concept {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 400, 'opsz' 17;
+  font-size: 17px; line-height: 1.55; letter-spacing: -0.01em;
+  color: #9B8A8C; margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.65s ease-out 1.10s forwards;
+}
+
+/* Seed illustration — Android */
+.a-seed-wrap {
+  margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.50s ease-out 1.90s forwards;
+}
+.a-seed-wrap svg { overflow: visible; }
+.a-seed-body  { animation: seedBodyIn 0.80s cubic-bezier(0.34, 1.56, 0.64, 1) 2.10s both; }
+.a-seed-stem  { stroke-dasharray: 72; stroke-dashoffset: 72; animation: drawStem 0.55s ease-out 2.80s forwards; }
+.a-leaf-l     { animation: unfoldLeafL 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 3.20s both; }
+.a-leaf-r     { animation: unfoldLeafR 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 3.40s both; }
+.a-seed-roots { animation: rootFade 0.40s ease-out 3.65s both; }
+.a-seed-group { animation: breathe 4s ease-in-out 4.10s infinite; }
+
+.a-h1 {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 106, 'wght' 680, 'opsz' 26;
+  font-size: 28px; line-height: 1.18; letter-spacing: -0.02em;
+  color: #3D2C2E; margin-bottom: 14px;
+  opacity: 0; animation: fadeUp 0.72s cubic-bezier(0.34, 1.56, 0.64, 1) 3.90s forwards;
+}
+
+.a-body-text {
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 400, 'opsz' 17;
+  font-size: 17px; line-height: 1.5; letter-spacing: -0.01em;
+  color: #9B8A8C; margin-bottom: 10px;
+  opacity: 0; animation: fadeUp 0.65s ease-out 4.60s forwards;
+}
+
+/* Mesmo tamanho do body — só muda pra Instrument Serif italic */
+.a-closing {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 17px; line-height: 1.5; letter-spacing: -0.01em;
+  color: #3D2C2E;
+  opacity: 0; animation: fadeUp 0.60s ease-out 5.20s forwards;
+}
+
+.a-cta {
+  position: absolute; bottom: 36px; left: 24px; right: 24px;
+  padding: 18px 32px; border-radius: 999px; border: none;
+  background: var(--brand-real);
+  box-shadow: 0 6px 36px rgba(244,167,185,0.42);
+  color: #FFFFFF;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 600, 'opsz' 16;
+  font-size: 16px; cursor: pointer; text-align: center;
+  transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0; transform: translateY(12px); pointer-events: none;
+  animation: fadeUp 0.65s ease-out 5.90s forwards;
+}
+.a-cta.instant { animation: none; opacity: 1; transform: none; pointer-events: auto; }
+.a-cta:hover { transform: scale(1.02) translateY(0); box-shadow: 0 10px 44px rgba(244,167,185,0.55); }
+.a-cta:active { transform: scale(0.97) translateY(0); }
+
+/* ─── iOS ─── */
+.ios-screen { background: #FFF8F2; color: #3D2C2E; }
+.ios-orb { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; }
+.ios-orb.rose { background: var(--brand-real); width: 360px; height: 360px; top: -140px; left: -120px; opacity: 0.05; filter: blur(78px); }
+.ios-orb.sage { background: var(--brand-ai); width: 440px; height: 440px; bottom: -160px; right: -140px; opacity: 0.22; filter: blur(88px); }
+
+.ios-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 68px 28px 108px; gap: 0; text-align: center;
+}
+
+.ios-conn {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 14px; font-weight: 500; letter-spacing: -0.1px;
+  color: rgba(244,167,185,0.86); margin-bottom: 16px;
+  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 0.20s forwards;
+}
+
+/* Conceito — o porquê, antes do reveal */
+.ios-concept {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 400; line-height: 1.55; letter-spacing: -0.3px;
+  color: #9B8A8C; margin-bottom: 26px;
+  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 1.10s forwards;
+}
+
+/* Seed illustration — iOS */
+.ios-seed-wrap {
+  margin-bottom: 26px;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.90s forwards;
+}
+.ios-seed-body  { animation: seedBodyIn 0.70s cubic-bezier(0.32, 0.72, 0, 1) 2.10s both; }
+.ios-seed-stem  { stroke-dasharray: 72; stroke-dashoffset: 72; animation: drawStem 0.55s ease-out 2.80s forwards; }
+.ios-leaf-l     { animation: unfoldLeafL 0.40s cubic-bezier(0.32, 0.72, 0, 1) 3.20s both; }
+.ios-leaf-r     { animation: unfoldLeafR 0.40s cubic-bezier(0.32, 0.72, 0, 1) 3.40s both; }
+.ios-seed-roots { animation: rootFade 0.40s ease-out 3.65s both; }
+.ios-seed-group { animation: breathe 4.5s ease-in-out 4.10s infinite; }
+
+.ios-h1 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 28px; font-weight: 700; line-height: 1.18; letter-spacing: -0.6px;
+  color: #3D2C2E; margin-bottom: 12px;
+  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 3.90s forwards;
+}
+
+.ios-body-text {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 400; line-height: 1.5; letter-spacing: -0.3px;
+  color: #9B8A8C; margin-bottom: 10px;
+  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 4.60s forwards;
+}
+
+/* Mesmo tamanho do body — só muda pra Instrument Serif italic */
+.ios-closing {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 17px; line-height: 1.5; letter-spacing: -0.01em;
+  color: #3D2C2E;
+  opacity: 0; animation: fadeUp 0.60s cubic-bezier(0.32, 0.72, 0, 1) 5.20s forwards;
+}
+
+.ios-cta {
+  position: absolute; bottom: 36px; left: 24px; right: 24px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  background: rgba(232,136,158,0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.12), 0 6px 36px rgba(244,167,185,0.40);
+  color: #FFFFFF;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.25px;
+  cursor: pointer; text-align: center;
+  transition: all 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  opacity: 0; transform: translateY(12px); pointer-events: none;
+  animation: fadeUp 0.60s cubic-bezier(0.32, 0.72, 0, 1) 5.90s forwards;
+}
+.ios-cta.instant { animation: none; opacity: 1; transform: none; pointer-events: auto; }
+.ios-cta:hover { background: rgba(244,167,185,0.92); transform: scale(1.01) translateY(0); }
+.ios-cta:active { transform: scale(0.97) translateY(0); }
+
+/* ANNOTATIONS */
+.annotations { max-width: 1280px; margin: 0 auto; padding: 0 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.note { padding: 22px; border-radius: 18px; background: rgba(0,0,0,0.04); }
+body.dark .note { background: rgba(255,255,255,0.88); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; opacity: 0.78; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+.note.android li::before { background: #34A853; opacity: 0.75; }
+.note.ios li::before { background: var(--brand-ai); opacity: 0.75; }
+.note li code { font-family: monospace; font-size: 11px; background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 4px; }
+body.dark .note li code { background: rgba(255,255,255,0.1); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota · Onboarding · Screen 09 de 18 · Revelação do companion</div>
+    <h1 class="brand-title">Sua planta <em>tela não-interativa — revela o companion antes da personalização</em></h1>
+    <p class="brand-sub">
+      Ponte emocional entre Block 1 (dor) e Block 2 (crescimento). Sem input, sem escolha.
+      A semente SVG cresce sequencialmente: corpo → caule → folhas → raízes → respira.
+      Connector cita o impacto de O7. CTA aparece após todas as animações (4.30s).
+    </p>
+  </div>
+  <div class="controls-col">
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark')" aria-label="Toggle tema"><span class="dot"></span> Tema</button>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" data-state="s1" onclick="setState('s1',this)" role="tab"><span>Instagram · corpos · 1–2h</span></button>
+      <button class="state-btn" data-state="s2" onclick="setState('s2',this)" role="tab"><span>TikTok · popularidade · 2–4h</span></button>
+      <button class="state-btn" data-state="s3" onclick="setState('s3',this)" role="tab"><span>Múltiplas · vidas · 4h+</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+
+  <!-- ANDROID -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android · Material 3 Expressive</span>
+      <span class="desc">sem interação · seed SVG draw-on · spring M3E · respira após entrada</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen android-screen" aria-label="Brota Planta — Android">
+          <div class="a-blob-rose"></div>
+          <div class="a-blob-sage"></div>
+          <div class="a-body">
+            <p class="a-conn" id="a-conn">Você quis mudar. Força de vontade sozinha não é suficiente.</p>
+            <p class="a-concept">O que realmente reduz comparação é ter algo vivo para cuidar. Algo que cresce com você, e que não te julga.</p>
+
+            <!-- Seed SVG — Android -->
+            <div class="a-seed-wrap">
+              <svg width="120" height="160" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g class="a-seed-group">
+                  <!-- Roots -->
+                  <g class="a-seed-roots" opacity="0">
+                    <line x1="60" y1="126" x2="44" y2="148" stroke="#A8D5A2" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+                    <line x1="60" y1="126" x2="60" y2="152" stroke="#A8D5A2" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+                    <line x1="60" y1="126" x2="76" y2="148" stroke="#A8D5A2" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+                  </g>
+                  <!-- Seed body -->
+                  <ellipse class="a-seed-body" cx="60" cy="105" rx="26" ry="32" fill="#A8D5A2" opacity="0.92"/>
+                  <ellipse cx="52" cy="94" rx="8" ry="12" fill="rgba(255,255,255,0.22)"/>
+                  <!-- Stem -->
+                  <line class="a-seed-stem" x1="60" y1="74" x2="60" y2="30" stroke="#A8D5A2" stroke-width="3" stroke-linecap="round"/>
+                  <!-- Left leaf -->
+                  <path class="a-leaf-l" d="M60,52 Q42,42 34,26 Q48,24 60,40 Z" fill="#A8D5A2" opacity="0.80"/>
+                  <!-- Right leaf -->
+                  <path class="a-leaf-r" d="M60,44 Q78,30 88,16 Q74,14 60,34 Z" fill="#A8D5A2" opacity="0.65"/>
+                </g>
+              </svg>
+            </div>
+
+            <h1 class="a-h1">Você vai ter<br>uma planta.</h1>
+            <p class="a-body-text">Ela te protege quando as redes machucam, e cresce com voce.</p>
+            <p class="a-closing">Só sua.</p>
+          </div>
+          <button class="a-cta" id="a-cta">Criar minha semente →</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26 · Liquid Glass / HIG</span>
+      <span class="desc">sem interação · seed SVG HIG timing · CTA Liquid Glass rose</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen ios-screen" aria-label="Brota Planta — iOS">
+          <div class="ios-orb rose"></div>
+          <div class="ios-orb sage"></div>
+          <div class="ios-body">
+            <p class="ios-conn" id="ios-conn">Você quis mudar. Força de vontade sozinha não é suficiente.</p>
+            <p class="ios-concept">O que realmente reduz comparação é ter algo vivo para cuidar. Algo que cresce com você, e que não te julga.</p>
+
+            <!-- Seed SVG — iOS -->
+            <div class="ios-seed-wrap">
+              <svg width="112" height="152" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g class="ios-seed-group">
+                  <!-- Roots -->
+                  <g class="ios-seed-roots" opacity="0">
+                    <line x1="60" y1="126" x2="44" y2="148" stroke="#A8D5A2" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+                    <line x1="60" y1="126" x2="60" y2="152" stroke="#A8D5A2" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+                    <line x1="60" y1="126" x2="76" y2="148" stroke="#A8D5A2" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+                  </g>
+                  <!-- Seed body -->
+                  <ellipse class="ios-seed-body" cx="60" cy="105" rx="26" ry="32" fill="#A8D5A2" opacity="0.88"/>
+                  <ellipse cx="52" cy="94" rx="8" ry="12" fill="rgba(255,255,255,0.18)"/>
+                  <!-- Stem -->
+                  <line class="ios-seed-stem" x1="60" y1="74" x2="60" y2="30" stroke="#A8D5A2" stroke-width="2.5" stroke-linecap="round"/>
+                  <!-- Left leaf -->
+                  <path class="ios-leaf-l" d="M60,52 Q42,42 34,26 Q48,24 60,40 Z" fill="#A8D5A2" opacity="0.78"/>
+                  <!-- Right leaf -->
+                  <path class="ios-leaf-r" d="M60,44 Q78,30 88,16 Q74,14 60,34 Z" fill="#A8D5A2" opacity="0.62"/>
+                </g>
+              </svg>
+            </div>
+
+            <h1 class="ios-h1">Você vai ter<br>uma planta.</h1>
+            <p class="ios-body-text">Ela te protege quando as redes machucam, e cresce com voce.</p>
+            <p class="ios-closing">Só sua.</p>
+          </div>
+          <button class="ios-cta" id="ios-cta">Criar minha semente →</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<section class="annotations" aria-label="Handoff annotations">
+  <div class="note android">
+    <h4>Android · M3 Expressive</h4>
+    <ul>
+      <li>Tela não-interativa: zero input até o CTA. Usuária só assiste e lê — zero friction antes da primeira escolha real</li>
+      <li>Seed SVG sequencial: corpo entra com spring <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> → caule draw-on → folhas unfold → raízes fade → respira. Referência: <em>Finch</em> (companion reveal)</li>
+      <li>Blobs: rose 10% + sage 20% — transição visual de Block 1 → Block 2 já começando aqui</li>
+      <li>H1 28px <code>wght 680</code> — maior e mais pesado que telas anteriores. Esse é o momento de impacto do onboarding</li>
+      <li>Closing em <em>Instrument Serif</em> italic: "Só sua." — duas palavras que criam pertencimento e exclusividade</li>
+      <li>CTA rose (<code>--brand-real</code>) retorna após bloco de sage — promessa de ação pessoal, não da planta</li>
+    </ul>
+  </div>
+  <div class="note ios">
+    <h4>iOS 26 · Liquid Glass / HIG</h4>
+    <ul>
+      <li>Seed SVG com <code>cubic-bezier(0.32, 0.72, 0, 1)</code> HIG — sem overshoot, crescimento natural sem bounce</li>
+      <li>Orbs: rose fraco (10%) no canto oposto ao sage (22%) — blend sutil da transição de bloco</li>
+      <li>H1 28pt SF Pro Display weight 700 — Large Title feel sem a barra de navegação nativa</li>
+      <li>Body text 17pt SF Pro Text weight 400 — tamanho canônico HIG para leitura confortável</li>
+      <li>CTA Liquid Glass rose: <code>rgba(244,167,185,0.82)</code> + <code>backdrop-filter blur(24px)</code> — padrão aprovado desde O1</li>
+      <li>Breathing animation começa em 3.00s — a planta "vive" antes da usuária interagir. Referência: <em>Headspace</em> (mascot breathing idle)</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+// Conn: nomeia uma tentativa falha familiar pra cada perfil.
+// Cria "sim, exatamente" antes de apresentar o conceito e a planta.
+var connectors = {
+  s1: 'Você quis mudar. Força de vontade sozinha não é suficiente.',
+  s2: 'Você quis mudar. Bloquear apps não funciona a longo prazo.',
+  s3: 'Você quis mudar. Simplesmente usar menos tempo não resolve.'
+};
+
+function setState(state, btn) {
+  document.querySelectorAll('.state-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  var conn = connectors[state] || connectors.s1;
+  document.getElementById('a-conn').textContent   = conn;
+  document.getElementById('ios-conn').textContent = conn;
+
+  // Show CTA instantly in studio (skip 4.30s wait)
+  document.getElementById('a-cta').classList.add('instant');
+  document.getElementById('ios-cta').classList.add('instant');
+}
+
+// Init
+setState('s1', document.querySelector('.state-btn'));
+</script>
+</body>
+</html>

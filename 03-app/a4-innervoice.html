@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — A4: Inner Voice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:720px;margin:0 auto;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-sep{width:1px;height:20px;background:var(--border);}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.state-btn.scene-btn.active{background:var(--brand-ai);border-color:var(--brand-ai);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* ── PHONE ── */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:280px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* ── SCROLL BODY ── */
+.scroll-body{
+  position:absolute;top:44px;left:0;right:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;
+  padding:16px 20px 100px;
+  display:flex;flex-direction:column;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.scroll-body::-webkit-scrollbar{display:none;}
+.scroll-body>*{flex-shrink:0;}
+.ios-screen .scroll-body{top:0;padding-top:60px;}
+
+/* Chat mode: no bottom nav, input bar instead */
+.scroll-body.chat-mode{bottom:64px;padding-bottom:20px;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes shimmer{0%{transform:translateX(-200%) skewX(-14deg);}40%,100%{transform:translateX(200%) skewX(-14deg);}}
+@keyframes typing{0%,80%{opacity:0.3;}40%{opacity:1;}}
+@keyframes checkPop{0%{transform:scale(0);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
+@keyframes plantPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+
+/* ── BACK ROW ── */
+.back-row{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:2px 0;}
+.back-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);transition:all 0.2s;
+}
+.back-btn:hover{background:var(--bg2);}
+.back-btn svg{width:16px;height:16px;}
+.back-label{font-size:12px;font-weight:600;color:var(--text3);}
+
+/* ── HEADER ── */
+.iv-header{margin-bottom:20px;}
+.iv-conector{font-size:13px;font-weight:600;color:var(--brand-real);margin-bottom:8px;line-height:1.5;}
+.iv-title{font-size:22px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:4px;}
+.iv-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--brand-real);}
+.iv-subtitle{font-size:12.5px;color:var(--text2);line-height:1.55;}
+
+/* ── EXERCISE CARDS ── */
+.exercise-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.exercise-card{
+  background:var(--card);border-radius:var(--r);
+  padding:16px 18px;
+  border:1px solid var(--border);box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;transition:all 0.25s;
+  position:relative;overflow:hidden;
+}
+.exercise-card:hover{box-shadow:0 4px 20px rgba(var(--plant-color-rgb),0.14);border-color:rgba(var(--plant-color-rgb),0.2);}
+.exercise-card:active{transform:scale(0.98);}
+.exercise-card .ex-icon{
+  width:40px;height:40px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.a-screen .exercise-card .ex-icon{font-size:0;width:40px;height:40px;border-radius:14px;background:rgba(var(--plant-color-rgb),0.15);}
+.exercise-card .ex-body{flex:1;}
+.exercise-card .ex-label{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.exercise-card .ex-desc{font-size:11.5px;color:var(--text2);line-height:1.4;}
+.exercise-card .ex-arrow{color:var(--text3);flex-shrink:0;}
+.exercise-card .ex-arrow svg{width:16px;height:16px;}
+.exercise-card .ex-tag{
+  position:absolute;top:8px;right:12px;
+  font-size:9.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;
+}
+.ex-tag.new{background:rgba(244,167,185,0.15);color:var(--brand-real-deep);}
+.ex-tag.done{background:rgba(125,212,163,0.15);color:var(--brand-ai-deep);}
+
+/* ── CHAT BUBBLES ── */
+.chat-area{display:flex;flex-direction:column;gap:12px;}
+.bubble{
+  max-width:82%;padding:12px 16px;
+  font-size:14px;line-height:1.55;font-weight:500;
+  position:relative;
+}
+.bubble.plant{
+  align-self:flex-start;
+  background:rgba(var(--plant-color-rgb),0.1);
+  border:1px solid rgba(var(--plant-color-rgb),0.12);
+  border-radius:18px 18px 18px 6px;
+  color:var(--text);
+}
+.bubble.plant em{
+  font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  color:rgba(var(--plant-color-rgb),0.9);
+}
+.bubble.user{
+  align-self:flex-end;
+  background:var(--brand-real);color:white;
+  border-radius:18px 18px 6px 18px;
+}
+.bubble.plant .bubble-name{
+  font-size:10.5px;font-weight:700;
+  color:rgba(var(--plant-color-rgb),0.55);
+  letter-spacing:0.04em;text-transform:uppercase;
+  margin-bottom:4px;display:block;
+}
+/* Typing indicator */
+.bubble.typing{padding:14px 20px;}
+.typing-dots{display:flex;gap:5px;align-items:center;}
+.typing-dots span{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(var(--plant-color-rgb),0.5);
+  animation:typing 1.4s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2){animation-delay:0.2s;}
+.typing-dots span:nth-child(3){animation-delay:0.4s;}
+
+/* Plant avatar in chat */
+.plant-row{display:flex;gap:10px;align-items:flex-end;}
+.plant-row .chat-avatar{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  background:rgba(var(--plant-color-rgb),0.15);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:2px;
+}
+.plant-row .chat-avatar svg{width:20px;height:20px;}
+
+/* ── CBT OPTION PILLS ── */
+.cbt-options{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-top:8px;
+}
+.cbt-pill{
+  padding:8px 16px;border-radius:999px;
+  background:rgba(var(--plant-color-rgb),0.08);
+  border:1.5px solid rgba(var(--plant-color-rgb),0.18);
+  font-size:12.5px;font-weight:600;color:var(--text);
+  cursor:pointer;transition:all 0.2s;
+}
+.cbt-pill:hover{background:rgba(var(--plant-color-rgb),0.16);border-color:rgba(var(--plant-color-rgb),0.3);}
+.cbt-pill.selected{
+  background:var(--brand-real);border-color:var(--brand-real);color:white;
+}
+
+/* ── INPUT BAR ── */
+.input-bar{
+  position:absolute;bottom:0;left:0;right:0;height:64px;
+  background:var(--card);border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  padding:0 16px;z-index:20;
+}
+.ios-screen .input-bar{
+  background:rgba(255,255,255,0.8);
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+  backdrop-filter:blur(30px) saturate(180%);
+  border-top:0.5px solid rgba(61,44,46,0.1);
+}
+.input-field{
+  flex:1;height:40px;border-radius:999px;
+  background:var(--bg);border:1px solid var(--border);
+  padding:0 16px;
+  font-family:inherit;font-size:13.5px;color:var(--text);
+}
+.input-field::placeholder{color:var(--text3);}
+.send-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--brand-real);border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.2s;
+  flex-shrink:0;
+}
+.send-btn:active{transform:scale(0.9);}
+.send-btn svg{width:18px;height:18px;color:white;}
+
+/* ── SESSION COMPLETE ── */
+.session-done{text-align:center;padding:8px 0;}
+.sd-plant{
+  width:80px;height:80px;margin:0 auto 16px;
+  animation:plantPulse 3s ease-in-out infinite;
+}
+.sd-plant svg{width:100%;height:100%;}
+.sd-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.sd-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--brand-real);}
+.sd-sub{font-size:12.5px;color:var(--text2);line-height:1.55;margin-bottom:20px;max-width:260px;margin-left:auto;margin-right:auto;}
+
+/* Insight card */
+.insight-card{
+  background:var(--card);border-radius:var(--r);
+  padding:16px;margin-bottom:16px;
+  border:1px solid var(--border);box-shadow:var(--shadow);
+  text-align:left;
+}
+.insight-card .ic-label{
+  font-size:10.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--brand-real);margin-bottom:8px;
+}
+.insight-card .ic-thought{
+  font-size:13px;color:var(--text2);line-height:1.5;
+  padding:10px 14px;border-radius:12px;
+  background:rgba(244,167,185,0.06);
+  border-left:3px solid rgba(244,167,185,0.3);
+  margin-bottom:10px;
+  text-decoration:line-through;
+  text-decoration-color:rgba(244,167,185,0.4);
+}
+.insight-card .ic-reframe{
+  font-size:13.5px;color:var(--text);line-height:1.5;font-weight:600;
+  padding:10px 14px;border-radius:12px;
+  background:rgba(var(--plant-color-rgb),0.08);
+  border-left:3px solid rgba(var(--plant-color-rgb),0.4);
+}
+
+.sd-grow{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 16px;border-radius:999px;
+  background:rgba(168,213,162,0.15);
+  font-size:12px;font-weight:700;color:var(--brand-ai-deep);
+  margin-bottom:16px;
+}
+
+/* CTA */
+.cta-btn{
+  width:100%;padding:15px;border-radius:999px;
+  border:none;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:700;
+  transition:all 0.25s;position:relative;overflow:hidden;
+}
+.a-screen .cta-btn{background:var(--brand-real);color:white;box-shadow:0 4px 16px rgba(244,167,185,0.3);}
+.ios-screen .cta-btn{
+  background:rgba(232,136,158,0.88);color:white;
+  -webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);
+}
+.cta-btn::after{
+  content:'';position:absolute;top:0;left:0;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  animation:shimmer 3s ease-in-out infinite;
+}
+.cta-secondary{
+  width:100%;padding:14px;border-radius:999px;
+  border:1.5px solid rgba(var(--plant-color-rgb),0.25);
+  background:rgba(var(--plant-color-rgb),0.06);
+  color:var(--text);font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all 0.2s;margin-top:10px;
+}
+.cta-secondary:hover{background:rgba(var(--plant-color-rgb),0.12);}
+
+/* ── LUTEAL BANNER ── */
+.luteal-banner{
+  background:linear-gradient(135deg, rgba(196,176,224,0.1), rgba(242,213,213,0.08));
+  border:1px solid rgba(196,176,224,0.15);
+  border-radius:16px;padding:14px 16px;
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.luteal-banner .lb-icon{font-size:22px;}
+.a-screen .luteal-banner .lb-icon{font-size:0;width:22px;height:22px;border-radius:50%;background:rgba(196,176,224,0.3);}
+.luteal-banner .lb-text{font-size:12px;color:var(--text2);line-height:1.45;font-weight:500;}
+.luteal-banner .lb-text strong{color:var(--text);font-weight:700;}
+
+/* ── FAB PAUSE ── */
+.fab-pause{
+  position:absolute;bottom:80px;right:16px;z-index:15;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--brand-real);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(244,167,185,0.30);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.fab-pause:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(244,167,185,0.40);}
+.fab-pause:active{transform:scale(0.94);}
+.ios-screen .fab-pause{
+  bottom:92px;right:18px;
+  backdrop-filter:blur(20px) saturate(180%);
+  background:rgba(232,136,158,0.88);
+  border:1px solid rgba(255,255,255,0.30);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(244,167,185,0.28);
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;height:72px;
+  background:var(--card);border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 8px;z-index:20;
+}
+.ios-screen .bottom-nav{
+  height:76px;bottom:8px;left:12px;right:12px;
+  border-radius:999px;border:none;
+  background:rgba(255,255,255,0.72);
+  -webkit-backdrop-filter:blur(40px) saturate(200%);backdrop-filter:blur(40px) saturate(200%);
+  box-shadow:0 4px 24px rgba(61,44,46,0.1),inset 0 0.5px 0 rgba(255,255,255,0.6);
+}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 12px;cursor:pointer;position:relative;transition:all 0.2s;}
+.nav-item svg{width:22px;height:22px;color:var(--text3);transition:color 0.2s;}
+.nav-item span{font-size:10px;font-weight:600;color:var(--text3);transition:color 0.2s;}
+.nav-item.active svg{color:var(--brand-real);}
+.nav-item.active span{color:var(--brand-real);}
+.a-screen .nav-item.active{background:rgba(244,167,185,0.12);border-radius:20px;padding:4px 16px;}
+.ios-screen .nav-item.active::after{content:'';position:absolute;bottom:-2px;width:4px;height:4px;border-radius:50%;background:var(--brand-real);}
+</style>
+</head>
+<body>
+<div class="studio">
+  <header class="studio-header">
+    <div class="brand-eyebrow">Brota</div>
+    <h1 class="brand-title">A4 — Inner Voice<em>Diario CBT com sua planta</em></h1>
+    <p class="brand-sub">Chat com a planta que faz reestruturacao cognitiva. Exercicios guiados como entry point. Chat livre pos-confianca. Modo luteal = validacao pura, zero desafio.</p>
+  </header>
+
+  <div class="controls">
+    <button class="state-btn active" onclick="setPlant('s1',this)">Lavanda</button>
+    <button class="state-btn" onclick="setPlant('s2',this)">Girassol</button>
+    <button class="state-btn" onclick="setPlant('s3',this)">Cacto</button>
+    <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira</button>
+    <button class="state-btn" onclick="setPlant('s5',this)">Lotus</button>
+    <div class="state-sep"></div>
+    <button class="state-btn scene-btn active" onclick="setScene('entry',this)">Exercicios</button>
+    <button class="state-btn scene-btn" onclick="setScene('chat',this)">Chat CBT</button>
+    <button class="state-btn scene-btn" onclick="setScene('luteal',this)">Luteal</button>
+    <button class="state-btn scene-btn" onclick="setScene('done',this)">Sessao feita</button>
+    <button class="state-btn scene-btn" onclick="setScene('history',this)">Historico</button>
+  </div>
+
+  <div class="stage" id="stage"></div>
+</div>
+
+<script>
+var plants = {
+  s1:{key:'s1',name:'Ana',plant:'Lavanda',color:'#C4B0E0',rgb:'196,176,224'},
+  s2:{key:'s2',name:'Bia',plant:'Girassol',color:'#F2CE6B',rgb:'242,206,107'},
+  s3:{key:'s3',name:'Carol',plant:'Cacto',color:'#8CC5A0',rgb:'140,197,160'},
+  s4:{key:'s4',name:'Dani',plant:'Cerejeira',color:'#F2B5C4',rgb:'242,181,196'},
+  s5:{key:'s5',name:'Eva',plant:'Lotus',color:'#D4B8D4',rgb:'212,184,212'}
+};
+
+var exercises = [
+  {icon:'<i data-icon="chat"></i>',title:'Pensamento do dia',desc:'Reestruture um pensamento que te incomodou',tag:'new',tagClass:'new'},
+  {icon:'<i data-icon="heart"></i>',title:'Espelho invertido',desc:'E se uma amiga dissesse isso sobre ela?',tag:'',tagClass:''},
+  {icon:'<i data-icon="book"></i>',title:'Diario livre',desc:'Escreva livremente — sua planta ouve',tag:'',tagClass:''},
+  {icon:'<i data-icon="grow"></i>',title:'Gratidao corporal',desc:'3 coisas que seu corpo fez por voce hoje',tag:'feito',tagClass:'done'},
+  {icon:'<i data-icon="sparkle"></i>',title:'Afirmacao do dia',desc:'Planta te da uma afirmacao personalizada',tag:'',tagClass:''}
+];
+
+var chatFlows = {
+  Lavanda:[
+    {from:'plant',text:'Ei, Ana... <em>como voce ta?</em> Algo te incomodou hoje nas redes?'},
+    {from:'user',text:'Vi uma foto de uma influencer e me senti horrivel com meu corpo'},
+    {from:'plant',text:'Entendo. <em>Qual pensamento veio na hora?</em>'},
+    {from:'user',text:'Que eu nunca vou ser bonita assim'},
+    {from:'plant',text:'Hmm. <em>Voce diria isso pra uma amiga?</em> Se ela te dissesse "eu nunca vou ser bonita" — o que voce responderia?'},
+    {from:'options',items:['Ia dizer que ela e linda','Ia falar que a foto e editada','Ia abracar ela']},
+    {from:'plant',text:'Exatamente. <em>Voce merece a mesma gentileza.</em> Essa foto passou por filtro, edicao, iluminacao, pose. Voce ta se comparando com algo que nao existe.'},
+    {from:'plant',text:'Vamos reescrever esse pensamento juntas?'},
+  ],
+  Girassol:[
+    {from:'plant',text:'E ai, Bia! <em>Bora conversar?</em> O que rolou hoje?'},
+    {from:'user',text:'Fiquei me comparando com uma menina do TikTok o dia todo'},
+    {from:'plant',text:'Sei como e. <em>Que pensamento ficou na sua cabeca?</em>'},
+    {from:'user',text:'Que a vida dela e perfeita e a minha nao'},
+    {from:'plant',text:'Hmm. <em>Voce acha que o TikTok dela mostra tudo?</em> Os dias ruins, a ansiedade, o esforco pra parecer perfeita?'},
+    {from:'options',items:['Provavelmente nao','Nunca pensei nisso','Mas parece tao real']},
+    {from:'plant',text:'Pois e. <em>Voce ta comparando sua vida inteira com o highlight reel dela.</em> Isso nao e justo com voce.'},
+    {from:'plant',text:'Que tal a gente reformular isso? Vou te ajudar.'},
+  ],
+  Cacto:[
+    {from:'plant',text:'Fala, Carol. <em>O que pegou hoje?</em>'},
+    {from:'user',text:'Me senti gorda olhando stories de uma fitness influencer'},
+    {from:'plant',text:'Direto ao ponto: <em>que pensamento veio?</em>'},
+    {from:'user',text:'Que eu devia fazer dieta e ser como ela'},
+    {from:'plant',text:'Entao. <em>Voce sabe quantas horas por dia essa pessoa dedica ao corpo?</em> E o trabalho literal dela. Voce tem uma vida inteira alem disso.'},
+    {from:'options',items:['Verdade','Mas eu queria ter essa disciplina','Sei la']},
+    {from:'plant',text:'Olha: <em>seu corpo te levantou hoje, te trouxe ate aqui, te deixou respirar.</em> Ele nao e um projeto — e sua casa. Bora reescrever esse pensamento?'},
+  ],
+  Cerejeira:[
+    {from:'plant',text:'Oi, Dani... <em>tem algo pesando?</em>'},
+    {from:'user',text:'Vi uma foto minha sem filtro e achei horrivel'},
+    {from:'plant',text:'Voce sem filtro <em>e voce de verdade.</em> Que pensamento veio quando viu a foto?'},
+    {from:'user',text:'Que eu sou feia'},
+    {from:'plant',text:'Esse pensamento e como um filtro — <em>so que ao contrario.</em> Em vez de te embelezar artificialmente, ele te diminui artificialmente. Os dois sao distorcoes.'},
+    {from:'options',items:['Nunca pensei assim','Mas eu realmente nao gostei','Faz sentido']},
+    {from:'plant',text:'<em>Beleza sem filtro e coragem.</em> Vamos reescrever esse pensamento pra algo mais justo com voce?'},
+  ],
+  Lotus:[
+    {from:'plant',text:'Eva. <em>Respira.</em> Me conta o que aconteceu.'},
+    {from:'user',text:'Passei 2 horas no Instagram e agora me sinto um lixo'},
+    {from:'plant',text:'Duas horas e muito tempo exposta a comparacao. <em>Que pensamento ficou?</em>'},
+    {from:'user',text:'Que todo mundo ta vivendo melhor que eu'},
+    {from:'plant',text:'<em>Voce estava olhando a vitrine, nao a casa.</em> Ninguem posta a conta que nao pagou, a noite que chorou, o dia que nao saiu da cama.'},
+    {from:'options',items:['E verdade','Mas parece tao real','Eu sei, mas doi']},
+    {from:'plant',text:'Doi porque voce e humana. <em>Mas o pensamento nao e verdade — e reflexo do cansaco.</em> Vamos trocar ele por algo mais gentil?'},
+  ]
+};
+
+var lutealSpeeches = {
+  Lavanda:'Hoje eu nao vou te pedir nada. <em>So quero ficar aqui com voce.</em>',
+  Girassol:'Ei. Nao precisa brilhar hoje. <em>So existir ja basta.</em>',
+  Cacto:'Sem missao hoje. <em>So silencio e agua.</em>',
+  Cerejeira:'As petalas descansam antes de florescer. <em>Voce tambem pode.</em>',
+  Lotus:'O lago esta quieto. <em>Fica aqui comigo.</em>'
+};
+
+var doneSpeeches = {
+  Lavanda:'Que lindo, Ana. <em>Voce olhou pra dentro hoje.</em>',
+  Girassol:'Arrasou, Bia! <em>Cada conversa te deixa mais forte.</em>',
+  Cacto:'Feito. Voce enfrentou o pensamento de frente. <em>Respeito.</em>',
+  Cerejeira:'Mais uma camada de filtro removida. <em>Voce sem filtro e poesia.</em>',
+  Lotus:'Voce encontrou paz hoje. <em>Leva isso com voce.</em>'
+};
+
+var miniPlantSVGs = {
+  Lavanda:'<svg viewBox="0 0 80 80" fill="none"><path d="M40 72V40" stroke="#6BA068" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="40" cy="36" rx="5" ry="7" fill="__CLR__"/><ellipse cx="40" cy="28" rx="4.5" ry="6" fill="__CLR__" opacity="0.9"/><ellipse cx="40" cy="21" rx="3.5" ry="5" fill="__CLR__" opacity="0.8"/><ellipse cx="32" cy="40" rx="4" ry="5.5" fill="__CLR__" opacity="0.85"/><ellipse cx="48" cy="39" rx="4" ry="5.5" fill="__CLR__" opacity="0.85"/></svg>',
+  Girassol:'<svg viewBox="0 0 80 80" fill="none"><path d="M40 72V42" stroke="#5A9E54" stroke-width="3" stroke-linecap="round"/><ellipse cx="40" cy="14" rx="5" ry="10" fill="__CLR__"/><ellipse cx="26" cy="26" rx="10" ry="5" fill="__CLR__"/><ellipse cx="54" cy="26" rx="10" ry="5" fill="__CLR__"/><ellipse cx="28" cy="14" rx="4" ry="8" fill="__CLR__" opacity="0.85" transform="rotate(-35 28 14)"/><ellipse cx="52" cy="14" rx="4" ry="8" fill="__CLR__" opacity="0.85" transform="rotate(35 52 14)"/><ellipse cx="40" cy="40" rx="5" ry="9" fill="__CLR__" opacity="0.8"/><ellipse cx="28" cy="38" rx="4" ry="8" fill="__CLR__" opacity="0.75" transform="rotate(45 28 38)"/><ellipse cx="52" cy="38" rx="4" ry="8" fill="__CLR__" opacity="0.75" transform="rotate(-45 52 38)"/><circle cx="40" cy="26" r="9" fill="#D4960A"/><circle cx="40" cy="26" r="6.5" fill="#C48A08"/></svg>',
+  Cacto:'<svg viewBox="0 0 80 80" fill="none"><path d="M32 72C31 62 30 52 30 44C30 34 32 24 35 18C37 14 39 12 40 12C41 12 43 14 45 18C48 24 50 34 50 44C50 52 49 62 48 72" fill="__CLR__" opacity="0.55"/><path d="M32 72C31 62 30 52 30 44C30 34 32 24 35 18C37 14 39 12 40 12C41 12 43 14 45 18C48 24 50 34 50 44C50 52 49 62 48 72" stroke="__CLR__" stroke-width="2" fill="none"/><ellipse cx="40" cy="10" rx="5" ry="4" fill="#F4A7B9" opacity="0.8"/></svg>',
+  Cerejeira:'<svg viewBox="0 0 80 80" fill="none"><path d="M40 72C40 68 38 62 37 58C36 54 37 50 39 48" stroke="#7A5840" stroke-width="4" stroke-linecap="round"/><ellipse cx="26" cy="44" rx="9" ry="8" fill="__CLR__" opacity="0.8"/><ellipse cx="54" cy="40" rx="9" ry="8" fill="__CLR__" opacity="0.85"/><ellipse cx="40" cy="30" rx="8" ry="7" fill="__CLR__" opacity="0.9"/></svg>',
+  Lotus:'<svg viewBox="4 4 72 72" fill="none"><ellipse cx="40" cy="70" rx="14" ry="3" fill="#D4EEF8" opacity="0.3"/><path d="M40 68Q39 60 40 54" stroke="#6EAA68" stroke-width="2" stroke-linecap="round" opacity="0.45" fill="none"/><path d="M40 44Q34 38 32 28Q31.5 22 35 25Q38 30 40 42Z" fill="#EEE0F0" opacity="0.55"/><path d="M40 44Q46 38 48 28Q48.5 22 45 25Q42 30 40 42Z" fill="#EEE0F0" opacity="0.55"/><ellipse cx="40" cy="48" rx="5" ry="3.5" fill="#FFE082" opacity="0.85"/></svg>'
+};
+
+var currentPlant = plants.s1;
+var currentScene = 'entry';
+
+/* ═══════════════════════════════════════ */
+function renderStage(){
+  var stage = document.getElementById('stage');
+  stage.innerHTML = '';
+  ['android','ios'].forEach(function(platform){
+    var isIos = platform==='ios';
+    var p = isIos ? 'i' : 'a';
+    var cls = isIos ? 'ios-screen' : 'a-screen';
+
+    var html = '<div class="phone-wrapper"><div class="phone-label">';
+    html += isIos ? '<span class="pill ios">iOS</span><span class="desc">Liquid Glass / HIG</span>' : '<span class="pill android">Android</span><span class="desc">Material 3 Expressive</span>';
+    html += '</div><div class="phone '+cls+'" id="'+p+'-phone"><div class="phone-screen">';
+    html += '<div class="statusbar"><span class="stime">9:41</span><span class="sicons"><svg width="15" height="11" fill="currentColor"><rect x="0" y="4" width="3" height="7" rx="0.5" opacity="0.4"/><rect x="4" y="2.5" width="3" height="8.5" rx="0.5" opacity="0.5"/><rect x="8" y="1" width="3" height="10" rx="0.5" opacity="0.7"/><rect x="12" y="0" width="3" height="11" rx="0.5"/></svg></span></div>';
+    if(isIos) html += '<div class="dyna"></div>';
+    html += '<div class="scroll-body" id="'+p+'-body"></div>';
+
+    /* Input bar (chat mode only) */
+    html += '<div class="input-bar" id="'+p+'-input" style="display:none;">';
+    html += '<input class="input-field" placeholder="Escreve aqui..." readonly>';
+    html += '<button class="send-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>';
+    html += '</div>';
+
+    /* FAB Pause */
+    html += '<div class="fab-pause" onclick="this.style.transform=\'scale(0.9)\';setTimeout(()=>this.style.transform=\'\',200)"><i data-icon="pause"></i></div>';
+
+    /* Bottom nav */
+    html += '<div class="bottom-nav" id="'+p+'-nav">';
+    html += navItem('Home','<path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/>',false);
+    html += navItem('Grow','<path d="M12 2C8 6 4 10 4 14a8 8 0 0016 0c0-4-4-8-8-12z"/>',true);
+    html += navItem('Jardim','<circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2m-10-10h2m16 0h2m-3.5-6.5l-1.4 1.4m-11.3 11.3l-1.4 1.4m0-14.1l1.4 1.4m11.3 11.3l1.4 1.4"/>',false);
+    html += navItem('Insights','<path d="M3 3v18h18"/><path d="M7 16l4-6 4 4 4-8"/>',false);
+    html += navItem('Perfil','<circle cx="12" cy="8" r="4"/><path d="M6 20c0-3 3-5 6-5s6 2 6 5"/>',false);
+    html += '</div>';
+
+    html += '</div></div></div>';
+    stage.innerHTML += html;
+  });
+}
+
+function navItem(label,pathSvg,active){
+  return '<div class="nav-item'+(active?' active':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+pathSvg+'</svg><span>'+label+'</span></div>';
+}
+
+/* ═══════════════════════════════════════ */
+function buildContent(prefix){
+  var s = currentPlant;
+  var plantSvg = miniPlantSVGs[s.plant].replace(/__CLR__/g, s.color);
+  var html = '';
+  var d = 0;
+
+  html += '<div class="back-row anim-el" style="animation-delay:'+(d*0.001)+'s"><div class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></div><span class="back-label">Grow</span></div>';
+  d += 80;
+
+  if(currentScene === 'entry'){
+    html += '<div class="iv-header anim-el" style="animation-delay:'+(d*0.001)+'s">';
+    html += '<div class="iv-conector">'+s.plant+' quer conversar.</div>';
+    html += '<div class="iv-title">Sua voz <em>de dentro</em></div>';
+    html += '<div class="iv-subtitle">Exercicios guiados pra reestruturar pensamentos sobre corpo e aparencia.</div>';
+    html += '</div>';
+    d += 100;
+
+    html += '<div class="exercise-grid">';
+    exercises.forEach(function(ex,i){
+      html += '<div class="exercise-card anim-el" style="animation-delay:'+((d+i*80)*0.001)+'s">';
+      html += '<div class="ex-icon" style="background:rgba(var(--plant-color-rgb),0.15);">'+ex.icon+'</div>';
+      html += '<div class="ex-body"><div class="ex-label">'+ex.title+'</div><div class="ex-desc">'+ex.desc+'</div></div>';
+      html += '<div class="ex-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>';
+      if(ex.tag) html += '<div class="ex-tag '+ex.tagClass+'">'+ex.tag+'</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+  } else if(currentScene === 'chat'){
+    var flow = chatFlows[s.plant];
+    html += '<div class="chat-area">';
+    flow.forEach(function(msg,i){
+      var delay = (d + i*200)*0.001;
+      if(msg.from === 'plant'){
+        html += '<div class="plant-row anim-el" style="animation-delay:'+delay+'s">';
+        html += '<div class="chat-avatar">'+plantSvg+'</div>';
+        html += '<div class="bubble plant"><span class="bubble-name">'+s.plant+'</span>'+msg.text+'</div>';
+        html += '</div>';
+      } else if(msg.from === 'user'){
+        html += '<div class="bubble user anim-el" style="animation-delay:'+delay+'s">'+msg.text+'</div>';
+      } else if(msg.from === 'options'){
+        html += '<div class="cbt-options anim-el" style="animation-delay:'+delay+'s">';
+        msg.items.forEach(function(item,j){
+          html += '<div class="cbt-pill'+(j===0?' selected':'')+'">'+item+'</div>';
+        });
+        html += '</div>';
+      }
+    });
+    /* Typing indicator */
+    html += '<div class="plant-row anim-el" style="animation-delay:'+((d + flow.length*200)*0.001)+'s">';
+    html += '<div class="chat-avatar">'+plantSvg+'</div>';
+    html += '<div class="bubble plant typing"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+    html += '</div>';
+    html += '</div>';
+
+  } else if(currentScene === 'luteal'){
+    html += '<div class="iv-header anim-el" style="animation-delay:'+(d*0.001)+'s">';
+    html += '<div class="iv-conector">'+s.plant+' sabe que esses dias sao mais dificeis.</div>';
+    html += '<div class="iv-title">Sua voz <em>de dentro</em></div>';
+    html += '</div>';
+    d += 100;
+
+    html += '<div class="luteal-banner anim-el" style="animation-delay:'+(d*0.001)+'s">';
+    html += '<div class="lb-icon"><i data-icon="moon"></i></div>';
+    html += '<div class="lb-text"><strong>Fase luteal.</strong> Hoje e dia de validacao, nao de desafio. Sua planta sabe.</div>';
+    html += '</div>';
+    d += 100;
+
+    /* Plant bubble with luteal speech */
+    html += '<div class="plant-row anim-el" style="animation-delay:'+(d*0.001)+'s">';
+    html += '<div class="chat-avatar">'+plantSvg+'</div>';
+    html += '<div class="bubble plant"><span class="bubble-name">'+s.plant+'</span>'+lutealSpeeches[s.plant]+'</div>';
+    html += '</div>';
+    d += 150;
+
+    /* Gentler exercises for luteal */
+    html += '<div class="exercise-grid" style="margin-top:16px;">';
+    var lutealExercises = [
+      {icon:'<i data-icon="heart"></i>',title:'Voce nao precisa fazer nada',desc:'Sua planta so quer ouvir voce'},
+      {icon:'<i data-icon="grow"></i>',title:'Gratidao corporal (gentil)',desc:'1 coisa que seu corpo fez por voce hoje'},
+      {icon:'<i data-icon="sleep"></i>',title:'Respiracao com a planta',desc:'3 ciclos de respiracao guiada'}
+    ];
+    lutealExercises.forEach(function(ex,i){
+      html += '<div class="exercise-card anim-el" style="animation-delay:'+((d+i*80)*0.001)+'s">';
+      html += '<div class="ex-icon" style="background:rgba(196,176,224,0.15);">'+ex.icon+'</div>';
+      html += '<div class="ex-body"><div class="ex-label">'+ex.title+'</div><div class="ex-desc">'+ex.desc+'</div></div>';
+      html += '<div class="ex-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+  } else if(currentScene === 'done'){
+    html += '<div class="session-done anim-el" style="animation-delay:'+(d*0.001)+'s">';
+    html += '<div class="sd-plant">'+plantSvg+'</div>';
+    html += '<div class="sd-title">Sessao <em>completa</em></div>';
+    html += '<div class="sd-sub">'+doneSpeeches[s.plant]+'</div>';
+    /* GROW points invisivel — tracked internamente */
+    html += '</div>';
+    d += 200;
+
+    /* Insight card */
+    html += '<div class="insight-card anim-el" style="animation-delay:'+(d*0.001)+'s">';
+    html += '<div class="ic-label">Pensamento reestruturado</div>';
+    html += '<div class="ic-thought">"Eu nunca vou ser bonita assim"</div>';
+    html += '<div class="ic-reframe">"Eu estou me comparando com uma versao editada. Minha beleza e real e nao precisa de filtro."</div>';
+    html += '</div>';
+    d += 120;
+
+    /* Plant bubble */
+    html += '<div class="plant-row anim-el" style="animation-delay:'+(d*0.001)+'s;margin-bottom:16px;">';
+    html += '<div class="chat-avatar">'+plantSvg+'</div>';
+    html += '<div class="bubble plant"><span class="bubble-name">'+s.plant+'</span>Salva esse pensamento novo. <em>Ele e seu escudo.</em></div>';
+    html += '</div>';
+    d += 100;
+
+    html += '<button class="cta-btn anim-el" style="animation-delay:'+(d*0.001)+'s">Salvar no meu diario</button>';
+    html += '<button class="cta-secondary anim-el" style="animation-delay:'+((d+60)*0.001)+'s">Voltar ao Grow</button>';
+
+  } else if(currentScene === 'history'){
+    html += '<div class="iv-header anim-el" style="animation-delay:'+(d*0.001)+'s">';
+    html += '<div class="iv-conector">Suas conversas est\u00e3o aqui.</div>';
+    html += '<div class="iv-title">Hist\u00f3rico</div>';
+    html += '<div class="iv-subtitle">Todas as sess\u00f5es que voc\u00ea fez com sua planta.</div>';
+    html += '</div>';
+    d += 100;
+
+    var historyItems = [
+      {date:'Hoje',title:'Pensamento do dia',desc:'Reestruturou: "Nunca vou ser bonita assim"',mood:'aliv.'},
+      {date:'Ontem',title:'Di\u00e1rio livre',desc:'Escreveu sobre press\u00e3o das redes sociais',mood:'reflexiva'},
+      {date:'3 dias atr\u00e1s',title:'Espelho invertido',desc:'Praticou autocompaix\u00e3o sobre corpo',mood:'empoderada'},
+      {date:'5 dias atr\u00e1s',title:'Gratid\u00e3o corporal',desc:'3 coisas que seu corpo fez por ela',mood:'grata'},
+      {date:'1 semana',title:'Afirma\u00e7\u00e3o do dia',desc:'Afirma\u00e7\u00e3o personalizada sobre autoestima',mood:'forte'}
+    ];
+
+    historyItems.forEach(function(item,i){
+      html += '<div class="exercise-card anim-el" style="animation-delay:'+((d+i*80)*0.001)+'s">';
+      html += '<div class="ex-icon" style="background:rgba(var(--plant-color-rgb),0.15);"><i data-icon="pencil"></i></div>';
+      html += '<div class="ex-body"><div class="ex-label">'+item.title+'</div><div class="ex-desc">'+item.date+' \u00b7 '+item.desc+'</div></div>';
+      html += '<div class="ex-tag done">'+item.mood+'</div>';
+      html += '</div>';
+    });
+  }
+
+  return html;
+}
+
+/* ═══════════════════════════════════════ */
+function setPlant(key,btn){
+  currentPlant = plants[key];
+  document.querySelectorAll('.state-btn:not(.scene-btn)').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyState();
+}
+
+function setScene(scene,btn){
+  currentScene = scene;
+  document.querySelectorAll('.scene-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyState();
+}
+
+function applyState(){
+  var r = document.documentElement;
+  r.style.setProperty('--plant-color', currentPlant.color);
+  r.style.setProperty('--plant-color-rgb', currentPlant.rgb);
+
+  var isChat = currentScene === 'chat';
+
+  ['a','i'].forEach(function(p){
+    var body = document.getElementById(p+'-body');
+    var input = document.getElementById(p+'-input');
+    var nav = document.getElementById(p+'-nav');
+    if(!body) return;
+
+    body.className = 'scroll-body' + (isChat ? ' chat-mode' : '');
+    body.innerHTML = buildContent(p);
+    body.scrollTop = 0;
+
+    if(input) input.style.display = isChat ? 'flex' : 'none';
+    if(nav) nav.style.display = isChat ? 'none' : 'flex';
+
+    /* Auto-scroll chat to bottom */
+    if(isChat){
+      setTimeout(function(){body.scrollTop = body.scrollHeight;}, 800);
+    }
+  });
+}
+
+renderStage();
+applyState();
+</script>
+<script src="../shared/icons.js"></script>
+</body>
+</html>

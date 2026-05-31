@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 12: Bonding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand-real: #F4A7B9;
+  --brand-ai:   #A8D5A2;
+  --plant-color: #C4B0E0;
+  --plant-glow: rgba(196,176,224,0.35);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #FFF8F2; color: #3D2C2E;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #1A1418; color: #E4E0DE; }
+
+/* STUDIO */
+.studio-header { position: relative; z-index: 10; padding: 32px 48px 16px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.brand-block { max-width: 640px; }
+.brand-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: #C4B5B7; margin-bottom: 10px; }
+.brand-title { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-weight: 300; font-size: 0.65em; vertical-align: 0.1em; color: #C4B5B7; }
+.brand-sub { font-size: 14px; line-height: 1.6; color: #9B8A8C; max-width: 600px; }
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(61,44,46,0.12); background: transparent; color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7; transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn { background: transparent; border: 1px solid rgba(61,44,46,0.12); color: inherit; font: inherit; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer; opacity: 0.5; transition: all 0.25s ease; }
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: var(--brand-real); color: white; opacity: 1; border-color: var(--brand-real); }
+
+/* STAGE */
+.stage { position: relative; z-index: 1; padding: 24px 24px 80px; display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; color: #C4B5B7; max-width: 280px; line-height: 1.4; }
+.phone { width: 380px; height: 800px; border-radius: 56px; background: #1A1A1A; padding: 14px; flex-shrink: 0; box-shadow: 0 60px 100px -20px rgba(0,0,0,0.18), 0 30px 60px -30px rgba(0,0,0,0.10), inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A; }
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+.status-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none; color: #9B8A8C; }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200; }
+.screen { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+
+/* KEYFRAMES */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes drawPath {
+  from { stroke-dashoffset: var(--path-len, 200); opacity: 0; }
+  5%   { opacity: 1; }
+  to   { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes growIn {
+  from { transform: scale(0); opacity: 0; }
+  65%  { transform: scale(1.12); opacity: 1; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes bloomIn {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.18); opacity: 0.9; }
+  100% { transform: scale(1); opacity: var(--op, 0.7); }
+}
+@keyframes breathe {
+  0%,100% { transform: scale(1) translateY(0); }
+  50%      { transform: scale(1.02) translateY(-2px); }
+}
+@keyframes swayGentle {
+  0%,100% { transform: rotate(0deg); }
+  25%     { transform: rotate(1.5deg); }
+  75%     { transform: rotate(-1.5deg); }
+}
+@keyframes petalDrift {
+  0%   { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  20%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translate(var(--dx, -15px), var(--dy, 30px)) rotate(var(--dr, 60deg)); }
+}
+@keyframes glowPulse {
+  0%,100% { opacity: 0.06; transform: scale(1); }
+  50%     { opacity: 0.16; transform: scale(1.06); }
+}
+@keyframes ctaIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes aBlob1 { 0%,100% { border-radius: 56% 44% 50% 50%; transform: rotate(0deg) scale(1); } 33% { border-radius: 44% 56% 62% 38%; transform: rotate(-6deg) scale(1.06); } 66% { border-radius: 62% 38% 44% 56%; transform: rotate(3deg) scale(0.97); } }
+@keyframes aBlob2 { 0%,100% { border-radius: 44% 56% 40% 60%; } 50% { border-radius: 62% 38% 52% 48%; transform: rotate(8deg) scale(1.08); } }
+@keyframes orbPulse { 0%,100% { opacity: 0.06; transform: scale(1); } 50% { opacity: 0.10; transform: scale(1.08); } }
+
+/* Shared plant styling */
+.plant-container { width: 184px; height: 184px; position: relative; margin-bottom: 16px; }
+.plant-container svg { overflow: visible; width: 100%; height: 100%; }
+.plant-group { transform-origin: 50% 100%; animation: breathe 5s ease-in-out 3.4s infinite, swayGentle 7s ease-in-out 3.4s infinite; }
+
+/* Montagem peca-a-peca do SVG kawaii (cada <g class="assemble"> envolve uma peca;
+   delay escalonado definido inline via JS). Preserva as animacoes SMIL internas. */
+.plant-container svg .assemble {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 90%;
+  animation: assembleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes assembleIn {
+  from { opacity: 0; transform: scale(0.35) translateY(3px); }
+  to   { opacity: 1; transform: none; }
+}
+.ios-screen .plant-container svg .assemble { animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .plant-container svg .assemble { animation-duration: 0.01ms; opacity: 1; }
+}
+
+/* Draw animation classes */
+.draw { stroke-dasharray: var(--path-len, 200); stroke-dashoffset: var(--path-len, 200); animation: drawPath var(--dur, 1s) cubic-bezier(0.34, 1.2, 0.64, 1) var(--del, 0.4s) forwards; }
+.grow { opacity: 0; transform: scale(0); transform-origin: var(--origin, center center); animation: growIn var(--dur, 0.5s) cubic-bezier(0.34, 1.56, 0.64, 1) var(--del, 1s) forwards; }
+.bloom { opacity: 0; transform: scale(0); animation: bloomIn var(--dur, 0.45s) cubic-bezier(0.34, 1.56, 0.64, 1) var(--del, 2s) forwards; transform-origin: var(--origin, center center); }
+.drift { opacity: 0; animation: petalDrift var(--dur, 3s) ease-out var(--del, 2.5s) forwards; }
+
+/* iOS uses gentler bezier */
+.ios-screen .draw { animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+.ios-screen .grow { animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+.ios-screen .bloom { animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+.ios-screen .plant-group { animation: breathe 5.5s ease-in-out 3.4s infinite, swayGentle 8s ease-in-out 3.4s infinite; }
+
+/* ANDROID */
+.android-screen { background: #FFF8F2; color: #3D2C2E; }
+.a-blob-1 { position: absolute; z-index: 0; pointer-events: none; width: 500px; height: 500px; background: var(--plant-color); opacity: 0.07; filter: blur(110px); border-radius: 56% 44% 50% 50%; top: -220px; left: -200px; animation: aBlob1 22s ease-in-out infinite; transition: background 0.8s ease; }
+.a-blob-2 { position: absolute; z-index: 0; pointer-events: none; width: 380px; height: 380px; background: var(--brand-real); opacity: 0.05; filter: blur(90px); border-radius: 44% 56% 40% 60%; bottom: -160px; right: -120px; animation: aBlob2 28s ease-in-out infinite; }
+.plant-aura { width: 160px; height: 160px; border-radius: 50%; background: var(--plant-color); filter: blur(60px); position: absolute; opacity: 0; top: 32%; left: 50%; transform: translate(-50%, -50%); animation: fadeUp 1.2s ease-out 0.4s forwards, glowPulse 4s ease-in-out 3.4s infinite; transition: background 0.8s ease; pointer-events: none; z-index: 0; }
+
+.a-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 68px 24px 108px;
+}
+.a-conn {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 400; color: var(--brand-real); margin-bottom: 10px;
+  opacity: 0; animation: fadeUp 0.55s ease-out 3.10s forwards;
+}
+.a-h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em;
+  color: #3D2C2E; margin-bottom: 24px;
+}
+.a-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 3.50s forwards; }
+.a-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 3.70s forwards; }
+.a-input-wrap {
+  width: 100%; position: relative;
+  opacity: 0; animation: fadeUp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 4.10s forwards;
+}
+.a-input {
+  width: 100%; padding: 16px 20px;
+  border-radius: 12px;
+  border: 2px solid rgba(61,44,46,0.10);
+  background: rgba(255,255,255,0.90);
+  color: #3D2C2E;
+  font-family: 'Nunito', sans-serif;
+  font-size: 17px; font-weight: 400; text-align: center;
+  outline: none; caret-color: var(--plant-color);
+  transition: border-color 0.25s ease, background 0.25s;
+}
+.a-input::placeholder { color: #C4B5B7; }
+.a-input:focus { border-color: var(--plant-color); background: #FFFFFF; }
+.a-cta {
+  position: absolute; bottom: 32px; left: 24px; right: 24px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  background: var(--plant-color); box-shadow: 0 6px 32px var(--plant-glow);
+  color: #FFFFFF;
+  font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 600;
+  cursor: pointer; text-align: center;
+  transition: all 350ms cubic-bezier(0.34, 1.56, 0.64, 1), background 0.6s, box-shadow 0.6s;
+  opacity: 0; transform: translateY(10px) scale(0.97); pointer-events: none;
+}
+.a-cta.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; animation: ctaIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.a-cta:hover { transform: scale(1.02); filter: brightness(1.08); }
+.a-cta:active { transform: scale(0.97); }
+
+/* iOS */
+.ios-screen { background: #FFF8F2; color: #3D2C2E; }
+.ios-orb { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; transition: background 0.8s ease; }
+.ios-orb.a { background: var(--plant-color); width: 440px; height: 440px; top: -170px; right: -140px; opacity: 0.07; filter: blur(88px); animation: orbPulse 9s ease-in-out infinite; }
+.ios-orb.b { background: var(--brand-real); width: 300px; height: 300px; bottom: -120px; left: -100px; opacity: 0.05; filter: blur(74px); animation: orbPulse 12s ease-in-out 3s infinite; }
+
+.ios-body {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 60px 24px 108px;
+}
+.ios-conn {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px; font-weight: 400; letter-spacing: -0.1px;
+  color: var(--brand-real); margin-bottom: 10px;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 3.10s forwards;
+}
+.ios-h1 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 28px; font-weight: 700; line-height: 1.18; letter-spacing: -0.6px;
+  color: #3D2C2E; margin-bottom: 24px;
+}
+.ios-h1-l1 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 3.50s forwards; }
+.ios-h1-l2 { display: block; opacity: 0; animation: fadeUp 0.58s cubic-bezier(0.32, 0.72, 0, 1) 3.70s forwards; }
+.ios-input-wrap {
+  width: 100%; position: relative;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 4.10s forwards;
+}
+.ios-input {
+  width: 100%; padding: 15px 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(61,44,46,0.10);
+  color: #3D2C2E;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 400; letter-spacing: -0.25px;
+  text-align: center; outline: none; caret-color: var(--plant-color);
+  transition: border-color 0.25s ease, background 0.25s;
+}
+.ios-input::placeholder { color: #C4B5B7; }
+.ios-input:focus { border-color: var(--plant-color); background: rgba(255,255,255,0.80); }
+.ios-cta {
+  position: absolute; bottom: 32px; left: 24px; right: 24px;
+  padding: 17px 32px; border-radius: 999px; border: none;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: rgba(196,176,224,0.82);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10), 0 4px 28px var(--plant-glow);
+  color: #FFFFFF;
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.25px;
+  cursor: pointer; text-align: center;
+  transition: all 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  opacity: 0; transform: translateY(10px) scale(0.97); pointer-events: none;
+}
+.ios-cta.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; animation: ctaIn 0.42s cubic-bezier(0.32, 0.72, 0, 1) both; }
+.ios-cta:hover { transform: scale(1.01); filter: brightness(1.06); }
+.ios-cta:active { transform: scale(0.97); }
+
+/* ANNOTATIONS */
+.annotations { max-width: 1280px; margin: 0 auto; padding: 0 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.note { padding: 22px; border-radius: 18px; background: rgba(61,44,46,0.04); }
+body.dark .note { background: rgba(255,255,255,0.06); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #9B8A8C; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; color: #9B8A8C; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; }
+.note.android li::before { background: #34A853; }
+.note.ios li::before { background: #636366; }
+.note li code { font-family: monospace; font-size: 11px; background: rgba(61,44,46,0.06); padding: 1px 5px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota &middot; Onboarding &middot; Screen 12 de 19 &middot; O12-Bonding</div>
+    <h1 class="brand-title">Como voce quer me chamar? <em>bloom botanico por arquetipo &middot; input de nome &middot; CTA ao vivo</em></h1>
+    <p class="brand-sub">
+      A planta floresce no formato do seu arquetipo e pede um nome. Cada arquetipo tem sua ilustracao botanica propria.
+      Mesma animacao SVG em ambas plataformas. CTA aparece ao digitar.
+    </p>
+  </div>
+  <div class="controls-col">
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark')" aria-label="Toggle tema"><span class="dot"></span> Tema</button>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" data-s="s1" onclick="setState('s1')" role="tab"><span>Lavanda</span></button>
+      <button class="state-btn" data-s="s2" onclick="setState('s2')" role="tab"><span>Girassol</span></button>
+      <button class="state-btn" data-s="s3" onclick="setState('s3')" role="tab"><span>Cacto</span></button>
+      <button class="state-btn" data-s="s4" onclick="setState('s4')" role="tab"><span>Cerejeira</span></button>
+      <button class="state-btn" data-s="s5" onclick="setState('s5')" role="tab"><span>Lotus</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="stage">
+
+  <!-- ANDROID -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android &middot; M3 Expressive</span>
+      <span class="desc">Planta botanica SVG por arquetipo. Bloom animado com spring M3E. TextField Outlined.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.5C5.5 4.5 18.5 4.5 22.5 8.5L20.5 10.5C17.5 7.5 6.5 7.5 3.5 10.5L1.5 8.5ZM5.5 12.5C8.5 9.5 15.5 9.5 18.5 12.5L16.5 14.5C14.5 12.5 9.5 12.5 7.5 14.5L5.5 12.5ZM9.5 16.5C11 15 13 15 14.5 16.5L12 19L9.5 16.5Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="18" height="8" rx="2"/><rect x="20" y="10" width="2" height="4" rx="1"/></svg>
+          </span>
+        </div>
+        <div class="screen android-screen" id="a-screen">
+          <div class="a-blob-1"></div>
+          <div class="a-blob-2"></div>
+          <div class="plant-aura" id="a-aura"></div>
+          <div class="a-body">
+            <div class="plant-container" id="a-plant"></div>
+            <p class="a-conn" id="a-conn">Quando voce abrir as redes, ela vai estar la. Da um nome pra ela.</p>
+            <h1 class="a-h1">
+              <span class="a-h1-l1">Como voce quer</span>
+              <span class="a-h1-l2">me chamar?</span>
+            </h1>
+            <div class="a-input-wrap">
+              <input class="a-input" id="a-input" type="text" placeholder="Nome da sua planta" autocomplete="off" oninput="onName('a', this.value)"/>
+            </div>
+          </div>
+          <button class="a-cta" id="a-cta">Oi!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26+ &middot; Liquid Glass / HIG</span>
+      <span class="desc">Mesma animacao SVG botanica. Bezier HIG. TextField regularMaterial.</span>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="screen ios-screen" id="ios-screen">
+          <div class="ios-orb a"></div>
+          <div class="ios-orb b"></div>
+          <div class="plant-aura" id="ios-aura"></div>
+          <div class="ios-body">
+            <div class="plant-container" id="ios-plant"></div>
+            <p class="ios-conn" id="ios-conn">Quando voce abrir as redes, ela vai estar la. Da um nome pra ela.</p>
+            <h1 class="ios-h1">
+              <span class="ios-h1-l1">Como voce quer</span>
+              <span class="ios-h1-l2">me chamar?</span>
+            </h1>
+            <div class="ios-input-wrap">
+              <input class="ios-input" id="ios-input" type="text" placeholder="Nome da sua planta" autocomplete="off" oninput="onName('ios', this.value)"/>
+            </div>
+          </div>
+          <button class="ios-cta" id="ios-cta">Oi!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="annotations">
+  <div class="note android">
+    <h4>Android &middot; M3 Expressive</h4>
+    <ul>
+      <li>5 arquetipos: <strong>Lavanda</strong> (3 espigas), <strong>Girassol</strong> (petalas radiadas), <strong>Cacto</strong> (saguaro), <strong>Cerejeira</strong> (galho com flores), <strong>Lotus</strong> (flor abrindo na agua).</li>
+      <li>Coreografia: <code>drawPath</code> (caules) &rarr; <code>growIn</code> (folhas) &rarr; <code>bloomIn</code> (flores) com stagger temporal.</li>
+      <li>Respiracao: <code>breathe 5s + swayGentle 7s</code>. Transform-origin: 50% 100%.</li>
+    </ul>
+  </div>
+  <div class="note ios">
+    <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
+    <ul>
+      <li>Mesma animacao SVG botanica — identica ao Android. Bezier HIG <code>cubic-bezier(0.32, 0.72, 0, 1)</code> aplicada automaticamente.</li>
+      <li>CTA Liquid Glass: <code>backdrop-filter: blur(24px) saturate(180%)</code> + specular inset.</li>
+    </ul>
+  </div>
+</section>
+
+<script src="../shared/plant-svgs.js"></script>
+<script>
+/* Plant SVGs (5 arquetipos kawaii) -> fonte unica: ../shared/plant-svgs.js. Animacao de montagem peca-a-peca aplicada em renderPlant(). */
+
+/* States */
+var states = {
+  s1: { plant: 'lavanda',   color: '#C4B0E0', glow: 'rgba(196,176,224,0.35)', ctaRgba: 'rgba(196,176,224,0.82)', shadow: '0 6px 32px rgba(196,176,224,0.35)' },
+  s2: { plant: 'girassol',  color: '#F2CE6B', glow: 'rgba(242,206,107,0.35)', ctaRgba: 'rgba(242,206,107,0.82)', shadow: '0 6px 32px rgba(242,206,107,0.35)' },
+  s3: { plant: 'cacto',     color: '#8CC5A0', glow: 'rgba(140,197,160,0.35)', ctaRgba: 'rgba(140,197,160,0.82)', shadow: '0 6px 32px rgba(140,197,160,0.35)' },
+  s4: { plant: 'cerejeira', color: '#F2B5C4', glow: 'rgba(242,181,196,0.35)', ctaRgba: 'rgba(242,181,196,0.82)', shadow: '0 6px 32px rgba(242,181,196,0.35)' },
+  s5: { plant: 'lotus',     color: '#D4B8D4', glow: 'rgba(212,184,212,0.35)', ctaRgba: 'rgba(212,184,212,0.82)', shadow: '0 6px 32px rgba(212,184,212,0.35)' }
+};
+
+var currentState = 's1';
+
+var SVGNS = 'http://www.w3.org/2000/svg';
+
+/* Renderiza o SVG kawaii padronizado (fonte unica) e o "monta" peca a peca:
+   cada elemento de topo entra num wrapper <g class="assemble"> com delay
+   escalonado, preservando as animacoes SMIL internas de cada peca. */
+function renderPlant(containerId, plantKey, color) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = renderPlantSVG(plantKey, color, false);
+  var svg = el.querySelector('svg');
+  if (!svg) return;
+  var pieces = [];
+  for (var i = 0; i < svg.childNodes.length; i++) {
+    if (svg.childNodes[i].nodeType === 1) pieces.push(svg.childNodes[i]);
+  }
+  /* Tempo total de montagem fixo para TODAS as plantas (independe do nro de pecas):
+     o intervalo entre pecas e calculado para a ultima terminar em ASSEMBLE_FINISH.
+     Assim o texto (que comeca em 3.10s no CSS) aparece quando a planta termina. */
+  var ASSEMBLE_FINISH = 3.1;   // s — quando a planta termina de montar
+  var PIECE_DUR = 0.4;         // s — = duracao de assembleIn no CSS
+  var n = pieces.length;
+  var stagger = n > 1 ? (ASSEMBLE_FINISH - PIECE_DUR) / (n - 1) : 0;
+  pieces.forEach(function(piece, idx) {
+    var g = document.createElementNS(SVGNS, 'g');
+    g.setAttribute('class', 'assemble');
+    g.style.animationDelay = (stagger * idx).toFixed(3) + 's';
+    svg.insertBefore(g, piece);
+    g.appendChild(piece);
+  });
+}
+
+function setState(s) {
+  currentState = s;
+  document.querySelectorAll('.state-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.s === s);
+  });
+  var st = states[s];
+
+  document.documentElement.style.setProperty('--plant-color', st.color);
+  document.documentElement.style.setProperty('--plant-glow', st.glow);
+
+  renderPlant('a-plant', st.plant, st.color);
+  renderPlant('ios-plant', st.plant, st.color);
+
+  var aName = document.getElementById('a-input').value.trim();
+  var iName = document.getElementById('ios-input').value.trim();
+  if (aName) applyCtaColor('a', st);
+  if (iName) applyCtaColor('ios', st);
+}
+
+function applyCtaColor(p, st) {
+  if (p === 'a') {
+    var cta = document.getElementById('a-cta');
+    cta.style.background = st.color;
+    cta.style.boxShadow = st.shadow;
+  } else {
+    var cta = document.getElementById('ios-cta');
+    cta.style.background = st.ctaRgba;
+    cta.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10), 0 4px 28px ' + st.glow;
+  }
+}
+
+function onName(platform, val) {
+  var trimmed = val.trim();
+  var ctaEl = document.getElementById(platform + '-cta');
+  if (trimmed.length > 0) {
+    ctaEl.textContent = 'Oi, ' + trimmed + '!';
+    if (!ctaEl.classList.contains('visible')) {
+      ctaEl.classList.add('visible');
+    }
+    applyCtaColor(platform, states[currentState]);
+  } else {
+    ctaEl.classList.remove('visible');
+    ctaEl.textContent = 'Oi!';
+  }
+
+  var other = platform === 'a' ? 'ios' : 'a';
+  var otherInput = document.getElementById(other + '-input');
+  if (otherInput.value !== val) {
+    otherInput.value = val;
+    onName(other, val);
+  }
+}
+
+setState('s1');
+</script>
+</body>
+</html>

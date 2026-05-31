@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Screen 00: Splash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand-real: #F4A7B9;
+  --brand-real-deep: #E8889E;
+  --brand-ai: #A8D5A2;
+  --brand-correct: #7DD4A3;
+  --brand-warning: #FFD07A;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background: #F0EBE8; color: #1A1714;
+  transition: background 0.6s ease, color 0.6s ease; overflow-x: hidden;
+}
+body.dark { background: #0A0A0E; color: #E8E4DA; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.28;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* STUDIO HEADER */
+.studio-header {
+  position: relative; z-index: 10; padding: 32px 48px 16px;
+  display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start;
+}
+.brand-block { max-width: 640px; }
+.brand-eyebrow { font-variation-settings: 'wdth' 105, 'wght' 600, 'opsz' 11; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.5; margin-bottom: 10px; }
+.brand-title { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(30px, 3.8vw, 50px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+.brand-title em { font-style: normal; font-family: 'Nunito', sans-serif; font-variation-settings: 'wdth' 100, 'wght' 200; font-size: 0.65em; vertical-align: 0.1em; opacity: 0.5; }
+.brand-sub { font-size: 14px; line-height: 1.6; opacity: 0.65; max-width: 580px; }
+.brand-sub em { font-family: 'Instrument Serif', serif; font-style: italic; }
+.controls-col { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0.7; transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover { opacity: 1; transform: scale(1.03); }
+.theme-toggle .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; transition: transform 0.45s ease; }
+body.dark .theme-toggle .dot { transform: rotate(180deg); }
+.state-toggle { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.state-btn { background: transparent; border: 1px solid currentColor; color: inherit; font: inherit; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 999px; cursor: pointer; opacity: 0.5; transition: all 0.25s ease; }
+.state-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.state-btn.active { background: currentColor; opacity: 1; }
+.state-btn.active span { mix-blend-mode: difference; color: white; }
+
+/* STAGE */
+.stage { position: relative; z-index: 1; padding: 24px 24px 80px; display: flex; align-items: flex-start; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.5; max-width: 280px; line-height: 1.4; }
+.phone { width: 380px; height: 800px; border-radius: 56px; background: #0A0A0A; padding: 14px; flex-shrink: 0; box-shadow: 0 60px 100px -20px rgba(0,0,0,0.32), 0 30px 60px -30px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.05), inset 0 0 0 4px #1A1A1A; }
+body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.08); }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; position: relative; background: #FFF8F2; }
+.status-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; padding: 16px 28px 0; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; z-index: 100; pointer-events: none; color: rgba(61,44,46,0.70); }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+.status-bar svg { width: 16px; height: 16px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: #000; border-radius: 999px; z-index: 200; }
+.screen { width: 100%; height: 100%; position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+
+/* ======== ANDROID SPLASH
+   Background: #080C09 — deep botanical night
+   3 blobs rosa — opacidade aumentada para mais presença: 38% / 24% / 16%
+   Ritmos nunca sincronizados: 20s / 28s / 17s
+*/
+.android-screen { background: #FFF8F2; color: #3D2C2E; }
+
+.a-blob-1 {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 580px; height: 580px; background: var(--brand-real);
+  opacity: 0.12; filter: blur(95px);
+  border-radius: 62% 38% 58% 42%; top: -220px; left: -220px;
+  animation: aB1 20s ease-in-out infinite;
+}
+.a-blob-2 {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 420px; height: 420px; background: var(--brand-real);
+  opacity: 0.10; filter: blur(80px);
+  border-radius: 45% 55% 62% 38%; bottom: -150px; right: -150px;
+  animation: aB2 28s ease-in-out infinite;
+}
+.a-blob-3 {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 240px; height: 240px; background: var(--brand-real);
+  opacity: 0.08; filter: blur(60px);
+  border-radius: 55% 45% 42% 58%; top: 48%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: aB3 17s ease-in-out infinite;
+}
+
+@keyframes aB1 {
+  0%,100% { border-radius: 62% 38% 58% 42%; transform: rotate(0deg) scale(1); }
+  33%      { border-radius: 50% 50% 44% 56%; transform: rotate(6deg) scale(1.07); }
+  66%      { border-radius: 42% 58% 62% 38%; transform: rotate(-5deg) scale(0.95); }
+}
+@keyframes aB2 {
+  0%,100% { border-radius: 45% 55% 62% 38%; transform: rotate(0deg) scale(1); }
+  45%     { border-radius: 60% 40% 48% 52%; transform: rotate(-9deg) scale(1.08); }
+}
+@keyframes aB3 {
+  0%,100% { border-radius: 55% 45% 42% 58%; transform: translate(-50%,-50%) rotate(0deg); }
+  50%     { border-radius: 42% 58% 55% 45%; transform: translate(-50%,-50%) rotate(12deg) scale(1.12); }
+}
+
+.a-splash-content {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 60px 32px 48px; text-align: center;
+}
+.a-wordmark {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 80px; line-height: 1; letter-spacing: -0.03em;
+  color: #3D2C2E;
+  text-shadow: 0 0 100px rgba(244,167,185,0.30), 0 0 44px rgba(244,167,185,0.15);
+  animation: wordmarkSpring 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
+  opacity: 0; transform: scale(0.86);
+}
+.a-divider {
+  width: 44px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(244,167,185,0.60), transparent);
+  margin: 18px auto 0;
+  animation: fadeIn 0.6s ease 0.52s forwards; opacity: 0;
+}
+.a-tagline {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 19px; color: #9B8A8C; letter-spacing: 0.02em;
+  margin-top: 14px;
+  animation: fadeUp 0.7s cubic-bezier(0.32,0.72,0,1) 0.60s forwards;
+  opacity: 0; transform: translateY(10px);
+}
+
+.a-hint {
+  position: absolute; bottom: 52px; left: 0; right: 0; text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 100, 'wght' 400, 'opsz' 12;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  animation: fadeHint 0.6s ease 1.5s forwards; opacity: 0; transform: translateY(8px);
+}
+.a-cta {
+  position: absolute; bottom: 44px; left: 28px; right: 28px;
+  padding: 18px 24px; border-radius: 999px; border: none;
+  background: var(--brand-real); color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-variation-settings: 'wdth' 108, 'wght' 600, 'opsz' 16;
+  font-size: 16px; cursor: pointer; text-align: center;
+  box-shadow: 0 4px 28px rgba(244,167,185,0.45);
+  transition: all 350ms cubic-bezier(0.34,1.56,0.64,1); display: none;
+}
+.a-cta:hover { transform: scale(1.025); box-shadow: 0 8px 40px rgba(244,167,185,0.60); }
+
+@keyframes wordmarkSpring { to { opacity: 1; transform: scale(1); } }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes fadeHint { to { opacity: 0.22; transform: translateY(0); } }
+
+/* ======== iOS SPLASH
+   Background: #09080D — deep dark com profundidade rose
+   3 orbs rosa estáticos — opacidade aumentada: 44% / 28% / 16%
+   Mesma vibração que a screen 01 aprovada
+*/
+.ios-screen { background: #FFF8F2; color: #3D2C2E; }
+
+.ios-orb { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; }
+.ios-orb.a {
+  background: var(--brand-real); width: 460px; height: 460px;
+  top: -160px; right: -150px; opacity: 0.15; filter: blur(80px);
+}
+.ios-orb.b {
+  background: var(--brand-real); width: 380px; height: 380px;
+  bottom: -140px; left: -120px; opacity: 0.10; filter: blur(70px);
+}
+.ios-orb.c {
+  background: var(--brand-real); width: 220px; height: 220px;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  opacity: 0.08; filter: blur(55px);
+}
+
+.ios-splash-content {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 60px 32px 48px; text-align: center;
+}
+.ios-wordmark {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 80px; line-height: 1; letter-spacing: -0.03em;
+  color: #3D2C2E;
+  text-shadow: 0 0 100px rgba(244,167,185,0.28), 0 0 44px rgba(244,167,185,0.14);
+  animation: wordmarkHIG 0.85s cubic-bezier(0.32,0.72,0,1) 0.15s forwards;
+  opacity: 0; transform: scale(0.92) translateY(10px);
+}
+@keyframes wordmarkHIG { to { opacity: 1; transform: scale(1) translateY(0); } }
+.ios-divider {
+  width: 44px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(244,167,185,0.58), transparent);
+  margin: 18px auto 0;
+  animation: fadeIn 0.6s ease 0.52s forwards; opacity: 0;
+}
+.ios-tagline {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 19px; color: #9B8A8C; letter-spacing: 0.02em;
+  margin-top: 14px;
+  animation: fadeUp 0.65s cubic-bezier(0.32,0.72,0,1) 0.60s forwards;
+  opacity: 0; transform: translateY(10px);
+}
+
+.ios-hint {
+  position: absolute; bottom: 52px; left: 0; right: 0; text-align: center;
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  animation: fadeHint 0.6s ease 1.5s forwards; opacity: 0; transform: translateY(8px);
+}
+/* iOS CTA — borderedProminent Liquid Glass, mesmo tratamento da screen 01 aprovada */
+.ios-cta {
+  position: absolute; bottom: 44px; left: 28px; right: 28px;
+  padding: 17px 22px; border-radius: 999px; border: none;
+  background: rgba(232,136,158,0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.12),
+              0 4px 28px rgba(244,167,185,0.42), 0 1px 6px rgba(0,0,0,0.22);
+  color: #fff;
+  font-family: -apple-system, 'SF Pro Text', sans-serif;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.25px;
+  cursor: pointer; text-align: center;
+  transition: all 300ms cubic-bezier(0.32,0.72,0,1); display: none;
+}
+.ios-cta:hover {
+  background: rgba(232,136,158,0.94);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.36), 0 8px 40px rgba(244,167,185,0.58);
+  transform: scale(1.01);
+}
+
+/* ANNOTATIONS */
+.annotations { max-width: 1280px; margin: 0 auto; padding: 0 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.note { padding: 22px; border-radius: 18px; background: rgba(0,0,0,0.04); }
+body.dark .note { background: rgba(255,255,255,0.04); }
+.note h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; margin-bottom: 14px; font-weight: 700; }
+.note ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note li { font-size: 13px; line-height: 1.55; opacity: 0.78; padding-left: 16px; position: relative; }
+.note li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--brand-real); opacity: 0.7; }
+.note li code { font-family: 'SF Mono','Fira Code',monospace; font-size: 11px; background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 4px; }
+body.dark .note li code { background: rgba(255,255,255,0.1); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="brand-block">
+    <div class="brand-eyebrow">Brota · Screen 00 · Splash</div>
+    <h1 class="brand-title">Splash <em>a primeira impressão que fica</em></h1>
+    <p class="brand-sub">
+      Wordmark <em>Brota</em> em Instrument Serif italic sobre fundo botânico escuro.
+      Orbs rosa mais vivos: Android 38% / 24% / 16% · iOS 44% / 28% / 16%.
+      CTA iOS alinhado com a screen 01 aprovada — <em>borderedProminent</em> glass rose <code>rgba(244,167,185,0.82)</code>.
+    </p>
+  </div>
+  <div class="controls-col">
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark')"><span class="dot"></span> Studio theme</button>
+    <div class="state-toggle" role="tablist">
+      <button class="state-btn active" onclick="setState('loading',this)"><span>Carregando</span></button>
+      <button class="state-btn" onclick="setState('pronta',this)"><span>Pronta</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill android">Android · Material 3 Expressive</span>
+      <span class="desc">3 blobs rosa 38%/24%/16% · spring overshoot · botanical night #080C09</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen android-screen">
+          <div class="a-blob-1"></div>
+          <div class="a-blob-2"></div>
+          <div class="a-blob-3"></div>
+          <div class="a-splash-content">
+            <div class="a-wordmark">Brota</div>
+            <div class="a-divider"></div>
+            <div class="a-tagline">bloom from within</div>
+          </div>
+          <p class="a-hint" id="a-hint">Toque para começar</p>
+          <button class="a-cta" id="a-cta">Começar</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone-wrapper">
+    <div class="phone-label">
+      <span class="pill ios">iOS 26 · Liquid Glass / HIG</span>
+      <span class="desc">3 orbs rosa 44%/28%/16% · wordmark HIG bezier · CTA glass rose 82%</span>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-2H2zm4 0h2V14H6zm4 0h2V8h-2zm4 0h2V4h-2zm4 0h2v-7h-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4 2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
+          </span>
+        </div>
+        <section class="screen ios-screen">
+          <div class="ios-orb a"></div>
+          <div class="ios-orb b"></div>
+          <div class="ios-orb c"></div>
+          <div class="ios-splash-content">
+            <div class="ios-wordmark">Brota</div>
+            <div class="ios-divider"></div>
+            <div class="ios-tagline">bloom from within</div>
+          </div>
+          <p class="ios-hint" id="ios-hint">Toque para começar</p>
+          <button class="ios-cta" id="ios-cta">Começar</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<section class="annotations">
+  <div class="note">
+    <h4>Android · Material 3 Expressive</h4>
+    <ul>
+      <li>Background <code>#080C09</code> — noite botânica; undertone quente, não preto neutro</li>
+      <li>Blobs rosa mais vivos: Blob 1 <code>38%</code> (era 28%) · Blob 2 <code>24%</code> (era 16%) · Blob 3 <code>16%</code> (era 10%)</li>
+      <li>Ritmos nunca sincronizados: 20s / 28s / 17s — o fundo respira, nunca congela</li>
+      <li>Halo do wordmark reforçado: <code>text-shadow: 0 0 100px rgba(244,167,185,0.55)</code> — glow orgânico, não neon</li>
+      <li>Wordmark: Instrument Serif italic 80px, spring M3E <code>(0.34,1.56,0.64,1)</code> scale 0.86→1.0</li>
+      <li>Estado Pronta: CTA Filled M3E pill <code>var(--brand-real)</code> — glow <code>rgba(244,167,185,0.45)</code></li>
+    </ul>
+  </div>
+  <div class="note">
+    <h4>iOS 26 · Liquid Glass / HIG</h4>
+    <ul>
+      <li>Background <code>#09080D</code> — profundidade rose-púrpura; 3 orbs estáticos (HIG spec)</li>
+      <li>Orbs mais vivos: Orb A <code>44%</code> (era 34%) · Orb B <code>28%</code> (era 20%) · Orb C <code>16%</code> (era 11%)</li>
+      <li>Wordmark: HIG bezier <code>(0.32,0.72,0,1)</code> — sem overshoot; scale 0.92→1.0 + translateY(10px→0)</li>
+      <li>CTA alinhado com screen 01 aprovada: <code>rgba(244,167,185,0.82)</code> + <code>blur(24px) saturate(180%)</code> + specular highlight <code>rgba(255,255,255,0.30)</code></li>
+      <li>Regra de cor mantida: verde sálvia aparece <em>apenas</em> em O10-PlantSelect em diante</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+function setState(state, btnEl) {
+  document.querySelectorAll('.state-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btnEl) btnEl.classList.add('active');
+  var pronta = state === 'pronta';
+  document.getElementById('a-hint').style.display  = pronta ? 'none'  : '';
+  document.getElementById('a-cta').style.display   = pronta ? 'block' : 'none';
+  document.getElementById('ios-hint').style.display = pronta ? 'none'  : '';
+  document.getElementById('ios-cta').style.display  = pronta ? 'block' : 'none';
+}
+</script>
+</body>
+</html>

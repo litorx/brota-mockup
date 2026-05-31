@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota &mdash; Notifications N1-N7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:720px;margin:0 auto;}
+
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.controls-row2{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.plant-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.plant-btn.active{background:var(--plant-color);color:white;border-color:var(--plant-color);}
+.plant-btn:hover:not(.active){border-color:var(--plant-color);color:var(--text);}
+
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* ── PHONE ── */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:280px;line-height:1.4;}
+.phone{width:375px;height:740px;border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+
+/* ── LOCK SCREEN BG ── */
+.lock-bg-android{
+  background:linear-gradient(160deg,#1A1A1E 0%,#242428 40%,#2C2C32 100%);
+  width:100%;height:100%;position:absolute;inset:0;
+}
+.lock-bg-ios{
+  background:linear-gradient(160deg,#0F1420 0%,#1A2035 40%,#202840 100%);
+  width:100%;height:100%;position:absolute;inset:0;
+}
+
+/* ── SUBTLE BG BLUR GLOW ── */
+.lock-glow{
+  position:absolute;pointer-events:none;border-radius:50%;filter:blur(80px);
+}
+.lock-glow-a{
+  width:280px;height:280px;
+  background:var(--plant-color);
+  opacity:0.06;
+  top:-60px;right:-60px;
+  transition:background 0.7s;
+}
+.lock-glow-b{
+  width:200px;height:200px;
+  background:var(--brand-real);
+  opacity:0.04;
+  bottom:80px;left:-40px;
+}
+.ios-lock .lock-glow-a{opacity:0.07;background:#2D5A8E;}
+.ios-lock .lock-glow-b{opacity:0.05;background:#5A2D8E;}
+
+/* ── DYNA ISLAND ── */
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(0,0,0,0.85);border-radius:999px;z-index:30;pointer-events:none;}
+
+/* ── ANDROID STATUS BAR ── */
+.lock-statusbar{
+  position:absolute;top:0;left:0;right:0;height:36px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;z-index:10;pointer-events:none;
+}
+.ls-time{font-size:14px;font-weight:700;color:rgba(255,255,255,0.85);}
+.ls-icons{display:flex;gap:5px;font-size:11px;color:rgba(255,255,255,0.60);}
+
+/* ── LOCK CLOCK ── */
+.lock-clock{
+  position:absolute;top:80px;left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;
+  z-index:5;pointer-events:none;
+}
+.lock-time{
+  font-family:'Instrument Serif',serif;
+  font-size:72px;font-weight:400;
+  color:rgba(255,255,255,0.92);
+  line-height:1;letter-spacing:-1px;
+  text-shadow:0 2px 20px rgba(0,0,0,0.30);
+}
+.ios-lock .lock-time{
+  font-size:76px;
+  font-family:-apple-system,sans-serif;
+  font-weight:200;
+  letter-spacing:-2px;
+}
+.lock-date{
+  margin-top:6px;
+  font-size:14px;font-weight:500;
+  color:rgba(255,255,255,0.65);
+  letter-spacing:0.02em;
+}
+.ios-lock .lock-date{
+  font-family:-apple-system,sans-serif;
+  font-weight:400;
+  font-size:15px;
+}
+
+/* ── NOTIFICATION CARD ── */
+.notif-area{
+  position:absolute;
+  top:230px;left:16px;right:16px;
+  z-index:20;
+}
+
+/* Android M3 Notification */
+.notif-android{
+  background:#FFFFFF;
+  border-radius:24px;
+  padding:14px 16px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.28),0 1px 4px rgba(0,0,0,0.12);
+  display:flex;flex-direction:column;gap:0;
+  animation:notifSlideIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.notif-android-header{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:6px;
+}
+.notif-app-icon{
+  width:20px;height:20px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  background:var(--plant-color);
+  transition:background 0.7s;
+}
+.notif-app-icon svg{width:12px;height:12px;}
+.notif-app-name{font-size:11px;font-weight:700;color:#3C3C3C;letter-spacing:0.02em;}
+.notif-timestamp{font-size:11px;font-weight:400;color:#9E9E9E;margin-left:auto;}
+.notif-title{font-size:13.5px;font-weight:700;color:#1C1C1C;line-height:1.3;margin-bottom:3px;}
+.notif-body{font-size:12.5px;font-weight:400;color:#5C5C5C;line-height:1.45;}
+
+/* iOS Frosted Glass Notification */
+.notif-ios{
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.28);
+  border-radius:20px;
+  padding:14px 16px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.28),0 1px 0 rgba(255,255,255,0.12) inset;
+  display:flex;flex-direction:column;
+  animation:notifSlideIn 0.40s cubic-bezier(0.32,0.72,0,1) both;
+}
+.notif-ios-header{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:8px;
+}
+.notif-ios-app-icon{
+  width:22px;height:22px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  background:var(--plant-color);
+  transition:background 0.7s;
+}
+.notif-ios-app-icon svg{width:13px;height:13px;}
+.notif-ios-app-name{font-family:-apple-system,sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.75);letter-spacing:0.01em;}
+.notif-ios-timestamp{font-family:-apple-system,sans-serif;font-size:12px;font-weight:400;color:rgba(255,255,255,0.45);margin-left:auto;}
+.notif-ios-title{font-family:-apple-system,sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,0.90);line-height:1.3;margin-bottom:3px;}
+.notif-ios-body{font-family:-apple-system,sans-serif;font-size:13px;font-weight:400;color:rgba(255,255,255,0.62);line-height:1.45;}
+
+/* Notification type badge */
+.notif-type-badge{
+  position:absolute;bottom:170px;left:0;right:0;
+  display:flex;justify-content:center;
+  z-index:25;pointer-events:none;
+}
+.notif-type-pill{
+  padding:5px 14px;border-radius:999px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.16);
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;
+  color:rgba(255,255,255,0.55);
+}
+
+/* Lock screen bottom ─ slide to open hint */
+.lock-bottom{
+  position:absolute;bottom:36px;left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  z-index:10;pointer-events:none;
+}
+.lock-hint{font-size:11px;font-weight:500;color:rgba(255,255,255,0.35);letter-spacing:0.04em;}
+.lock-bar{width:120px;height:4px;border-radius:999px;background:rgba(255,255,255,0.22);}
+.ios-lock .lock-bar{width:130px;height:5px;}
+
+/* ── KEYFRAMES ── */
+@keyframes notifSlideIn{
+  from{opacity:0;transform:translateY(-16px) scale(0.96);}
+  to{opacity:1;transform:none;}
+}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes shimmer{
+  0%{transform:translateX(-200%) skewX(-14deg);}
+  40%,100%{transform:translateX(200%) skewX(-14deg);}
+}
+@keyframes clockPulse{
+  0%,100%{opacity:0.92;}
+  50%{opacity:0.70;}
+}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+.reinit{animation:none!important;opacity:0!important;transition:none!important;}
+
+/* ── PLANT MINI in notif icon ── */
+.notif-leaf{fill:white;opacity:0.9;}
+
+/* ── N-TYPE COLOR HINT on card left edge (Android only) ── */
+.notif-android::before{
+  content:'';
+  position:absolute;left:0;top:12px;bottom:12px;width:3px;
+  border-radius:999px;background:var(--plant-color);
+  transition:background 0.7s;
+}
+.notif-android{position:relative;overflow:hidden;}
+
+/* ── CONTROLS SEPARATOR ── */
+.controls-sep{
+  width:1px;height:24px;background:var(--border);margin:0 4px;
+  align-self:center;display:inline-block;
+}
+</style>
+</head>
+<body>
+<div class="studio">
+
+<div class="studio-header">
+  <div class="brand-eyebrow">Brota &middot; Notifications &middot; N1-N7</div>
+  <div class="brand-title">Notificacoes push &mdash; 7 tipos <em>Preview de como cada notificacao aparece no celular</em></div>
+  <div class="brand-sub">
+    Cada tipo de push mostrado na tela de bloqueio &mdash; Android M3 card e iOS frosted glass. Alterne entre N1&ndash;N7 e as 5 plantas para ver as variacoes de conteudo.
+  </div>
+</div>
+
+<!-- Notification type toggles -->
+<div class="controls">
+  <button class="state-btn active" onclick="setNotif('n1',this)">N1 &mdash; Manha</button>
+  <button class="state-btn" onclick="setNotif('n2',this)">N2 &mdash; Pico</button>
+  <button class="state-btn" onclick="setNotif('n3',this)">N3 &mdash; Ciclo</button>
+  <button class="state-btn" onclick="setNotif('n4',this)">N4 &mdash; Planta</button>
+  <button class="state-btn" onclick="setNotif('n5',this)">N5 &mdash; Trial</button>
+  <button class="state-btn" onclick="setNotif('n6',this)">N6 &mdash; Bypass</button>
+  <button class="state-btn" onclick="setNotif('n7',this)">N7 &mdash; Reengaj</button>
+</div>
+
+<!-- Plant switcher -->
+<div class="controls-row2">
+  <button class="plant-btn active" onclick="setPlant('s1',this)">Lavanda / Ana</button>
+  <button class="plant-btn" onclick="setPlant('s2',this)">Girassol / Bia</button>
+  <button class="plant-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
+  <button class="plant-btn" onclick="setPlant('s4',this)">Cerejeira / Dani</button>
+  <button class="plant-btn" onclick="setPlant('s5',this)">Lotus / Eva</button>
+</div>
+
+<div class="stage">
+
+<!-- ═══════ ANDROID ═══════ -->
+<div class="phone-wrapper">
+  <div class="phone-label">
+    <span class="pill android">Android &middot; Nunito</span>
+    <span class="desc">M3 notification card &middot; white bg &middot; rounded 24px &middot; Spring bounce</span>
+  </div>
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="lock-bg-android"></div>
+      <div class="lock-glow lock-glow-a" id="a-glow-a"></div>
+      <div class="lock-glow lock-glow-b"></div>
+
+      <!-- Status bar -->
+      <div class="lock-statusbar">
+        <span class="ls-time">9:41</span>
+        <span class="ls-icons">&#9679; &#9679; &#9679;</span>
+      </div>
+
+      <!-- Clock -->
+      <div class="lock-clock">
+        <div class="lock-time" id="a-clock">14:32</div>
+        <div class="lock-date" id="a-date">Domingo, 25 de maio</div>
+      </div>
+
+      <!-- Notification card -->
+      <div class="notif-area">
+        <div class="notif-android" id="a-notif">
+          <div class="notif-android-header">
+            <div class="notif-app-icon" id="a-app-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3C9 3 7 5.5 7 8C7 11 9 12.5 9 15H15C15 12.5 17 11 17 8C17 5.5 15 3 12 3Z" class="notif-leaf"/><rect x="9" y="15" width="6" height="2" rx="1" class="notif-leaf" opacity="0.7"/><rect x="10" y="17" width="4" height="2" rx="1" class="notif-leaf" opacity="0.5"/></svg>
+            </div>
+            <span class="notif-app-name">Brota</span>
+            <span class="notif-timestamp" id="a-ts">agora</span>
+          </div>
+          <div class="notif-title" id="a-title">Lavanda te espera</div>
+          <div class="notif-body" id="a-body">Bom dia, Ana. Como voce ta hoje? Sua Lavanda quer saber.</div>
+        </div>
+      </div>
+
+      <!-- N-type label -->
+      <div class="notif-type-badge">
+        <div class="notif-type-pill" id="a-type-pill">N1 &mdash; Ritual da Manha</div>
+      </div>
+
+      <!-- Bottom hint -->
+      <div class="lock-bottom">
+        <div class="lock-hint">Deslize para abrir</div>
+        <div class="lock-bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ iOS ═══════ -->
+<div class="phone-wrapper">
+  <div class="phone-label">
+    <span class="pill ios">iOS 26 &middot; SF Rounded</span>
+    <span class="desc">Frosted glass &middot; backdrop-filter blur(40px) &middot; HIG bezier</span>
+  </div>
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="ios-lock lock-bg-ios"></div>
+      <div class="lock-glow lock-glow-a" id="ios-glow-a"></div>
+      <div class="lock-glow lock-glow-b"></div>
+
+      <!-- Dynamic Island -->
+      <div class="dyna"></div>
+
+      <!-- Status bar (implicit on iOS, handled by dyna) -->
+
+      <!-- Clock -->
+      <div class="lock-clock ios-lock">
+        <div class="lock-time ios-lock" id="ios-clock">14:32</div>
+        <div class="lock-date ios-lock" id="ios-date">Domingo, 25 de maio</div>
+      </div>
+
+      <!-- Notification card -->
+      <div class="notif-area">
+        <div class="notif-ios" id="ios-notif">
+          <div class="notif-ios-header">
+            <div class="notif-ios-app-icon" id="ios-app-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3C9 3 7 5.5 7 8C7 11 9 12.5 9 15H15C15 12.5 17 11 17 8C17 5.5 15 3 12 3Z" class="notif-leaf"/><rect x="9" y="15" width="6" height="2" rx="1" class="notif-leaf" opacity="0.7"/><rect x="10" y="17" width="4" height="2" rx="1" class="notif-leaf" opacity="0.5"/></svg>
+            </div>
+            <span class="notif-ios-app-name">Brota</span>
+            <span class="notif-ios-timestamp" id="ios-ts">agora</span>
+          </div>
+          <div class="notif-ios-title" id="ios-title">Lavanda te espera</div>
+          <div class="notif-ios-body" id="ios-body">Bom dia, Ana. Como voce ta hoje? Sua Lavanda quer saber.</div>
+        </div>
+      </div>
+
+      <!-- N-type label -->
+      <div class="notif-type-badge">
+        <div class="notif-type-pill" id="ios-type-pill">N1 &mdash; Ritual da Manha</div>
+      </div>
+
+      <!-- Bottom hint -->
+      <div class="lock-bottom ios-lock">
+        <div class="lock-hint">Deslize para abrir</div>
+        <div class="lock-bar ios-lock"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /stage -->
+</div><!-- /studio -->
+
+<script>
+/* ── DATA ── */
+var plants = {
+  s1:{name:'Ana',   plant:'Lavanda',   color:'#C4B0E0', rgb:'196,176,224'},
+  s2:{name:'Bia',   plant:'Girassol',  color:'#F2CE6B', rgb:'242,206,107'},
+  s3:{name:'Carol', plant:'Cacto',     color:'#8CC5A0', rgb:'140,197,160'},
+  s4:{name:'Dani',  plant:'Cerejeira', color:'#F2B5C4', rgb:'242,181,196'},
+  s5:{name:'Eva',   plant:'Lotus',     color:'#D4B8D4', rgb:'212,184,212'}
+};
+
+/* Notification content — keyed by notifId, then plantName */
+var notifs = {
+  n1:{
+    label:'N1 \u2014 Ritual da Manha',
+    time:'8:00',
+    ts:'agora',
+    titles:{
+      Lavanda:'Lavanda te espera',
+      Girassol:'Girassol te espera',
+      Cacto:'Cacto te espera',
+      Cerejeira:'Cerejeira te espera',
+      Lotus:'Lotus te espera'
+    },
+    bodies:{
+      Lavanda:'Bom dia, Ana. Como voce ta hoje? Sua Lavanda quer saber.',
+      Girassol:'Bom diaaa Bia! Bora comecar o dia com tudo?',
+      Cacto:'Carol. Bom dia. Bebe agua.',
+      Cerejeira:'Bom dia, Dani. O dia e bonito como voce.',
+      Lotus:'Bom dia, Eva. Respira fundo. Estou aqui.'
+    }
+  },
+  n2:{
+    label:'N2 \u2014 Alerta Horario de Pico',
+    time:'22:00',
+    ts:'agora',
+    titles:{
+      Lavanda:'Lavanda ta de olho',
+      Girassol:'Girassol ta de olho',
+      Cacto:'Cacto ta de olho',
+      Cerejeira:'Cerejeira ta de olho',
+      Lotus:'Lotus ta de olho'
+    },
+    bodies:{
+      Lavanda:'Esse e seu horario de pico, Ana. Quer que eu fique mais perto?',
+      Girassol:'Bia, esse e seu horario de pico. Que tal fechar o feed?',
+      Cacto:'Carol. Horario de pico. Fecha o Instagram e dorme.',
+      Cerejeira:'Dani, esse horario costuma ser pesado. Eu fico aqui com voce.',
+      Lotus:'Eva, esse e seu horario de pico. Respira. Eu estou do seu lado.'
+    }
+  },
+  n3:{
+    label:'N3 \u2014 Alerta de Ciclo',
+    time:'7:30',
+    ts:'agora',
+    titles:{
+      Lavanda:'Sua fase ta mudando',
+      Girassol:'Sua fase ta mudando',
+      Cacto:'Sua fase ta mudando',
+      Cerejeira:'Sua fase ta mudando',
+      Lotus:'Sua fase ta mudando'
+    },
+    bodies:{
+      Lavanda:'Lavanda: Sua fase luteal comeca amanha. Vou ficar mais suave com voce.',
+      Girassol:'Girassol: Sua fase luteal comeca amanha. Bora ir com calma?',
+      Cacto:'Cacto: Fase luteal amanha. Menos cobranca, mais agua.',
+      Cerejeira:'Cerejeira: Sua fase luteal comeca amanha. Te cuido mais.',
+      Lotus:'Lotus: Sua fase luteal comeca amanha. Permita-se descansar.'
+    }
+  },
+  n4:{
+    label:'N4 \u2014 Mensagem da Planta',
+    time:'14:00',
+    ts:'2min',
+    titles:{
+      Lavanda:'Lavanda tem algo pra te dizer',
+      Girassol:'Girassol tem algo pra te dizer',
+      Cacto:'Cacto tem algo pra te dizer',
+      Cerejeira:'Cerejeira tem algo pra te dizer',
+      Lotus:'Lotus tem algo pra te dizer'
+    },
+    bodies:{
+      Lavanda:'Toca aqui pra ver.',
+      Girassol:'Toca aqui pra ver.',
+      Cacto:'Toca aqui pra ver.',
+      Cerejeira:'Toca aqui pra ver.',
+      Lotus:'Toca aqui pra ver.'
+    }
+  },
+  n5:{
+    label:'N5 \u2014 Trial Encerrando',
+    time:'9:00',
+    ts:'agora',
+    titles:{
+      Lavanda:'Faltam 2 dias',
+      Girassol:'Faltam 2 dias',
+      Cacto:'Faltam 2 dias',
+      Cerejeira:'Faltam 2 dias',
+      Lotus:'Faltam 2 dias'
+    },
+    bodies:{
+      Lavanda:'Ana, seu periodo gratis ta acabando. Sua Lavanda quer continuar com voce.',
+      Girassol:'Bia, seu periodo gratis ta acabando. Sua Girassol quer continuar com voce.',
+      Cacto:'Carol. Faltam 2 dias. Sua Cacto nao vai a lugar nenhum. Mas voce precisa decidir.',
+      Cerejeira:'Dani, seu periodo gratis ta acabando. Sua Cerejeira quer continuar com voce.',
+      Lotus:'Eva, seu periodo gratis ta acabando. Sua Lotus quer continuar com voce.'
+    }
+  },
+  n6:{
+    label:'N6 \u2014 Bypass Detectado',
+    time:'agora',
+    ts:'agora',
+    titles:{
+      Lavanda:'Lavanda percebeu',
+      Girassol:'Girassol percebeu',
+      Cacto:'Cacto percebeu',
+      Cerejeira:'Cerejeira percebeu',
+      Lotus:'Lotus percebeu'
+    },
+    bodies:{
+      Lavanda:'Ana, voce abriu o Instagram. Quer fazer um Pause?',
+      Girassol:'Bia, voce abriu o Instagram. Que tal respirar antes?',
+      Cacto:'Carol. Voce abriu o Instagram. Fecha e vai beber agua.',
+      Cerejeira:'Dani, voce abriu o Instagram. Eu percebi. Quer fazer um Pause?',
+      Lotus:'Eva, voce abriu o Instagram. Com calma. Quer fazer um Pause?'
+    }
+  },
+  n7:{
+    label:'N7 \u2014 Reengajamento',
+    time:'3 dias',
+    ts:'agora',
+    titles:{
+      Lavanda:'Lavanda sente sua falta',
+      Girassol:'Girassol sente sua falta',
+      Cacto:'Cacto sente sua falta',
+      Cerejeira:'Cerejeira sente sua falta',
+      Lotus:'Lotus sente sua falta'
+    },
+    bodies:{
+      Lavanda:'Faz 3 dias, Ana. Sua Lavanda ta esperando.',
+      Girassol:'Faz 3 dias, Bia! Sua Girassol ta saudosa.',
+      Cacto:'3 dias, Carol. Sua Cacto ta aqui. Ainda.',
+      Cerejeira:'Faz 3 dias, Dani. Sua Cerejeira guarda um lugar pra voce.',
+      Lotus:'Faz 3 dias, Eva. Sua Lotus respira quieta, te esperando.'
+    }
+  }
+};
+
+/* ── STATE ── */
+var currentPlant = plants.s1;
+var currentNotif = 'n1';
+
+/* ── PLANT SVGs for icon (small leaf) — reused from design system ── */
+var FACE_HAPPY = ''
+  +'<ellipse cx="36" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+  +'<ellipse cx="44" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+  +'<circle cx="37" cy="37" r="1" fill="white" opacity="0.95"/>'
+  +'<circle cx="45" cy="37" r="1" fill="white" opacity="0.95"/>'
+  +'<path d="M37 43C38.5 45.5 41.5 45.5 43 43" stroke="#4A3728" stroke-width="1.5" stroke-linecap="round" fill="none"><animate attributeName="d" values="M37 43C38.5 45.5 41.5 45.5 43 43;M37.5 43.5C38.5 45 41.5 45 42.5 43.5;M37 43C38.5 45.5 41.5 45.5 43 43" dur="4s" begin="3s" repeatCount="indefinite"/></path>'
+  +'<circle cx="32.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="47.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>';
+
+var SPARKLES = ''
+  +'<circle cx="18" cy="18" r="1.5" fill="white"><animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/><animate attributeName="r" values="1.5;2;1.5" dur="2.5s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="62" cy="15" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.7;0" dur="3s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.8;1.2" dur="3s" begin="0.8s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="14" cy="35" r="1" fill="white"><animate attributeName="opacity" values="0;0.6;0" dur="3.5s" begin="1.6s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="65" cy="40" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.65;0" dur="2.8s" begin="0.4s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="22" cy="8" r="0.8" fill="white"><animate attributeName="opacity" values="0;0.5;0" dur="4s" begin="2.2s" repeatCount="indefinite"/></circle>'
+  +'<circle cx="58" cy="42" r="0.9" fill="white"><animate attributeName="opacity" values="0;0.45;0" dur="3.2s" begin="1.2s" repeatCount="indefinite"/></circle>';
+
+var POT = '<path d="M28 70C28 70 26 73 27.5 75C29 76.5 51 76.5 52.5 75C54 73 52 70 52 70" fill="#E8C4A0"/>'
+  +'<path d="M26 70H54" stroke="#D4A574" stroke-width="2.2" stroke-linecap="round"/>'
+  +'<ellipse cx="40" cy="70" rx="13" ry="2" fill="#C49468" opacity="0.25"/>';
+
+var plantSVGs = {
+  Lavanda: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68V32" stroke="#6BA068" stroke-width="3" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.5,40,68;0,40,68;-0.5,40,68;0,40,68" dur="6s" repeatCount="indefinite"/></path>'
+    +'<ellipse cx="40" cy="69" rx="10" ry="1.5" fill="#6BAF68" opacity="0.15"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-2,40,55;4,40,55;-2,40,55" dur="3.5s" repeatCount="indefinite"/>'
+    +'<path d="M40 54C35 52 30 50 26 42" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M33 48C28 47 23 48 20 51C24 51.5 29 50 33 48Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M29 43C24 42 19 43 17 46C21 46.5 25 45 29 43Z" fill="#8CC5A0" opacity="0.7"/>'
+    +'<path d="M31 52C26 52 21 53 19 56C23 56 28 54 31 52Z" fill="#7DB87A" opacity="0.6"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="2,40,55;-4,40,55;2,40,55" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M40 50C45 48 50 46 54 39" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M47 44C52 43 57 44 59 47C55 47.5 51 46 47 44Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M51 40C56 39 61 40 63 43C59 43.5 55 42 51 40Z" fill="#8CC5A0" opacity="0.7"/>'
+    +'<path d="M49 53C54 52 59 53 61 56C57 56 52 55 49 53Z" fill="#7DB87A" opacity="0.6"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-1.5,40,30;1.5,40,30;-1.5,40,30" dur="3s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="28" rx="5" ry="6.5" fill="__CLR__"><animate attributeName="ry" values="6.5;7;6.5" dur="3s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="40" cy="21" rx="4.5" ry="5.5" fill="__CLR__" opacity="0.95"/>'
+    +'<ellipse cx="40" cy="14.5" rx="3.8" ry="4.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="40" cy="9" rx="3" ry="3.5" fill="__CLR__" opacity="0.82"/>'
+    +'<ellipse cx="40" cy="5" rx="2.2" ry="2.5" fill="__CLR__" opacity="0.7"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,34;-6,28,34;0,28,34" dur="3.8s" repeatCount="indefinite"/>'
+    +'<ellipse cx="28" cy="32" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="28" cy="26" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="28" cy="20.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/>'
+    +'<ellipse cx="28" cy="15.5" rx="2.3" ry="2.8" fill="__CLR__" opacity="0.65"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,33;6,52,33;0,52,33" dur="3.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="52" cy="31" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
+    +'<ellipse cx="52" cy="25" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="52" cy="19.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/>'
+    +'<ellipse cx="52" cy="14.5" rx="2.3" ry="2.8" fill="__CLR__" opacity="0.65"/></g>'
+    +FACE_HAPPY+SPARKLES+'</svg>',
+
+  Girassol: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68C40 64 39.5 56 40 50C40.5 44 40 40 40 38" stroke="#5A9E54" stroke-width="3.5" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.6,40,68;0,40,68;-0.6,40,68;0,40,68" dur="5s" repeatCount="indefinite"/></path>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-1,40,56;5,40,56;-1,40,56" dur="3.5s" repeatCount="indefinite"/>'
+    +'<path d="M40 56C35 55 28 54.5 23 57C26 59 32 58 40 56Z" fill="#7DB87A" opacity="0.9"/>'
+    +'<path d="M38 60C33 60 26 60 22 62C25 64 32 63 38 60Z" fill="#8CC5A0" opacity="0.65"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="1,40,62;-5,40,62;1,40,62" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M40 62C45 61 52 60.5 57 63C54 65 48 64 40 62Z" fill="#7DB87A" opacity="0.85"/>'
+    +'<path d="M42 57C47 56 54 56 58 58C55 60 48 59 42 57Z" fill="#8CC5A0" opacity="0.6"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="-3,40,24;3,40,24;-3,40,24" dur="4s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="12" rx="5.5" ry="10" fill="__CLR__"><animate attributeName="ry" values="10;11.5;10" dur="2.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="18" cy="24" rx="12" ry="5.5" fill="__CLR__"><animate attributeName="rx" values="12;14;12" dur="2.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="62" cy="24" rx="12" ry="5.5" fill="__CLR__"><animate attributeName="rx" values="12;14;12" dur="3s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="24" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(-45 24 14)"><animate attributeName="ry" values="11;12.5;11" dur="2.6s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="56" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(45 56 14)"><animate attributeName="ry" values="11;12.5;11" dur="2.9s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="40" cy="38" rx="5.5" ry="10" fill="__CLR__" opacity="0.85"><animate attributeName="ry" values="10;11.5;10" dur="2.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="24" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(45 24 38)"/>'
+    +'<ellipse cx="56" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(-45 56 38)"/>'
+    +'<ellipse cx="28" cy="8" rx="5" ry="9" fill="__CLR__" opacity="0.88" transform="rotate(-25 28 8)"/>'
+    +'<ellipse cx="52" cy="8" rx="5" ry="9" fill="__CLR__" opacity="0.88" transform="rotate(25 52 8)"/>'
+    +'<ellipse cx="20" cy="36" rx="4.5" ry="9" fill="__CLR__" opacity="0.75" transform="rotate(65 20 36)"/>'
+    +'<ellipse cx="60" cy="36" rx="4.5" ry="9" fill="__CLR__" opacity="0.75" transform="rotate(-65 60 36)"/>'
+    +'<circle cx="40" cy="24" r="12.5" fill="#D4960A"/>'
+    +'<circle cx="40" cy="24" r="10" fill="#C48A08"/>'
+    +'<ellipse cx="36" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="44" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="36.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
+    +'<circle cx="44.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
+    +'<path d="M37 27.5C38.5 29.5 41.5 29.5 43 27.5" stroke="#5A3800" stroke-width="1.4" stroke-linecap="round" fill="none"><animate attributeName="d" values="M37 27.5C38.5 29.5 41.5 29.5 43 27.5;M37.5 28C38.5 29 41.5 29 42.5 28;M37 27.5C38.5 29.5 41.5 29.5 43 27.5" dur="4s" begin="3s" repeatCount="indefinite"/></path>'
+    +'<circle cx="33" cy="26" r="2.8" fill="#F4A7B9" opacity="0.22"><animate attributeName="opacity" values="0.22;0.38;0.22" dur="3s" repeatCount="indefinite"/></circle>'
+    +'<circle cx="47" cy="26" r="2.8" fill="#F4A7B9" opacity="0.22"><animate attributeName="opacity" values="0.22;0.38;0.22" dur="3s" repeatCount="indefinite"/></circle>'
+    +'</g>'+SPARKLES+'</svg>',
+
+  Cacto: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,68;-0.8,40,68;0,40,68;0.8,40,68;0,40,68" dur="5s" repeatCount="indefinite"/>'
+    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" fill="__CLR__" opacity="0.55"/>'
+    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" stroke="__CLR__" stroke-width="2.5" fill="none"/>'
+    +'<line x1="33" y1="25" x2="33" y2="55" stroke="white" stroke-width="0.8" opacity="0.1"/>'
+    +'<line x1="47" y1="23" x2="47" y2="57" stroke="white" stroke-width="0.8" opacity="0.1"/>'
+    +FACE_HAPPY+'</g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,42;-5,28,42;0,28,42;2,28,42;0,28,42" dur="4s" repeatCount="indefinite"/>'
+    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" fill="__CLR__" opacity="0.5"/>'
+    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,36;5,52,36;0,52,36;-2,52,36;0,52,36" dur="3.8s" repeatCount="indefinite"/>'
+    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" fill="__CLR__" opacity="0.5"/>'
+    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
+    +'<g><animateTransform attributeName="transform" type="translate" values="0,0;0,-1.5;0,0" dur="2.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="40" cy="6" rx="7.5" ry="6.5" fill="#F4A7B9"><animate attributeName="ry" values="6.5;7.2;6.5" dur="2s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="40" cy="6.5" r="3.8" fill="#E8889E" opacity="0.9"/>'
+    +'<circle cx="40" cy="6.5" r="2" fill="#C96078" opacity="0.7"/>'
+    +'<circle cx="38" cy="5" r="0.8" fill="white" opacity="0.5"/></g>'
+    +SPARKLES+'</svg>',
+
+  Cerejeira: '<svg viewBox="0 0 80 80" fill="none">'
+    +POT
+    +'<path d="M40 68C40 64 38 58 36 54C34 50 35 46 38 44C41 42 42 38 41 35" stroke="#7A5840" stroke-width="5" stroke-linecap="round"/>'
+    +'<path d="M36 54C31 52 26 50 22 49C18 48.5 14 49 13 50" stroke="#7A5840" stroke-width="3" stroke-linecap="round"/>'
+    +'<path d="M38 46C42 44 47 42 52 40C55 38.5 58 38 60 39" stroke="#7A5840" stroke-width="2.8" stroke-linecap="round"/>'
+    +'<path d="M41 35C43 30 47 25 49 22C51 19 52 16 51 14" stroke="#7A5840" stroke-width="2.5" stroke-linecap="round"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,16,46;-5,16,46;1,16,46;0,16,46" dur="4s" repeatCount="indefinite"/>'
+    +'<ellipse cx="15" cy="46" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.88"><animate attributeName="ry" values="6.5;7.2;6.5" dur="3s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="21" cy="44" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.85"/>'
+    +'<ellipse cx="11" cy="43" rx="6" ry="5" fill="__CLR__" opacity="0.78"/>'
+    +'<circle cx="16" cy="45.5" r="2.8" fill="#C95578" opacity="0.65"><animate attributeName="r" values="2.8;3.2;2.8" dur="2.5s" repeatCount="indefinite"/></circle></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,60,36;5,60,36;-1,60,36;0,60,36" dur="3.5s" repeatCount="indefinite"/>'
+    +'<ellipse cx="60" cy="36" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.9"><animate attributeName="ry" values="6.5;7;6.5" dur="3.2s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="65" cy="34" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.87"/>'
+    +'<ellipse cx="57" cy="33.5" rx="6" ry="5" fill="__CLR__" opacity="0.82"/>'
+    +'<circle cx="61" cy="36" r="2.8" fill="#C95578" opacity="0.68"><animate attributeName="r" values="2.8;3.2;2.8" dur="2.8s" repeatCount="indefinite"/></circle></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,51,14;3,51,14;-1,51,14;0,51,14" dur="3.2s" repeatCount="indefinite"/>'
+    +'<ellipse cx="51" cy="13" rx="7" ry="6" fill="__CLR__" opacity="0.92"><animate attributeName="ry" values="6;6.6;6" dur="2.6s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="47" cy="11" rx="6" ry="5.5" fill="__CLR__" opacity="0.88"/>'
+    +'<ellipse cx="55" cy="10" rx="5.5" ry="4.8" fill="__CLR__" opacity="0.84"/>'
+    +'<circle cx="50" cy="13" r="2.8" fill="#C95578" opacity="0.7"/></g>'
+    +'<ellipse cx="26" cy="25" rx="2.2" ry="1.4" fill="__CLR__" opacity="0"><animate attributeName="cy" values="25;68" dur="5s" repeatCount="indefinite"/><animate attributeName="cx" values="26;32" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.65;0.55;0" dur="5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" values="0,26,25;180,29,46;360,32,68" dur="5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="55" cy="20" rx="2" ry="1.2" fill="__CLR__" opacity="0"><animate attributeName="cy" values="20;65" dur="6s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="cx" values="55;48" dur="6s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0.5;0" dur="6s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="39" cy="52" rx="6.5" ry="5" fill="#F2E8E0" opacity="0.35"/>'
+    +'<ellipse cx="37" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="42" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="37.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
+    +'<circle cx="42.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
+    +'<path d="M37.5 54C38.5 55.5 41 55.5 42 54" stroke="#5A4030" stroke-width="1.3" stroke-linecap="round" fill="none"><animate attributeName="d" values="M37.5 54C38.5 55.5 41 55.5 42 54;M38 54.2C38.5 55 41 55 41.5 54.2;M37.5 54C38.5 55.5 41 55.5 42 54" dur="4s" begin="3s" repeatCount="indefinite"/></path>'
+    +SPARKLES+'</svg>',
+
+  Lotus: '<svg viewBox="4 4 72 72" fill="none">'
+    +POT
+    +'<ellipse cx="40" cy="69" rx="14" ry="3.5" fill="#D4EEF8" opacity="0.45"><animate attributeName="rx" values="14;18;14" dur="3.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.45;0.2;0.45" dur="3.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="28" cy="68" rx="6.5" ry="2.5" fill="#7EC47A" opacity="0.55"><animateTransform attributeName="transform" type="rotate" values="-2,28,68;4,28,68;-2,28,68" dur="4.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="52" cy="67.5" rx="6" ry="2.2" fill="#7EC47A" opacity="0.45"><animateTransform attributeName="transform" type="rotate" values="2,52,67.5;-4,52,67.5;2,52,67.5" dur="5s" repeatCount="indefinite"/></ellipse>'
+    +'<path d="M40 66Q39 58 40 52" stroke="#6EAA68" stroke-width="2.2" stroke-linecap="round" opacity="0.55" fill="none"/>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;-5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q26 54 16 47Q14 45 18 44Q28 45 40 49Z" fill="__CLR__" opacity="0.35"><animate attributeName="opacity" values="0.35;0.22;0.35" dur="4s" repeatCount="indefinite"/></path></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q54 54 64 47Q66 45 62 44Q52 45 40 49Z" fill="__CLR__" opacity="0.35"><animate attributeName="opacity" values="0.35;0.22;0.35" dur="4s" repeatCount="indefinite"/></path></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;-4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q28 44 22 35Q21 32 25 33Q32 36 40 44Z" fill="#E8CCE8" opacity="0.55"><animate attributeName="opacity" values="0.55;0.68;0.55" dur="3.5s" repeatCount="indefinite"/></path></g>'
+    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q52 44 58 35Q59 32 55 33Q48 36 40 44Z" fill="#E8CCE8" opacity="0.55"><animate attributeName="opacity" values="0.55;0.68;0.55" dur="3.5s" repeatCount="indefinite"/></path></g>'
+    +'<path d="M40 42Q32 36 30 26Q29.5 20 34 23Q37 28 40 40Z" fill="#EEE0F0" opacity="0.62"><animate attributeName="opacity" values="0.62;0.82;0.62" dur="3s" repeatCount="indefinite"/></path>'
+    +'<path d="M40 42Q48 36 50 26Q50.5 20 46 23Q43 28 40 40Z" fill="#EEE0F0" opacity="0.62"><animate attributeName="opacity" values="0.62;0.82;0.62" dur="3s" begin="0.3s" repeatCount="indefinite"/></path>'
+    +'<path d="M40 36Q38 28 38.2 18Q38.5 12 40 10Q41.5 12 41.8 18Q42 28 40 36Z" fill="__CLR__" opacity="0.85"><animate attributeName="opacity" values="0.85;0.95;0.85" dur="3s" repeatCount="indefinite"/></path>'
+    +'<ellipse cx="40" cy="46" rx="6" ry="4" fill="#FFE082" opacity="0.95"><animate attributeName="opacity" values="0.95;0.65;0.95" dur="2.5s" repeatCount="indefinite"/><animate attributeName="rx" values="6;7;6" dur="2.5s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="40" cy="46" rx="4" ry="2.8" fill="#FFC837" opacity="0.85"/>'
+    +'<ellipse cx="38" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<ellipse cx="42" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
+    +'<circle cx="38.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
+    +'<circle cx="42.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
+    +'<path d="M39 47.5C39.5 48.8 40.5 48.8 41 47.5" stroke="#8B6F00" stroke-width="1" stroke-linecap="round" fill="none"/>'
+    +'</svg>'
+};
+
+/* ── RENDER ── */
+function renderNotif(plantSvgHtml, plantKey) {
+  // Render plant SVG into notif-area (decorative mini plants below the phones, not in notification itself)
+  // The notification icon is just the leaf icon SVG inline — plant color applied via CSS var
+  // Nothing extra needed here — updateAll handles text only
+}
+
+function triggerNotifAnim(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.style.animation = 'none';
+  void el.offsetWidth;
+  el.style.animation = '';
+}
+
+function updateAll() {
+  var s = currentPlant;
+  var n = notifs[currentNotif];
+
+  // Update CSS plant color
+  document.documentElement.style.setProperty('--plant-color', s.color);
+  document.documentElement.style.setProperty('--plant-color-rgb', s.rgb);
+
+  // Android notification
+  document.getElementById('a-title').textContent = n.titles[s.plant];
+  document.getElementById('a-body').textContent  = n.bodies[s.plant];
+  document.getElementById('a-ts').textContent    = n.ts;
+  document.getElementById('a-type-pill').innerHTML = n.label;
+  document.getElementById('a-clock').textContent  = n.time === 'agora' ? '14:32' : (n.time === '3 dias' ? '14:32' : n.time);
+
+  // iOS notification
+  document.getElementById('ios-title').textContent = n.titles[s.plant];
+  document.getElementById('ios-body').textContent  = n.bodies[s.plant];
+  document.getElementById('ios-ts').textContent    = n.ts;
+  document.getElementById('ios-type-pill').innerHTML = n.label;
+
+  // Re-trigger notif animation
+  triggerNotifAnim('a-notif');
+  triggerNotifAnim('ios-notif');
+
+  // Update plant-btn active color via inline style (so each plant btn shows its own color when active)
+  updatePlantBtnColors();
+}
+
+function updatePlantBtnColors() {
+  document.querySelectorAll('.plant-btn.active').forEach(function(btn){
+    btn.style.background = currentPlant.color;
+    btn.style.borderColor = currentPlant.color;
+  });
+}
+
+function setNotif(key, btn) {
+  currentNotif = key;
+  document.querySelectorAll('.state-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  updateAll();
+}
+
+function setPlant(key, btn) {
+  currentPlant = plants[key];
+  document.querySelectorAll('.plant-btn').forEach(function(b){
+    b.classList.remove('active');
+    b.style.background = '';
+    b.style.borderColor = '';
+    b.style.color = '';
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.style.background = currentPlant.color;
+    btn.style.borderColor = currentPlant.color;
+    btn.style.color = 'white';
+  }
+  updateAll();
+}
+
+// Init
+updateAll();
+// Set first plant btn color explicitly
+(function(){
+  var first = document.querySelector('.plant-btn.active');
+  if (first) {
+    first.style.background = currentPlant.color;
+    first.style.borderColor = currentPlant.color;
+    first.style.color = 'white';
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — Modais & Confirmacoes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --destructive:#C96078;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:720px;margin:0 auto;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.state-sep{width:1px;height:20px;background:var(--border);}
+.sub-controls{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:36px;display:none;}
+.sub-controls.visible{display:flex;}
+.sub-btn{padding:5px 14px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text3);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.sub-btn.active{background:var(--plant-color);color:white;border-color:var(--plant-color);}
+.sub-btn:hover:not(.active){border-color:var(--plant-color);color:var(--plant-color);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* ── PHONE ── */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:280px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.screen{position:absolute;inset:0;background:var(--bg);}
+
+/* ── STATUS BAR ── */
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* ── DIMMED BG CONTENT ── */
+.bg-content{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding-top:40px;
+}
+.bg-plant{
+  width:120px;height:120px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  opacity:0.5;
+}
+.bg-plant svg{width:100px;height:100px;filter:drop-shadow(0 4px 12px rgba(var(--plant-color-rgb),0.2));}
+.bg-plant::before{
+  content:'';position:absolute;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(var(--plant-color-rgb),0.1) 0%,transparent 70%);
+}
+.bg-greeting{text-align:center;margin-top:12px;opacity:0.4;}
+.bg-greeting h2{font-size:20px;font-weight:800;color:var(--text);}
+.bg-greeting p{font-size:13px;color:var(--text2);margin-top:4px;}
+
+/* ── DIM OVERLAY ── */
+.dim-overlay{
+  position:absolute;inset:0;
+  background:rgba(61,44,46,0.35);
+  z-index:20;
+  opacity:0;
+  transition:opacity 0.3s ease;
+  pointer-events:none;
+}
+.modal-active .dim-overlay{opacity:1;pointer-events:auto;}
+
+/* ── BOTTOM SHEET BASE ── */
+.bottom-sheet{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  z-index:25;
+  transform:translateY(100%);
+  transition:transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+.ios-screen .bottom-sheet{transition-timing-function:cubic-bezier(0.32,0.72,0,1);}
+.modal-active .bottom-sheet.active-modal{transform:translateY(0);}
+
+/* Android sheet */
+.a-screen .bottom-sheet{
+  background:#FFFFFF;
+  border-radius:28px 28px 0 0;
+  padding:12px 24px 34px;
+  box-shadow:0 -8px 32px rgba(61,44,46,0.12);
+}
+/* iOS sheet */
+.ios-screen .bottom-sheet{
+  background:rgba(255,248,242,0.92);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border-radius:20px 20px 0 0;
+  padding:10px 20px 34px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.4),0 -8px 32px rgba(61,44,46,0.10);
+}
+
+/* Handle bar */
+.sheet-handle{
+  width:32px;height:4px;border-radius:2px;
+  background:var(--text3);
+  margin:0 auto 16px;
+}
+.ios-screen .sheet-handle{
+  width:36px;height:5px;border-radius:2.5px;
+  background:rgba(61,44,46,0.15);
+  margin-bottom:14px;
+}
+
+/* Sheet content */
+.sheet-icon{display:flex;justify-content:center;margin-bottom:14px;}
+.sheet-title{font-size:18px;font-weight:800;color:var(--text);text-align:center;margin-bottom:8px;line-height:1.3;}
+.sheet-body{font-size:13.5px;font-weight:400;color:var(--text2);text-align:center;line-height:1.55;margin-bottom:18px;}
+.sheet-body .highlight{color:var(--text);font-weight:600;}
+.sheet-body .luteal-note{display:block;margin-top:10px;color:var(--brand-real);font-style:italic;font-family:'Instrument Serif',serif;font-size:14px;}
+.sheet-small{font-size:12px;color:var(--text3);text-align:center;margin-bottom:16px;line-height:1.5;}
+
+/* ── BUTTONS ── */
+.cta-stack{display:flex;flex-direction:column;gap:10px;align-items:center;}
+.btn-primary{
+  width:100%;padding:14px 24px;border:none;border-radius:999px;
+  font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:all 0.25s;text-align:center;
+}
+/* Android primary */
+.a-screen .btn-primary{background:var(--brand-real);color:white;}
+.a-screen .btn-primary:hover{background:var(--brand-real-deep);transform:translateY(-1px);}
+.a-screen .btn-primary.green{background:var(--brand-ai);color:white;}
+.a-screen .btn-primary.green:hover{background:var(--brand-ai-deep);}
+.a-screen .btn-primary.safe{background:var(--brand-real);color:white;}
+/* iOS primary */
+.ios-screen .btn-primary{
+  background:rgba(232,136,158,0.88);color:white;
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.ios-screen .btn-primary:hover{background:rgba(232,136,158,0.95);}
+.ios-screen .btn-primary.green{
+  background:rgba(168,213,162,0.88);color:white;
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+}
+.ios-screen .btn-primary.safe{
+  background:rgba(232,136,158,0.88);color:white;
+}
+
+.btn-outline{
+  width:100%;padding:13px 24px;border:1.5px solid var(--border);border-radius:999px;
+  background:transparent;font-family:inherit;font-size:14px;font-weight:600;
+  color:var(--text2);cursor:pointer;transition:all 0.25s;text-align:center;
+}
+.btn-outline:hover{border-color:var(--text3);color:var(--text);}
+.btn-outline.destructive{border-color:rgba(201,96,120,0.3);color:var(--destructive);}
+.btn-outline.destructive:hover{border-color:var(--destructive);background:rgba(201,96,120,0.05);}
+
+.btn-text{
+  padding:10px 16px;border:none;background:none;
+  font-family:inherit;font-size:13px;font-weight:600;
+  color:var(--text3);cursor:pointer;transition:color 0.2s;
+}
+.btn-text:hover{color:var(--text2);}
+.btn-text.destructive{color:var(--destructive);opacity:0.7;}
+.btn-text.destructive:hover{opacity:1;}
+
+/* ── INPUT FIELD ── */
+.input-field{
+  width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:14px;
+  background:var(--bg);font-family:inherit;font-size:13.5px;font-weight:500;
+  color:var(--text);outline:none;transition:border-color 0.25s;
+  margin-bottom:16px;text-align:center;
+}
+.input-field::placeholder{color:var(--text3);}
+.input-field:focus{border-color:var(--destructive);}
+.ios-screen .input-field{
+  background:rgba(255,248,242,0.6);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+/* ── REASON PILLS ── */
+.reason-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+.reason-pill{
+  padding:8px 16px;border:1.5px solid var(--border);border-radius:999px;
+  background:transparent;font-family:inherit;font-size:12px;font-weight:600;
+  color:var(--text2);cursor:pointer;transition:all 0.25s;
+}
+.reason-pill:hover,.reason-pill.selected{
+  border-color:var(--brand-real);color:var(--brand-real-deep);
+  background:rgba(244,167,185,0.06);
+}
+
+/* ── DURATION PILLS ── */
+.duration-pills{display:flex;gap:10px;justify-content:center;margin-bottom:20px;}
+.dur-pill{
+  padding:10px 22px;border:1.5px solid var(--border);border-radius:999px;
+  background:transparent;font-family:inherit;font-size:14px;font-weight:700;
+  color:var(--text2);cursor:pointer;transition:all 0.25s;
+}
+.dur-pill:hover{border-color:var(--brand-ai);color:var(--brand-ai-deep);}
+.dur-pill.selected{
+  background:rgba(168,213,162,0.12);border-color:var(--brand-ai);
+  color:var(--brand-ai-deep);
+}
+.ios-screen .dur-pill.selected{
+  background:rgba(168,213,162,0.15);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+/* ── NOTIFICATION PREVIEW (M1) ── */
+.notif-preview{
+  margin:0 auto 18px;width:85%;padding:14px 16px;
+  border-radius:16px;background:var(--card);
+  border:1px solid var(--border);box-shadow:var(--shadow);
+}
+.ios-screen .notif-preview{
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.notif-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.notif-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--brand-real),var(--brand-ai));display:flex;align-items:center;justify-content:center;}
+.notif-icon svg{width:14px;height:14px;}
+.notif-app{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;}
+.notif-time{font-size:10px;color:var(--text3);margin-left:auto;}
+.notif-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.notif-body{font-size:12px;color:var(--text2);line-height:1.4;}
+
+/* ── M7 CENTER OVERLAY ── */
+.center-overlay{
+  position:absolute;inset:0;z-index:25;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.35s ease;
+}
+.modal-active .center-overlay.active-modal{opacity:1;pointer-events:auto;}
+.overlay-card{
+  width:240px;padding:28px 24px;
+  border-radius:28px;text-align:center;
+}
+.a-screen .overlay-card{
+  background:#FFFFFF;
+  box-shadow:0 16px 48px rgba(61,44,46,0.18);
+}
+.ios-screen .overlay-card{
+  background:rgba(255,248,242,0.92);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.4),0 16px 48px rgba(61,44,46,0.14);
+}
+.overlay-plant{margin:0 auto 14px;width:80px;height:80px;display:flex;align-items:center;justify-content:center;}
+.overlay-plant svg{width:70px;height:70px;filter:drop-shadow(0 4px 12px rgba(var(--plant-color-rgb),0.25));}
+.overlay-text{font-size:16px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:6px;}
+.overlay-dismiss{font-size:11px;color:var(--text3);margin-top:8px;}
+
+/* ── PLANT SVGs ── */
+.plant-svg-lavanda{--leaf:#C4B0E0;--leaf2:#A892CC;--pot:#E8DDF5;--soil:#B8A3D6;}
+.plant-svg-understand{--leaf:#C4B0E0;--leaf2:#D4C6E8;--pot:#E8DDF5;--soil:#B8A3D6;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+@keyframes plantBounce{
+  0%,100%{transform:translateY(0) scale(1);}
+  25%{transform:translateY(-6px) scale(1.05);}
+  50%{transform:translateY(-3px) scale(1.02);}
+  75%{transform:translateY(-5px) scale(1.04);}
+}
+@keyframes plantBreatheGentle{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-2px) scale(1.01);}
+}
+@keyframes plantLean{
+  0%,100%{transform:translateY(0) rotate(0);}
+  50%{transform:translateY(-2px) rotate(3deg);}
+}
+@keyframes plantWave{
+  0%,100%{transform:rotate(0);}
+  25%{transform:rotate(-4deg);}
+  75%{transform:rotate(4deg);}
+}
+@keyframes plantGiveSpace{
+  0%,100%{transform:translateX(0);}
+  50%{transform:translateX(4px);}
+}
+@keyframes pulseGlow{
+  0%,100%{filter:drop-shadow(0 4px 12px rgba(var(--plant-color-rgb),0.25));}
+  50%{filter:drop-shadow(0 4px 20px rgba(var(--plant-color-rgb),0.45));}
+}
+.bounce-anim svg{animation:plantBounce 1.2s ease-in-out infinite;}
+.breathe-anim svg{animation:plantBreatheGentle 3s ease-in-out infinite;}
+.lean-anim svg{animation:plantLean 2.5s ease-in-out infinite;}
+.wave-anim svg{animation:plantWave 1.8s ease-in-out infinite;}
+.space-anim svg{animation:plantGiveSpace 2s ease-in-out infinite;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .stage{flex-direction:column;align-items:center;gap:40px;}
+}
+
+/* ── WARNING ICON ── */
+.warning-icon{
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(255,208,122,0.15);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto;
+}
+.warning-icon svg{width:28px;height:28px;}
+
+/* ── SMALL PLANT for M3 ── */
+.small-plant{width:64px;height:64px;margin:0 auto;display:flex;align-items:center;justify-content:center;}
+.small-plant svg{width:56px;height:56px;filter:drop-shadow(0 3px 8px rgba(var(--plant-color-rgb),0.2));}
+</style>
+</head>
+<body>
+
+<div class="studio">
+
+  <!-- STUDIO HEADER -->
+  <div class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; Modals &amp; Confirmacoes &middot; M1-M7</div>
+    <div class="brand-title">Modais, popups e confirmacoes</div>
+    <div class="brand-sub">Todo action destrutiva pede confirmacao. Todo dialog fala com a voz da planta.</div>
+  </div>
+
+  <!-- MODAL TOGGLES -->
+  <div class="controls">
+    <button class="state-btn active" data-modal="m1">M1 Push</button>
+    <button class="state-btn" data-modal="m2">M2 Deletar</button>
+    <button class="state-btn" data-modal="m3">M3 Cancelar</button>
+    <button class="state-btn" data-modal="m4">M4 Logout</button>
+    <button class="state-btn" data-modal="m5">M5 Trabalho</button>
+    <button class="state-btn" data-modal="m6">M6 Pausar</button>
+    <div class="state-sep"></div>
+    <button class="state-btn" data-modal="m7">M7 Mood</button>
+  </div>
+
+  <!-- M7 MOOD SUB-TOGGLES -->
+  <div class="sub-controls" id="mood-sub">
+    <button class="sub-btn active" data-mood="happy">Feliz</button>
+    <button class="sub-btn" data-mood="sad">Triste</button>
+    <button class="sub-btn" data-mood="anxious">Ansiosa</button>
+    <button class="sub-btn" data-mood="angry">Raiva</button>
+    <button class="sub-btn" data-mood="neutral">Neutra</button>
+  </div>
+
+  <!-- DUAL PHONES -->
+  <div class="stage">
+
+    <!-- ██ ANDROID ██ -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill android">Android</span>
+        <span class="desc">M3 Expressive &middot; Nunito &middot; Bottom Sheet</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen a-screen screen modal-active" id="phone-android">
+
+          <!-- Status bar -->
+          <div class="statusbar">
+            <div class="stime">9:41</div>
+            <div class="sicons">
+              <span>&#9679;</span><span>&#9679;</span><span>&#9679;</span>
+            </div>
+          </div>
+
+          <!-- Dimmed BG -->
+          <div class="bg-content">
+            <div class="bg-plant">
+              <svg viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="60" cy="130" rx="28" ry="8" fill="rgba(196,176,224,0.1)"/>
+                <rect x="38" y="95" width="44" height="45" rx="8" fill="#E8DDF5"/>
+                <rect x="42" y="99" width="36" height="12" rx="4" fill="#B8A3D6" opacity="0.5"/>
+                <path d="M60 95 C60 50,30 40,25 60" stroke="#C4B0E0" stroke-width="6" stroke-linecap="round" fill="none"/>
+                <path d="M60 85 C60 45,85 35,92 55" stroke="#A892CC" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <path d="M55 90 C50 55,20 50,22 70" stroke="#D4C6E8" stroke-width="4" stroke-linecap="round" fill="none"/>
+                <circle cx="25" cy="58" r="10" fill="#C4B0E0" opacity="0.6"/>
+                <circle cx="92" cy="53" r="9" fill="#A892CC" opacity="0.5"/>
+                <circle cx="22" cy="68" r="7" fill="#D4C6E8" opacity="0.4"/>
+              </svg>
+            </div>
+            <div class="bg-greeting">
+              <h2>Boa tarde, Lina</h2>
+              <p>Sua Lavanda esta feliz hoje</p>
+            </div>
+          </div>
+
+          <!-- Dim overlay -->
+          <div class="dim-overlay"></div>
+
+          <!-- ── M1: Push Permission ── -->
+          <div class="bottom-sheet active-modal" data-sheet="m1">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Pra te proteger, preciso poder te avisar</div>
+            <div class="notif-preview">
+              <div class="notif-header">
+                <div class="notif-icon">
+                  <svg viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="5"/></svg>
+                </div>
+                <span class="notif-app">Brota</span>
+                <span class="notif-time">agora</span>
+              </div>
+              <div class="notif-title">Sua Lavanda quer falar com voce</div>
+              <div class="notif-body">Ja faz um tempo que voce esta no Instagram. Quer dar uma pausa?</div>
+            </div>
+            <div class="sheet-small">Maximo 2x por dia. Silencio entre 22h e 8h.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Permitir</button>
+              <button class="btn-text">Agora nao</button>
+            </div>
+          </div>
+
+          <!-- ── M2: Deletar Conta ── -->
+          <div class="bottom-sheet" data-sheet="m2">
+            <div class="sheet-handle"></div>
+            <div class="sheet-icon">
+              <div class="warning-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L1 21h22L12 2z" fill="var(--brand-warning)" opacity="0.9"/>
+                  <path d="M12 10v4" stroke="var(--text)" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="12" cy="17" r="1" fill="var(--text)"/>
+                </svg>
+              </div>
+            </div>
+            <div class="sheet-title">Tem certeza, Lina?</div>
+            <div class="sheet-body">Sua Lavanda e todo seu progresso serao apagados. Isso nao pode ser desfeito.</div>
+            <input type="text" class="input-field" placeholder="Digite DELETAR para confirmar">
+            <div class="cta-stack">
+              <button class="btn-primary safe">Cancelar</button>
+              <button class="btn-outline destructive">Deletar conta</button>
+            </div>
+          </div>
+
+          <!-- ── M3: Cancelar Assinatura ── -->
+          <div class="bottom-sheet" data-sheet="m3">
+            <div class="sheet-handle"></div>
+            <div class="sheet-icon">
+              <div class="small-plant">
+                <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="24" y="65" width="32" height="32" rx="6" fill="#E8DDF5"/>
+                  <rect x="27" y="68" width="26" height="8" rx="3" fill="#B8A3D6" opacity="0.5"/>
+                  <path d="M40 65 C40 35,22 28,18 44" stroke="#C4B0E0" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                  <path d="M40 58 C40 30,58 22,62 38" stroke="#A892CC" stroke-width="4" stroke-linecap="round" fill="none"/>
+                  <circle cx="18" cy="42" r="7" fill="#C4B0E0" opacity="0.5"/>
+                  <circle cx="62" cy="36" r="6" fill="#A892CC" opacity="0.4"/>
+                  <!-- understanding eyes -->
+                  <ellipse cx="34" cy="80" rx="2" ry="1.5" fill="#B8A3D6"/>
+                  <ellipse cx="46" cy="80" rx="2" ry="1.5" fill="#B8A3D6"/>
+                  <path d="M36 85 Q40 87,44 85" stroke="#B8A3D6" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                </svg>
+              </div>
+            </div>
+            <div class="sheet-title">Antes de ir...</div>
+            <div class="sheet-body">Voce ainda tem acesso ate <span class="highlight">15 de junho</span>.</div>
+            <div class="reason-pills">
+              <button class="reason-pill">Muito caro</button>
+              <button class="reason-pill selected">Nao uso</button>
+              <button class="reason-pill">Outro app</button>
+              <button class="reason-pill">Outro</button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary">Ficar mais um pouco</button>
+              <button class="btn-text destructive">Confirmar cancelamento</button>
+            </div>
+          </div>
+
+          <!-- ── M4: Logout ── -->
+          <div class="bottom-sheet" data-sheet="m4">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Sair da conta?</div>
+            <div class="sheet-body">Sua Lavanda vai ficar te esperando.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Ficar</button>
+              <button class="btn-outline">Sair</button>
+            </div>
+          </div>
+
+          <!-- ── M5: Modo Trabalho ── -->
+          <div class="bottom-sheet" data-sheet="m5">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Modo Trabalho</div>
+            <div class="sheet-body">Sua Lavanda vai descansar. O Mirror nao aparece nesse periodo.</div>
+            <div class="duration-pills">
+              <button class="dur-pill">1h</button>
+              <button class="dur-pill selected">2h</button>
+              <button class="dur-pill">4h</button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary green">Ativar</button>
+            </div>
+          </div>
+
+          <!-- ── M6: Pausar Feed Cleanse ── -->
+          <div class="bottom-sheet" data-sheet="m6">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Pausar o Feed Cleanse?</div>
+            <div class="sheet-body">Seu progresso fica salvo. Volte quando quiser.<span class="luteal-note">E normal precisar de uma pausa agora.</span></div>
+            <div class="cta-stack">
+              <button class="btn-primary">Pausar</button>
+              <button class="btn-text">Continuar</button>
+            </div>
+          </div>
+
+          <!-- ── M7: Mood Response (center overlay) ── -->
+          <div class="center-overlay" data-sheet="m7">
+            <div class="overlay-card">
+              <div class="overlay-plant bounce-anim" id="a-m7-plant">
+                <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="24" y="65" width="32" height="32" rx="6" fill="#E8DDF5"/>
+                  <rect x="27" y="68" width="26" height="8" rx="3" fill="#B8A3D6" opacity="0.5"/>
+                  <path d="M40 65 C40 35,22 28,18 44" stroke="#C4B0E0" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                  <path d="M40 58 C40 30,58 22,62 38" stroke="#A892CC" stroke-width="4" stroke-linecap="round" fill="none"/>
+                  <circle cx="18" cy="42" r="7" fill="#C4B0E0" opacity="0.5"/>
+                  <circle cx="62" cy="36" r="6" fill="#A892CC" opacity="0.4"/>
+                </svg>
+              </div>
+              <div class="overlay-text" id="a-m7-text">Que bom, Lina!</div>
+              <div class="overlay-dismiss">toque para fechar</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ██ iOS ██ -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill ios">iOS</span>
+        <span class="desc">Liquid Glass &middot; SF Pro Rounded &middot; Bottom Sheet</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen ios-screen screen modal-active" id="phone-ios" style="font-family:-apple-system,'SF Pro Rounded','Nunito',system-ui,sans-serif;">
+
+          <!-- Dynamic Island -->
+          <div class="dyna"></div>
+
+          <!-- Status bar -->
+          <div class="statusbar">
+            <div class="stime">9:41</div>
+            <div class="sicons">
+              <span>&#9679;</span><span>&#9679;</span><span>&#9679;</span>
+            </div>
+          </div>
+
+          <!-- Dimmed BG -->
+          <div class="bg-content">
+            <div class="bg-plant">
+              <svg viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="60" cy="130" rx="28" ry="8" fill="rgba(196,176,224,0.1)"/>
+                <rect x="38" y="95" width="44" height="45" rx="8" fill="#E8DDF5"/>
+                <rect x="42" y="99" width="36" height="12" rx="4" fill="#B8A3D6" opacity="0.5"/>
+                <path d="M60 95 C60 50,30 40,25 60" stroke="#C4B0E0" stroke-width="6" stroke-linecap="round" fill="none"/>
+                <path d="M60 85 C60 45,85 35,92 55" stroke="#A892CC" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <path d="M55 90 C50 55,20 50,22 70" stroke="#D4C6E8" stroke-width="4" stroke-linecap="round" fill="none"/>
+                <circle cx="25" cy="58" r="10" fill="#C4B0E0" opacity="0.6"/>
+                <circle cx="92" cy="53" r="9" fill="#A892CC" opacity="0.5"/>
+                <circle cx="22" cy="68" r="7" fill="#D4C6E8" opacity="0.4"/>
+              </svg>
+            </div>
+            <div class="bg-greeting">
+              <h2>Boa tarde, Lina</h2>
+              <p>Sua Lavanda esta feliz hoje</p>
+            </div>
+          </div>
+
+          <!-- Dim overlay -->
+          <div class="dim-overlay"></div>
+
+          <!-- ── M1: Push Permission ── -->
+          <div class="bottom-sheet active-modal" data-sheet="m1">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Pra te proteger, preciso poder te avisar</div>
+            <div class="notif-preview">
+              <div class="notif-header">
+                <div class="notif-icon">
+                  <svg viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="5"/></svg>
+                </div>
+                <span class="notif-app">Brota</span>
+                <span class="notif-time">agora</span>
+              </div>
+              <div class="notif-title">Sua Lavanda quer falar com voce</div>
+              <div class="notif-body">Ja faz um tempo que voce esta no Instagram. Quer dar uma pausa?</div>
+            </div>
+            <div class="sheet-small">Maximo 2x por dia. Silencio entre 22h e 8h.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Permitir</button>
+              <button class="btn-text">Agora nao</button>
+            </div>
+          </div>
+
+          <!-- ── M2: Deletar Conta ── -->
+          <div class="bottom-sheet" data-sheet="m2">
+            <div class="sheet-handle"></div>
+            <div class="sheet-icon">
+              <div class="warning-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L1 21h22L12 2z" fill="var(--brand-warning)" opacity="0.9"/>
+                  <path d="M12 10v4" stroke="var(--text)" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="12" cy="17" r="1" fill="var(--text)"/>
+                </svg>
+              </div>
+            </div>
+            <div class="sheet-title">Tem certeza, Lina?</div>
+            <div class="sheet-body">Sua Lavanda e todo seu progresso serao apagados. Isso nao pode ser desfeito.</div>
+            <input type="text" class="input-field" placeholder="Digite DELETAR para confirmar">
+            <div class="cta-stack">
+              <button class="btn-primary safe">Cancelar</button>
+              <button class="btn-outline destructive">Deletar conta</button>
+            </div>
+          </div>
+
+          <!-- ── M3: Cancelar Assinatura ── -->
+          <div class="bottom-sheet" data-sheet="m3">
+            <div class="sheet-handle"></div>
+            <div class="sheet-icon">
+              <div class="small-plant">
+                <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="24" y="65" width="32" height="32" rx="6" fill="#E8DDF5"/>
+                  <rect x="27" y="68" width="26" height="8" rx="3" fill="#B8A3D6" opacity="0.5"/>
+                  <path d="M40 65 C40 35,22 28,18 44" stroke="#C4B0E0" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                  <path d="M40 58 C40 30,58 22,62 38" stroke="#A892CC" stroke-width="4" stroke-linecap="round" fill="none"/>
+                  <circle cx="18" cy="42" r="7" fill="#C4B0E0" opacity="0.5"/>
+                  <circle cx="62" cy="36" r="6" fill="#A892CC" opacity="0.4"/>
+                  <ellipse cx="34" cy="80" rx="2" ry="1.5" fill="#B8A3D6"/>
+                  <ellipse cx="46" cy="80" rx="2" ry="1.5" fill="#B8A3D6"/>
+                  <path d="M36 85 Q40 87,44 85" stroke="#B8A3D6" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                </svg>
+              </div>
+            </div>
+            <div class="sheet-title">Antes de ir...</div>
+            <div class="sheet-body">Voce ainda tem acesso ate <span class="highlight">15 de junho</span>.</div>
+            <div class="reason-pills">
+              <button class="reason-pill">Muito caro</button>
+              <button class="reason-pill selected">Nao uso</button>
+              <button class="reason-pill">Outro app</button>
+              <button class="reason-pill">Outro</button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary">Ficar mais um pouco</button>
+              <button class="btn-text destructive">Confirmar cancelamento</button>
+            </div>
+          </div>
+
+          <!-- ── M4: Logout ── -->
+          <div class="bottom-sheet" data-sheet="m4">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Sair da conta?</div>
+            <div class="sheet-body">Sua Lavanda vai ficar te esperando.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Ficar</button>
+              <button class="btn-outline">Sair</button>
+            </div>
+          </div>
+
+          <!-- ── M5: Modo Trabalho ── -->
+          <div class="bottom-sheet" data-sheet="m5">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Modo Trabalho</div>
+            <div class="sheet-body">Sua Lavanda vai descansar. O Mirror nao aparece nesse periodo.</div>
+            <div class="duration-pills">
+              <button class="dur-pill">1h</button>
+              <button class="dur-pill selected">2h</button>
+              <button class="dur-pill">4h</button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary green">Ativar</button>
+            </div>
+          </div>
+
+          <!-- ── M6: Pausar Feed Cleanse ── -->
+          <div class="bottom-sheet" data-sheet="m6">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Pausar o Feed Cleanse?</div>
+            <div class="sheet-body">Seu progresso fica salvo. Volte quando quiser.<span class="luteal-note">E normal precisar de uma pausa agora.</span></div>
+            <div class="cta-stack">
+              <button class="btn-primary">Pausar</button>
+              <button class="btn-text">Continuar</button>
+            </div>
+          </div>
+
+          <!-- ── M7: Mood Response (center overlay) ── -->
+          <div class="center-overlay" data-sheet="m7">
+            <div class="overlay-card">
+              <div class="overlay-plant bounce-anim" id="ios-m7-plant">
+                <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="24" y="65" width="32" height="32" rx="6" fill="#E8DDF5"/>
+                  <rect x="27" y="68" width="26" height="8" rx="3" fill="#B8A3D6" opacity="0.5"/>
+                  <path d="M40 65 C40 35,22 28,18 44" stroke="#C4B0E0" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                  <path d="M40 58 C40 30,58 22,62 38" stroke="#A892CC" stroke-width="4" stroke-linecap="round" fill="none"/>
+                  <circle cx="18" cy="42" r="7" fill="#C4B0E0" opacity="0.5"/>
+                  <circle cx="62" cy="36" r="6" fill="#A892CC" opacity="0.4"/>
+                </svg>
+              </div>
+              <div class="overlay-text" id="ios-m7-text">Que bom, Lina!</div>
+              <div class="overlay-dismiss">toque para fechar</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stage -->
+</div><!-- /studio -->
+
+<script>
+(function(){
+
+  // ── Modal Toggle Logic ──
+  const modalBtns = document.querySelectorAll('.state-btn[data-modal]');
+  const moodSub = document.getElementById('mood-sub');
+  const moodBtns = document.querySelectorAll('.sub-btn[data-mood]');
+
+  const moodData = {
+    happy:  { text: 'Que bom, Lina!', anim: 'bounce-anim' },
+    sad:    { text: 'To aqui com voce.', anim: 'lean-anim' },
+    anxious:{ text: 'Respira comigo.', anim: 'breathe-anim' },
+    angry:  { text: 'Faz sentido sentir isso.', anim: 'space-anim' },
+    neutral:{ text: 'Dia tranquilo. Tudo bem.', anim: 'wave-anim' }
+  };
+
+  function setActiveModal(modalId) {
+    // Update toggle buttons
+    modalBtns.forEach(b => b.classList.toggle('active', b.dataset.modal === modalId));
+
+    // Show/hide mood sub-controls
+    moodSub.classList.toggle('visible', modalId === 'm7');
+
+    // Update both phones
+    ['phone-android', 'phone-ios'].forEach(phoneId => {
+      const phone = document.getElementById(phoneId);
+
+      // Hide all sheets and overlays
+      phone.querySelectorAll('.bottom-sheet, .center-overlay').forEach(el => {
+        el.classList.remove('active-modal');
+      });
+
+      // Show the selected one
+      const target = phone.querySelector('[data-sheet="' + modalId + '"]');
+      if (target) {
+        target.classList.add('active-modal');
+      }
+    });
+
+    // If M7, apply current mood
+    if (modalId === 'm7') {
+      const activeMood = document.querySelector('.sub-btn.active');
+      if (activeMood) setMood(activeMood.dataset.mood);
+    }
+  }
+
+  function setMood(mood) {
+    const data = moodData[mood];
+    if (!data) return;
+
+    moodBtns.forEach(b => b.classList.toggle('active', b.dataset.mood === mood));
+
+    // Update both phones
+    ['a', 'ios'].forEach(prefix => {
+      const plantEl = document.getElementById(prefix + '-m7-plant');
+      const textEl = document.getElementById(prefix + '-m7-text');
+
+      if (plantEl) {
+        plantEl.className = 'overlay-plant ' + data.anim;
+      }
+      if (textEl) {
+        textEl.textContent = data.text;
+      }
+    });
+  }
+
+  modalBtns.forEach(btn => {
+    btn.addEventListener('click', () => setActiveModal(btn.dataset.modal));
+  });
+
+  moodBtns.forEach(btn => {
+    btn.addEventListener('click', () => setMood(btn.dataset.mood));
+  });
+
+  // ── Reason pill toggle (M3) ──
+  document.querySelectorAll('.reason-pills').forEach(container => {
+    container.querySelectorAll('.reason-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        container.querySelectorAll('.reason-pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+      });
+    });
+  });
+
+  // ── Duration pill toggle (M5) ──
+  document.querySelectorAll('.duration-pills').forEach(container => {
+    container.querySelectorAll('.dur-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        container.querySelectorAll('.dur-pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+      });
+    });
+  });
+
+  // Initialize with M1 active
+  setActiveModal('m1');
+
+})();
+</script>
+
+</body>
+</html>

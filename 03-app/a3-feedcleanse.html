@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — A3: Feed Cleanse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:720px;margin:0 auto;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-sep{width:1px;height:20px;background:var(--border);}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.state-btn.scene-btn.active{background:var(--brand-ai);border-color:var(--brand-ai);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* ── PHONE ── */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:280px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* ── SCROLL BODY ── */
+.scroll-body{
+  position:absolute;top:44px;left:0;right:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;
+  padding:16px 20px 100px;
+  display:flex;flex-direction:column;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.scroll-body::-webkit-scrollbar{display:none;}
+.scroll-body>*{flex-shrink:0;}
+.ios-screen .scroll-body{top:0;padding-top:60px;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes shimmer{0%{transform:translateX(-200%) skewX(-14deg);}40%,100%{transform:translateX(200%) skewX(-14deg);}}
+@keyframes pulseGlow{0%,100%{box-shadow:var(--shadow);}50%{box-shadow:0 4px 20px rgba(var(--plant-color-rgb),0.18);}}
+@keyframes checkPop{0%{transform:scale(0);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
+@keyframes celebrateBounce{0%{transform:scale(0.5) translateY(20px);opacity:0;}60%{transform:scale(1.1) translateY(-4px);opacity:1;}100%{transform:scale(1) translateY(0);opacity:1;}}
+@keyframes confettiDrift{0%{transform:translate(0,0) rotate(0);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) rotate(var(--rot));opacity:0;}}
+@keyframes plantGrowCelebrate{0%{transform:scale(0.6);opacity:0;}50%{transform:scale(1.12);}100%{transform:scale(1);opacity:1;}}
+@keyframes sparkle{0%,100%{opacity:0.3;transform:scale(0.8);}50%{opacity:1;transform:scale(1.2);}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+
+/* ── BACK BUTTON ── */
+.back-row{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:16px;padding:2px 0;
+}
+.back-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);transition:all 0.2s;
+}
+.back-btn:hover{background:var(--bg2);border-color:rgba(61,44,46,0.14);}
+.back-btn svg{width:16px;height:16px;}
+.back-label{font-size:12px;font-weight:600;color:var(--text3);letter-spacing:0.02em;}
+
+/* ── HEADER SECTION ── */
+.fc-header{margin-bottom:20px;}
+.fc-conector{
+  font-size:13px;font-weight:600;
+  color:var(--brand-real);
+  margin-bottom:8px;line-height:1.5;
+}
+.fc-title{
+  font-size:22px;font-weight:800;color:var(--text);
+  line-height:1.3;margin-bottom:4px;
+}
+.fc-title em{
+  font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  color:var(--brand-real);
+}
+.fc-subtitle{
+  font-size:12.5px;color:var(--text2);line-height:1.55;
+}
+
+/* ── PROGRESS DOTS ── */
+.progress-row{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:24px;padding:0 4px;
+}
+.prog-dot{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;
+  position:relative;flex-shrink:0;
+  transition:all 0.3s;
+}
+.prog-dot.done{
+  background:var(--brand-correct);color:white;
+}
+.prog-dot.done svg{width:16px;height:16px;}
+.prog-dot.active{
+  background:var(--brand-real);color:white;
+  box-shadow:0 2px 12px rgba(244,167,185,0.35);
+  animation:pulseGlow 2.5s ease-in-out infinite;
+}
+.prog-dot.locked{
+  background:var(--bg2);color:var(--text3);
+}
+.prog-line{
+  flex:1;height:2.5px;border-radius:2px;
+  background:var(--border);
+  position:relative;overflow:hidden;
+}
+.prog-line.filled{background:var(--brand-correct);}
+.prog-line.filling{background:linear-gradient(90deg, var(--brand-correct), var(--brand-real));}
+
+/* ── TASK CARD ── */
+.task-card{
+  background:var(--card);border-radius:var(--r);
+  padding:20px;margin-bottom:16px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.task-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg, var(--brand-real), rgba(var(--plant-color-rgb),0.6));
+}
+.task-day{
+  font-size:11px;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--brand-real);margin-bottom:6px;
+}
+.task-title{
+  font-size:16px;font-weight:700;color:var(--text);
+  line-height:1.4;margin-bottom:8px;
+}
+.task-desc{
+  font-size:13px;color:var(--text2);line-height:1.6;
+  margin-bottom:16px;
+}
+.task-time{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11.5px;font-weight:600;color:var(--text3);
+  margin-bottom:16px;
+}
+.task-time svg{width:14px;height:14px;color:var(--text3);}
+
+/* ── CTA ── */
+.cta-btn{
+  width:100%;padding:15px;border-radius:999px;
+  border:none;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:700;
+  transition:all 0.25s;
+  position:relative;overflow:hidden;
+}
+.a-screen .cta-btn{
+  background:var(--brand-real);color:white;
+  box-shadow:0 4px 16px rgba(244,167,185,0.3);
+}
+.a-screen .cta-btn:active{transform:scale(0.97);box-shadow:0 2px 8px rgba(244,167,185,0.2);}
+.ios-screen .cta-btn{
+  background:rgba(232,136,158,0.88);color:white;
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%);
+}
+/* shimmer */
+.cta-btn::after{
+  content:'';position:absolute;top:0;left:0;
+  width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  animation:shimmer 3s ease-in-out infinite;
+}
+
+/* ── PLANT SPEECH BUBBLE ── */
+.plant-bubble{
+  display:flex;gap:12px;align-items:flex-start;
+  background:rgba(var(--plant-color-rgb),0.08);
+  border:1px solid rgba(var(--plant-color-rgb),0.12);
+  border-radius:16px;padding:14px 16px;
+  margin-bottom:16px;
+}
+.plant-bubble .pb-avatar{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:rgba(var(--plant-color-rgb),0.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.plant-bubble .pb-avatar svg{width:22px;height:22px;}
+.plant-bubble .pb-text{
+  font-size:13px;color:var(--text);line-height:1.55;
+  font-weight:500;
+}
+.plant-bubble .pb-text em{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  color:rgba(var(--plant-color-rgb),0.85);font-weight:400;
+}
+
+/* ── STEPS LIST ── */
+.steps-list{margin-bottom:16px;}
+.step-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+.step-item:last-child{border-bottom:none;}
+.step-num{
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  background:rgba(var(--plant-color-rgb),0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:rgba(var(--plant-color-rgb),0.8);
+}
+.step-text{font-size:13px;color:var(--text);line-height:1.5;font-weight:500;padding-top:2px;}
+
+/* ── COMPLETED DAY CARD ── */
+.done-card{
+  background:var(--card);border-radius:var(--r);
+  padding:20px;margin-bottom:16px;
+  border:1px solid rgba(125,212,163,0.2);
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+.done-card .done-check{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--brand-correct);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 12px;
+  animation:checkPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.done-card .done-check svg{width:24px;height:24px;color:white;}
+.done-card .done-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.done-card .done-sub{font-size:12.5px;color:var(--text2);line-height:1.5;}
+.done-card .done-grow{
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:10px;padding:5px 14px;border-radius:999px;
+  background:rgba(168,213,162,0.15);
+  font-size:11.5px;font-weight:700;color:var(--brand-ai-deep);
+}
+
+/* ── LUTEAL PAUSE CARD ── */
+.luteal-card{
+  background:linear-gradient(135deg, rgba(196,176,224,0.08), rgba(242,213,213,0.1));
+  border:1px solid rgba(196,176,224,0.15);
+  border-radius:var(--r);padding:20px;margin-bottom:16px;
+  text-align:center;
+}
+.luteal-card .luteal-emoji{font-size:32px;margin-bottom:10px;}
+.a-screen .luteal-card .luteal-emoji{font-size:0;width:32px;height:32px;border-radius:50%;background:rgba(196,176,224,0.3);margin:0 auto 10px;}
+.luteal-card .luteal-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.luteal-card .luteal-text{font-size:12.5px;color:var(--text2);line-height:1.55;}
+.luteal-card .luteal-text em{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  color:rgba(196,176,224,0.85);font-weight:400;
+}
+
+/* ── CELEBRATION (Day 7) ── */
+.celebrate-area{
+  text-align:center;padding:12px 0 0;
+  position:relative;
+}
+.celebrate-plant{
+  width:120px;height:120px;margin:0 auto 16px;
+  animation:plantGrowCelebrate 1s cubic-bezier(0.34,1.56,0.64,1) both;
+  position:relative;
+}
+.celebrate-plant svg{width:100%;height:100%;}
+.celebrate-title{
+  font-size:20px;font-weight:800;color:var(--text);
+  margin-bottom:6px;
+}
+.celebrate-title em{
+  font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  color:var(--brand-real);
+}
+.celebrate-sub{
+  font-size:13px;color:var(--text2);line-height:1.55;
+  margin-bottom:16px;max-width:260px;margin-left:auto;margin-right:auto;
+}
+.celebrate-stats{
+  display:flex;gap:12px;justify-content:center;margin-bottom:20px;
+}
+.celebrate-stat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:12px 16px;min-width:90px;
+  box-shadow:var(--shadow);
+}
+.celebrate-stat .cs-num{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:24px;color:var(--brand-real);
+}
+.celebrate-stat .cs-label{font-size:10.5px;color:var(--text3);font-weight:600;margin-top:2px;}
+.share-btn{
+  width:100%;padding:14px;border-radius:999px;
+  border:1.5px solid rgba(var(--plant-color-rgb),0.3);
+  background:rgba(var(--plant-color-rgb),0.08);
+  color:var(--text);
+  font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all 0.2s;
+  margin-top:8px;
+}
+.share-btn:hover{background:rgba(var(--plant-color-rgb),0.15);}
+
+/* ── CONFETTI ── */
+.confetti-container{position:absolute;top:0;left:50%;pointer-events:none;z-index:20;}
+.confetti-piece{
+  position:absolute;width:6px;height:10px;border-radius:2px;
+  animation:confettiDrift 2s ease-out forwards;
+}
+
+/* ── FAB PAUSE ── */
+.fab-pause{
+  position:absolute;bottom:80px;right:16px;z-index:15;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--brand-real);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(244,167,185,0.30);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.fab-pause:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(244,167,185,0.40);}
+.fab-pause:active{transform:scale(0.94);}
+.ios-screen .fab-pause{
+  bottom:92px;right:18px;
+  backdrop-filter:blur(20px) saturate(180%);
+  background:rgba(232,136,158,0.88);
+  border:1px solid rgba(255,255,255,0.30);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(244,167,185,0.28);
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;height:72px;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 8px;z-index:20;
+}
+.ios-screen .bottom-nav{
+  height:76px;bottom:8px;left:12px;right:12px;
+  border-radius:999px;border:none;
+  background:rgba(255,255,255,0.72);
+  -webkit-backdrop-filter:blur(40px) saturate(200%);
+  backdrop-filter:blur(40px) saturate(200%);
+  box-shadow:0 4px 24px rgba(61,44,46,0.1),inset 0 0.5px 0 rgba(255,255,255,0.6);
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:4px 12px;cursor:pointer;position:relative;
+  transition:all 0.2s;
+}
+.nav-item svg{width:22px;height:22px;color:var(--text3);transition:color 0.2s;}
+.nav-item span{font-size:10px;font-weight:600;color:var(--text3);transition:color 0.2s;}
+.nav-item.active svg{color:var(--brand-real);}
+.nav-item.active span{color:var(--brand-real);}
+/* Android active pill */
+.a-screen .nav-item.active{
+  background:rgba(244,167,185,0.12);border-radius:20px;padding:4px 16px;
+}
+/* iOS active dot */
+.ios-screen .nav-item.active::after{
+  content:'';position:absolute;bottom:-2px;
+  width:4px;height:4px;border-radius:50%;
+  background:var(--brand-real);
+}
+</style>
+</head>
+<body>
+<div class="studio">
+  <header class="studio-header">
+    <div class="brand-eyebrow">Brota</div>
+    <h1 class="brand-title">A3 — Feed Cleanse<em>Protocolo de 7 dias para limpar seu feed</em></h1>
+    <p class="brand-sub">Journey de 7 dias. Cada dia 1 tarefa concreta. Planta guia e celebra. Adaptacao por ciclo (luteal = pausa). Pilar Reconstrucao (accent blush).</p>
+  </header>
+
+  <div class="controls">
+    <button class="state-btn active" onclick="setPlant('s1',this)">Lavanda</button>
+    <button class="state-btn" onclick="setPlant('s2',this)">Girassol</button>
+    <button class="state-btn" onclick="setPlant('s3',this)">Cacto</button>
+    <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira</button>
+    <button class="state-btn" onclick="setPlant('s5',this)">Lotus</button>
+    <div class="state-sep"></div>
+    <button class="state-btn scene-btn active" onclick="setScene('active',this)">Dia ativo</button>
+    <button class="state-btn scene-btn" onclick="setScene('done-day',this)">Dia feito</button>
+    <button class="state-btn scene-btn" onclick="setScene('luteal',this)">Luteal</button>
+    <button class="state-btn scene-btn" onclick="setScene('celebrate',this)">Dia 7</button>
+  </div>
+
+  <div class="stage" id="stage"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════ */
+var plants = {
+  s1:{key:'s1',name:'Ana',plant:'Lavanda',color:'#C4B0E0',rgb:'196,176,224'},
+  s2:{key:'s2',name:'Bia',plant:'Girassol',color:'#F2CE6B',rgb:'242,206,107'},
+  s3:{key:'s3',name:'Carol',plant:'Cacto',color:'#8CC5A0',rgb:'140,197,160'},
+  s4:{key:'s4',name:'Dani',plant:'Cerejeira',color:'#F2B5C4',rgb:'242,181,196'},
+  s5:{key:'s5',name:'Eva',plant:'Lotus',color:'#D4B8D4',rgb:'212,184,212'}
+};
+
+var days = [
+  {day:1, title:'Audit: quem te faz mal?', desc:'Abre seu Instagram e lista 10 contas que te fazem se comparar. Sem julgamento — so observa.', time:'10 min',
+   steps:['Abre o Instagram ou TikTok','Percorre seu feed por 5 minutos','Anota mentalmente as contas que te causam desconforto','Lista 10 contas aqui']},
+  {day:2, title:'Silenciar as 3 piores', desc:'Das 10 que voce encontrou ontem, escolhe as 3 que mais pesam. Silencia ou deixa de seguir.', time:'5 min',
+   steps:['Volta na sua lista de ontem','Escolhe as 3 mais toxicas','Silencia ou unfollow cada uma','Respira. Voce nao deve nada a ninguem.']},
+  {day:3, title:'Seguir quem te faz bem', desc:'Agora o contrario: segue 3 contas que te fazem sentir real. Body-positive, natureza, arte.', time:'5 min',
+   steps:['Busca contas body-positive ou de natureza','Segue 3 que te fazem sorrir','Passa 2 minutos no conteudo delas','Percebe como o corpo reage diferente']},
+  {day:4, title:'Desliga os likes', desc:'Desativa notificacoes de likes e comentarios. O numero nao define voce.', time:'3 min',
+   steps:['Vai em Configuracoes do app','Desativa notificacoes de likes','Desativa notificacoes de comentarios','Pronto. Silencio.']},
+  {day:5, title:'2 horas sem redes', desc:'Escolhe 2 horas do seu dia e vive sem redes. Sua planta te acompanha com uma atividade guiada.', time:'2 horas',
+   steps:['Escolhe um horario de 2h','Coloca o celular longe','Faz algo que te preenche','Volta e percebe como se sente']},
+  {day:6, title:'Escreve sobre a semana', desc:'Como foi limpar seu feed? O que mudou? Escreve livremente — sua planta le e cuida.', time:'10 min',
+   steps:['Abre o diario aqui no app','Escreve livremente sobre a semana','Sem regras, sem filtro','Sua planta vai responder com carinho']},
+  {day:7, title:'Celebracao', desc:'Voce fez. 7 dias de cuidado com o que voce consome. Sua planta cresceu com voce.', time:'5 min',
+   steps:[]}
+];
+
+var plantSpeeches = {
+  Lavanda:{
+    active:'Hoje e sobre <em>se ouvir.</em> Vai com calma.',
+    done:'Que lindo, Ana. <em>Cada passo importa.</em>',
+    luteal:'Esses dias pedem <em>mais gentileza.</em> Descansa.',
+    celebrate:'Ana... <em>voce floresceu.</em> Eu vi tudo.'
+  },
+  Girassol:{
+    active:'Bora! <em>Hoje e dia de brilhar.</em>',
+    done:'Arrasou, Bia! <em>Mais um dia incrivel.</em>',
+    luteal:'Ei, ta tudo bem <em>ir devagar.</em> O sol espera.',
+    celebrate:'Bia!! <em>Voce e pura luz.</em> Olha o que conquistou!'
+  },
+  Cacto:{
+    active:'Sem enrolacao. <em>Bora fazer.</em>',
+    done:'Feito. <em>Simples assim.</em> Bebe agua.',
+    luteal:'Ate eu descanso as vezes. <em>Relaxa.</em>',
+    celebrate:'Carol. Voce fez em 7 dias o que muita gente nao faz nunca. <em>Respeito.</em>'
+  },
+  Cerejeira:{
+    active:'Cada gesto de cuidado e <em>uma petala nova.</em>',
+    done:'Mais uma petala. <em>Voce esta florescendo.</em>',
+    luteal:'As petalas caem pra <em>renascer mais bonitas.</em> Descanse.',
+    celebrate:'Dani... <em>voce e um jardim inteiro.</em> Que lindo ver voce assim.'
+  },
+  Lotus:{
+    active:'Sem pressa. <em>Faz no seu ritmo.</em>',
+    done:'Mais um dia de paz. <em>Voce merece.</em>',
+    luteal:'O lago esta calmo hoje. <em>Voce tambem pode estar.</em>',
+    celebrate:'Eva. 7 dias de escolher voce. <em>Isso e sabedoria.</em>'
+  }
+};
+
+/* Mini plant SVGs */
+var miniPlantSVGs = {
+  Lavanda:'<svg viewBox="0 0 80 80" fill="none"><path d="M40 72V40" stroke="#6BA068" stroke-width="2.5" stroke-linecap="round"><animate attributeName="d" values="M40 72V40;M40 72V38;M40 72V40" dur="4s" repeatCount="indefinite"/></path><ellipse cx="40" cy="36" rx="5" ry="7" fill="__CLR__"><animate attributeName="ry" values="7;7.8;7" dur="4s" repeatCount="indefinite"/></ellipse><ellipse cx="40" cy="28" rx="4.5" ry="6" fill="__CLR__" opacity="0.9"/><ellipse cx="40" cy="21" rx="3.5" ry="5" fill="__CLR__" opacity="0.8"/><ellipse cx="32" cy="40" rx="4" ry="5.5" fill="__CLR__" opacity="0.85"><animateTransform attributeName="transform" type="rotate" values="-3,32,40;3,32,40;-3,32,40" dur="5s" repeatCount="indefinite"/></ellipse><ellipse cx="48" cy="39" rx="4" ry="5.5" fill="__CLR__" opacity="0.85"><animateTransform attributeName="transform" type="rotate" values="3,48,39;-3,48,39;3,48,39" dur="5s" repeatCount="indefinite"/></ellipse></svg>',
+  Girassol:'<svg viewBox="0 0 80 80" fill="none"><path d="M40 72V42" stroke="#5A9E54" stroke-width="3" stroke-linecap="round"/><ellipse cx="40" cy="14" rx="5" ry="10" fill="__CLR__"><animateTransform attributeName="transform" type="rotate" values="-2,40,26;2,40,26;-2,40,26" dur="4s" repeatCount="indefinite"/></ellipse><ellipse cx="26" cy="26" rx="10" ry="5" fill="__CLR__"/><ellipse cx="54" cy="26" rx="10" ry="5" fill="__CLR__"/><ellipse cx="28" cy="14" rx="4" ry="8" fill="__CLR__" opacity="0.85" transform="rotate(-35 28 14)"/><ellipse cx="52" cy="14" rx="4" ry="8" fill="__CLR__" opacity="0.85" transform="rotate(35 52 14)"/><ellipse cx="40" cy="40" rx="5" ry="9" fill="__CLR__" opacity="0.8"/><ellipse cx="28" cy="38" rx="4" ry="8" fill="__CLR__" opacity="0.75" transform="rotate(45 28 38)"/><ellipse cx="52" cy="38" rx="4" ry="8" fill="__CLR__" opacity="0.75" transform="rotate(-45 52 38)"/><circle cx="40" cy="26" r="9" fill="#D4960A"/><circle cx="40" cy="26" r="6.5" fill="#C48A08"/></svg>',
+  Cacto:'<svg viewBox="0 0 80 80" fill="none"><path d="M32 72C31 62 30 52 30 44C30 34 32 24 35 18C37 14 39 12 40 12C41 12 43 14 45 18C48 24 50 34 50 44C50 52 49 62 48 72" fill="__CLR__" opacity="0.55"/><path d="M32 72C31 62 30 52 30 44C30 34 32 24 35 18C37 14 39 12 40 12C41 12 43 14 45 18C48 24 50 34 50 44C50 52 49 62 48 72" stroke="__CLR__" stroke-width="2" fill="none"/><path d="M30 40Q22 38 18 32Q16 28 20 30Q26 34 30 40" fill="__CLR__" opacity="0.4"/><path d="M50 36Q58 34 62 28Q64 24 60 26Q54 30 50 36" fill="__CLR__" opacity="0.4"/><ellipse cx="40" cy="10" rx="5" ry="4" fill="#F4A7B9" opacity="0.8"/></svg>',
+  Cerejeira:'<svg viewBox="0 0 80 80" fill="none"><path d="M40 72C40 68 38 62 37 58C36 54 37 50 39 48" stroke="#7A5840" stroke-width="4" stroke-linecap="round"/><ellipse cx="26" cy="44" rx="9" ry="8" fill="__CLR__" opacity="0.8"><animate attributeName="rx" values="9;9.5;9" dur="4s" repeatCount="indefinite"/></ellipse><ellipse cx="54" cy="40" rx="9" ry="8" fill="__CLR__" opacity="0.85"/><ellipse cx="40" cy="30" rx="8" ry="7" fill="__CLR__" opacity="0.9"/></svg>',
+  Lotus:'<svg viewBox="4 4 72 72" fill="none"><ellipse cx="40" cy="70" rx="14" ry="3" fill="#D4EEF8" opacity="0.3"/><path d="M40 68Q39 60 40 54" stroke="#6EAA68" stroke-width="2" stroke-linecap="round" opacity="0.45" fill="none"/><path d="M40 54Q28 56 20 50Q18 48 22 47Q30 47 40 51Z" fill="__CLR__" opacity="0.3"/><path d="M40 54Q52 56 60 50Q62 48 58 47Q50 47 40 51Z" fill="__CLR__" opacity="0.3"/><path d="M40 44Q34 38 32 28Q31.5 22 35 25Q38 30 40 42Z" fill="#EEE0F0" opacity="0.55"/><path d="M40 44Q46 38 48 28Q48.5 22 45 25Q42 30 40 42Z" fill="#EEE0F0" opacity="0.55"/><ellipse cx="40" cy="48" rx="5" ry="3.5" fill="#FFE082" opacity="0.85"/></svg>'
+};
+
+var currentPlant = plants.s1;
+var currentScene = 'active';
+var activeDay = 3; // prototype shows day 3 as active
+
+/* ═══════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════ */
+function renderStage(){
+  var stage = document.getElementById('stage');
+  stage.innerHTML = '';
+
+  ['android','ios'].forEach(function(platform){
+    var isIos = platform==='ios';
+    var p = isIos ? 'i' : 'a';
+    var cls = isIos ? 'ios-screen' : 'a-screen';
+
+    var html = '<div class="phone-wrapper"><div class="phone-label">';
+    html += isIos ? '<span class="pill ios">iOS</span><span class="desc">Liquid Glass / HIG</span>' : '<span class="pill android">Android</span><span class="desc">Material 3 Expressive</span>';
+    html += '</div><div class="phone '+cls+'" id="'+p+'-phone"><div class="phone-screen">';
+
+    /* Status bar */
+    html += '<div class="statusbar"><span class="stime">9:41</span><span class="sicons"><svg width="15" height="11" fill="currentColor"><rect x="0" y="4" width="3" height="7" rx="0.5" opacity="0.4"/><rect x="4" y="2.5" width="3" height="8.5" rx="0.5" opacity="0.5"/><rect x="8" y="1" width="3" height="10" rx="0.5" opacity="0.7"/><rect x="12" y="0" width="3" height="11" rx="0.5"/></svg></span></div>';
+    if(isIos) html += '<div class="dyna"></div>';
+
+    /* Scroll body */
+    html += '<div class="scroll-body" id="'+p+'-body"></div>';
+
+    /* FAB Pause */
+    html += '<div class="fab-pause" onclick="this.style.transform=\'scale(0.9)\';setTimeout(()=>this.style.transform=\'\',200)"><i data-icon="pause"></i></div>';
+
+    /* Bottom nav */
+    html += '<div class="bottom-nav">';
+    html += navItem('Home','<path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/>',false);
+    html += navItem('Grow','<path d="M12 2C8 6 4 10 4 14a8 8 0 0016 0c0-4-4-8-8-12z"/>',true);
+    html += navItem('Jardim','<circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2m-10-10h2m16 0h2m-3.5-6.5l-1.4 1.4m-11.3 11.3l-1.4 1.4m0-14.1l1.4 1.4m11.3 11.3l1.4 1.4"/>',false);
+    html += navItem('Insights','<path d="M3 3v18h18"/><path d="M7 16l4-6 4 4 4-8"/>',false);
+    html += navItem('Perfil','<circle cx="12" cy="8" r="4"/><path d="M6 20c0-3 3-5 6-5s6 2 6 5"/>',false);
+    html += '</div>';
+
+    html += '</div></div></div>';
+    stage.innerHTML += html;
+  });
+}
+
+function navItem(label, pathSvg, active){
+  return '<div class="nav-item'+(active?' active':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+pathSvg+'</svg><span>'+label+'</span></div>';
+}
+
+/* ═══════════════════════════════════════
+   BUILD CONTENT
+   ═══════════════════════════════════════ */
+function buildContent(prefix){
+  var s = currentPlant;
+  var plantSvg = miniPlantSVGs[s.plant].replace(/__CLR__/g, s.color);
+  var speeches = plantSpeeches[s.plant];
+  var html = '';
+  var delay = 0;
+
+  /* Back row */
+  html += '<div class="back-row anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+  html += '<div class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></div>';
+  html += '<span class="back-label">Grow</span>';
+  html += '</div>';
+  delay += 80;
+
+  if(currentScene === 'active'){
+    var d = days[activeDay - 1];
+
+    /* Header */
+    html += '<div class="fc-header anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="fc-conector">'+s.plant+': sua primeira missao.</div>';
+    html += '<div class="fc-title">Limpa seu feed <em>em 7 dias</em></div>';
+    html += '<div class="fc-subtitle">Remove gatilhos de comparacao do seu feed. Uma tarefa por dia, no seu ritmo.</div>';
+    html += '</div>';
+    delay += 100;
+
+    /* Progress dots */
+    html += buildProgressDots(activeDay, delay);
+    delay += 80;
+
+    /* Plant bubble */
+    html += '<div class="plant-bubble anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="pb-avatar">'+plantSvg+'</div>';
+    html += '<div class="pb-text">'+speeches.active+'</div>';
+    html += '</div>';
+    delay += 100;
+
+    /* Task card */
+    html += '<div class="task-card anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="task-day">Dia '+d.day+' de 7</div>';
+    html += '<div class="task-title">'+d.title+'</div>';
+    html += '<div class="task-desc">'+d.desc+'</div>';
+    html += '<div class="task-time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'+d.time+'</div>';
+
+    if(d.steps.length > 0){
+      html += '<div class="steps-list">';
+      d.steps.forEach(function(step, i){
+        html += '<div class="step-item"><div class="step-num">'+(i+1)+'</div><div class="step-text">'+step+'</div></div>';
+      });
+      html += '</div>';
+    }
+
+    html += '<button class="cta-btn">Fiz!</button>';
+    html += '</div>';
+
+  } else if(currentScene === 'done-day'){
+    /* Header */
+    html += '<div class="fc-header anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="fc-conector">'+s.plant+': olha voce!</div>';
+    html += '<div class="fc-title">Feed Cleanse <em>7 dias</em></div>';
+    html += '</div>';
+    delay += 100;
+
+    /* Progress dots - day 3 done, day 4 active */
+    html += buildProgressDots(4, delay);
+    delay += 80;
+
+    /* Done card */
+    html += '<div class="done-card anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="done-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>';
+    html += '<div class="done-title">Dia 3 completo!</div>';
+    html += '<div class="done-sub">Voce seguiu 3 contas que te fazem bem. Isso muda o que o algoritmo te mostra.</div>';
+    /* GROW points invisivel — tracked internamente */
+    html += '</div>';
+    delay += 120;
+
+    /* Plant bubble */
+    html += '<div class="plant-bubble anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="pb-avatar">'+plantSvg+'</div>';
+    html += '<div class="pb-text">'+speeches.done+'</div>';
+    html += '</div>';
+    delay += 100;
+
+    /* Next day preview card */
+    var nextDay = days[3]; // day 4
+    html += '<div class="task-card anim-el" style="animation-delay:'+(delay*0.001)+'s;opacity:0.65">';
+    html += '<div class="task-day">Amanha — Dia 4 de 7</div>';
+    html += '<div class="task-title">'+nextDay.title+'</div>';
+    html += '<div class="task-desc">'+nextDay.desc+'</div>';
+    html += '<div class="task-time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'+nextDay.time+'</div>';
+    html += '</div>';
+
+  } else if(currentScene === 'luteal'){
+    /* Header */
+    html += '<div class="fc-header anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="fc-conector">'+s.plant+' percebeu algo.</div>';
+    html += '<div class="fc-title">Feed Cleanse <em>pausado</em></div>';
+    html += '</div>';
+    delay += 100;
+
+    /* Progress dots - paused at day 3 */
+    html += buildProgressDots(3, delay, true);
+    delay += 80;
+
+    /* Luteal card */
+    html += '<div class="luteal-card anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="luteal-emoji"><i data-icon="moon"></i></div>';
+    html += '<div class="luteal-title">Essa semana nao e de esforco.</div>';
+    html += '<div class="luteal-text">Seu corpo esta na fase que pede mais cuidado. O Feed Cleanse continua quando voce estiver pronta. <em>Sem pressa, sem culpa.</em></div>';
+    html += '</div>';
+    delay += 120;
+
+    /* Plant bubble */
+    html += '<div class="plant-bubble anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="pb-avatar">'+plantSvg+'</div>';
+    html += '<div class="pb-text">'+speeches.luteal+'</div>';
+    html += '</div>';
+
+  } else if(currentScene === 'celebrate'){
+    /* Header */
+    html += '<div class="fc-header anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="fc-conector">'+s.plant+' nao para de sorrir.</div>';
+    html += '<div class="fc-title">Feed Cleanse <em>completo!</em></div>';
+    html += '</div>';
+    delay += 100;
+
+    /* Progress dots - all done */
+    html += buildProgressDots(8, delay);
+    delay += 80;
+
+    /* Celebration */
+    html += '<div class="celebrate-area anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="confetti-container" id="'+prefix+'-confetti"></div>';
+    html += '<div class="celebrate-plant">'+plantSvg+'</div>';
+    html += '<div class="celebrate-title">'+s.name+', <em>voce floresceu.</em></div>';
+    html += '<div class="celebrate-sub">7 dias cuidando do que voce consome. Sua planta cresceu e seu feed esta mais leve.</div>';
+
+    html += '<div class="celebrate-stats">';
+    html += '<div class="celebrate-stat"><div class="cs-num">7</div><div class="cs-label">dias completos</div></div>';
+    html += '<div class="celebrate-stat"><div class="cs-num">3</div><div class="cs-label">contas silenciadas</div></div>';
+    html += '<div class="celebrate-stat"><div class="cs-num">3</div><div class="cs-label">contas novas</div></div>';
+    html += '</div>';
+
+    html += '<button class="cta-btn">Compartilhar no Jardim</button>';
+    html += '<button class="share-btn" style="margin-top:10px">Voltar ao Grow</button>';
+    html += '</div>';
+
+    /* Plant bubble */
+    delay += 120;
+    html += '<div class="plant-bubble anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+    html += '<div class="pb-avatar">'+plantSvg+'</div>';
+    html += '<div class="pb-text">'+speeches.celebrate+'</div>';
+    html += '</div>';
+  }
+
+  return html;
+}
+
+function buildProgressDots(currentDay, delay, paused){
+  var html = '<div class="progress-row anim-el" style="animation-delay:'+(delay*0.001)+'s">';
+  for(var i=1;i<=7;i++){
+    var cls = 'prog-dot';
+    if(i < currentDay) cls += ' done';
+    else if(i === currentDay && !paused) cls += ' active';
+    else cls += ' locked';
+
+    if(i < currentDay){
+      html += '<div class="'+cls+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>';
+    } else {
+      html += '<div class="'+cls+'">'+i+'</div>';
+    }
+
+    if(i < 7){
+      var lineClass = 'prog-line';
+      if(i < currentDay - 1) lineClass += ' filled';
+      else if(i === currentDay - 1) lineClass += ' filling';
+      html += '<div class="'+lineClass+'"></div>';
+    }
+  }
+  html += '</div>';
+  return html;
+}
+
+/* ═══════════════════════════════════════
+   CONFETTI
+   ═══════════════════════════════════════ */
+function spawnConfetti(containerId){
+  var el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = '';
+  var colors = ['#F4A7B9','#A8D5A2','#7DD4A3','#FFD07A','#C4B0E0','#F2CE6B','#F2B5C4'];
+  for(var i=0;i<30;i++){
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.setProperty('--tx', (Math.random()*200-100)+'px');
+    piece.style.setProperty('--ty', (Math.random()*200-100)+'px');
+    piece.style.setProperty('--rot', (Math.random()*720-360)+'deg');
+    piece.style.left = (Math.random()*40-20)+'px';
+    piece.style.animationDelay = (Math.random()*0.5)+'s';
+    el.appendChild(piece);
+  }
+}
+
+/* ═══════════════════════════════════════
+   STATE MANAGEMENT
+   ═══════════════════════════════════════ */
+function setPlant(key,btn){
+  currentPlant = plants[key];
+  document.querySelectorAll('.state-btn:not(.scene-btn)').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyState();
+}
+
+function setScene(scene,btn){
+  currentScene = scene;
+  document.querySelectorAll('.scene-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyState();
+}
+
+function applyState(){
+  var r = document.documentElement;
+  r.style.setProperty('--plant-color', currentPlant.color);
+  r.style.setProperty('--plant-color-rgb', currentPlant.rgb);
+
+  ['a','i'].forEach(function(p){
+    var body = document.getElementById(p+'-body');
+    if(!body) return;
+    body.innerHTML = buildContent(p);
+    body.scrollTop = 0;
+
+    if(currentScene === 'celebrate'){
+      setTimeout(function(){ spawnConfetti(p+'-confetti'); }, 600);
+    }
+  });
+}
+
+/* ═══════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════ */
+renderStage();
+applyState();
+</script>
+<script src="../shared/icons.js"></script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota — System Error States</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:720px;margin:0 auto;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* ── PHONE ── */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:280px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.screen{position:absolute;inset:0;background:var(--bg);}
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* ── SCREEN BODY ── */
+.screen-body{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 28px 40px;
+  text-align:center;
+}
+
+/* ── SOFT BLOBS ── */
+.blob{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);}
+.blob1{width:300px;height:300px;top:-100px;left:-60px;background:var(--brand-real);opacity:0.06;}
+.blob2{width:240px;height:240px;bottom:60px;right:-40px;background:var(--plant-color);opacity:0.05;}
+.ios-screen .blob1{opacity:0.05;filter:blur(90px);}
+.ios-screen .blob2{opacity:0.04;filter:blur(84px);}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes plantBreathe{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-3px) scale(1.015);}
+}
+@keyframes plantBounce{
+  0%,100%{transform:translateY(0) scale(1);}
+  30%{transform:translateY(-8px) scale(1.04);}
+  60%{transform:translateY(-3px) scale(1.01);}
+}
+@keyframes umbrellaRain{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-2px);}
+}
+@keyframes questionFloat{
+  0%,100%{transform:translateY(0) rotate(-5deg);opacity:0.9;}
+  50%{transform:translateY(-4px) rotate(5deg);opacity:1;}
+}
+@keyframes glowSoft{
+  0%,100%{opacity:0.35;transform:scale(0.96);}
+  50%{opacity:0.6;transform:scale(1.01);}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+/* ── ANIM ELEMENTS ── */
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+.reinit{animation:none!important;opacity:0!important;transition:none!important;}
+
+/* ── PLANT SVG AREA ── */
+.plant-area{
+  position:relative;width:120px;height:120px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+}
+.plant-area::before{
+  content:'';position:absolute;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle, rgba(var(--plant-color-rgb),0.12) 0%, rgba(var(--plant-color-rgb),0) 70%);
+  animation:glowSoft 4s ease-in-out infinite;
+}
+.plant-area svg{
+  position:relative;z-index:2;
+  animation:plantBreathe 4s ease-in-out infinite;
+}
+.s5-active .plant-area svg{
+  animation:plantBounce 1.2s cubic-bezier(0.34,1.56,0.64,1) infinite;
+}
+
+/* ── TEXT ── */
+.err-heading{
+  font-size:20px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:6px;
+}
+.err-sub{
+  font-size:13.5px;font-weight:400;color:var(--text2);line-height:1.5;margin-bottom:20px;
+  max-width:260px;
+}
+.err-connector{
+  font-size:13px;font-weight:500;color:var(--brand-real);line-height:1.5;margin-bottom:4px;
+}
+
+/* ── CTA BUTTONS ── */
+.cta-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:14px 32px;border-radius:999px;border:none;cursor:pointer;
+  background:var(--brand-real);color:white;
+  font-family:inherit;font-size:14px;font-weight:700;
+  box-shadow:0 4px 16px rgba(244,167,185,0.28);
+  transition:transform 0.2s;
+  position:relative;overflow:hidden;
+  margin-bottom:8px;
+  width:100%;max-width:260px;
+}
+.a-screen .cta-primary::after{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:55%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
+  transform:translateX(-200%) skewX(-14deg);
+  animation:shimmer 4s ease-in-out 2s infinite;
+  pointer-events:none;
+}
+@keyframes shimmer{
+  0%{transform:translateX(-200%) skewX(-14deg);}
+  40%,100%{transform:translateX(200%) skewX(-14deg);}
+}
+.ios-screen .cta-primary{
+  background:rgba(232,136,158,0.88);
+  backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(244,167,185,0.35);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 16px rgba(244,167,185,0.22);
+}
+.cta-primary:hover{transform:scale(1.02);}
+.cta-primary:active{transform:scale(0.97);}
+
+.cta-secondary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 28px;border-radius:999px;cursor:pointer;
+  background:transparent;color:var(--brand-real);
+  border:1.5px solid var(--brand-real);
+  font-family:inherit;font-size:13px;font-weight:700;
+  transition:all 0.2s;
+  margin-bottom:8px;
+  width:100%;max-width:260px;
+}
+.cta-secondary:hover{background:rgba(244,167,185,0.06);transform:scale(1.02);}
+
+.text-link{
+  font-size:12px;font-weight:600;color:var(--text2);
+  text-decoration:underline;text-decoration-color:var(--text3);
+  text-underline-offset:3px;cursor:pointer;
+  transition:color 0.2s;margin-top:4px;
+}
+.text-link:hover{color:var(--brand-real-deep);text-decoration-color:var(--brand-real);}
+
+/* ── INFO CARD ── */
+.info-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:14px 16px;
+  margin-bottom:16px;width:100%;max-width:280px;
+  text-align:left;
+}
+.ios-screen .info-card{
+  backdrop-filter:blur(10px) saturate(130%);
+  background:rgba(255,255,255,0.88);
+  box-shadow:var(--shadow),0 1px 0 rgba(255,255,255,0.60) inset;
+}
+.info-card-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:0;
+}
+.info-card-icon{
+  width:32px;height:32px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+  background:rgba(244,167,185,0.10);
+}
+.info-card-text{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.35;}
+.info-card-sub{font-size:11px;font-weight:400;color:var(--text2);margin-top:2px;}
+
+/* ── PUSH DENIED CARD ── */
+.push-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:16px;
+  margin-bottom:16px;width:100%;max-width:280px;
+  text-align:left;
+}
+.ios-screen .push-card{
+  backdrop-filter:blur(10px) saturate(130%);
+  background:rgba(255,255,255,0.88);
+  box-shadow:var(--shadow),0 1px 0 rgba(255,255,255,0.60) inset;
+}
+.push-card-title{
+  font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px;
+}
+.push-item{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 0;
+}
+.push-item+.push-item{border-top:1px solid var(--border);}
+.push-dot{
+  width:6px;height:6px;border-radius:50%;flex-shrink:0;
+}
+.push-item-text{font-size:12px;font-weight:500;color:var(--text2);line-height:1.35;}
+
+/* ── INLINE TOGGLE ── */
+.inline-toggle{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 16px;border-radius:999px;
+  background:rgba(var(--plant-color-rgb),0.08);
+  border:1px solid rgba(var(--plant-color-rgb),0.12);
+  font-size:12px;font-weight:600;color:var(--plant-color);
+  cursor:pointer;transition:all 0.25s;
+  width:100%;max-width:260px;
+}
+.inline-toggle:hover{background:rgba(var(--plant-color-rgb),0.14);}
+
+/* ── SMALL TEXT ── */
+.small-note{
+  font-size:11px;font-weight:500;color:var(--text3);
+  line-height:1.5;margin-top:12px;max-width:240px;
+}
+
+/* ── PERSIST TEXT ── */
+.persist-note{
+  font-size:11.5px;font-weight:500;color:var(--text2);
+  line-height:1.5;margin-top:8px;max-width:250px;
+}
+.persist-note a{color:var(--brand-real);text-decoration:none;font-weight:600;}
+.persist-note a:hover{text-decoration:underline;}
+
+/* ── STATE VISIBILITY ── */
+.state-content{display:none;}
+.state-content.active{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;flex:1;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .stage{flex-direction:column;align-items:center;gap:40px;}
+}
+</style>
+</head>
+<body>
+<div class="studio">
+
+  <!-- STUDIO HEADER -->
+  <div class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; System States &middot; S1-S5</div>
+    <div class="brand-title">Estados de erro e sistema</div>
+    <div class="brand-sub">A planta cuida da usuaria ate nos bugs. Erros sao momentos de cuidado, nao frustracoes.</div>
+  </div>
+
+  <!-- STATE TOGGLES -->
+  <div class="controls">
+    <button class="state-btn active" data-state="s1">S1 Offline</button>
+    <button class="state-btn" data-state="s2">S2 Pagamento</button>
+    <button class="state-btn" data-state="s3">S3 Erro generico</button>
+    <button class="state-btn" data-state="s4">S4 Push negado</button>
+    <button class="state-btn" data-state="s5">S5 Atualizar</button>
+  </div>
+
+  <!-- STAGE: DUAL PHONES -->
+  <div class="stage">
+
+    <!-- ══ ANDROID ══ -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill android">Android</span>
+        <span class="desc">Material 3 Expressive &middot; Nunito</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen a-screen">
+          <div class="screen" id="android-screen">
+            <div class="statusbar"><span class="stime">9:41</span><span class="sicons">LTE &nbsp;&bull;&nbsp; 80%</span></div>
+            <div class="blob blob1"></div>
+            <div class="blob blob2"></div>
+            <div class="screen-body" id="android-body">
+              <!-- States injected by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ iOS ══ -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill ios">iOS</span>
+        <span class="desc">Liquid Glass &middot; SF Pro Rounded</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen ios-screen">
+          <div class="screen" id="ios-screen">
+            <div class="dyna"></div>
+            <div class="statusbar"><span class="stime">9:41</span><span class="sicons">5G &nbsp;&bull;&nbsp; 82%</span></div>
+            <div class="blob blob1"></div>
+            <div class="blob blob2"></div>
+            <div class="screen-body" id="ios-body">
+              <!-- States injected by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SVG PLANT TEMPLATES (hidden)              -->
+<!-- ══════════════════════════════════════════ -->
+<div style="display:none">
+
+  <!-- S1: Plant with umbrella -->
+  <svg id="svg-s1" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Umbrella -->
+    <path d="M50 12 C30 12 22 28 22 28 L78 28 C78 28 70 12 50 12Z" fill="#C4B0E0" opacity="0.7"/>
+    <line x1="50" y1="12" x2="50" y2="32" stroke="#C4B0E0" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M45 28 Q50 32 55 28" stroke="#C4B0E0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Rain drops -->
+    <circle cx="30" cy="20" r="1.5" fill="#C4B0E0" opacity="0.4">
+      <animate attributeName="cy" values="16;24;16" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="70" cy="22" r="1.2" fill="#C4B0E0" opacity="0.3">
+      <animate attributeName="cy" values="18;26;18" dur="1.7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.15;0.45;0.15" dur="1.7s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Plant body -->
+    <ellipse cx="50" cy="68" rx="20" ry="22" fill="#C4B0E0" opacity="0.15"/>
+    <path d="M44 54 Q42 42 38 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M56 54 Q58 42 62 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="38" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <ellipse cx="62" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <path d="M42 56 Q50 46 58 56" fill="#C4B0E0"/>
+    <!-- Stem -->
+    <line x1="50" y1="56" x2="50" y2="78" stroke="#A89BC4" stroke-width="3" stroke-linecap="round"/>
+    <!-- Face: calm -->
+    <circle cx="45" cy="53" r="2" fill="#3D2C2E"/>
+    <circle cx="55" cy="53" r="2" fill="#3D2C2E"/>
+    <path d="M46 58 Q50 61 54 58" stroke="#3D2C2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Highlight -->
+    <circle cx="44" cy="51.5" r="0.8" fill="white" opacity="0.7"/>
+    <circle cx="54" cy="51.5" r="0.8" fill="white" opacity="0.7"/>
+  </svg>
+
+  <!-- S2: Plant worried -->
+  <svg id="svg-s2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="50" cy="68" rx="20" ry="22" fill="#C4B0E0" opacity="0.15"/>
+    <path d="M44 54 Q42 42 38 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M56 54 Q58 42 62 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="38" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <ellipse cx="62" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <path d="M42 56 Q50 46 58 56" fill="#C4B0E0"/>
+    <line x1="50" y1="56" x2="50" y2="78" stroke="#A89BC4" stroke-width="3" stroke-linecap="round"/>
+    <!-- Face: worried -->
+    <circle cx="45" cy="53" r="2" fill="#3D2C2E"/>
+    <circle cx="55" cy="53" r="2" fill="#3D2C2E"/>
+    <!-- Worried eyebrows -->
+    <path d="M42 48 Q45 46 48 48" stroke="#3D2C2E" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M52 48 Q55 46 58 48" stroke="#3D2C2E" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <!-- Worried mouth -->
+    <path d="M46 59 Q50 57 54 59" stroke="#3D2C2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <circle cx="44" cy="51.5" r="0.8" fill="white" opacity="0.7"/>
+    <circle cx="54" cy="51.5" r="0.8" fill="white" opacity="0.7"/>
+    <!-- Sweat drop -->
+    <path d="M60 47 Q61 44 62 47 Q61 49 60 47Z" fill="#A8D5E8" opacity="0.6">
+      <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+  </svg>
+
+  <!-- S3: Plant confused with ? -->
+  <svg id="svg-s3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="50" cy="68" rx="20" ry="22" fill="#C4B0E0" opacity="0.15"/>
+    <path d="M44 54 Q42 42 38 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M56 54 Q58 42 62 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="38" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <ellipse cx="62" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <path d="M42 56 Q50 46 58 56" fill="#C4B0E0"/>
+    <line x1="50" y1="56" x2="50" y2="78" stroke="#A89BC4" stroke-width="3" stroke-linecap="round"/>
+    <!-- Face: confused / tilted -->
+    <circle cx="44" cy="53" r="2" fill="#3D2C2E"/>
+    <circle cx="54" cy="54" r="2" fill="#3D2C2E"/>
+    <!-- Confused mouth -->
+    <path d="M46 59 L54 58" stroke="#3D2C2E" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="43" cy="51.5" r="0.8" fill="white" opacity="0.7"/>
+    <circle cx="53" cy="52.5" r="0.8" fill="white" opacity="0.7"/>
+    <!-- Question mark floating -->
+    <g>
+      <text x="66" y="38" font-family="Nunito, sans-serif" font-weight="800" font-size="18" fill="#C4B0E0" opacity="0.8">?</text>
+      <animateTransform attributeName="transform" type="translate" values="0,0;0,-3;0,0" dur="2.5s" repeatCount="indefinite"/>
+    </g>
+  </svg>
+
+  <!-- S4: Plant gentle smile -->
+  <svg id="svg-s4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="50" cy="68" rx="20" ry="22" fill="#C4B0E0" opacity="0.15"/>
+    <path d="M44 54 Q42 42 38 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M56 54 Q58 42 62 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="38" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <ellipse cx="62" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <path d="M42 56 Q50 46 58 56" fill="#C4B0E0"/>
+    <line x1="50" y1="56" x2="50" y2="78" stroke="#A89BC4" stroke-width="3" stroke-linecap="round"/>
+    <!-- Face: gentle smile, accepting -->
+    <!-- Closed happy eyes -->
+    <path d="M42 52 Q45 50 48 52" stroke="#3D2C2E" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <path d="M52 52 Q55 50 58 52" stroke="#3D2C2E" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <!-- Gentle smile -->
+    <path d="M45 58 Q50 62 55 58" stroke="#3D2C2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Blush -->
+    <circle cx="40" cy="56" r="3" fill="#F4A7B9" opacity="0.25"/>
+    <circle cx="60" cy="56" r="3" fill="#F4A7B9" opacity="0.25"/>
+  </svg>
+
+  <!-- S5: Plant excited -->
+  <svg id="svg-s5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="50" cy="68" rx="20" ry="22" fill="#C4B0E0" opacity="0.15"/>
+    <path d="M44 54 Q42 42 38 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M56 54 Q58 42 62 36" stroke="#A89BC4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="38" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <ellipse cx="62" cy="34" rx="6" ry="5" fill="#C4B0E0"/>
+    <path d="M42 56 Q50 46 58 56" fill="#C4B0E0"/>
+    <line x1="50" y1="56" x2="50" y2="78" stroke="#A89BC4" stroke-width="3" stroke-linecap="round"/>
+    <!-- Face: excited! -->
+    <circle cx="45" cy="51" r="2.5" fill="#3D2C2E"/>
+    <circle cx="55" cy="51" r="2.5" fill="#3D2C2E"/>
+    <circle cx="44" cy="49.5" r="1" fill="white" opacity="0.8"/>
+    <circle cx="54" cy="49.5" r="1" fill="white" opacity="0.8"/>
+    <!-- Big happy mouth -->
+    <path d="M44 57 Q50 64 56 57" stroke="#3D2C2E" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <!-- Sparkles -->
+    <g opacity="0.6">
+      <path d="M28 40 L30 38 L32 40 L30 42Z" fill="#FFD07A">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.5s" repeatCount="indefinite"/>
+      </path>
+      <path d="M70 30 L72 28 L74 30 L72 32Z" fill="#F4A7B9">
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="1.8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M24 56 L25.5 54.5 L27 56 L25.5 57.5Z" fill="#A8D5A2">
+        <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2s" repeatCount="indefinite"/>
+      </path>
+      <path d="M74 48 L75.5 46.5 L77 48 L75.5 49.5Z" fill="#C4B0E0">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.3s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <!-- Blush -->
+    <circle cx="40" cy="55" r="3" fill="#F4A7B9" opacity="0.3"/>
+    <circle cx="60" cy="55" r="3" fill="#F4A7B9" opacity="0.3"/>
+  </svg>
+</div>
+
+<script>
+const STATES = {
+  s1: {
+    svg: 'svg-s1',
+    bodyClass: '',
+    html: `
+      <div class="plant-area anim-el" style="animation-delay:0.05s">__SVG__</div>
+      <div class="err-heading anim-el" style="animation-delay:0.15s">Estou aqui, so sem sinal.</div>
+      <div class="err-sub anim-el" style="animation-delay:0.25s">Tenta de novo em um instante.</div>
+      <button class="cta-primary anim-el" style="animation-delay:0.35s">Tentar de novo</button>
+      <div class="small-note anim-el" style="animation-delay:0.45s">Modo offline: Pause e historico continuam funcionando.</div>
+    `
+  },
+  s2: {
+    svg: 'svg-s2',
+    bodyClass: '',
+    html: `
+      <div class="plant-area anim-el" style="animation-delay:0.05s">__SVG__</div>
+      <div class="err-heading anim-el" style="animation-delay:0.15s">Algo deu errado com o pagamento.</div>
+      <div class="err-sub anim-el" style="animation-delay:0.22s">Nao se preocupa, vamos resolver.</div>
+      <div class="info-card anim-el" style="animation-delay:0.30s">
+        <div class="info-card-header">
+          <div class="info-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="9" rx="2" stroke="#E8889E" stroke-width="1.5"/><line x1="1" y1="7" x2="15" y2="7" stroke="#E8889E" stroke-width="1.5"/><circle cx="11.5" cy="10.5" r="1" fill="#E8889E"/></svg>
+          </div>
+          <div>
+            <div class="info-card-text">Erro ao processar pagamento</div>
+            <div class="info-card-sub">Verifique os dados e tente novamente</div>
+          </div>
+        </div>
+      </div>
+      <button class="cta-primary anim-el" style="animation-delay:0.38s">Tentar de novo</button>
+      <button class="cta-secondary anim-el" style="animation-delay:0.44s">Usar outro cartao</button>
+      <a class="text-link anim-el" style="animation-delay:0.50s">Precisa de ajuda?</a>
+    `
+  },
+  s3: {
+    svg: 'svg-s3',
+    bodyClass: '',
+    html: `
+      <div class="plant-area anim-el" style="animation-delay:0.05s">__SVG__</div>
+      <div class="err-heading anim-el" style="animation-delay:0.15s">Ops, algo nao funcionou.</div>
+      <div class="err-sub anim-el" style="animation-delay:0.22s">Minha culpa, nao sua.</div>
+      <button class="cta-primary anim-el" style="animation-delay:0.32s">Tentar de novo</button>
+      <div class="persist-note anim-el" style="animation-delay:0.42s">Se o problema continuar, conta pra gente: <a href="mailto:oi@brota.app">oi@brota.app</a></div>
+    `
+  },
+  s4: {
+    svg: 'svg-s4',
+    bodyClass: '',
+    html: `
+      <div class="plant-area anim-el" style="animation-delay:0.05s">__SVG__</div>
+      <div class="err-heading anim-el" style="animation-delay:0.15s">Tudo bem! Vou te esperar aqui dentro.</div>
+      <div class="err-sub anim-el" style="animation-delay:0.22s" style="margin-bottom:12px"></div>
+      <div class="push-card anim-el" style="animation-delay:0.28s">
+        <div class="push-card-title">O que voce perde:</div>
+        <div class="push-item">
+          <div class="push-dot" style="background:#C4B0E0"></div>
+          <span class="push-item-text">Mensagem da planta</span>
+        </div>
+        <div class="push-item">
+          <div class="push-dot" style="background:#FFD07A"></div>
+          <span class="push-item-text">Alertas de horario de pico</span>
+        </div>
+        <div class="push-item">
+          <div class="push-dot" style="background:#A8D5A2"></div>
+          <span class="push-item-text">Lembretes de cuidado</span>
+        </div>
+      </div>
+      <div class="inline-toggle anim-el" style="animation-delay:0.38s">Mudar de ideia &rarr; Abrir configuracoes</div>
+    `
+  },
+  s5: {
+    svg: 'svg-s5',
+    bodyClass: 's5-active',
+    html: `
+      <div class="plant-area anim-el" style="animation-delay:0.05s">__SVG__</div>
+      <div class="err-heading anim-el" style="animation-delay:0.15s">Tenho novidades!</div>
+      <div class="err-sub anim-el" style="animation-delay:0.22s">Mas preciso de uma atualizacao.</div>
+      <button class="cta-primary anim-el" style="animation-delay:0.32s">Atualizar agora</button>
+    `
+  }
+};
+
+const androidBody = document.getElementById('android-body');
+const iosBody = document.getElementById('ios-body');
+const androidScreen = document.getElementById('android-screen');
+const iosScreen = document.getElementById('ios-screen');
+const buttons = document.querySelectorAll('.state-btn');
+
+function getSvgHtml(id) {
+  const el = document.getElementById(id);
+  if (!el) return '';
+  const clone = el.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.setAttribute('width', '100');
+  clone.setAttribute('height', '100');
+  return clone.outerHTML;
+}
+
+function renderState(stateKey) {
+  const state = STATES[stateKey];
+  if (!state) return;
+
+  const svgHtml = getSvgHtml(state.svg);
+  const html = state.html.replace(/__SVG__/g, svgHtml);
+
+  // Clear body classes
+  androidScreen.className = 'screen';
+  iosScreen.className = 'screen';
+  if (state.bodyClass) {
+    androidScreen.classList.add(state.bodyClass);
+    iosScreen.classList.add(state.bodyClass);
+  }
+
+  // Reinit animation
+  androidBody.innerHTML = '';
+  iosBody.innerHTML = '';
+
+  requestAnimationFrame(() => {
+    androidBody.innerHTML = html;
+    iosBody.innerHTML = html;
+    // Re-trigger animations
+    androidBody.querySelectorAll('.anim-el').forEach(el => {
+      el.classList.add('reinit');
+      requestAnimationFrame(() => el.classList.remove('reinit'));
+    });
+    iosBody.querySelectorAll('.anim-el').forEach(el => {
+      el.classList.add('reinit');
+      requestAnimationFrame(() => el.classList.remove('reinit'));
+    });
+  });
+}
+
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderState(btn.dataset.state);
+  });
+});
+
+// Initial render
+renderState('s1');
+</script>
+</body>
+</html>

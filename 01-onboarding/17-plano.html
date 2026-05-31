@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota &mdash; Screen 17: Plano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #FFF8F2; color: #3D2C2E; font-family: -apple-system, sans-serif; min-height: 100vh; transition: background 0.6s ease, color 0.6s ease; }
+body.dark { background: #1A1418; }
+:root { --brand-real: #F4A7B9; }
+
+/* === STUDIO === */
+.studio { max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; }
+.studio-header { text-align: center; margin-bottom: 36px; }
+.brand-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C4B5B7; margin-bottom: 10px; }
+.brand-title { font-size: 22px; font-weight: 700; color: #3D2C2E; margin-bottom: 8px; }
+.brand-title em { font-style: normal; font-size: 13px; font-weight: 400; color: #C4B5B7; display: block; margin-top: 5px; }
+.brand-sub { font-size: 13px; color: #C4B5B7; line-height: 1.65; max-width: 700px; margin: 0 auto; }
+.controls { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+.theme-btn { padding: 7px 18px; border: 1px solid rgba(61,44,46,0.10); border-radius: 999px; background: transparent; color: #9B8A8C; font-size: 12px; cursor: pointer; transition: all 0.2s ease; }
+.theme-btn:hover { border-color: #C4B5B7; color: rgba(61,44,46,0.70); }
+.state-sep { width: 1px; height: 20px; background: #FFFFFF; }
+.state-btn { padding: 7px 18px; border: 1px solid rgba(61,44,46,0.10); border-radius: 999px; background: transparent; color: #C4B5B7; font-size: 12px; cursor: pointer; transition: all 0.25s ease; }
+.state-btn.active { background: #FFFFFF; color: rgba(61,44,46,0.70); border-color: #C4B5B7; }
+.stage { display: flex; gap: 40px; justify-content: center; align-items: flex-start; }
+.phone-wrapper { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.phone-label { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.10em; }
+.pill.android { background: linear-gradient(135deg, #34A853, #4285F4); color: white; }
+.pill.ios { background: linear-gradient(135deg, #1C1C1E, #48484A); color: white; }
+.phone-label .desc { font-size: 12px; opacity: 0.42; max-width: 280px; line-height: 1.4; }
+.phone { width: 360px; height: 720px; background: #1A1A1A; border: 1px solid rgba(61,44,46,0.08); border-radius: 44px; overflow: hidden; position: relative; }
+.phone-screen { width: 100%; height: 100%; position: relative; overflow: hidden; border-radius: 44px; }
+.status-bar { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; position: absolute; top: 0; left: 0; right: 0; z-index: 10; }
+.status-bar .time { font-size: 15px; font-weight: 600; color: rgba(61,44,46,0.70); }
+.status-bar .icons { display: flex; gap: 5px; align-items: center; color: rgba(61,44,46,0.70); font-size: 11px; }
+.dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 34px; background: #000; border-radius: 999px; z-index: 20; }
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.screen.android-screen { background: #FFF8F2; }
+.screen.ios-screen     { background: #FFF8F2; }
+
+/* === KEYFRAMES === */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:none; }
+}
+@keyframes titleSpring {
+  0%   { opacity:0; transform:translateY(12px) scale(0.96); }
+  58%  { opacity:1; transform:translateY(-2px) scale(1.01); }
+  100% { opacity:1; transform:none; }
+}
+@keyframes cardInM3E {
+  0%   { opacity:0; transform:scale(0.92) translateY(22px); }
+  54%  { opacity:1; transform:scale(1.02) translateY(-3px); }
+  100% { opacity:1; transform:scale(1) translateY(0); }
+}
+@keyframes cardInHIG {
+  from { opacity:0; transform:translateY(26px) scale(0.94); filter:blur(2px); }
+  to   { opacity:1; transform:none; filter:blur(0); }
+}
+@keyframes rowIn {
+  from { opacity:0; transform:translateY(9px) translateX(-4px); }
+  to   { opacity:1; transform:none; }
+}
+@keyframes rowInHIG {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:none; }
+}
+@keyframes promiseGlow {
+  0%   { text-shadow: 0 0 0 transparent; }
+  50%  { text-shadow: 0 0 18px rgba(var(--plant-color-rgb,155,143,212), 0.48); }
+  100% { text-shadow: none; }
+}
+@keyframes socialFade {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:none; }
+}
+@keyframes ctaIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:none;} }
+@keyframes softPulse { 0%,100%{transform:scale(1) rotate(-2deg);opacity:1;} 50%{transform:scale(1.08) rotate(2deg);opacity:1;} }
+@keyframes aBlob1 { 0%,100%{border-radius:56% 44% 50% 50%;transform:rotate(0) scale(1);} 33%{border-radius:44% 56% 62% 38%;transform:rotate(-6deg) scale(1.08);} 66%{border-radius:62% 38% 44% 56%;transform:rotate(3deg) scale(0.95);} }
+@keyframes aBlob2 { 0%,100%{border-radius:40% 60% 55% 45%;} 40%{border-radius:60% 40% 45% 55%;transform:rotate(7deg) scale(1.06);} 70%{border-radius:50% 50% 60% 40%;transform:rotate(-3deg) scale(0.96);} }
+@keyframes orbPulse { 0%,100%{opacity:0.16;transform:scale(1);} 50%{opacity:0.26;transform:scale(1.10);} }
+
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+}
+
+.anim-el { opacity: 0; }
+.reinit .anim-el { animation: none !important; opacity: 0 !important; }
+
+/* === ANDROID BG === */
+.a-blob-1 { position:absolute;z-index:0;pointer-events:none;width:600px;height:600px;background:var(--brand-real);opacity:0.18;filter:blur(96px);border-radius:56% 44% 50% 50%;top:-230px;left:-210px;animation:aBlob1 22s ease-in-out infinite; }
+.a-blob-2 { position:absolute;z-index:0;pointer-events:none;width:440px;height:440px;background:var(--plant-color,#9B8FD4);opacity:0.17;filter:blur(84px);border-radius:40% 60% 55% 45%;bottom:-90px;right:-150px;animation:aBlob2 28s ease-in-out infinite;transition:background 0.7s ease; }
+
+/* === ANDROID BODY === */
+.a-body {
+  position:relative; z-index:2; flex:1;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  padding:54px 20px 92px; gap:11px;
+}
+
+.a-conn {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 100,'wght' 380,'opsz' 13;
+  font-size:13px; color:var(--plant-color,#9B8FD4); text-align:center;
+  transition:color 0.7s ease;
+  animation:fadeUp 0.50s ease-out 0.10s forwards;
+}
+.a-title {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 110,'wght' 720,'opsz' 26;
+  font-size:26px; color:#3D2C2E; text-align:center;
+  letter-spacing:-0.025em; line-height:1.15;
+  animation:titleSpring 0.60s cubic-bezier(0.34,1.56,0.64,1) 0.24s forwards;
+}
+
+/* Card */
+.a-plan-card {
+  width:100%; border-radius:24px;
+  background:#FFFFFF;
+  border:1px solid rgba(61,44,46,0.10);
+  overflow:hidden;
+  animation:cardInM3E 0.64s cubic-bezier(0.34,1.56,0.64,1) 0.44s forwards;
+  transition:background 0.7s ease, border-color 0.7s ease;
+}
+
+/* Card companion header */
+.a-plan-header {
+  display:flex; align-items:center; gap:13px;
+  padding:15px 18px;
+  background:rgba(var(--plant-color-rgb,155,143,212), 0.13);
+  transition:background 0.7s ease;
+  animation:fadeUp 0.50s cubic-bezier(0.34,1.56,0.64,1) 0.72s forwards;
+}
+.a-plant-emoji-lg { font-size:0; width:44px; height:44px; border-radius:50%; flex-shrink:0; animation:softPulse 2.8s ease-in-out 1.4s infinite; background:rgba(var(--plant-color-rgb,155,143,212),0.2); display:flex; align-items:center; justify-content:center; box-shadow: 0 0 16px rgba(var(--plant-color-rgb,155,143,212),0.25); }
+.a-plant-emoji-lg svg { width:30px; height:30px; filter: drop-shadow(0 1px 3px rgba(var(--plant-color-rgb,155,143,212),0.3)); }
+.a-plant-info { display:flex; flex-direction:column; gap:4px; }
+.a-plant-name {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 110,'wght' 700,'opsz' 19;
+  font-size:19px; color:#3D2C2E; letter-spacing:-0.01em;
+}
+.a-plant-tags { display:flex; gap:5px; }
+.a-plant-tag {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 100,'wght' 480,'opsz' 11;
+  font-size:10px; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--plant-color,#9B8FD4); padding:3px 8px;
+  background:rgba(var(--plant-color-rgb,155,143,212), 0.18);
+  border-radius:999px; border:1px solid rgba(var(--plant-color-rgb,155,143,212), 0.28);
+  transition:color 0.7s ease, background 0.7s ease, border-color 0.7s ease;
+}
+
+/* Promise rows — setup + payoff */
+.a-plan-row {
+  display:flex; flex-direction:column; gap:3px;
+  padding:13px 18px;
+  border: 1px solid rgba(61,44,46,0.08);
+}
+.a-row-setup {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 100,'wght' 380,'opsz' 12;
+  font-size:12px; color:#9B8A8C; line-height:1.3;
+}
+.a-row-promise {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 108,'wght' 620,'opsz' 16;
+  font-size:16px; color:#3D2C2E; line-height:1.30; letter-spacing:-0.01em;
+}
+/* Outcome row — plant color for emotional punch */
+.promise-outcome {
+  color:var(--plant-color,#9B8FD4) !important;
+  transition:color 0.7s ease;
+}
+
+/* Row stagger */
+.a-row-1 { animation:rowIn 0.48s cubic-bezier(0.34,1.56,0.64,1) 0.96s forwards; }
+.a-row-2 { animation:rowIn 0.48s cubic-bezier(0.34,1.56,0.64,1) 1.10s forwards; }
+.a-row-3 { animation:rowIn 0.48s cubic-bezier(0.34,1.56,0.64,1) 1.24s forwards; }
+.a-row-4 { animation:rowIn 0.48s cubic-bezier(0.34,1.56,0.64,1) 1.38s forwards; }
+.a-row-5 { animation:rowIn 0.48s cubic-bezier(0.34,1.56,0.64,1) 1.52s forwards; }
+
+/* Social proof */
+.a-social {
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 100,'wght' 360,'opsz' 11;
+  font-size:12px; color:#C4B5B7; text-align:center;
+  line-height:1.55; max-width:262px; font-style:italic;
+  animation:socialFade 0.50s ease-out 1.52s forwards;
+}
+
+/* CTA */
+.a-cta {
+  position:absolute; bottom:26px; left:16px; right:16px;
+  height:52px; border:none; border-radius:28px;
+  background:rgba(var(--plant-color-rgb,155,143,212),0.82);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 4px 28px rgba(var(--plant-color-rgb,155,143,212),0.38);
+  color:white; cursor:pointer;
+  font-family:'Nunito',sans-serif;
+  font-variation-settings:'wdth' 108,'wght' 620,'opsz' 17;
+  font-size:17px; z-index:5;
+  transition:background 0.7s ease, box-shadow 0.7s ease, border-radius 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  animation:ctaIn 0.50s cubic-bezier(0.34,1.56,0.64,1) 1.70s forwards;
+}
+.a-cta:active { border-radius:18px; transform:scale(0.97); }
+
+/* === iOS BG === */
+.ios-orb { position:absolute; border-radius:50%; filter:blur(76px); pointer-events:none; z-index:0; }
+.ios-orb.a { width:500px;height:500px;background:var(--brand-real);opacity:0.22;top:-170px;left:-170px;animation:orbPulse 5.8s ease-in-out infinite; }
+.ios-orb.b { width:340px;height:340px;background:var(--plant-color,#9B8FD4);opacity:0.17;bottom:-70px;right:-90px;animation:orbPulse 7.2s ease-in-out 1.8s infinite;transition:background 0.7s ease; }
+
+/* === iOS BODY === */
+.ios-body {
+  position:relative; z-index:2; flex:1;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  padding:54px 20px 92px; gap:11px;
+}
+
+.ios-conn {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:13px; font-weight:400; letter-spacing:-0.08px;
+  color:var(--plant-color,#9B8FD4); text-align:center; line-height:1.45;
+  transition:color 0.7s ease;
+  animation:fadeUp 0.46s cubic-bezier(0.32,0.72,0,1) 0.10s forwards;
+}
+.ios-title {
+  font-family:-apple-system,'SF Pro Display',system-ui,sans-serif;
+  font-size:26px; font-weight:700; letter-spacing:-0.5px;
+  color:#3D2C2E; text-align:center; line-height:1.15;
+  animation:fadeUp 0.46s cubic-bezier(0.32,0.72,0,1) 0.24s forwards;
+}
+
+/* iOS Card */
+.ios-plan-card {
+  width:100%; border-radius:22px;
+  background:#FFFFFF;
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+  border: 1px solid rgba(61,44,46,0.10);
+  overflow:hidden;
+  animation:cardInHIG 0.58s cubic-bezier(0.32,0.72,0,1) 0.44s forwards;
+}
+
+/* iOS Card header */
+.ios-plan-header {
+  display:flex; align-items:center; gap:13px;
+  padding:15px 18px;
+  background:rgba(var(--plant-color-rgb,155,143,212), 0.13);
+  transition:background 0.7s ease;
+  animation:fadeUp 0.46s cubic-bezier(0.32,0.72,0,1) 0.72s forwards;
+}
+.ios-plant-emoji-lg { font-size:0; width:44px; height:44px; border-radius:50%; flex-shrink:0; animation:softPulse 3.2s ease-in-out 1.4s infinite; background:rgba(var(--plant-color-rgb,155,143,212),0.2); display:flex; align-items:center; justify-content:center; box-shadow: 0 0 16px rgba(var(--plant-color-rgb,155,143,212),0.25); transition:background 0.7s ease, box-shadow 0.7s ease; }
+.ios-plant-emoji-lg svg { width:30px; height:30px; filter: drop-shadow(0 1px 3px rgba(var(--plant-color-rgb,155,143,212),0.3)); }
+.ios-plant-info { display:flex; flex-direction:column; gap:4px; }
+.ios-plant-name {
+  font-family:-apple-system,'SF Pro Display',system-ui,sans-serif;
+  font-size:19px; font-weight:700; letter-spacing:-0.38px; color:#3D2C2E;
+}
+.ios-plant-tags { display:flex; gap:5px; }
+.ios-plant-tag {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--plant-color,#9B8FD4); padding:3px 8px;
+  background:rgba(var(--plant-color-rgb,155,143,212), 0.15);
+  border-radius:999px; border:1px solid rgba(var(--plant-color-rgb,155,143,212), 0.26);
+  transition:color 0.7s ease, background 0.7s ease, border-color 0.7s ease;
+}
+
+/* iOS Promise rows */
+.ios-plan-row {
+  display:flex; flex-direction:column; gap:3px;
+  padding:13px 18px;
+  border-top:1px solid rgba(61,44,46,0.08);
+}
+.ios-row-setup {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:12px; font-weight:400; letter-spacing:-0.10px;
+  color:#9B8A8C; line-height:1.3;
+}
+.ios-row-promise {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:16px; font-weight:600; letter-spacing:-0.28px; line-height:1.30;
+  color:#3D2C2E;
+}
+
+/* iOS Row stagger */
+.ios-row-1 { animation:rowInHIG 0.44s cubic-bezier(0.32,0.72,0,1) 0.96s forwards; }
+.ios-row-2 { animation:rowInHIG 0.44s cubic-bezier(0.32,0.72,0,1) 1.10s forwards; }
+.ios-row-3 { animation:rowInHIG 0.44s cubic-bezier(0.32,0.72,0,1) 1.24s forwards; }
+.ios-row-4 { animation:rowInHIG 0.44s cubic-bezier(0.32,0.72,0,1) 1.38s forwards; }
+.ios-row-5 { animation:rowInHIG 0.44s cubic-bezier(0.32,0.72,0,1) 1.52s forwards; }
+
+/* iOS Social proof */
+.ios-social {
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:12px; font-weight:400; font-style:italic; letter-spacing:-0.10px;
+  color:#C4B5B7; text-align:center; line-height:1.55; max-width:262px;
+  animation:socialFade 0.46s cubic-bezier(0.32,0.72,0,1) 1.52s forwards;
+}
+
+/* iOS CTA */
+.ios-cta {
+  position:absolute; bottom:26px; left:16px; right:16px;
+  height:52px; border:none; border-radius:999px;
+  background:rgba(155,143,212,0.82);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 4px 28px rgba(155,143,212,0.38);
+  color:white; cursor:pointer;
+  font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;
+  font-size:17px; font-weight:600; letter-spacing:-0.25px; z-index:5;
+  transition:background 0.7s ease, box-shadow 0.7s ease;
+  animation:ctaIn 0.46s cubic-bezier(0.32,0.72,0,1) 1.70s forwards;
+}
+.ios-cta:active { transform:scale(0.96); opacity:0.86; }
+
+/* === ANNOTATIONS === */
+.annotations { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:40px; max-width:740px; margin-left:auto; margin-right:auto; }
+.note { background:rgba(61,44,46,0.03); border:1px solid rgba(61,44,46,0.08); border-radius:14px; padding:20px; }
+.note.android { border-top:3px solid #34A853; }
+.note.ios { border-top:3px solid #636366; }
+.note h4 { font-size:13px; font-weight:600; margin-bottom:10px; color:#9B8A8C; }
+.note ul { list-style:disc; padding-left:18px; }
+.note li { font-size:12px; color:#C4B5B7; line-height:1.68; margin-bottom:7px; }
+.note code { background:rgba(61,44,46,0.04); padding:1px 5px; border-radius:4px; font-size:11px; }
+</style>
+</head>
+
+<body>
+<div class="studio">
+
+  <div class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; Onboarding &middot; Screen 17 de 18 &middot; O17-Plano</div>
+    <h1 class="brand-title">O que vai mudar pra voc&ecirc;. <em>3 promessas em linguagem humana &middot; setup + payoff por linha &middot; dados dela como evidência &middot; social proof pré-paywall</em></h1>
+    <p class="brand-sub">
+      Cada linha usa os dados que ela deu — rede, hor&aacute;rio, objetivo — e traduz em
+      experi&ecirc;ncia concreta: o que vai acontecer, n&atilde;o o nome da feature.
+      &ldquo;Mirror ativo para&rdquo; vira &ldquo;Sua Lavanda aparece quando voc&ecirc; abrir o Instagram &agrave; noite.&rdquo;
+    </p>
+  </div>
+
+  <div class="controls">
+    <button class="theme-btn" onclick="document.body.classList.toggle('dark')">&#9790; Tema</button>
+    <div class="state-sep"></div>
+    <button class="state-btn active" data-s="s1" onclick="setState('s1')">Lavanda &mdash; Ana</button>
+    <button class="state-btn"        data-s="s2" onclick="setState('s2')">Girassol &mdash; Bia</button>
+    <button class="state-btn"        data-s="s3" onclick="setState('s3')">Cacto &mdash; Carol</button>
+    <button class="state-btn"        data-s="s4" onclick="setState('s4')">Cerejeira &mdash; Dani</button>
+    <button class="state-btn"        data-s="s5" onclick="setState('s5')">Lotus &mdash; Eva</button>
+    <div class="state-sep"></div>
+    <button class="theme-btn" onclick="restartAnims()">&#8635; Replay</button>
+  </div>
+
+  <div class="stage">
+
+    <!-- ANDROID -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill android">Android &middot; M3 Expressive</span>
+        <span class="desc">Spring overshoot. Setup 12px muted + payoff 16px bold. Outcome em plant-color.</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span class="time">9:41</span>
+            <span class="icons">&#9650; &#9723;</span>
+          </div>
+          <div class="screen android-screen" id="a-screen"
+               style="--plant-color:#9B8FD4;--plant-color-rgb:155,143,212;--plant-glow:rgba(155,143,212,0.38);">
+            <div class="a-blob-1"></div>
+            <div class="a-blob-2"></div>
+            <div class="a-body" id="a-body">
+
+              <p class="a-conn anim-el" id="a-conn">Eu ouvi voc&ecirc;, Ana.</p>
+
+              <p class="a-title anim-el">O que vai mudar.</p>
+
+              <div class="a-plan-card anim-el">
+
+                <!-- Companion header -->
+                <div class="a-plan-header anim-el" id="a-plan-header">
+                  <div class="a-plant-emoji-lg" id="a-emoji"></div>
+                  <div class="a-plant-info">
+                    <div class="a-plant-name" id="a-name">Lavanda</div>
+                    <div class="a-plant-tags">
+                      <span class="a-plant-tag" id="a-tag1">Sens&iacute;vel</span>
+                      <span class="a-plant-tag" id="a-tag2">Reflexiva</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Promise 1: Protection (setup = trigger networks + time) -->
+                <div class="a-plan-row anim-el a-row-1">
+                  <span class="a-row-setup" id="a-setup1">Quando voc&ecirc; abrir o Instagram &agrave; noite</span>
+                  <span class="a-row-promise" id="a-promise1">Sua Lavanda aparece antes.</span>
+                </div>
+
+                <!-- Promise 2: Cycle Shield -->
+                <div class="a-plan-row anim-el a-row-2">
+                  <span class="a-row-setup">Nos seus dias mais sens&iacute;veis</span>
+                  <span class="a-row-promise">Estou mais perto quando voc&ecirc; mais precisa.</span>
+                </div>
+
+                <!-- Promise 3: Method (fixed — Feed Cleanse without the jargon) -->
+                <div class="a-plan-row anim-el a-row-3">
+                  <span class="a-row-setup">Nos pr&oacute;ximos 7 dias</span>
+                  <span class="a-row-promise">Limpamos juntas o que te machuca no feed.</span>
+                </div>
+
+                <!-- Promise 4: Outcome -->
+                <div class="a-plan-row anim-el a-row-4">
+                  <span class="a-row-setup" id="a-setup3">Em 2 semanas</span>
+                  <span class="a-row-promise promise-outcome" id="a-promise3">Voc&ecirc; vai se comparar menos.</span>
+                </div>
+
+                <!-- Promise 5: Community -->
+                <div class="a-plan-row anim-el a-row-5">
+                  <span class="a-row-setup">No Jardim</span>
+                  <span class="a-row-promise">Voc&ecirc; n&atilde;o vai estar sozinha.</span>
+                </div>
+
+              </div>
+
+              <p class="a-social anim-el">Mulheres com perfil similar relatam melhora em 2 semanas.</p>
+
+            </div>
+            <button class="a-cta anim-el" id="a-cta">Come&ccedil;ar meu plano &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iOS -->
+    <div class="phone-wrapper">
+      <div class="phone-label">
+        <span class="pill ios">iOS 26+ &middot; Liquid Glass / HIG</span>
+        <span class="desc">Blur-to-focus sem overshoot. Setup SF Pro Text 12pt + payoff semibold 16pt.</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
+          <div class="screen ios-screen" id="ios-screen"
+               style="--plant-color:#9B8FD4;--plant-color-rgb:155,143,212;--plant-glow:rgba(155,143,212,0.38);">
+            <div class="ios-orb a"></div>
+            <div class="ios-orb b"></div>
+            <div class="ios-body" id="ios-body">
+
+              <p class="ios-conn anim-el" id="ios-conn">Eu ouvi voc&ecirc;, Ana.</p>
+
+              <p class="ios-title anim-el">O que vai mudar.</p>
+
+              <div class="ios-plan-card anim-el">
+
+                <!-- Companion header -->
+                <div class="ios-plan-header anim-el" id="ios-plan-header">
+                  <div class="ios-plant-emoji-lg" id="ios-emoji"></div>
+                  <div class="ios-plant-info">
+                    <div class="ios-plant-name" id="ios-name">Lavanda</div>
+                    <div class="ios-plant-tags">
+                      <span class="ios-plant-tag" id="ios-tag1">Sens&iacute;vel</span>
+                      <span class="ios-plant-tag" id="ios-tag2">Reflexiva</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Promise 1 -->
+                <div class="ios-plan-row anim-el ios-row-1">
+                  <span class="ios-row-setup" id="ios-setup1">Quando voc&ecirc; abrir o Instagram &agrave; noite</span>
+                  <span class="ios-row-promise" id="ios-promise1">Sua Lavanda aparece antes.</span>
+                </div>
+
+                <!-- Promise 2: Cycle Shield -->
+                <div class="ios-plan-row anim-el ios-row-2">
+                  <span class="ios-row-setup">Nos seus dias mais sens&iacute;veis</span>
+                  <span class="ios-row-promise">Estou mais perto quando voc&ecirc; mais precisa.</span>
+                </div>
+
+                <!-- Promise 3 -->
+                <div class="ios-plan-row anim-el ios-row-3">
+                  <span class="ios-row-setup">Nos pr&oacute;ximos 7 dias</span>
+                  <span class="ios-row-promise">Limpamos juntas o que te machuca no feed.</span>
+                </div>
+
+                <!-- Promise 4 -->
+                <div class="ios-plan-row anim-el ios-row-4">
+                  <span class="ios-row-setup" id="ios-setup3">Em 2 semanas</span>
+                  <span class="ios-row-promise promise-outcome" id="ios-promise3">Voc&ecirc; vai se comparar menos.</span>
+                </div>
+
+                <!-- Promise 5: Community -->
+                <div class="ios-plan-row anim-el ios-row-5">
+                  <span class="ios-row-setup">No Jardim</span>
+                  <span class="ios-row-promise">Voc&ecirc; n&atilde;o vai estar sozinha.</span>
+                </div>
+
+              </div>
+
+              <p class="ios-social anim-el">Mulheres com perfil similar relatam melhora em 2 semanas.</p>
+
+            </div>
+            <button class="ios-cta anim-el" id="ios-cta">Come&ccedil;ar meu plano &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stage -->
+
+  <section class="annotations">
+    <div class="note android">
+      <h4>Android &middot; M3 Expressive</h4>
+      <ul>
+        <li><strong>Linguagem humana, n&atilde;o feature-labels.</strong> "Mirror ativo para" vira "Quando voc&ecirc; abrir o Instagram &agrave; noite / Sua Lavanda aparece antes." — a usuária entende o que vai acontecer, n&atilde;o o nome técnico. "Feed Cleanse" vira "Limpamos juntas o que te machuca no feed." Referencia <strong>Headspace</strong> (plan screen usa outcomes, n&atilde;o feature names).</li>
+        <li><strong>Setup + payoff por linha:</strong> 12px muted (o contexto dela) → 16px bold (o que acontece). Cria ritmo de leitura: primeiro reconhecimento ("sim, &eacute; isso que eu faço") depois promessa. Spring <code>(0.34,1.56,0.64,1)</code> com overshoot nas 3 linhas, delay escalonado 180ms. Referencia <strong>Finch</strong> (companion promises in plain language).</li>
+        <li><strong>Outcome em plant-color</strong>: "Voc&ecirc; vai se comparar menos." aparece na cor da planta dela — cria hierarquia emocional, a linha mais importante visualmente é a promessa final. Referencia <strong>Gentler Streak</strong> (2024 ADA — destaque da promessa em cor de marca).</li>
+        <li><strong>Social proof antes do CTA:</strong> "Mulheres com perfil similar relatam melhora em 2 semanas." — do roadmap, chega em 1.52s logo ap&oacute;s a terceira promessa. Converte ceticismo antes do "Começar meu plano →". Referencia <strong>Quittr</strong> (social proof at paywall entry).</li>
+      </ul>
+    </div>
+    <div class="note ios">
+      <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
+      <ul>
+        <li>Card: <code>backdrop-filter: blur(24px) saturate(160%)</code> + <code>rgba(255,255,255,0.05)</code> — regularMaterial can&ocirc;nico. <strong>N&atilde;o usa</strong> <code>.glassEffect()</code> no card (conte&uacute;do, n&atilde;o controle). Header tinted sem blur adicional. <code>cardInHIG</code>: blur-to-focus sem overshoot — signature HIG. Referencia <strong>Crouton</strong> (2024 ADA).</li>
+        <li>Setup: SF Pro Text 12pt wght:400 — Footnote style HIG. Payoff: SF Pro Text 16pt wght:600 — Body Emphasized. Tracking negativo (-0.28px) em body size is canonical HIG. Sem overshoot nas linhas — <code>(0.32,0.72,0,1)</code> padr&atilde;o. Referencia <strong>Things 3</strong>.</li>
+        <li>iOS n&atilde;o usa <code>font-variation-settings</code> (SF &eacute; system font com optical sizing autom&aacute;tico). Outcome em plant-color via CSS var — mesma hierarquia visual do Android, tipografia nativa. Referencia <strong>Day One</strong> (2024 ADA — plant-color accent para momento emocional).</li>
+        <li>CTA glass: <code>rgba(plant-color, 0.82)</code> + specular inset + box-shadow glow — padr&atilde;o aprovado em O1 e mantido. Atualizado por arqu&eacute;tipo via JS. Referencia <strong>Apple Music</strong> (iOS 26 Liquid Glass CTA).</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<script src="../shared/plant-svgs.js"></script>
+<script>
+var plantSVGs = window.plantSVGs;  /* fonte unica: ../shared/plant-svgs.js */
+
+var states = {
+  s1: {
+    name: 'Ana', plant: 'Lavanda',
+    color: '#9B8FD4', colorRgb: '155,143,212',
+    glow: 'rgba(155,143,212,0.38)', ctaRgba: 'rgba(155,143,212,0.82)',
+    tag1: 'Sens\u00edvel', tag2: 'Reflexiva',
+    setup1:   'Quando voc\u00ea abrir o Instagram \u00e0 noite',
+    promise1: 'Sua Lavanda aparece antes.',
+    promise3: 'Voc\u00ea vai se comparar menos.'
+  },
+  s2: {
+    name: 'Bia', plant: 'Girassol',
+    color: '#E8A830', colorRgb: '232,168,48',
+    glow: 'rgba(232,168,48,0.38)', ctaRgba: 'rgba(232,168,48,0.82)',
+    tag1: 'Energ\u00edca', tag2: 'Visual',
+    setup1:   'Quando voc\u00ea abrir o TikTok de manh\u00e3',
+    promise1: 'Seu Girassol aparece antes.',
+    promise3: 'Voc\u00ea vai se sentir melhor sobre seu corpo.'
+  },
+  s3: {
+    name: 'Carol', plant: 'Cacto',
+    color: '#6BAF7A', colorRgb: '107,175,122',
+    glow: 'rgba(107,175,122,0.38)', ctaRgba: 'rgba(107,175,122,0.82)',
+    tag1: 'Direta', tag2: 'Independente',
+    setup1:   'Quando voc\u00ea abrir o Instagram nos intervalos',
+    promise1: 'Seu Cacto aparece antes.',
+    promise3: 'Voc\u00ea vai usar as redes com mais inten\u00e7\u00e3o.'
+  },
+  s4: {
+    name: 'Dani', plant: 'Cerejeira',
+    color: '#E88DA8', colorRgb: '232,141,168',
+    glow: 'rgba(232,141,168,0.38)', ctaRgba: 'rgba(232,141,168,0.82)',
+    tag1: 'Afetuosa', tag2: 'Nostalgica',
+    setup1:   'Quando voc\u00ea abrir o Pinterest antes de dormir',
+    promise1: 'Sua Cerejeira aparece antes.',
+    promise3: 'Voc\u00ea vai se aceitar mais a cada dia.'
+  },
+  s5: {
+    name: 'Eva', plant: 'Lotus',
+    color: '#B89CD8', colorRgb: '184,156,216',
+    glow: 'rgba(184,156,216,0.38)', ctaRgba: 'rgba(184,156,216,0.82)',
+    tag1: 'Calma', tag2: 'Introspectiva',
+    setup1:   'Quando voc\u00ea abrir o TikTok depois do almo\u00e7o',
+    promise1: 'Sua Lotus aparece antes.',
+    promise3: 'Voc\u00ea vai descansar de verdade.'
+  }
+};
+
+var currentState = 's1';
+
+function setText(id, val) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function setSVG(id, plantName, color) {
+  var el = document.getElementById(id);
+  if (!el || !plantSVGs[plantName]) return;
+  el.innerHTML = plantSVGs[plantName].replace(/__CLR__/g, color);
+}
+
+function setState(s) {
+  currentState = s;
+  document.querySelectorAll('.state-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.s === s);
+  });
+
+  var st = states[s];
+
+  ['a-screen', 'ios-screen'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.style.setProperty('--plant-color', st.color);
+    el.style.setProperty('--plant-color-rgb', st.colorRgb);
+    el.style.setProperty('--plant-glow', st.glow);
+  });
+
+  // Set SVG plants on both sides
+  setSVG('a-emoji', st.plant, st.color);
+  setSVG('ios-emoji', st.plant, st.color);
+
+  ['a', 'ios'].forEach(function(p) {
+    setText(p + '-conn',     'Eu ouvi voc\u00ea, ' + st.name + '.');
+    setText(p + '-name',     st.plant);
+    setText(p + '-tag1',     st.tag1);
+    setText(p + '-tag2',     st.tag2);
+    setText(p + '-setup1',   st.setup1);
+    setText(p + '-promise1', st.promise1);
+    setText(p + '-promise3', st.promise3);
+
+    var cta = document.getElementById(p + '-cta');
+    if (cta) {
+      cta.style.background = st.ctaRgba;
+      cta.style.boxShadow  = 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 4px 28px ' + st.glow;
+    }
+  });
+
+  restartAnims();
+}
+
+function restartAnims() {
+  ['a-body', 'ios-body'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('reinit');
+    el.offsetWidth;
+    setTimeout(function() { el.classList.remove('reinit'); }, 30);
+  });
+}
+
+setState('s1');
+</script>
+</body>
+</html>
