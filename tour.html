@@ -196,7 +196,36 @@ function fitFrame(doc){
   const scale=Math.min((vw-20)/cw,(vh-20)/ch,1.15);
   stage.style.transform='scale('+scale+')';
 }
-function navTo(idx){if(idx<0||idx>=SCREENS.length)return;currentIdx=idx;const s=SCREENS[idx];const fr=document.getElementById('screen-frame');fr.style.opacity='0';fr.src=s.file;fr.onload=()=>{fr.style.opacity='1';styleFrame();};document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));document.getElementById('prev-btn').disabled=idx===0;document.getElementById('next-btn').disabled=idx===SCREENS.length-1;document.getElementById('counter-cur').textContent=idx+1;document.getElementById('counter-flow').textContent=s.flow;const mp=document.getElementById('mb-prev'),mn=document.getElementById('mb-next'),mc=document.getElementById('mb-cur'),mf=document.getElementById('mb-flow');if(mp)mp.disabled=idx===0;if(mn)mn.disabled=idx===SCREENS.length-1;if(mc)mc.textContent=idx+1;if(mf)mf.textContent=s.flow;history.replaceState(null,'','#'+s.num);const at=document.querySelector('.tab.active');if(at)at.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
+// Screens like Abertura (02) initialise to their finished state and only animate
+// when the studio "Animar" button is pressed. In the mobile tour that button is
+// hidden, so trigger the screen's own playSequence() to replay it from the start.
+let seqStopTimer;
+function replaySequence(){
+  clearTimeout(seqStopTimer);
+  if(!isMobile())return;
+  const fr=document.getElementById('screen-frame');
+  let w,d;
+  try{w=fr.contentWindow;d=fr.contentDocument;}catch(e){return;}
+  if(!w||typeof w.playSequence!=='function')return;
+  // The screen loads in its finished state; snap the beats to blank with
+  // transitions off (no fade-out ghost), then let playSequence animate them in.
+  if(d&&d.head&&d.body){
+    const kill=d.createElement('style');kill.textContent='.beat{transition:none!important;}';
+    d.head.appendChild(kill);
+    void d.body.offsetWidth;
+    w.playSequence();
+    void d.body.offsetWidth;
+    d.head.removeChild(kill);
+  }else{
+    w.playSequence();
+  }
+  // Let the beats appear, then rest on the finished screen — cancel the
+  // built-in "exit + CONTINUANDO" overlay that simulates auto-advance.
+  if(typeof w.clearTimeouts==='function'){
+    seqStopTimer=setTimeout(()=>{try{if(document.getElementById('screen-frame').contentWindow===w)w.clearTimeouts();}catch(e){}},4200);
+  }
+}
+function navTo(idx){if(idx<0||idx>=SCREENS.length)return;currentIdx=idx;const s=SCREENS[idx];const fr=document.getElementById('screen-frame');fr.style.opacity='0';fr.src=s.file;fr.onload=()=>{fr.style.opacity='1';styleFrame();replaySequence();};document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));document.getElementById('prev-btn').disabled=idx===0;document.getElementById('next-btn').disabled=idx===SCREENS.length-1;document.getElementById('counter-cur').textContent=idx+1;document.getElementById('counter-flow').textContent=s.flow;const mp=document.getElementById('mb-prev'),mn=document.getElementById('mb-next'),mc=document.getElementById('mb-cur'),mf=document.getElementById('mb-flow');if(mp)mp.disabled=idx===0;if(mn)mn.disabled=idx===SCREENS.length-1;if(mc)mc.textContent=idx+1;if(mf)mf.textContent=s.flow;history.replaceState(null,'','#'+s.num);const at=document.querySelector('.tab.active');if(at)at.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
 window.addEventListener('resize',()=>{if(!isMobile())return;const fr=document.getElementById('screen-frame');try{const d=fr.contentDocument;if(d)fitFrame(d);}catch(e){}});
 const onBreakpoint=()=>navTo(currentIdx);
 if(mqMobile.addEventListener)mqMobile.addEventListener('change',onBreakpoint);else if(mqMobile.addListener)mqMobile.addListener(onBreakpoint);
