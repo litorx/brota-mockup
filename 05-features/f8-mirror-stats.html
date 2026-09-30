@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — F8: Mirror Stats</title>
+<title>Brota &middot; F8: Mirror Stats</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -307,10 +307,10 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .fab-pause{
   position:absolute;bottom:80px;right:16px;z-index:15;
   width:48px;height:48px;border-radius:50%;
-  background:var(--brand-real);color:white;
+  background:var(--brand-warning);color:#8A6A22;
   display:flex;align-items:center;justify-content:center;
   font-size:20px;cursor:pointer;
-  box-shadow:0 4px 20px rgba(244,167,185,0.30);
+  box-shadow:0 4px 20px rgba(255,208,122,0.38);
   transition:transform 0.2s,box-shadow 0.2s;
 }
 .fab-pause:hover{transform:scale(1.08);}
@@ -318,20 +318,103 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .ios-screen .fab-pause{
   bottom:92px;right:18px;
   backdrop-filter:blur(20px) saturate(180%);
-  background:rgba(232,136,158,0.88);
+  background:rgba(255,208,122,0.92);
   border:1px solid rgba(255,255,255,0.30);
-  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(244,167,185,0.28);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
+
+/* Seletor de apps do sistema — mesmo componente da P2-MirrorSetup.
+   Cromo do SO de proposito: quem fala aqui e o sistema, nao a Brota. */
+/* SYSTEM PICKER SHEET — deliberately OS chrome (grey/mono, native buttons), never Brota's pastel branding —
+   signals to the reviewer "this part is the phone talking, not the app." */
+.system-sheet{position:absolute;inset:0;z-index:60;display:none;}
+.system-sheet.visible{display:block;}
+.ss-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.34);opacity:0;transition:opacity 0.3s;}
+.system-sheet.visible .ss-backdrop{opacity:1;}
+.ss-panel{position:absolute;left:0;right:0;bottom:0;max-height:80%;background:#F2F2F7;border-radius:22px 22px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.40s cubic-bezier(0.32,0.72,0,1);box-shadow:0 -10px 34px rgba(0,0,0,0.20);}
+.a-screen .ss-panel{transition-timing-function:cubic-bezier(0.34,1.56,0.64,1);}
+.system-sheet.visible .ss-panel{transform:translateY(0);}
+.ss-grabber{width:36px;height:4px;border-radius:999px;background:rgba(120,120,128,0.36);margin:8px auto 2px;flex-shrink:0;}
+.ss-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 10px;flex-shrink:0;}
+.ss-cancel,.ss-done{font-size:15px;cursor:pointer;padding:4px;}
+.ss-cancel{color:#8A8A8E;font-weight:400;}
+.ss-done{color:#0A84FF;font-weight:600;}
+.a-screen .ss-done{color:#1A73E8;text-transform:uppercase;font-size:13px;letter-spacing:0.02em;}
+.a-screen .ss-cancel{text-transform:uppercase;font-size:13px;letter-spacing:0.02em;}
+.ss-title{font-size:15px;font-weight:600;color:#1C1C1E;}
+.ss-search{display:flex;align-items:center;gap:6px;margin:2px 14px 10px;padding:8px 10px;background:rgba(120,120,128,0.14);border-radius:10px;flex-shrink:0;}
+.ss-search svg{width:14px;height:14px;opacity:0.5;flex-shrink:0;}
+.ss-search span{font-size:14px;color:#8A8A8E;}
+.ss-section-label{font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#8A8A8E;padding:6px 16px 6px;flex-shrink:0;}
+.ss-list{overflow-y:auto;background:#FFFFFF;margin:0 14px 16px;border-radius:12px;-webkit-overflow-scrolling:touch;}
+.ss-row{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;}
+.ss-row+.ss-row{border-top:1px solid rgba(61,44,46,0.08);}
+.ss-icon{width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0;}
+.ss-icon svg{width:100%;height:100%;display:block;}
+.ss-name{flex:1;font-size:14.5px;font-weight:500;color:#1C1C1E;}
+.ss-check{width:22px;height:22px;border:1.5px solid rgba(120,120,128,0.35);flex-shrink:0;position:relative;transition:all 0.2s;border-radius:50%;}
+.a-screen .ss-check{border-radius:5px;}
+.ss-row.checked .ss-check{background:#0A84FF;border-color:#0A84FF;}
+.a-screen .ss-row.checked .ss-check{background:#1A73E8;border-color:#1A73E8;}
+.ss-check::after{content:'';position:absolute;left:6px;top:2px;width:5px;height:10px;border-right:2px solid white;border-bottom:2px solid white;transform:rotate(40deg);opacity:0;transition:opacity 0.15s;}
+.ss-row.checked .ss-check::after{opacity:1;}
+.ss-permission-note{font-size:11px;color:#8A8A8E;line-height:1.4;padding:0 20px 14px;text-align:center;flex-shrink:0;}
+
+/* WORK MODE */
+.workmode{display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(var(--plant-color-rgb),0.05);border:1px solid rgba(var(--plant-color-rgb),0.10);border-radius:14px;margin-bottom:18px;}
+.workmode .wm-icon{width:28px;height:28px;border-radius:8px;background:rgba(var(--plant-color-rgb),0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.workmode .wm-icon svg{width:16px;height:16px;}
+.workmode .wm-body{flex:1;}
+.workmode .wm-title{font-size:12px;font-weight:700;color:var(--text);}
+.workmode .wm-sub{font-size:11px;font-weight:400;color:var(--text2);line-height:1.3;}
+
+/* CTA */
+.cta{width:100%;padding:17px 24px;border:none;border-radius:999px;cursor:pointer;background:var(--plant-color);font-family:'Nunito',system-ui,sans-serif;font-size:16px;font-weight:700;color:white;margin-bottom:10px;z-index:1;position:relative;box-shadow:0 4px 18px rgba(var(--plant-color-rgb),0.24);transition:transform 0.2s,background 0.7s,box-shadow 0.7s;animation:ctaGlow 2.8s ease-in-out 2s infinite;overflow:hidden;}
+.a-screen .cta::after{content:'';position:absolute;top:0;left:0;bottom:0;width:55%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);transform:translateX(-200%) skewX(-14deg);animation:shimmer 4s ease-in-out 3s infinite;pointer-events:none;}
+.ios-screen .cta{backdrop-filter:blur(20px) saturate(180%);background:rgba(var(--plant-color-rgb),0.85);border:1px solid rgba(var(--plant-color-rgb),0.40);box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 18px rgba(var(--plant-color-rgb),0.22);}
+.cta:hover{transform:scale(1.02);}
+.cta:active{transform:scale(0.97);}
+.skip{font-size:13px;font-weight:500;color:var(--text3);text-align:center;cursor:pointer;z-index:1;position:relative;transition:color 0.2s;}
+.skip:hover{color:var(--text2);}
+
+/* DENIED */
+.denied-msg{display:none;text-align:center;padding:16px;border-radius:var(--r);background:rgba(var(--plant-color-rgb),0.06);border:1px solid rgba(var(--plant-color-rgb),0.10);margin-bottom:16px;z-index:1;position:relative;}
+.denied-msg.visible{display:block;animation:fadeUpBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) both;}
+.denied-name{font-size:12px;font-weight:700;color:var(--plant-color);margin-bottom:4px;transition:color 0.7s;}
+.denied-text{font-size:13.5px;font-weight:500;color:var(--text);line-height:1.45;}
+
+
+/* Primeira semana: os dois cards de numero somem e um card honesto entra.
+   Heatmap inventado e mentira que so aparece quando ela compara com a
+   propria memoria. */
+.screen.sem-dados .stats-card{display:none;}
+.screen.sem-dados .page-badge{display:none;}
+.sem-dados-card{
+  display:none;
+  padding:17px 18px;border-radius:22px;margin-bottom:14px;
+  background:rgba(61,44,46,0.03);border:1.5px dashed var(--border);
+}
+.screen.sem-dados .sem-dados-card{display:block;}
+.sem-dados-t{font-size:15px;font-weight:800;color:var(--text);line-height:1.3;}
+.sem-dados-d{font-size:12.5px;color:var(--text2);line-height:1.6;margin-top:7px;}
+.sem-dados-d b{color:var(--text);font-weight:700;}
+.sem-dados-q{
+  display:inline-block;margin-top:11px;padding:5px 12px;border-radius:999px;
+  font-size:10.5px;font-weight:800;letter-spacing:0.03em;
+  background:rgba(var(--plant-color-rgb),0.13);color:var(--plant-color);
+}
+.state-sep{width:1px;height:20px;background:var(--border);}
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 <div class="studio">
 
 <div class="studio-header">
   <div class="brand-eyebrow">Brota &middot; Features &middot; F8-MirrorStats</div>
-  <div class="brand-title">Mirror &mdash; Hist&oacute;rico e estat&iacute;sticas <em>Resumo semanal, heatmap de hor&aacute;rios e configura&ccedil;&otilde;es r&aacute;pidas do Mirror.</em></div>
+  <div class="brand-title">Mirror &middot; Hist&oacute;rico e estat&iacute;sticas <em>Resumo semanal, heatmap de hor&aacute;rios e configura&ccedil;&otilde;es r&aacute;pidas do Mirror.</em></div>
   <div class="brand-sub">
-    Veja quantas vezes o Mirror te protegeu, seus hor&aacute;rios de pico de uso e ajuste como o Mirror aparece &mdash; tudo num lugar s&oacute;.
+    Veja quantas vezes o Mirror te protegeu, seus hor&aacute;rios de pico de uso e ajuste como o Mirror aparece, tudo num lugar s&oacute;.
   </div>
 </div>
 
@@ -341,6 +424,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <button class="state-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
   <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira / Dani</button>
   <button class="state-btn" onclick="setPlant('s5',this)">Lotus / Eva</button>
+  <div class="state-sep"></div>
+  <button class="state-btn dados-btn" onclick="setDados(true,this)">Primeira semana</button>
+  <button class="state-btn dados-btn active" onclick="setDados(false,this)">Com hist&oacute;rico</button>
 </div>
 
 <div class="stage">
@@ -377,6 +463,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             <div class="page-badge">Esta semana</div>
           </div>
 
+          <div class="sem-dados-card anim-el" style="animation-delay:0.40s">
+            <div class="sem-dados-t">Ainda n&atilde;o d&aacute; pra desenhar sua semana.</div>
+            <div class="sem-dados-d">Eu conto quantas vezes apareci e quantas voc&ecirc; me atendeu. Com dois ou tr&ecirc;s dias isso <b>n&atilde;o vira um padr&atilde;o</b>, vira acaso, e eu n&atilde;o vou te mostrar acaso como se fosse voc&ecirc;.</div>
+            <div class="sem-dados-q">com 7 dias de prote&ccedil;&atilde;o</div>
+          </div>
           <!-- Weekly summary card -->
           <div class="stats-card anim-el" style="animation-delay:0.40s">
             <div class="card-eyebrow">Esta semana</div>
@@ -444,7 +535,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               <div class="app-pill"><div class="app-check">&#10003;</div> Instagram</div>
               <div class="app-pill"><div class="app-check">&#10003;</div> TikTok</div>
               <div class="app-pill"><div class="app-check">&#10003;</div> Twitter</div>
-              <span class="edit-link">Editar apps</span>
+              <span class="edit-link" onclick="openPicker('a')">Editar apps</span>
             </div>
           </div>
 
@@ -458,14 +549,29 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         </div>
 
         <!-- FAB Pause -->
-        <div class="fab-pause"><i data-icon="pause"></i></div>
+        <div class="fab-pause" data-destino="A7-Pause"><i data-icon="respirar"></i></div>
 
         <!-- Bottom Nav -->
-        <div class="bottom-nav">
+        <div class="system-sheet" id="apicker">
+          <div class="ss-backdrop" onclick="cancelPicker('a')"></div>
+          <div class="ss-panel">
+            <div class="ss-grabber"></div>
+            <div class="ss-topbar">
+              <span class="ss-cancel" onclick="cancelPicker('a')">CANCELAR</span>
+              <span class="ss-title">Apps com acesso restrito</span>
+              <span class="ss-done" onclick="confirmPicker('a')">OK</span>
+            </div>
+            <div class="ss-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Buscar apps</span></div>
+            <div class="ss-section-label">Aplicativos</div>
+            <div class="ss-list" id="apickerlist"></div>
+            <div class="ss-permission-note">Essa tela &eacute; do sistema Android, a Brota s&oacute; recebe quais apps voc&ecirc; escolheu, nunca a lista completa do seu celular.</div>
+          </div>
+        </div>
+            <div class="bottom-nav">
           <div class="nav-item active"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
         </div>
       </div>
@@ -502,6 +608,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             <div class="page-badge">Esta semana</div>
           </div>
 
+          <div class="sem-dados-card anim-el" style="animation-delay:0.40s">
+            <div class="sem-dados-t">Ainda n&atilde;o d&aacute; pra desenhar sua semana.</div>
+            <div class="sem-dados-d">Eu conto quantas vezes apareci e quantas voc&ecirc; me atendeu. Com dois ou tr&ecirc;s dias isso <b>n&atilde;o vira um padr&atilde;o</b>, vira acaso, e eu n&atilde;o vou te mostrar acaso como se fosse voc&ecirc;.</div>
+            <div class="sem-dados-q">com 7 dias de prote&ccedil;&atilde;o</div>
+          </div>
           <!-- Weekly summary card -->
           <div class="stats-card anim-el" style="animation-delay:0.40s">
             <div class="card-eyebrow">Esta semana</div>
@@ -566,7 +677,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               <div class="app-pill"><div class="app-check">&#10003;</div> Instagram</div>
               <div class="app-pill"><div class="app-check">&#10003;</div> TikTok</div>
               <div class="app-pill"><div class="app-check">&#10003;</div> Twitter</div>
-              <span class="edit-link">Editar apps</span>
+              <span class="edit-link" onclick="openPicker('ios')">Editar apps</span>
             </div>
           </div>
 
@@ -580,14 +691,29 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         </div>
 
         <!-- FAB Pause -->
-        <div class="fab-pause"><i data-icon="pause"></i></div>
+        <div class="fab-pause" data-destino="A7-Pause"><i data-icon="respirar"></i></div>
 
         <!-- Bottom Nav -->
-        <div class="bottom-nav">
+        <div class="system-sheet" id="iospicker">
+          <div class="ss-backdrop" onclick="cancelPicker('ios')"></div>
+          <div class="ss-panel">
+            <div class="ss-grabber"></div>
+            <div class="ss-topbar">
+              <span class="ss-cancel" onclick="cancelPicker('ios')">Cancelar</span>
+              <span class="ss-title">Escolher Apps</span>
+              <span class="ss-done" onclick="confirmPicker('ios')">OK</span>
+            </div>
+            <div class="ss-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Buscar</span></div>
+            <div class="ss-section-label">Aplicativos</div>
+            <div class="ss-list" id="iospickerlist"></div>
+            <div class="ss-permission-note">Essa tela &eacute; do Controle da Fam&iacute;lia (iOS), a Brota s&oacute; recebe quais apps voc&ecirc; escolheu, nunca a lista completa do seu iPhone.</div>
+          </div>
+        </div>
+            <div class="bottom-nav">
           <div class="nav-item active"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
         </div>
       </div>
@@ -598,6 +724,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 </div><!-- /stage -->
 </div><!-- /studio -->
 
+<script src="../shared/plant-svgs.js"></script>
 <script>
 var plants = {
   s1:{name:'Ana',  plant:'Lavanda',   color:'#C4B0E0',rgb:'196,176,224',
@@ -615,6 +742,22 @@ var plants = {
 var currentPlant = plants.s1;
 
 /* Bar chart data: Mon-Sun, heights (max 6) */
+function setDados(vazio, btn){
+  document.querySelectorAll('.dados-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.screen').forEach(function(sc){ sc.classList.toggle('sem-dados', vazio); });
+
+  /* A planta tambem para de concluir: "voce ta usando menos" compara com uma
+     semana anterior que ainda nao existe. */
+  ['a','ios'].forEach(function(p){
+    var el = document.getElementById(p + 'insight-text');
+    if(!el) return;
+    el.innerHTML = vazio
+      ? 'Eu ainda n&atilde;o te conhe&ccedil;o de semana em semana. Por enquanto eu s&oacute; apare&ccedil;o quando combinamos.'
+      : 'Voc&ecirc; t&aacute; usando menos o Instagram &agrave; noite. Continua assim.';
+  });
+}
+
 var barData = [3,5,2,4,6,1,4];
 var barDays = ['Seg','Ter','Qua','Qui','Sex','S\u00e1b','Dom'];
 var todayIdx = 4; /* Sex = today */
@@ -627,78 +770,110 @@ var hmapData = {
   madrugada: [0.15,0.10,0.05,0.08,0.12,0.20,0.18]
 };
 
-/* Plant SVGs */
-var FACE_HAPPY = ''
-  +'<ellipse cx="36" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
-  +'<ellipse cx="44" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
-  +'<circle cx="37" cy="37" r="1" fill="white" opacity="0.95"/>'
-  +'<circle cx="45" cy="37" r="1" fill="white" opacity="0.95"/>'
-  +'<path d="M37 43C38.5 45.5 41.5 45.5 43 43" stroke="#4A3728" stroke-width="1.5" stroke-linecap="round" fill="none"/>'
-  +'<circle cx="32.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>'
-  +'<circle cx="47.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>';
+/* Plant SVGs -> fonte unica em ../shared/plant-svgs.js (renderPlantSVG) */
 
-var SPARKLES = ''
-  +'<circle cx="18" cy="18" r="1.5" fill="white"><animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/></circle>'
-  +'<circle cx="62" cy="15" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.7;0" dur="3s" begin="0.8s" repeatCount="indefinite"/></circle>';
+/* ═══ APP PICKER — simulates the OS-owned selection sheet (FamilyActivityPicker on iOS,
+   the equivalent system app-chooser on Android). Brota never draws its own list of named
+   apps to toggle: it only ever receives back which ones were chosen. ═══ */
+var APPS = [
+  {id:'instagram', name:'Instagram', icon:'<svg viewBox="0 0 38 38"><defs><linearGradient id="igP" x1="0" y1="38" x2="38" y2="0"><stop offset="0%" stop-color="#FFDC80"/><stop offset="25%" stop-color="#F77737"/><stop offset="50%" stop-color="#E1306C"/><stop offset="75%" stop-color="#C13584"/><stop offset="100%" stop-color="#833AB4"/></linearGradient></defs><rect width="38" height="38" rx="10" fill="url(#igP)"/><rect x="9" y="9" width="20" height="20" rx="6" stroke="white" stroke-width="2" fill="none"/><circle cx="19" cy="19" r="5" stroke="white" stroke-width="2" fill="none"/><circle cx="25.5" cy="12.5" r="1.5" fill="white"/></svg>'},
+  {id:'tiktok', name:'TikTok', icon:'<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="10" fill="#010101"/><path d="M25.5 11.5c-1.2-1-2-2.5-2.2-4h-3.3v16.5a3.5 3.5 0 11-2.5-3.36V17a7 7 0 105.5 6.86V16.5a8.3 8.3 0 004.5 1.3v-3.3a5.5 5.5 0 01-2-3z" fill="white"/></svg>'},
+  {id:'snapchat', name:'Snapchat', icon:'<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="10" fill="#FFFC00"/><path d="M19 8c-3.5 0-6 2.5-6 6.5v2.5c-1 .3-1.8.7-1.8 1.2s1 .8 1.3.9c-.5 1.5-2 3-3.2 3.5.3.5 1 .8 2.5.8.5 0 1-.1 1.5-.2.2 1 .8 1.3 1.5 1.3 1 0 2-.8 4.2-.8s3.2.8 4.2.8c.7 0 1.3-.3 1.5-1.3.5.1 1 .2 1.5.2 1.5 0 2.2-.3 2.5-.8-1.2-.5-2.7-2-3.2-3.5.3-.1 1.3-.4 1.3-.9s-.8-.9-1.8-1.2V14.5c0-4-2.5-6.5-6-6.5z" fill="white"/></svg>'},
+  {id:'pinterest', name:'Pinterest', icon:'<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="10" fill="#E60023"/><path d="M19 8c-6 0-10 4.2-10 9.5 0 3.5 2 6.5 5 7.8 0-0.5-.1-1.5.1-2.2l1-4s-.3-.5-.3-1.3c0-1.3.7-2.2 1.6-2.2.8 0 1.1.6 1.1 1.2 0 .8-.5 1.9-.7 3 0 .6.5 1.2 1.2 1.2 1.5 0 2.6-1.6 2.6-3.8 0-2-1.4-3.4-3.5-3.4-2.4 0-3.8 1.8-3.8 3.6 0 .7.3 1.5.6 1.9.1.1.1.2 0 .3l-.2.9c0 .2-.2.2-.3.1-1-.5-1.7-2-1.7-3.2 0-2.6 1.9-5 5.4-5 2.8 0 5 2 5 4.7 0 2.8-1.8 5.1-4.2 5.1-.8 0-1.6-.4-1.9-.9l-.5 2c-.2.7-.7 1.6-1 2.2.8.2 1.6.4 2.4.4 5.5 0 10-4.5 10-10S24.5 8 19 8z" fill="white"/></svg>'},
+  {id:'twitter', name:'Twitter / X', icon:'<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="10" fill="#000"/><path d="M21.8 17.2L28 10h-1.5l-5.4 6.3L16.5 10H10l6.5 9.5L10 27h1.5l5.7-6.6 4.6 6.6H28l-6.2-9.8zM18 19.5l-.7-.9L12.3 11h2.3l4.3 6.1.7.9 5.5 7.9h-2.3L18 19.5z" fill="white"/></svg>'}
+];
+var appsSelected = {a: ['instagram','tiktok','twitter'], ios: ['instagram','tiktok','twitter']};
+var appsDraft = {a: [], ios: []};
 
-var POT = '<path d="M28 70C28 70 26 73 27.5 75C29 76.5 51 76.5 52.5 75C54 73 52 70 52 70" fill="#E8C4A0"/>'
-  +'<path d="M26 70H54" stroke="#D4A574" stroke-width="2.2" stroke-linecap="round"/>'
-  +'<ellipse cx="40" cy="70" rx="13" ry="2" fill="#C49468" opacity="0.25"/>';
+/* A F8 mostra os apps em pills, nao na linha-resumo da P2. */
+function renderSummary(p){
+  if(!document.getElementById(p+'appsicons')) return renderPills(p);
+  var sel = appsSelected[p];
+  var iconsEl = document.getElementById(p+'appsicons');
+  var titleEl = document.getElementById(p+'appstitle');
+  var subEl   = document.getElementById(p+'appssub');
+  if(!iconsEl) return;
+  if(sel.length === 0){
+    iconsEl.innerHTML = '';
+    titleEl.textContent = 'Nenhum app escolhido ainda';
+    subEl.textContent = 'Toque para escolher onde eu apareço';
+    return;
+  }
+  var shown = sel.slice(0,3);
+  iconsEl.innerHTML = shown.map(function(id){
+    var app = APPS.filter(function(a){return a.id===id;})[0];
+    return '<div class="asr-icon">'+app.icon+'</div>';
+  }).join('');
+  titleEl.textContent = sel.length+(sel.length===1?' app selecionado':' apps selecionados');
+  subEl.textContent = sel.map(function(id){
+    return APPS.filter(function(a){return a.id===id;})[0].name;
+  }).join(', ');
+}
 
-/* Mini-plant SVGs: simplified compact versions */
-var plantSVGs = {
-  Lavanda: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<path d="M40 68V32" stroke="#6BA068" stroke-width="3" stroke-linecap="round"/>'
-    +'<g><ellipse cx="40" cy="28" rx="5" ry="6.5" fill="__CLR__"/>'
-    +'<ellipse cx="40" cy="21" rx="4.5" ry="5.5" fill="__CLR__" opacity="0.95"/>'
-    +'<ellipse cx="40" cy="14.5" rx="3.8" ry="4.5" fill="__CLR__" opacity="0.9"/>'
-    +'<ellipse cx="40" cy="9" rx="3" ry="3.5" fill="__CLR__" opacity="0.82"/></g>'
-    +FACE_HAPPY+SPARKLES+'</svg>',
+function renderPickerList(p){
+  var listEl = document.getElementById(p+'pickerlist');
+  var draft = appsDraft[p];
+  listEl.innerHTML = APPS.map(function(app){
+    var checked = draft.indexOf(app.id) > -1;
+    return '<div class="ss-row'+(checked?' checked':'')+'" onclick="togglePickerRow(\''+p+'\',\''+app.id+'\')">'
+      +'<div class="ss-icon">'+app.icon+'</div>'
+      +'<div class="ss-name">'+app.name+'</div>'
+      +'<div class="ss-check"></div>'
+      +'</div>';
+  }).join('');
+}
 
-  Girassol: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<path d="M40 68C40 60 40 50 40 38" stroke="#5A9E54" stroke-width="3.5" stroke-linecap="round"/>'
-    +'<ellipse cx="40" cy="12" rx="5.5" ry="10" fill="__CLR__"/>'
-    +'<ellipse cx="18" cy="24" rx="12" ry="5.5" fill="__CLR__"/>'
-    +'<ellipse cx="62" cy="24" rx="12" ry="5.5" fill="__CLR__"/>'
-    +'<circle cx="40" cy="24" r="12.5" fill="#D4960A"/>'
-    +'<circle cx="40" cy="24" r="10" fill="#C48A08"/>'
-    +'<ellipse cx="36" cy="22" rx="2" ry="2.3" fill="#5A3800"/>'
-    +'<ellipse cx="44" cy="22" rx="2" ry="2.3" fill="#5A3800"/>'
-    +'<path d="M37 27.5C38.5 29.5 41.5 29.5 43 27.5" stroke="#5A3800" stroke-width="1.4" stroke-linecap="round" fill="none"/>'
-    +SPARKLES+'</svg>',
+function openPicker(p){
+  appsDraft[p] = appsSelected[p].slice();
+  renderPickerList(p);
+  document.getElementById(p+'picker').classList.add('visible');
+}
 
-  Cacto: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<path d="M30 68C29.5 60 28 44 31 18C33 12 35 8 40 8C45 8 47 12 49 18C52 44 50.5 60 50.5 68" fill="__CLR__" opacity="0.55"/>'
-    +'<path d="M30 68C29.5 60 28 44 31 18C33 12 35 8 40 8C45 8 47 12 49 18C52 44 50.5 60 50.5 68" stroke="__CLR__" stroke-width="2.5" fill="none"/>'
-    +FACE_HAPPY+SPARKLES+'</svg>',
+function togglePickerRow(p, id){
+  var draft = appsDraft[p];
+  var i = draft.indexOf(id);
+  if(i>-1) draft.splice(i,1); else draft.push(id);
+  renderPickerList(p);
+}
 
-  Cerejeira: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<path d="M40 68C40 64 38 58 36 54C34 50 35 46 38 44C41 42 42 38 41 35" stroke="#7A5840" stroke-width="5" stroke-linecap="round"/>'
-    +'<ellipse cx="15" cy="46" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.88"/>'
-    +'<ellipse cx="60" cy="36" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.9"/>'
-    +'<ellipse cx="51" cy="13" rx="7" ry="6" fill="__CLR__" opacity="0.92"/>'
-    +'<ellipse cx="39" cy="52" rx="6.5" ry="5" fill="#F2E8E0" opacity="0.35"/>'
-    +'<ellipse cx="37" cy="50" rx="2" ry="2.3" fill="#5A4030"/>'
-    +'<ellipse cx="42" cy="50" rx="2" ry="2.3" fill="#5A4030"/>'
-    +'<path d="M37.5 54C38.5 55.5 41 55.5 42 54" stroke="#5A4030" stroke-width="1.3" stroke-linecap="round" fill="none"/>'
-    +SPARKLES+'</svg>',
+function confirmPicker(p){
+  appsSelected[p] = appsDraft[p].slice();
+  renderSummary(p);
+  document.getElementById(p+'picker').classList.remove('visible');
+}
 
-  Lotus: '<svg viewBox="4 4 72 72" fill="none">'
-    +POT
-    +'<ellipse cx="40" cy="69" rx="14" ry="3.5" fill="#D4EEF8" opacity="0.45"/>'
-    +'<path d="M40 42Q32 36 30 26Q29.5 20 34 23Q37 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
-    +'<path d="M40 42Q48 36 50 26Q50.5 20 46 23Q43 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
-    +'<path d="M40 36Q38 28 38.2 18Q38.5 12 40 10Q41.5 12 41.8 18Q42 28 40 36Z" fill="__CLR__" opacity="0.85"/>'
-    +'<ellipse cx="40" cy="46" rx="6" ry="4" fill="#FFE082" opacity="0.95"/>'
-    +'<ellipse cx="38" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"/>'
-    +'<ellipse cx="42" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"/>'
-    +'<path d="M39 47.5C39.5 48.8 40.5 48.8 41 47.5" stroke="#8B6F00" stroke-width="1" stroke-linecap="round" fill="none"/>'
-    +SPARKLES+'</svg>'
-};
+function cancelPicker(p){
+  document.getElementById(p+'picker').classList.remove('visible');
+}
+
+function activateShield(p){
+  var cta=document.getElementById(p+'cta');
+  cta.style.transform='scale(0.95)';cta.style.opacity='0.7';cta.textContent='Ativando...';
+  setTimeout(function(){cta.style.transform='scale(1.02)';cta.style.opacity='1';cta.textContent='Prote\u00e7\u00e3o ativa \u2713';cta.style.background='var(--brand-correct)';cta.style.pointerEvents='none';document.getElementById(p+'skip').style.display='none';},1200);
+}
+
+function denyShield(p){
+  var d=document.getElementById(p+'denied');d.classList.remove('visible');void d.offsetWidth;d.classList.add('visible');
+  var c=document.getElementById(p+'cta');c.textContent='Continuar sem prote\u00e7\u00e3o';c.style.background='var(--text3)';c.style.boxShadow='none';c.style.animation='none';
+  c.onclick=function(){c.textContent='Seguindo...';c.style.pointerEvents='none';};
+  document.getElementById(p+'skip').style.display='none';
+}
+
+
+/* Reflete a escolha nas pills desta tela */
+function renderPills(p){
+  var linha = document.querySelector('#' + p + 'screen .apps-row');
+  if(!linha) return;
+  var nomes = appsSelected[p].map(function(id){
+    var a = APPS.filter(function(x){return x.id === id;})[0];
+    return a ? a.name : id;
+  });
+  var h = nomes.map(function(n){
+    return '<div class="app-pill"><div class="app-check">&#10003;</div> ' + n + '</div>';
+  }).join('');
+  h += '<span class="edit-link" onclick="openPicker(\'' + p + '\')">Editar apps</span>';
+  linha.innerHTML = h;
+}
 
 function buildBarChart(containerId){
   var c = document.getElementById(containerId);
@@ -745,9 +920,8 @@ function buildHeatmap(prefix){
 
 function updatePlantSVGs(){
   var s = currentPlant;
-  var svg = plantSVGs[s.plant];
-  if(!svg) return;
-  var rendered = svg.replace(/__CLR__/g, s.color);
+  var rendered = renderPlantSVG(s.plant, s.color);
+  if(!rendered) return;
   var a = document.getElementById('apemoji');
   var ios = document.getElementById('iospemoji');
   if(a) a.innerHTML = rendered;

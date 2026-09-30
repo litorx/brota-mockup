@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — F6: Inner Voice History</title>
+<title>Brota &middot; F6: Inner Voice History</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -298,29 +298,45 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .fab-pause{
   position:absolute;bottom:80px;right:16px;z-index:15;
   width:48px;height:48px;border-radius:50%;
-  background:var(--brand-real);color:white;
+  background:var(--brand-warning);color:#8A6A22;
   display:flex;align-items:center;justify-content:center;
   font-size:20px;cursor:pointer;
-  box-shadow:0 4px 20px rgba(244,167,185,0.30);
+  box-shadow:0 4px 20px rgba(255,208,122,0.38);
   transition:transform 0.2s,box-shadow 0.2s;
 }
-.fab-pause:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(244,167,185,0.40);}
+.fab-pause:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(255,208,122,0.48);}
 .fab-pause:active{transform:scale(0.94);}
 .ios-screen .fab-pause{
   bottom:92px;right:18px;
   backdrop-filter:blur(20px) saturate(180%);
-  background:rgba(232,136,158,0.88);
+  background:rgba(255,208,122,0.92);
   border:1px solid rgba(255,255,255,0.30);
-  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(244,167,185,0.28);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
+
+/* Sem sessao: some a lista, os filtros, o padrao detectado e os chips.
+   Todos sao conclusoes sobre um acervo que ainda nao existe. */
+.screen.sem-sessoes .sessions-list,
+.screen.sem-sessoes .filter-row,
+.screen.sem-sessoes .insight-card,
+.screen.sem-sessoes .stats-row{display:none;}
+.hist-vazio{display:none;text-align:center;padding:26px 10px 6px;}
+.screen.sem-sessoes .hist-vazio{display:block;}
+.hist-vazio-p{width:92px;height:92px;margin:0 auto 14px;}
+.hist-vazio-p svg{width:100%;height:100%;}
+.hist-vazio-t{font-size:17px;font-weight:800;line-height:1.3;color:var(--text);}
+.hist-vazio-d{font-size:12.5px;color:var(--text2);line-height:1.6;margin-top:8px;max-width:258px;margin-left:auto;margin-right:auto;}
+.hist-vazio-d b{color:var(--text);font-weight:700;}
+.state-sep{width:1px;height:20px;background:var(--border);}
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 <div class="studio">
 
 <div class="studio-header">
   <div class="brand-eyebrow">Brota &middot; Features &middot; F6-InnerVoiceHistory</div>
-  <div class="brand-title">Inner Voice &mdash; Hist&oacute;rico <em>Suas conversas com a planta. Um esp&eacute;lho gentil do seu caminho emocional.</em></div>
+  <div class="brand-title">Inner Voice &middot; Hist&oacute;rico <em>Suas conversas com a planta. Um esp&eacute;lho gentil do seu caminho emocional.</em></div>
   <div class="brand-sub">
     Lista de sess&otilde;es passadas do Inner Voice. Filtro por per&iacute;odo, mood indicator, trecho da conversa. Insight da planta sobre padr&otilde;es detectados. Mini stats discretas no rodap&eacute;.
   </div>
@@ -332,6 +348,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <button class="state-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
   <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira / Dani</button>
   <button class="state-btn" onclick="setPlant('s5',this)">Lotus / Eva</button>
+  <div class="state-sep"></div>
+  <button class="state-btn vazio-btn" onclick="setVazio(true,this)">Sem sess&otilde;es</button>
+  <button class="state-btn vazio-btn active" onclick="setVazio(false,this)">Com hist&oacute;rico</button>
 </div>
 
 <div class="stage">
@@ -365,6 +384,10 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           </div>
 
           <!-- Filter pills -->
+          <div class="hist-vazio">
+            <div class="hist-vazio-t">Quando voc&ecirc; terminar uma, ela fica aqui.</div>
+            <div class="hist-vazio-d">S&oacute; pra voc&ecirc; reler, se quiser. <b>Eu n&atilde;o leio o que voc&ecirc; escreve</b>, nem guardo fora do seu aparelho. E d&aacute; pra apagar qualquer uma, a qualquer hora.</div>
+          </div>
           <div class="filter-row anim-el" style="animation-delay:0.28s">
             <button class="filter-pill active" onclick="setFilter(this,'a')">Esta semana</button>
             <button class="filter-pill" onclick="setFilter(this,'a')">Este m&ecirc;s</button>
@@ -378,7 +401,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               <div class="mood-circle pesada" style="background:rgba(181,160,216,0.18);"><i data-face="down"></i></div>
               <div class="session-info">
                 <div class="session-date">Ontem, 22:14</div>
-                <div class="session-plant-text"><strong id="aplant1">Lavanda</strong> sobre: insegurança. Lembra do reframe?</div>
+                <div class="session-plant-text"><strong id="aplant1">Lavanda</strong> sobre: insegurança. Lembra do que você escreveu no fim?</div>
               </div>
               <div class="session-arrow">›</div>
             </div>
@@ -437,14 +460,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         </div>
 
         <!-- FAB Pause -->
-        <div class="fab-pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="pause"></i></div>
+        <div class="fab-pause" data-destino="A7-Pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="respirar"></i></div>
 
         <!-- Bottom Nav (Grow active) -->
         <div class="bottom-nav">
           <div class="nav-item"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
           <div class="nav-item active"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
         </div>
       </div>
@@ -478,6 +501,10 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           </div>
 
           <!-- Filter pills -->
+          <div class="hist-vazio">
+            <div class="hist-vazio-t">Quando voc&ecirc; terminar uma, ela fica aqui.</div>
+            <div class="hist-vazio-d">S&oacute; pra voc&ecirc; reler, se quiser. <b>Eu n&atilde;o leio o que voc&ecirc; escreve</b>, nem guardo fora do seu aparelho. E d&aacute; pra apagar qualquer uma, a qualquer hora.</div>
+          </div>
           <div class="filter-row anim-el" style="animation-delay:0.28s">
             <button class="filter-pill active" onclick="setFilter(this,'ios')">Esta semana</button>
             <button class="filter-pill" onclick="setFilter(this,'ios')">Este m&ecirc;s</button>
@@ -491,7 +518,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               <div class="mood-circle pesada"><i data-face="down" data-face-style="sf"></i></div>
               <div class="session-info">
                 <div class="session-date">Ontem, 22:14</div>
-                <div class="session-plant-text"><strong id="iosplant1">Lavanda</strong> sobre: insegurança. Lembra do reframe?</div>
+                <div class="session-plant-text"><strong id="iosplant1">Lavanda</strong> sobre: insegurança. Lembra do que você escreveu no fim?</div>
               </div>
               <div class="session-arrow">›</div>
             </div>
@@ -550,14 +577,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         </div>
 
         <!-- FAB Pause -->
-        <div class="fab-pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="pause"></i></div>
+        <div class="fab-pause" data-destino="A7-Pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="respirar"></i></div>
 
         <!-- Bottom Nav (Grow active) -->
         <div class="bottom-nav">
           <div class="nav-item"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
           <div class="nav-item active"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
         </div>
       </div>
@@ -568,7 +595,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 </div><!-- /stage -->
 </div><!-- /studio -->
 
+<script src="../shared/plant-svgs.js"></script>
 <script>
+/* Plantas -> fonte unica em ../shared/plant-svgs.js */
 var plants = {
   s1:{name:'Ana',  plant:'Lavanda',   color:'#C4B0E0',rgb:'196,176,224'},
   s2:{name:'Bia',  plant:'Girassol',  color:'#F2CE6B',rgb:'242,206,107'},
@@ -585,159 +614,6 @@ var insightTexts = {
   Lotus: 'Voc\u00ea floresce quando para de se cobrar.'
 };
 
-/* ── Plant SVGs ── */
-var FACE_HAPPY = ''
-  +'<ellipse cx="36" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
-  +'<ellipse cx="44" cy="38" rx="2.2" ry="2.5" fill="#4A3728"><animate attributeName="ry" values="2.5;0.3;2.5" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
-  +'<circle cx="37" cy="37" r="1" fill="white" opacity="0.95"/>'
-  +'<circle cx="45" cy="37" r="1" fill="white" opacity="0.95"/>'
-  +'<path d="M37 43C38.5 45.5 41.5 45.5 43 43" stroke="#4A3728" stroke-width="1.5" stroke-linecap="round" fill="none"/>'
-  +'<circle cx="32.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>'
-  +'<circle cx="47.5" cy="41" r="3" fill="#F4A7B9" opacity="0.18"><animate attributeName="opacity" values="0.18;0.32;0.18" dur="3s" repeatCount="indefinite"/></circle>';
-
-var SPARKLES = ''
-  +'<circle cx="18" cy="18" r="1.5" fill="white"><animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/></circle>'
-  +'<circle cx="62" cy="15" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.7;0" dur="3s" begin="0.8s" repeatCount="indefinite"/></circle>'
-  +'<circle cx="14" cy="35" r="1" fill="white"><animate attributeName="opacity" values="0;0.6;0" dur="3.5s" begin="1.6s" repeatCount="indefinite"/></circle>'
-  +'<circle cx="65" cy="40" r="1.2" fill="white"><animate attributeName="opacity" values="0;0.65;0" dur="2.8s" begin="0.4s" repeatCount="indefinite"/></circle>';
-
-var POT = '<path d="M28 70C28 70 26 73 27.5 75C29 76.5 51 76.5 52.5 75C54 73 52 70 52 70" fill="#E8C4A0"/>'
-  +'<path d="M26 70H54" stroke="#D4A574" stroke-width="2.2" stroke-linecap="round"/>'
-  +'<ellipse cx="40" cy="70" rx="13" ry="2" fill="#C49468" opacity="0.25"/>';
-
-var plantSVGs = {
-  Lavanda: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<path d="M40 68V32" stroke="#6BA068" stroke-width="3" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.5,40,68;0,40,68;-0.5,40,68;0,40,68" dur="6s" repeatCount="indefinite"/></path>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="-2,40,55;4,40,55;-2,40,55" dur="3.5s" repeatCount="indefinite"/>'
-    +'<path d="M40 54C35 52 30 50 26 42" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
-    +'<path d="M33 48C28 47 23 48 20 51C24 51.5 29 50 33 48Z" fill="#7DB87A" opacity="0.85"/>'
-    +'<path d="M29 43C24 42 19 43 17 46C21 46.5 25 45 29 43Z" fill="#8CC5A0" opacity="0.7"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="2,40,55;-4,40,55;2,40,55" dur="4s" repeatCount="indefinite"/>'
-    +'<path d="M40 50C45 48 50 46 54 39" stroke="#6BA068" stroke-width="2" stroke-linecap="round"/>'
-    +'<path d="M47 44C52 43 57 44 59 47C55 47.5 51 46 47 44Z" fill="#7DB87A" opacity="0.85"/>'
-    +'<path d="M51 40C56 39 61 40 63 43C59 43.5 55 42 51 40Z" fill="#8CC5A0" opacity="0.7"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="-1.5,40,30;1.5,40,30;-1.5,40,30" dur="3s" repeatCount="indefinite"/>'
-    +'<ellipse cx="40" cy="28" rx="5" ry="6.5" fill="__CLR__"/>'
-    +'<ellipse cx="40" cy="21" rx="4.5" ry="5.5" fill="__CLR__" opacity="0.95"/>'
-    +'<ellipse cx="40" cy="14.5" rx="3.8" ry="4.5" fill="__CLR__" opacity="0.9"/>'
-    +'<ellipse cx="40" cy="9" rx="3" ry="3.5" fill="__CLR__" opacity="0.82"/>'
-    +'<ellipse cx="40" cy="5" rx="2.2" ry="2.5" fill="__CLR__" opacity="0.7"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,34;-6,28,34;0,28,34" dur="3.8s" repeatCount="indefinite"/>'
-    +'<ellipse cx="28" cy="32" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
-    +'<ellipse cx="28" cy="26" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
-    +'<ellipse cx="28" cy="20.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,33;6,52,33;0,52,33" dur="3.5s" repeatCount="indefinite"/>'
-    +'<ellipse cx="52" cy="31" rx="4" ry="5.5" fill="__CLR__" opacity="0.9"/>'
-    +'<ellipse cx="52" cy="25" rx="3.5" ry="4.5" fill="__CLR__" opacity="0.85"/>'
-    +'<ellipse cx="52" cy="19.5" rx="3" ry="3.8" fill="__CLR__" opacity="0.78"/></g>'
-    +FACE_HAPPY+SPARKLES+'</svg>',
-
-  Girassol: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<path d="M40 68C40 64 39.5 56 40 50C40.5 44 40 40 40 38" stroke="#5A9E54" stroke-width="3.5" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0,40,68;0.6,40,68;0,40,68;-0.6,40,68;0,40,68" dur="5s" repeatCount="indefinite"/></path>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="-1,40,56;5,40,56;-1,40,56" dur="3.5s" repeatCount="indefinite"/>'
-    +'<path d="M40 56C35 55 28 54.5 23 57C26 59 32 58 40 56Z" fill="#7DB87A" opacity="0.9"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="1,40,62;-5,40,62;1,40,62" dur="4s" repeatCount="indefinite"/>'
-    +'<path d="M40 62C45 61 52 60.5 57 63C54 65 48 64 40 62Z" fill="#7DB87A" opacity="0.85"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="-3,40,24;3,40,24;-3,40,24" dur="4s" repeatCount="indefinite"/>'
-    +'<ellipse cx="40" cy="12" rx="5.5" ry="10" fill="__CLR__"/>'
-    +'<ellipse cx="18" cy="24" rx="12" ry="5.5" fill="__CLR__"/>'
-    +'<ellipse cx="62" cy="24" rx="12" ry="5.5" fill="__CLR__"/>'
-    +'<ellipse cx="24" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(-45 24 14)"/>'
-    +'<ellipse cx="56" cy="14" rx="5" ry="11" fill="__CLR__" opacity="0.92" transform="rotate(45 56 14)"/>'
-    +'<ellipse cx="40" cy="38" rx="5.5" ry="10" fill="__CLR__" opacity="0.85"/>'
-    +'<ellipse cx="24" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(45 24 38)"/>'
-    +'<ellipse cx="56" cy="38" rx="5" ry="10" fill="__CLR__" opacity="0.82" transform="rotate(-45 56 38)"/>'
-    +'<circle cx="40" cy="24" r="12.5" fill="#D4960A"/>'
-    +'<circle cx="40" cy="24" r="10" fill="#C48A08"/>'
-    +'<ellipse cx="36" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="44" cy="22" rx="2" ry="2.3" fill="#5A3800"><animate attributeName="ry" values="2.3;0.2;2.3" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
-    +'<circle cx="36.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
-    +'<circle cx="44.8" cy="21" r="0.8" fill="white" opacity="0.9"/>'
-    +'<path d="M37 27.5C38.5 29.5 41.5 29.5 43 27.5" stroke="#5A3800" stroke-width="1.4" stroke-linecap="round" fill="none"/>'
-    +'</g>'+SPARKLES+'</svg>',
-
-  Cacto: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,68;-0.8,40,68;0,40,68;0.8,40,68;0,40,68" dur="5s" repeatCount="indefinite"/>'
-    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" fill="__CLR__" opacity="0.55"/>'
-    +'<path d="M30 68C29.5 60 28 52 28 44C28 34 29.5 24 31 18C33 12 35 8 40 8C45 8 47 12 49 18C50.5 24 52 34 52 44C52 52 51 60 50.5 68" stroke="__CLR__" stroke-width="2.5" fill="none"/>'
-    +'<line x1="33" y1="25" x2="33" y2="55" stroke="white" stroke-width="0.8" opacity="0.1"/>'
-    +'<line x1="47" y1="23" x2="47" y2="57" stroke="white" stroke-width="0.8" opacity="0.1"/>'
-    +'<line x1="30" y1="24" x2="26" y2="23" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
-    +'<line x1="50" y1="26" x2="54" y2="25" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
-    +'<line x1="30" y1="38" x2="26" y2="37" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
-    +'<line x1="50" y1="40" x2="54" y2="39" stroke="__CLR__" stroke-width="1" opacity="0.45"/>'
-    +FACE_HAPPY+'</g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,28,42;-5,28,42;0,28,42;2,28,42;0,28,42" dur="4s" repeatCount="indefinite"/>'
-    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" fill="__CLR__" opacity="0.5"/>'
-    +'<path d="M28 42C28 42 23 42 19 40C15 38 12 33 12 28C12 22 15 20 17 21.5C19 23 20 27 20 32C20 37 22 40 28 42" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,52,36;5,52,36;0,52,36;-2,52,36;0,52,36" dur="3.8s" repeatCount="indefinite"/>'
-    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" fill="__CLR__" opacity="0.5"/>'
-    +'<path d="M52 36C52 36 57 36 61 34C65 32 68 27 68 22C68 16 65 14 63 15.5C61 17 60 21 60 26C60 31 58 34 52 36" stroke="__CLR__" stroke-width="2.2" fill="none"/></g>'
-    +'<g><animateTransform attributeName="transform" type="translate" values="0,0;0,-1.5;0,0" dur="2.5s" repeatCount="indefinite"/>'
-    +'<ellipse cx="40" cy="6" rx="7.5" ry="6.5" fill="#F4A7B9"/>'
-    +'<circle cx="40" cy="6.5" r="3.8" fill="#E8889E" opacity="0.9"/>'
-    +'<circle cx="40" cy="6.5" r="2" fill="#C96078" opacity="0.7"/>'
-    +'<circle cx="38" cy="5" r="0.8" fill="white" opacity="0.5"/></g>'
-    +SPARKLES+'</svg>',
-
-  Cerejeira: '<svg viewBox="0 0 80 80" fill="none">'
-    +POT
-    +'<path d="M40 68C40 64 38 58 36 54C34 50 35 46 38 44C41 42 42 38 41 35" stroke="#7A5840" stroke-width="5" stroke-linecap="round"/>'
-    +'<path d="M36 54C31 52 26 50 22 49C18 48.5 14 49 13 50" stroke="#7A5840" stroke-width="3" stroke-linecap="round"/>'
-    +'<path d="M38 46C42 44 47 42 52 40C55 38.5 58 38 60 39" stroke="#7A5840" stroke-width="2.8" stroke-linecap="round"/>'
-    +'<path d="M41 35C43 30 47 25 49 22C51 19 52 16 51 14" stroke="#7A5840" stroke-width="2.5" stroke-linecap="round"/>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,16,46;-5,16,46;1,16,46;0,16,46" dur="4s" repeatCount="indefinite"/>'
-    +'<ellipse cx="15" cy="46" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.88"/>'
-    +'<ellipse cx="21" cy="44" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.85"/>'
-    +'<ellipse cx="11" cy="43" rx="6" ry="5" fill="__CLR__" opacity="0.78"/>'
-    +'<circle cx="16" cy="45.5" r="2.8" fill="#C95578" opacity="0.65"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,60,36;5,60,36;-1,60,36;0,60,36" dur="3.5s" repeatCount="indefinite"/>'
-    +'<ellipse cx="60" cy="36" rx="7.5" ry="6.5" fill="__CLR__" opacity="0.9"/>'
-    +'<ellipse cx="65" cy="34" rx="6.5" ry="5.5" fill="__CLR__" opacity="0.87"/>'
-    +'<ellipse cx="57" cy="33.5" rx="6" ry="5" fill="__CLR__" opacity="0.82"/>'
-    +'<circle cx="61" cy="36" r="2.8" fill="#C95578" opacity="0.68"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,51,14;3,51,14;-1,51,14;0,51,14" dur="3.2s" repeatCount="indefinite"/>'
-    +'<ellipse cx="51" cy="13" rx="7" ry="6" fill="__CLR__" opacity="0.92"/>'
-    +'<ellipse cx="47" cy="11" rx="6" ry="5.5" fill="__CLR__" opacity="0.88"/>'
-    +'<ellipse cx="55" cy="10" rx="5.5" ry="4.8" fill="__CLR__" opacity="0.84"/>'
-    +'<circle cx="50" cy="13" r="2.8" fill="#C95578" opacity="0.7"/></g>'
-    +'<ellipse cx="26" cy="25" rx="2.2" ry="1.4" fill="__CLR__" opacity="0"><animate attributeName="cy" values="25;68" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.65;0.55;0" dur="5s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="55" cy="20" rx="2" ry="1.2" fill="__CLR__" opacity="0"><animate attributeName="cy" values="20;65" dur="6s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0.5;0" dur="6s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="39" cy="52" rx="6.5" ry="5" fill="#F2E8E0" opacity="0.35"/>'
-    +'<ellipse cx="37" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="42" cy="50" rx="2" ry="2.3" fill="#5A4030"><animate attributeName="ry" values="2.3;0.3;2.3" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
-    +'<circle cx="37.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
-    +'<circle cx="42.8" cy="49.2" r="0.8" fill="white" opacity="0.9"/>'
-    +'<path d="M37.5 54C38.5 55.5 41 55.5 42 54" stroke="#5A4030" stroke-width="1.3" stroke-linecap="round" fill="none"/>'
-    +SPARKLES+'</svg>',
-
-  Lotus: '<svg viewBox="4 4 72 72" fill="none">'
-    +POT
-    +'<ellipse cx="40" cy="69" rx="14" ry="3.5" fill="#D4EEF8" opacity="0.45"><animate attributeName="rx" values="14;18;14" dur="3.5s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="28" cy="68" rx="6.5" ry="2.5" fill="#7EC47A" opacity="0.55"><animateTransform attributeName="transform" type="rotate" values="-2,28,68;4,28,68;-2,28,68" dur="4.5s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="52" cy="67.5" rx="6" ry="2.2" fill="#7EC47A" opacity="0.45"><animateTransform attributeName="transform" type="rotate" values="2,52,67.5;-4,52,67.5;2,52,67.5" dur="5s" repeatCount="indefinite"/></ellipse>'
-    +'<path d="M40 66Q39 58 40 52" stroke="#6EAA68" stroke-width="2.2" stroke-linecap="round" opacity="0.55" fill="none"/>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;-5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q26 54 16 47Q14 45 18 44Q28 45 40 49Z" fill="__CLR__" opacity="0.35"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,50;5,40,50;0,40,50" dur="4s" repeatCount="indefinite"/><path d="M40 52Q54 54 64 47Q66 45 62 44Q52 45 40 49Z" fill="__CLR__" opacity="0.35"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;-4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q28 44 22 35Q21 32 25 33Q32 36 40 44Z" fill="#E8CCE8" opacity="0.55"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,40,46;4,40,46;0,40,46" dur="3.5s" repeatCount="indefinite"/><path d="M40 46Q52 44 58 35Q59 32 55 33Q48 36 40 44Z" fill="#E8CCE8" opacity="0.55"/></g>'
-    +'<path d="M40 42Q32 36 30 26Q29.5 20 34 23Q37 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
-    +'<path d="M40 42Q48 36 50 26Q50.5 20 46 23Q43 28 40 40Z" fill="#EEE0F0" opacity="0.62"/>'
-    +'<path d="M40 36Q38 28 38.2 18Q38.5 12 40 10Q41.5 12 41.8 18Q42 28 40 36Z" fill="__CLR__" opacity="0.85"/>'
-    +'<ellipse cx="40" cy="46" rx="6" ry="4" fill="#FFE082" opacity="0.95"><animate attributeName="rx" values="6;7;6" dur="2.5s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="40" cy="46" rx="4" ry="2.8" fill="#FFC837" opacity="0.85"/>'
-    +'<ellipse cx="38" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="42" cy="44.5" rx="1.4" ry="1.6" fill="#8B6F00"><animate attributeName="ry" values="1.6;0.2;1.6" dur="3.5s" begin="1.8s" repeatCount="indefinite"/></ellipse>'
-    +'<circle cx="38.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
-    +'<circle cx="42.5" cy="43.8" r="0.55" fill="white" opacity="0.8"/>'
-    +'<path d="M39 47.5C39.5 48.8 40.5 48.8 41 47.5" stroke="#8B6F00" stroke-width="1" stroke-linecap="round" fill="none"/>'
-    +'<circle cx="18" cy="22" r="1.3" fill="white"><animate attributeName="opacity" values="0;0.6;0" dur="3.5s" repeatCount="indefinite"/><animate attributeName="cy" values="22;16" dur="3.5s" repeatCount="indefinite"/></circle>'
-    +'</svg>'
-};
-
 var currentPlant = plants.s1;
 
 function updatePlantSVGs(s){
@@ -748,6 +624,8 @@ function updatePlantSVGs(s){
   var i = document.getElementById('iosmini-pemoji');
   if(a) a.innerHTML = rendered;
   if(i) i.innerHTML = rendered;
+  /* A planta do estado sem sessoes vem da mesma fonte. */
+  document.querySelectorAll('[data-planta]').forEach(function(el){ el.innerHTML = rendered; });
 }
 
 function restartAnims(){
@@ -755,6 +633,12 @@ function restartAnims(){
   els.forEach(function(el){el.classList.add('reinit');void el.offsetWidth;});
   setTimeout(function(){els.forEach(function(el){el.classList.remove('reinit');});},30);
   document.querySelectorAll('.scroll-body').forEach(function(sb){sb.scrollTop=0;});
+}
+
+function setVazio(v, btn){
+  document.querySelectorAll('.vazio-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.screen').forEach(function(sc){ sc.classList.toggle('sem-sessoes', v); });
 }
 
 function setPlant(key,btn){

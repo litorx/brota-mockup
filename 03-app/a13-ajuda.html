@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota &middot; A13-Ajuda: Ajuda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* -- STUDIO -- */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:760px;margin:0 auto;}
+.brand-sub code{font-family:ui-monospace,monospace;font-size:11.5px;background:rgba(61,44,46,0.05);padding:1px 5px;border-radius:4px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.state-sep{width:1px;height:22px;background:var(--border);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* -- PHONE -- */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:290px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.screen{position:absolute;inset:0;background:var(--bg);}
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* -- TOPBAR: tela empilhada, entao volta (nao bottom nav) -- */
+.topbar{
+  position:absolute;top:0;left:0;right:0;height:98px;z-index:20;
+  display:flex;align-items:flex-end;gap:10px;padding:0 16px 12px;
+  background:linear-gradient(180deg,var(--bg) 62%,rgba(255,248,242,0));
+}
+.ios-screen .topbar{height:104px;background:rgba(255,248,242,0.82);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-bottom:0.5px solid var(--border);}
+.back-btn{
+  width:40px;height:40px;flex-shrink:0;border-radius:50%;border:none;background:transparent;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);
+  transition:background 0.2s,transform 0.2s;
+}
+.back-btn:hover{background:rgba(61,44,46,0.05);}
+.back-btn:active{transform:scale(0.92);}
+.back-btn svg{width:22px;height:22px;}
+.topbar-title{font-size:18px;font-weight:800;letter-spacing:-0.01em;}
+.ios-screen .topbar-title{font-size:17px;font-weight:700;}
+.back-label{font-size:15px;font-weight:600;color:var(--brand-real-deep);}
+.ios-screen .back-btn{width:auto;padding:0 4px 0 0;}
+
+/* -- SCROLL BODY -- */
+.scroll-body{
+  position:absolute;top:98px;left:0;right:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;padding:4px 20px 32px;
+  display:flex;flex-direction:column;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.ios-screen .scroll-body{top:104px;}
+.scroll-body::-webkit-scrollbar{display:none;}
+.scroll-body>*{flex-shrink:0;}
+
+/* -- BLOBS -- */
+.blob{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);}
+.blob1{width:340px;height:340px;top:-120px;left:-80px;background:var(--plant-color);opacity:0.07;}
+.blob2{width:280px;height:280px;bottom:40px;right:-60px;background:var(--brand-real);opacity:0.06;}
+
+/* -- PECAS COMUNS -- */
+.lead{font-size:13.5px;line-height:1.55;color:var(--text2);margin-bottom:16px;z-index:1;position:relative;}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin:16px 0 8px 4px;z-index:1;position:relative;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;z-index:1;position:relative;}
+.ios-screen .card{backdrop-filter:blur(10px) saturate(130%);background:rgba(255,255,255,0.88);box-shadow:var(--shadow),0 1px 0 rgba(255,255,255,0.60) inset;}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background 0.2s;}
+.row+.row{border-top:1px solid var(--border);}
+.row:hover{background:rgba(61,44,46,0.02);}
+.row-icon{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:rgba(61,44,46,0.04);display:flex;align-items:center;justify-content:center;color:var(--text2);}
+.row-info{flex:1;min-width:0;}
+.row-title{font-size:14px;font-weight:700;color:var(--text);}
+.row-desc{font-size:11.5px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.row-arrow{font-size:20px;color:var(--text3);flex-shrink:0;}
+.plant-note{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:13px 15px;border-radius:16px;margin-top:18px;z-index:1;position:relative;
+  background:rgba(var(--plant-color-rgb),0.09);border:1px solid rgba(var(--plant-color-rgb),0.16);
+}
+.plant-note .pmini{width:34px;height:34px;flex-shrink:0;}
+.plant-note .pmini svg{width:100%;height:100%;}
+.plant-note .ptext{font-size:12.5px;line-height:1.5;color:var(--text);font-style:italic;}
+.plant-note .pname{font-size:10.5px;font-weight:700;color:var(--plant-color);margin-bottom:2px;font-style:normal;}
+.cta{
+  width:100%;padding:15px;border:none;border-radius:16px;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:700;color:#fff;
+  background:var(--plant-color);box-shadow:0 4px 18px rgba(var(--plant-color-rgb),0.28);
+  transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);margin-top:18px;z-index:1;position:relative;
+}
+.ios-screen .cta{border-radius:14px;background:rgba(var(--plant-color-rgb),0.92);}
+.cta:active{transform:scale(0.97);}
+.cta.ghost{background:transparent;color:var(--text2);box-shadow:none;border:1.5px solid var(--border);}
+.cta.danger{background:transparent;color:#B3465F;box-shadow:none;border:1.5px solid rgba(179,70,95,0.35);}
+
+/* -- KEYFRAMES -- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes plantBreathe{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-3px) scale(1.02);}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+
+.faq{padding:0 16px;}
+.faq+.faq{border-top:1px solid var(--border);}
+.faq-q{display:flex;align-items:center;gap:10px;padding:14px 0;cursor:pointer;}
+.faq-q .qt{flex:1;font-size:13.5px;font-weight:700;line-height:1.35;}
+.faq-q .chev{font-size:18px;color:var(--text3);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+.faq.open .faq-q .chev{transform:rotate(90deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.32,0.72,0,1);}
+.faq.open .faq-a{max-height:220px;}
+.faq-a p{font-size:12.5px;line-height:1.55;color:var(--text2);padding-bottom:14px;}
+.support{
+  margin-top:18px;padding:15px 16px;border-radius:18px;z-index:1;position:relative;
+  background:rgba(255,208,122,0.16);border:1px solid rgba(255,208,122,0.42);
+}
+.support-t{font-size:13.5px;font-weight:800;margin-bottom:4px;}
+.support-d{font-size:12px;line-height:1.5;color:var(--text2);margin-bottom:11px;}
+.support-row{display:flex;gap:8px;}
+.support-btn{
+  flex:1;padding:10px;border-radius:12px;border:1px solid rgba(61,44,46,0.10);
+  background:var(--card);font-family:inherit;font-size:12.5px;font-weight:700;color:var(--text);
+  cursor:pointer;text-align:center;
+}
+
+</style>
+<script src="../shared/responsive.js"></script>
+</head>
+<body>
+<div class="studio">
+  <header class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; A13-Ajuda</div>
+    <h1 class="brand-title">Ajuda<em>Duvidas comuns e contato &middot; acessada pelo Perfil</em></h1>
+    <div class="brand-sub">Destino da linha <strong>Ajuda</strong> do A10-Perfil. Perguntas abrem no lugar (accordion), sem tela nova. O card de apoio leva <strong>ao contato do time</strong>, o unico lugar fixo do app onde eles vivem fora dos fluxos de crise (G1). Volta para <code>A10-Perfil</code>.</div>
+  </header>
+  <div class="controls" id="controls">
+    <button class="state-btn active" onclick="setPlant('s1',this)">Lavanda / Ana</button>
+    <button class="state-btn" onclick="setPlant('s2',this)">Girassol / Bia</button>
+    <button class="state-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
+    <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira / Dani</button>
+    <button class="state-btn" onclick="setPlant('s5',this)">Lotus / Eva</button>
+  </div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<script src="../shared/plant-svgs.js"></script>
+<script src="../shared/icons.js"></script>
+<script>
+var plants = {
+  s1:{name:'Ana',  plant:'Lavanda',   color:'#C4B0E0',rgb:'196,176,224'},
+  s2:{name:'Bia',  plant:'Girassol',  color:'#F2CE6B',rgb:'242,206,107'},
+  s3:{name:'Carol',plant:'Cacto',     color:'#8CC5A0',rgb:'140,197,160'},
+  s4:{name:'Dani', plant:'Cerejeira', color:'#F2B5C4',rgb:'242,181,196'},
+  s5:{name:'Eva',  plant:'Lotus',     color:'#D4B8D4',rgb:'212,184,212'}
+};
+var cur = plants.s1;
+var aberta = 0;
+
+var STATUS = '<div class="statusbar"><span class="stime">9:41</span><span class="sicons">'
+  + '<svg width="15" height="11" fill="currentColor"><rect x="0" y="4" width="3" height="7" rx="0.5" opacity="0.4"/>'
+  + '<rect x="4" y="2.5" width="3" height="8.5" rx="0.5" opacity="0.5"/><rect x="8" y="1" width="3" height="10" rx="0.5" opacity="0.7"/>'
+  + '<rect x="12" y="0" width="3" height="11" rx="0.5"/></svg></span></div>';
+
+function backIcon(isIos){
+  return isIos
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>';
+}
+
+function render(){
+  var stage = document.getElementById('stage');
+  stage.innerHTML = '';
+  [['a','Android &middot; Material 3 Expressive','Accordion M3 &middot; card de apoio em peach amber'],
+   ['i','iOS 26 &middot; Liquid Glass','Disclosure group &middot; mesmo card']].forEach(function(cfg){
+    var p = cfg[0], isIos = (p === 'i');
+    var h = '<div class="phone-wrapper"><div class="phone-label">'
+      + '<span class="pill ' + (isIos ? 'ios' : 'android') + '">' + cfg[1] + '</span>'
+      + '<span class="desc">' + cfg[2] + '</span></div>'
+      + '<div class="phone"><div class="phone-screen">'
+      + '<div class="screen ' + (isIos ? 'ios-screen' : 'a-screen') + '" id="' + p + '-screen">'
+      + '<div class="blob blob1"></div><div class="blob blob2"></div>'
+      + (isIos ? '<div class="dyna"></div>' : '') + STATUS
+      + '<div class="topbar">'
+      +   '<button class="back-btn" onclick="voltar(this)">' + backIcon(isIos) + '</button>'
+      +   (isIos ? '<span class="back-label">Perfil</span>' : '')
+      +   '<span class="topbar-title">Ajuda</span>'
+      + '</div>'
+      + '<div class="scroll-body" id="' + p + '-body">' + corpo(p, isIos) + '</div>'
+      + '</div></div></div></div>';
+    stage.innerHTML += h;
+  });
+  aplicarCor();
+  if (window.Icons) Icons.hydrate(document);
+  
+}
+
+/* A volta e sempre para A10-Perfil: estas telas so existem empilhadas a partir de la. */
+function voltar(btn){
+  btn.style.transform = 'scale(0.85)';
+  setTimeout(function(){ btn.style.transform = ''; }, 180);
+}
+
+function aplicarCor(){
+  ['a','i'].forEach(function(p){
+    var el = document.getElementById(p + '-screen');
+    if(!el) return;
+    el.style.setProperty('--plant-color', cur.color);
+    el.style.setProperty('--plant-color-rgb', cur.rgb);
+  });
+}
+
+function setPlant(key, btn){
+  cur = plants[key];
+  document.querySelectorAll('.state-btn:not(.scene-btn)').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  render();
+}
+
+var FAQ = [
+  {q:'A Brota bloqueia meus apps?',
+   a:'Nao. Ela aparece antes, pede um cuidado rapido e te deixa entrar. A escolha continua sendo sua, sempre.'},
+  {q:'Por que ela precisa da permissao de tempo de uso?',
+   a:'So pra saber QUANDO voce abre um app que voce mesma marcou. Ela nunca ve o que aparece na tela.'},
+  {q:'Posso desligar o acompanhamento do ciclo?',
+   a:'A qualquer momento, em Perfil &rsaquo; Adaptar ao ciclo. Ao desligar, a data que voce contou e apagada.'},
+  {q:'O que acontece se eu ignorar a planta?',
+   a:'Nada de ruim. Ela fica descansando por um tempo e volta quando voce voltar. Sem cobranca, sem culpa.'},
+  {q:'Como cancelo a assinatura?',
+   a:'Em Perfil &rsaquo; Assinatura, ou direto na sua conta da loja. Seu acesso continua ate o fim do periodo pago.'}
+];
+
+function corpo(p, isIos){
+  var h = '<div class="lead anim-el" style="animation-delay:0.06s">As duvidas que mais aparecem. Se a sua nao estiver aqui, a gente responde.</div>';
+  h += '<div class="card anim-el" style="animation-delay:0.12s">';
+  FAQ.forEach(function(f, i){
+    h += '<div class="faq' + (i === aberta ? ' open' : '') + '" id="' + p + '-faq-' + i + '">'
+      + '<div class="faq-q" onclick="abrir(' + i + ')"><span class="qt">' + f.q + '</span><span class="chev">&rsaquo;</span></div>'
+      + '<div class="faq-a"><p>' + f.a + '</p></div></div>';
+  });
+  h += '</div>';
+
+  h += '<div class="support anim-el" style="animation-delay:0.26s">'
+    + '<div class="support-t">Precisa de mais do que a gente pode dar?</div>'
+    + '<div class="support-d">A Brota e uma companheira, nao um servico de saude. Se a barra pesar de verdade, tem gente preparada pra te escutar agora.</div>'
+    + '<div class="support-row">'
+    +   '<button class="support-btn">Falar com a gente</button>'
+    + '</div></div>';
+
+  h += '<div class="card anim-el" style="animation-delay:0.34s;margin-top:16px">'
+    + '<div class="row"><div class="row-icon"><i data-icon="envelope"></i></div>'
+    + '<div class="row-info"><div class="row-title">Falar com a gente</div>'
+    + '<div class="row-desc">oi@brota.app &middot; respondemos em ate 2 dias</div></div>'
+    + '<div class="row-arrow">&rsaquo;</div></div></div>';
+
+  h += '<div class="plant-note anim-el" style="animation-delay:0.30s">' + '<div class="pmini">' + renderPlantSVG(cur.plant, cur.color) + '</div>' + '<div><div class="pname">' + cur.plant + ':</div>' + '<div class="ptext">' + 'Perguntar nao tem nada de errado, ' + cur.name + '.' + '</div></div></div>';
+  return h;
+}
+
+function abrir(i){
+  aberta = (aberta === i) ? -1 : i;
+  ['a','i'].forEach(function(p){
+    FAQ.forEach(function(_, k){
+      var el = document.getElementById(p + '-faq-' + k);
+      if(el) el.classList.toggle('open', k === aberta);
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>

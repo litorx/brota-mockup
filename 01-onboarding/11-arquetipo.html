@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 11: Arquetipo da Planta</title>
+<title>Brota &middot; Screen 11: Arquetipo da Planta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -291,6 +291,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -299,7 +300,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <div class="brand-eyebrow">Brota &middot; Onboarding &middot; Screen 12 de 19 &middot; O12-Arquetipo</div>
     <h1 class="brand-title">Qual flor ela vai se tornar? <em>5 arquetipos &middot; SVG botanico Android &middot; emoji nativo iOS</em></h1>
     <p class="brand-sub">
-      A semente brotou em O11. Agora a usuaria escolhe o arquetipo da sua planta &mdash; cada uma com tom, cor e mecanismo psicologico proprios.
+      A semente brotou em O11. Agora a usuaria escolhe o arquetipo da sua planta, cada uma com tom, cor e mecanismo psicologico proprios.
       Android usa icones SVG botanicos personalizados. iOS usa emoji nativo.
     </p>
   </div>
@@ -421,7 +422,6 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
                 <div class="card-text"><div class="card-name">Lotus</div><div class="card-tag">Quero descansar</div></div>
                 <div class="ios-check" style="background: #D4B8D4">&#10003;</div>
               </div>
-              </div>
             </div>
           </div>
           <button class="ios-cta-arch" id="ios-cta-arch">Essa e minha planta</button>
@@ -436,8 +436,8 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android &middot; M3 Expressive</h4>
     <ul>
-      <li>Icones SVG botanicos personalizados por arquetipo — <strong>Lavanda</strong>: 3 espigas com flores miudas. <strong>Cacto</strong>: saguaro com bracos e florzinha rosa. <strong>Girassol</strong>: vista frontal com petalas radiadas. <strong>Cerejeira</strong>: galho com 3 flores de 5 petalas + petalas caindo. <strong>Lotus</strong>: flor abrindo sobre agua.</li>
-      <li>Containers <code>40x40 border-radius:14px</code> com <code>rgba(cor,0.15)</code>. SVGs em <code>26x26</code> com <code>iconFloat</code> — micro-flutuacao 1.5px continua.</li>
+      <li>Icones SVG botanicos personalizados por arquetipo, <strong>Lavanda</strong>: 3 espigas com flores miudas. <strong>Cacto</strong>: saguaro com bracos e florzinha rosa. <strong>Girassol</strong>: vista frontal com petalas radiadas. <strong>Cerejeira</strong>: galho com 3 flores de 5 petalas + petalas caindo. <strong>Lotus</strong>: flor abrindo sobre agua.</li>
+      <li>Containers <code>40x40 border-radius:14px</code> com <code>rgba(cor,0.15)</code>. SVGs em <code>26x26</code> com <code>iconFloat</code>, micro-flutuacao 1.5px continua.</li>
       <li>Selecao: card preenche com cor. Icone inverte para branco via <code>filter: brightness(0) invert(1)</code>. Background do container muda para <code>rgba(255,255,255,0.22)</code>.</li>
       <li>Spring <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> em tudo. Stagger +140ms por card.</li>
     </ul>
@@ -445,7 +445,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note ios">
     <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
     <ul>
-      <li>Emoji nativo Apple. iOS renderiza todos os emoji corretamente — nenhuma substituicao necessaria.</li>
+      <li>Emoji nativo Apple. iOS renderiza todos os emoji corretamente, nenhuma substituicao necessaria.</li>
       <li>Cards <code>.regularMaterial</code> com <code>blur(20px) saturate(160%)</code>.</li>
       <li>Selecao: borda colorida + tint + checkmark com spring. HIG pattern.</li>
       <li>CTA <code>backdrop-filter: blur(24px) saturate(180%)</code> + specular inset.</li>
@@ -486,7 +486,7 @@ function pick(id) {
     aCard.style.boxShadow = '0 6px 28px ' + arch.glow;
   }
 
-  // iOS — same style as Android
+  // iOS, same style as Android
   document.querySelectorAll('.ios-card').forEach(function(c) {
     c.classList.remove('selected');
     c.style.removeProperty('background');
@@ -525,7 +525,7 @@ function renderCards() {
   archetypes.forEach(function(a) {
     var html = renderPlantSVG(a.id, a.color, false);
     document.querySelectorAll(
-      '.a-card[data-id="' + a.id + '"] .card-emoji, .ios-card[data-id="' + a.id + '"] .card-emoji'
+      '.a-card[data-id="' + a.id + '"] .card-emoji.ios-card[data-id="' + a.id + '"] .card-emoji'
     ).forEach(function(span) { span.innerHTML = html; });
   });
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota &mdash; Screen 17: Plano</title>
+<title>Brota &middot; Screen 17: Plano</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -178,6 +178,16 @@ body.dark { background: #1A1418; }
   transition:color 0.7s ease;
 }
 
+/* Cycle row — promoted from generic bullet to a visibly "already-learned-about-you" row */
+.a-row-cycle {
+  position:relative;
+  background:rgba(var(--plant-color-rgb,155,143,212), 0.055);
+  border-left:3px solid rgba(var(--plant-color-rgb,155,143,212), 0.55);
+  padding-left:16px;
+  transition:background 0.7s ease, border-color 0.7s ease;
+}
+.a-row-cycle.is-off { background:transparent; border-left-color:transparent; padding-left:18px; }
+
 /* Row stagger */
 .a-row-1 { animation:rowIn 0.48s cubic-bezier(0.34,1.56,0.64,1) 0.96s forwards; }
 .a-row-2 { animation:rowIn 0.48s cubic-bezier(0.34,1.56,0.64,1) 1.10s forwards; }
@@ -291,6 +301,16 @@ body.dark { background: #1A1418; }
   color:#3D2C2E;
 }
 
+/* Cycle row — promoted, mirrors Android */
+.ios-row-cycle {
+  position:relative;
+  background:rgba(var(--plant-color-rgb,155,143,212), 0.055);
+  border-left:3px solid rgba(var(--plant-color-rgb,155,143,212), 0.55);
+  padding-left:16px;
+  transition:background 0.7s ease, border-color 0.7s ease;
+}
+.ios-row-cycle.is-off { background:transparent; border-left-color:transparent; padding-left:18px; }
+
 /* iOS Row stagger */
 .ios-row-1 { animation:rowInHIG 0.44s cubic-bezier(0.32,0.72,0,1) 0.96s forwards; }
 .ios-row-2 { animation:rowInHIG 0.44s cubic-bezier(0.32,0.72,0,1) 1.10s forwards; }
@@ -332,6 +352,7 @@ body.dark { background: #1A1418; }
 .note li { font-size:12px; color:#C4B5B7; line-height:1.68; margin-bottom:7px; }
 .note code { background:rgba(61,44,46,0.04); padding:1px 5px; border-radius:4px; font-size:11px; }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 
 <body>
@@ -341,20 +362,27 @@ body.dark { background: #1A1418; }
     <div class="brand-eyebrow">Brota &middot; Onboarding &middot; Screen 17 de 18 &middot; O17-Plano</div>
     <h1 class="brand-title">O que vai mudar pra voc&ecirc;. <em>3 promessas em linguagem humana &middot; setup + payoff por linha &middot; dados dela como evidência &middot; social proof pré-paywall</em></h1>
     <p class="brand-sub">
-      Cada linha usa os dados que ela deu — rede, hor&aacute;rio, objetivo — e traduz em
+      Cada linha usa os dados que ela deu, rede, hor&aacute;rio, objetivo, e traduz em
       experi&ecirc;ncia concreta: o que vai acontecer, n&atilde;o o nome da feature.
       &ldquo;Mirror ativo para&rdquo; vira &ldquo;Sua Lavanda aparece quando voc&ecirc; abrir o Instagram &agrave; noite.&rdquo;
+      <strong>Linha 2 (Cycle Shield) promovida:</strong> fundo tintado + borda de destaque, sem crachá/etiqueta, a planta fala em primeira pessoa, nunca &ldquo;voc&ecirc; me contou&rdquo; (isso soa a confirma&ccedil;&atilde;o de dado,
+      n&atilde;o cuidado). Copy varia com a resposta dada em O14B (esperando / nela agora). Se ela desativou o ciclo em O14B,
+      a linha volta ao tratamento neutro, sem pressionar, decis&atilde;o dela continua valendo.
     </p>
   </div>
 
   <div class="controls">
     <button class="theme-btn" onclick="document.body.classList.toggle('dark')">&#9790; Tema</button>
     <div class="state-sep"></div>
-    <button class="state-btn active" data-s="s1" onclick="setState('s1')">Lavanda &mdash; Ana</button>
-    <button class="state-btn"        data-s="s2" onclick="setState('s2')">Girassol &mdash; Bia</button>
-    <button class="state-btn"        data-s="s3" onclick="setState('s3')">Cacto &mdash; Carol</button>
-    <button class="state-btn"        data-s="s4" onclick="setState('s4')">Cerejeira &mdash; Dani</button>
-    <button class="state-btn"        data-s="s5" onclick="setState('s5')">Lotus &mdash; Eva</button>
+    <button class="state-btn active" data-s="s1" onclick="setState('s1')">Lavanda, Ana</button>
+    <button class="state-btn"        data-s="s2" onclick="setState('s2')">Girassol, Bia</button>
+    <button class="state-btn"        data-s="s3" onclick="setState('s3')">Cacto, Carol</button>
+    <button class="state-btn"        data-s="s4" onclick="setState('s4')">Cerejeira, Dani</button>
+    <button class="state-btn"        data-s="s5" onclick="setState('s5')">Lotus, Eva</button>
+    <div class="state-sep"></div>
+    <button class="state-btn active" data-c="waiting"  onclick="setCycle('waiting')">Ciclo, esperando a semana</button>
+    <button class="state-btn"        data-c="active"   onclick="setCycle('active')">Ciclo, nela agora</button>
+    <button class="state-btn"        data-c="off"       onclick="setCycle('off')">Ciclo, desativado (O14B off)</button>
     <div class="state-sep"></div>
     <button class="theme-btn" onclick="restartAnims()">&#8635; Replay</button>
   </div>
@@ -403,10 +431,10 @@ body.dark { background: #1A1418; }
                   <span class="a-row-promise" id="a-promise1">Sua Lavanda aparece antes.</span>
                 </div>
 
-                <!-- Promise 2: Cycle Shield -->
-                <div class="a-plan-row anim-el a-row-2">
-                  <span class="a-row-setup">Nos seus dias mais sens&iacute;veis</span>
-                  <span class="a-row-promise">Estou mais perto quando voc&ecirc; mais precisa.</span>
+                <!-- Promise 2: Cycle Shield — promoted row, personalized with what she told the plant in O14B -->
+                <div class="a-plan-row a-row-cycle anim-el a-row-2" id="a-row-cycle">
+                  <span class="a-row-setup" id="a-setup2">Tem uma semana que pesa mais pra voc&ecirc;</span>
+                  <span class="a-row-promise" id="a-promise2">Vou ficar mais perto bem antes dela chegar.</span>
                 </div>
 
                 <!-- Promise 3: Method (fixed — Feed Cleanse without the jargon) -->
@@ -477,10 +505,10 @@ body.dark { background: #1A1418; }
                   <span class="ios-row-promise" id="ios-promise1">Sua Lavanda aparece antes.</span>
                 </div>
 
-                <!-- Promise 2: Cycle Shield -->
-                <div class="ios-plan-row anim-el ios-row-2">
-                  <span class="ios-row-setup">Nos seus dias mais sens&iacute;veis</span>
-                  <span class="ios-row-promise">Estou mais perto quando voc&ecirc; mais precisa.</span>
+                <!-- Promise 2: Cycle Shield — promoted row, personalized with what she told the plant in O14B -->
+                <div class="ios-plan-row ios-row-cycle anim-el ios-row-2" id="ios-row-cycle">
+                  <span class="ios-row-setup" id="ios-setup2">Tem uma semana que pesa mais pra voc&ecirc;</span>
+                  <span class="ios-row-promise" id="ios-promise2">Vou ficar mais perto bem antes dela chegar.</span>
                 </div>
 
                 <!-- Promise 3 -->
@@ -518,19 +546,19 @@ body.dark { background: #1A1418; }
     <div class="note android">
       <h4>Android &middot; M3 Expressive</h4>
       <ul>
-        <li><strong>Linguagem humana, n&atilde;o feature-labels.</strong> "Mirror ativo para" vira "Quando voc&ecirc; abrir o Instagram &agrave; noite / Sua Lavanda aparece antes." — a usuária entende o que vai acontecer, n&atilde;o o nome técnico. "Feed Cleanse" vira "Limpamos juntas o que te machuca no feed." Referencia <strong>Headspace</strong> (plan screen usa outcomes, n&atilde;o feature names).</li>
+        <li><strong>Linguagem humana, n&atilde;o feature-labels.</strong> "Mirror ativo para" vira "Quando voc&ecirc; abrir o Instagram &agrave; noite / Sua Lavanda aparece antes.", a usuária entende o que vai acontecer, n&atilde;o o nome técnico. "Feed Cleanse" vira "Limpamos juntas o que te machuca no feed." Referencia <strong>Headspace</strong> (plan screen usa outcomes, n&atilde;o feature names).</li>
         <li><strong>Setup + payoff por linha:</strong> 12px muted (o contexto dela) → 16px bold (o que acontece). Cria ritmo de leitura: primeiro reconhecimento ("sim, &eacute; isso que eu faço") depois promessa. Spring <code>(0.34,1.56,0.64,1)</code> com overshoot nas 3 linhas, delay escalonado 180ms. Referencia <strong>Finch</strong> (companion promises in plain language).</li>
-        <li><strong>Outcome em plant-color</strong>: "Voc&ecirc; vai se comparar menos." aparece na cor da planta dela — cria hierarquia emocional, a linha mais importante visualmente é a promessa final. Referencia <strong>Gentler Streak</strong> (2024 ADA — destaque da promessa em cor de marca).</li>
-        <li><strong>Social proof antes do CTA:</strong> "Mulheres com perfil similar relatam melhora em 2 semanas." — do roadmap, chega em 1.52s logo ap&oacute;s a terceira promessa. Converte ceticismo antes do "Começar meu plano →". Referencia <strong>Quittr</strong> (social proof at paywall entry).</li>
+        <li><strong>Outcome em plant-color</strong>: "Voc&ecirc; vai se comparar menos." aparece na cor da planta dela, cria hierarquia emocional, a linha mais importante visualmente é a promessa final. Referencia <strong>Gentler Streak</strong> (2024 ADA, destaque da promessa em cor de marca).</li>
+        <li><strong>Social proof antes do CTA:</strong> "Mulheres com perfil similar relatam melhora em 2 semanas.", do roadmap, chega em 1.52s logo ap&oacute;s a terceira promessa. Converte ceticismo antes do "Começar meu plano →". Referencia <strong>Quittr</strong> (social proof at paywall entry).</li>
       </ul>
     </div>
     <div class="note ios">
       <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
       <ul>
-        <li>Card: <code>backdrop-filter: blur(24px) saturate(160%)</code> + <code>rgba(255,255,255,0.05)</code> — regularMaterial can&ocirc;nico. <strong>N&atilde;o usa</strong> <code>.glassEffect()</code> no card (conte&uacute;do, n&atilde;o controle). Header tinted sem blur adicional. <code>cardInHIG</code>: blur-to-focus sem overshoot — signature HIG. Referencia <strong>Crouton</strong> (2024 ADA).</li>
-        <li>Setup: SF Pro Text 12pt wght:400 — Footnote style HIG. Payoff: SF Pro Text 16pt wght:600 — Body Emphasized. Tracking negativo (-0.28px) em body size is canonical HIG. Sem overshoot nas linhas — <code>(0.32,0.72,0,1)</code> padr&atilde;o. Referencia <strong>Things 3</strong>.</li>
-        <li>iOS n&atilde;o usa <code>font-variation-settings</code> (SF &eacute; system font com optical sizing autom&aacute;tico). Outcome em plant-color via CSS var — mesma hierarquia visual do Android, tipografia nativa. Referencia <strong>Day One</strong> (2024 ADA — plant-color accent para momento emocional).</li>
-        <li>CTA glass: <code>rgba(plant-color, 0.82)</code> + specular inset + box-shadow glow — padr&atilde;o aprovado em O1 e mantido. Atualizado por arqu&eacute;tipo via JS. Referencia <strong>Apple Music</strong> (iOS 26 Liquid Glass CTA).</li>
+        <li>Card: <code>backdrop-filter: blur(24px) saturate(160%)</code> + <code>rgba(255,255,255,0.05)</code>, regularMaterial can&ocirc;nico. <strong>N&atilde;o usa</strong> <code>.glassEffect()</code> no card (conte&uacute;do, n&atilde;o controle). Header tinted sem blur adicional. <code>cardInHIG</code>: blur-to-focus sem overshoot, signature HIG. Referencia <strong>Crouton</strong> (2024 ADA).</li>
+        <li>Setup: SF Pro Text 12pt wght:400, Footnote style HIG. Payoff: SF Pro Text 16pt wght:600, Body Emphasized. Tracking negativo (-0.28px) em body size is canonical HIG. Sem overshoot nas linhas, <code>(0.32,0.72,0,1)</code> padr&atilde;o. Referencia <strong>Things 3</strong>.</li>
+        <li>iOS n&atilde;o usa <code>font-variation-settings</code> (SF &eacute; system font com optical sizing autom&aacute;tico). Outcome em plant-color via CSS var, mesma hierarquia visual do Android, tipografia nativa. Referencia <strong>Day One</strong> (2024 ADA, plant-color accent para momento emocional).</li>
+        <li>CTA glass: <code>rgba(plant-color, 0.82)</code> + specular inset + box-shadow glow, padr&atilde;o aprovado em O1 e mantido. Atualizado por arqu&eacute;tipo via JS. Referencia <strong>Apple Music</strong> (iOS 26 Liquid Glass CTA).</li>
       </ul>
     </div>
   </section>
@@ -590,6 +618,40 @@ var states = {
 };
 
 var currentState = 's1';
+var currentCycle = 'waiting';
+
+/* Row 2 reflects the exact choice she made in O14B — falada pela planta, nunca "você me contou" (soa a confirmação de dado, não cuidado) */
+var cycleStates = {
+  waiting: {
+    setup:   'Tem uma semana que pesa mais pra você',
+    promise: 'Vou ficar mais perto bem antes dela chegar.',
+    off: false
+  },
+  active: {
+    setup:   'Você tá numa semana mais sensível agora',
+    promise: 'Tô mais perto, do jeito que você precisa hoje.',
+    off: false
+  },
+  off: {
+    setup:   'Nos seus dias mais sensíveis',
+    promise: 'Fico mais gentil quando o peso aumenta.',
+    off: true
+  }
+};
+
+function setCycle(c) {
+  currentCycle = c;
+  document.querySelectorAll('[data-c]').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.c === c);
+  });
+  var st = cycleStates[c];
+  ['a', 'ios'].forEach(function(p) {
+    setText(p + '-setup2', st.setup);
+    setText(p + '-promise2', st.promise);
+    var row = document.getElementById(p + '-row-cycle');
+    if (row) row.classList.toggle('is-off', st.off);
+  });
+}
 
 function setText(id, val) {
   var el = document.getElementById(id);
@@ -652,6 +714,7 @@ function restartAnims() {
 }
 
 setState('s1');
+setCycle('waiting');
 </script>
 </body>
 </html>

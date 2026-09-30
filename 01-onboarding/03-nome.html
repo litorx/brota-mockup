@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 03: Nome</title>
+<title>Brota &middot; Screen 03: Nome</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -220,6 +220,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -229,7 +230,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <h1 class="brand-title">Nome <em>conector de validação + pergunta pessoal na mesma tela</em></h1>
     <p class="brand-sub">
       Conector 2 linhas (rose + dimmed) valida emocionalmente, então <em>"Como posso te chamar?"</em>
-      flui como continuação natural — íntima, não instrucional.
+      flui como continuação natural, íntima, não instrucional.
       Input grande sem label, placeholder discreto. CTA ao digitar.
     </p>
   </div>
@@ -261,7 +262,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Nome — Android">
+        <section class="screen android-screen" aria-label="Brota Nome, Android">
           <div class="a-blob-1"></div><div class="a-blob-2"></div><div class="a-blob-3"></div>
           <div class="a-body">
             <div class="a-conn-block">
@@ -300,7 +301,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Nome — iOS">
+        <section class="screen ios-screen" aria-label="Brota Nome, iOS">
           <div class="ios-orb a"></div><div class="ios-orb b"></div><div class="ios-orb c"></div>
           <div class="ios-body">
             <div class="ios-conn-block">
@@ -328,18 +329,18 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · Material 3 Expressive</h4>
     <ul>
-      <li>Conector 2 linhas: <em>"Você não está sozinha."</em> rose 86% → stat 36% white — valida antes de pedir qualquer coisa, sem abrir tela separada</li>
-      <li>H1 <em>"Como posso te chamar?"</em> — íntimo, no tom do app que está pedindo permissão para te conhecer, não um campo de formulário exigindo dado</li>
-      <li>Input 26sp Roboto Flex <code>wght 340</code> — leve contra o H1 620; sem label, sem container — só linha inferior 2px rose no foco</li>
-      <li>CTA aparece com spring M3E ao digitar a primeira letra — feedback imediato de que o app está ouvindo</li>
+      <li>Conector 2 linhas: <em>"Você não está sozinha."</em> rose 86% → stat 36% white, valida antes de pedir qualquer coisa, sem abrir tela separada</li>
+      <li>H1 <em>"Como posso te chamar?"</em>, íntimo, no tom do app que está pedindo permissão para te conhecer, não um campo de formulário exigindo dado</li>
+      <li>Input 26sp Roboto Flex <code>wght 340</code>, leve contra o H1 620; sem label, sem container, só linha inferior 2px rose no foco</li>
+      <li>CTA aparece com spring M3E ao digitar a primeira letra, feedback imediato de que o app está ouvindo</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>Mesma estrutura e copy — conector valida, H1 pergunta de forma pessoal, input responde</li>
+      <li>Mesma estrutura e copy, conector valida, H1 pergunta de forma pessoal, input responde</li>
       <li>TextField HIG plain: sem container, <code>border-bottom 1px</code> na wrap; satura para brand-real no <code>:focus-within</code></li>
-      <li>SF Pro Display 26pt <code>weight 300</code> — ultra-light para o nome contrasta com o 600 do H1</li>
+      <li>SF Pro Display 26pt <code>weight 300</code>, ultra-light para o nome contrasta com o 600 do H1</li>
       <li>CTA glass aprovado: <code>rgba(244,167,185,0.82)</code> + specular, aparece com <code>cubic-bezier(0.32,0.72,0,1)</code> ao digitar</li>
     </ul>
   </div>

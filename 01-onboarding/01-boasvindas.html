@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 01: Abertura</title>
+<title>Brota &middot; Screen 01: Abertura</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -327,6 +327,7 @@ body.dark .timing-table td { border: 1px solid rgba(61,44,46,0.08); }
   .beat { opacity: 1 !important; transform: none !important; }
 }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -335,10 +336,10 @@ body.dark .timing-table td { border: 1px solid rgba(61,44,46,0.08); }
     <div class="brand-eyebrow">Brota · Onboarding · Screen 01 de 18</div>
     <h1 class="brand-title">Abertura <em>sequência cinematográfica · sem botão</em></h1>
     <p class="brand-sub">
-      3 frases aparecem na velocidade da leitura, empilhando. Depois some tudo — auto-avança para O2.
+      3 frases aparecem na velocidade da leitura, empilhando. Depois some tudo, auto-avança para O2.
       Android: Roboto Flex <code>wght 340</code>, M3E spring na entrada <code>(0.34,1.56,0.64,1)</code>.
       iOS: SF Pro Display 31pt, HIG bezier sem overshoot <code>(0.32,0.72,0,1)</code>.
-      <em>"florescer"</em> em Instrument Serif italic rose — o único acento emocional da tela.
+      <em>"florescer"</em> em Instrument Serif italic rose, o único acento emocional da tela.
       Referência: <em>Calm</em> (onboarding full-dark) · <em>Apple TV+</em> (text reveal cinematográfico).
     </p>
   </div>
@@ -356,10 +357,10 @@ body.dark .timing-table td { border: 1px solid rgba(61,44,46,0.08); }
       <button class="state-btn" data-state="saida" onclick="setState('saida',this)" role="tab"><span>Saída</span></button>
     </div>
     <div class="timing-legend">
-      <span class="timing-chip">0.4s — Bem-vinda.</span>
-      <span class="timing-chip">1.9s — frase 2</span>
-      <span class="timing-chip">3.6s — florescer</span>
-      <span class="timing-chip">5.4s — saída</span>
+      <span class="timing-chip">0.4s, Bem-vinda.</span>
+      <span class="timing-chip">1.9s, frase 2</span>
+      <span class="timing-chip">3.6s, florescer</span>
+      <span class="timing-chip">5.4s, saída</span>
     </div>
   </div>
 </header>
@@ -382,7 +383,7 @@ body.dark .timing-table td { border: 1px solid rgba(61,44,46,0.08); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Abertura — Android">
+        <section class="screen android-screen" aria-label="Brota Abertura, Android">
           <div class="a-blob-1"></div>
           <div class="a-blob-2"></div>
           <div class="a-blob-3"></div>
@@ -420,7 +421,7 @@ body.dark .timing-table td { border: 1px solid rgba(61,44,46,0.08); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Abertura — iOS">
+        <section class="screen ios-screen" aria-label="Brota Abertura, iOS">
           <div class="ios-orb a"></div>
           <div class="ios-orb b"></div>
           <div class="ios-orb c"></div>
@@ -447,36 +448,36 @@ body.dark .timing-table td { border: 1px solid rgba(61,44,46,0.08); }
   <div class="note android">
     <h4>Android · Material 3 Expressive · Sequência</h4>
     <ul>
-      <li>Background <code>#0D0A0B</code> — rose-botanical dark; 3 blobs rosa morfando em 3 ritmos (20s / 28s / 16s) — ambiência viva durante os 6s da sequência</li>
-      <li>Entrada de cada beat: <code>cubic-bezier(0.34,1.56,0.64,1)</code> — micro spring-overshoot M3E, suave e vivo — referência <strong>Gentler Streak</strong> (2024 ADA Social Impact)</li>
-      <li>Beat 1 — Roboto Flex <code>wdth 105, wght 600, opsz 11</code>, 12px, uppercase, brand-real rose: tom íntimo, quase sussurrado</li>
-      <li>Beats 2+3 — Roboto Flex <code>wdth 108, wght 340, opsz 33</code>, 33px: peso leve deliberado — conversa, não declaração</li>
-      <li>"florescer" — Instrument Serif italic + brand-real: único acento emocional da tela, recebe a atenção máxima</li>
-      <li>Saída: <code>translateY(-10px) + opacity 0</code> em 0.75s ease — movimento para cima evoca leveza, não queda</li>
-      <li>Auto-avança para O2 após ~6.2s — sem input do usuário, sem botão, sem pressão</li>
+      <li>Background <code>#0D0A0B</code>, rose-botanical dark; 3 blobs rosa morfando em 3 ritmos (20s / 28s / 16s), ambiência viva durante os 6s da sequência</li>
+      <li>Entrada de cada beat: <code>cubic-bezier(0.34,1.56,0.64,1)</code>, micro spring-overshoot M3E, suave e vivo, referência <strong>Gentler Streak</strong> (2024 ADA Social Impact)</li>
+      <li>Beat 1, Roboto Flex <code>wdth 105, wght 600, opsz 11</code>, 12px, uppercase, brand-real rose: tom íntimo, quase sussurrado</li>
+      <li>Beats 2+3, Roboto Flex <code>wdth 108, wght 340, opsz 33</code>, 33px: peso leve deliberado, conversa, não declaração</li>
+      <li>"florescer", Instrument Serif italic + brand-real: único acento emocional da tela, recebe a atenção máxima</li>
+      <li>Saída: <code>translateY(-10px) + opacity 0</code> em 0.75s ease, movimento para cima evoca leveza, não queda</li>
+      <li>Auto-avança para O2 após ~6.2s, sem input do usuário, sem botão, sem pressão</li>
     </ul>
     <table class="timing-table">
-      <tr><td>T+0.4s</td><td>0.6s</td><td>Beat 1 — "Bem-vinda."</td></tr>
-      <tr><td>T+1.9s</td><td>0.8s</td><td>Beat 2 — "Você não precisa ser diferente aqui."</td></tr>
-      <tr><td>T+3.6s</td><td>0.8s</td><td>Beat 3 — "Pode só florescer."</td></tr>
-      <tr><td>T+5.4s</td><td>0.75s</td><td>Todos saem — crossfade para O2</td></tr>
+      <tr><td>T+0.4s</td><td>0.6s</td><td>Beat 1, "Bem-vinda."</td></tr>
+      <tr><td>T+1.9s</td><td>0.8s</td><td>Beat 2, "Você não precisa ser diferente aqui."</td></tr>
+      <tr><td>T+3.6s</td><td>0.8s</td><td>Beat 3, "Pode só florescer."</td></tr>
+      <tr><td>T+5.4s</td><td>0.75s</td><td>Todos saem, crossfade para O2</td></tr>
     </table>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG · Sequência</h4>
     <ul>
-      <li>Background <code>#0B090C</code> — deep dark com undertone rose; 3 orbs estáticos (HIG spec): 420pt 28% + 320pt 15% + 200pt 8%</li>
-      <li>Entrada de cada beat: <code>cubic-bezier(0.32,0.72,0,1)</code> — HIG padrão, sem overshoot: digno, controlado, merecido</li>
-      <li>Beat 1 — SF Pro Text 12pt, 600 weight, uppercase: toque humano, quase um abraço textual</li>
-      <li>Beats 2+3 — SF Pro Display 31pt Regular, tracking -0.5px: peso 400 intencional — HIG para onboarding emocional, não instrucional</li>
-      <li>"florescer" — Instrument Serif italic rose: os dois platforms compartilham este acento visual — coerência de marca across platforms</li>
+      <li>Background <code>#0B090C</code>, deep dark com undertone rose; 3 orbs estáticos (HIG spec): 420pt 28% + 320pt 15% + 200pt 8%</li>
+      <li>Entrada de cada beat: <code>cubic-bezier(0.32,0.72,0,1)</code>, HIG padrão, sem overshoot: digno, controlado, merecido</li>
+      <li>Beat 1, SF Pro Text 12pt, 600 weight, uppercase: toque humano, quase um abraço textual</li>
+      <li>Beats 2+3, SF Pro Display 31pt Regular, tracking -0.5px: peso 400 intencional, HIG para onboarding emocional, não instrucional</li>
+      <li>"florescer", Instrument Serif italic rose: os dois platforms compartilham este acento visual, coerência de marca across platforms</li>
       <li>Timing idêntico ao Android: a experiência emocional é a mesma, a linguagem de motion é nativa de cada plataforma</li>
       <li>Referência: <strong>Apple TV+</strong> (text reveal cinematográfico) · <strong>Calm</strong> (onboarding dark full-screen sem prompt) · <strong>Headspace</strong> (personagem first, zero quiz nos primeiros segundos)</li>
     </ul>
     <table class="timing-table">
-      <tr><td>T+0.4s</td><td>0.58s</td><td>Beat 1 — "Bem-vinda."</td></tr>
-      <tr><td>T+1.9s</td><td>0.68s</td><td>Beat 2 — "Você não precisa ser diferente aqui."</td></tr>
-      <tr><td>T+3.6s</td><td>0.68s</td><td>Beat 3 — "Pode só florescer."</td></tr>
+      <tr><td>T+0.4s</td><td>0.58s</td><td>Beat 1, "Bem-vinda."</td></tr>
+      <tr><td>T+1.9s</td><td>0.68s</td><td>Beat 2, "Você não precisa ser diferente aqui."</td></tr>
+      <tr><td>T+3.6s</td><td>0.68s</td><td>Beat 3, "Pode só florescer."</td></tr>
       <tr><td>T+5.4s</td><td>0.75s</td><td>Saída suave → O2 auto-advance</td></tr>
     </table>
   </div>

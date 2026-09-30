@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 05: Gatilhos</title>
+<title>Brota &middot; Screen 05: Gatilhos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -93,7 +93,7 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   font-family: 'Nunito', sans-serif;
   font-variation-settings: 'wdth' 100, 'wght' 360, 'opsz' 13;
   font-size: 13px; line-height: 1.5; color: #C4B5B7;
-  opacity: 0; animation: fadeUp 0.70s ease-out 0.90s forwards;
+  opacity: 0; animation: fadeUp 0.65s ease-out 0.90s forwards;
 }
 
 .a-h1 {
@@ -108,11 +108,18 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   font-family: 'Nunito', sans-serif;
   font-variation-settings: 'wdth' 100, 'wght' 380, 'opsz' 13;
   font-size: 13px; color: #C4B5B7;
-  opacity: 0; animation: fadeUp 0.65s ease-out 2.20s forwards;
+  opacity: 0; animation: fadeUp 0.65s ease-out 0.90s forwards;
 }
 
-/* Opções — coluna única, texto descritivo */
+/* Opções — coluna única, texto descritivo. Cada uma entra na sua vez (stagger padrão: 130ms, 0.45s duration) */
 .a-options { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+
+.a-opt:nth-child(1) { opacity: 0; animation: fadeUp 0.45s ease-out 1.30s forwards; }
+.a-opt:nth-child(2) { opacity: 0; animation: fadeUp 0.45s ease-out 1.43s forwards; }
+.a-opt:nth-child(3) { opacity: 0; animation: fadeUp 0.45s ease-out 1.56s forwards; }
+.a-opt:nth-child(4) { opacity: 0; animation: fadeUp 0.45s ease-out 1.69s forwards; }
+.a-opt:nth-child(5) { opacity: 0; animation: fadeUp 0.45s ease-out 1.82s forwards; }
+.a-opt:nth-child(6) { opacity: 0; animation: fadeUp 0.45s ease-out 1.95s forwards; }
 
 .a-opt {
   width: 100%; padding: 14px 20px;
@@ -135,13 +142,6 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   box-shadow: 0 4px 18px rgba(244,167,185,0.36);
 }
 
-/* Stagger individual das opções */
-.a-opt:nth-child(1) { opacity: 0; animation: fadeUp 0.52s ease-out 2.80s forwards; }
-.a-opt:nth-child(2) { opacity: 0; animation: fadeUp 0.52s ease-out 3.00s forwards; }
-.a-opt:nth-child(3) { opacity: 0; animation: fadeUp 0.52s ease-out 3.20s forwards; }
-.a-opt:nth-child(4) { opacity: 0; animation: fadeUp 0.52s ease-out 3.40s forwards; }
-.a-opt:nth-child(5) { opacity: 0; animation: fadeUp 0.52s ease-out 3.60s forwards; }
-.a-opt:nth-child(6) { opacity: 0; animation: fadeUp 0.52s ease-out 3.80s forwards; }
 
 .a-cta {
   position: absolute; bottom: 36px; left: 22px; right: 22px;
@@ -181,7 +181,7 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
   font-size: 13px; font-weight: 400; letter-spacing: -0.1px; line-height: 1.5;
   color: #C4B5B7;
-  opacity: 0; animation: fadeUp 0.70s cubic-bezier(0.32, 0.72, 0, 1) 0.90s forwards;
+  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 0.90s forwards;
 }
 
 .ios-h1 {
@@ -195,10 +195,17 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
   font-size: 13px; font-weight: 400; letter-spacing: -0.1px;
   color: #C4B5B7;
-  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 2.20s forwards;
+  opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.32, 0.72, 0, 1) 0.90s forwards;
 }
 
 .ios-options { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+
+.ios-opt:nth-child(1) { opacity: 0; animation: fadeUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) 1.30s forwards; }
+.ios-opt:nth-child(2) { opacity: 0; animation: fadeUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) 1.43s forwards; }
+.ios-opt:nth-child(3) { opacity: 0; animation: fadeUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) 1.56s forwards; }
+.ios-opt:nth-child(4) { opacity: 0; animation: fadeUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) 1.69s forwards; }
+.ios-opt:nth-child(5) { opacity: 0; animation: fadeUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) 1.82s forwards; }
+.ios-opt:nth-child(6) { opacity: 0; animation: fadeUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) 1.95s forwards; }
 
 .ios-opt {
   width: 100%; padding: 13px 19px; border-radius: 999px;
@@ -225,12 +232,6 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   color: #3D2C2E; font-weight: 500;
 }
 
-.ios-opt:nth-child(1) { opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 2.80s forwards; }
-.ios-opt:nth-child(2) { opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 3.00s forwards; }
-.ios-opt:nth-child(3) { opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 3.20s forwards; }
-.ios-opt:nth-child(4) { opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 3.40s forwards; }
-.ios-opt:nth-child(5) { opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 3.60s forwards; }
-.ios-opt:nth-child(6) { opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 3.80s forwards; }
 
 .ios-cta {
   position: absolute; bottom: 36px; left: 22px; right: 22px;
@@ -265,6 +266,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -273,7 +275,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <div class="brand-eyebrow">Brota · Onboarding · Screen 05 de 18</div>
     <h1 class="brand-title">Gatilhos <em>stat dinâmica da rede + multi-select 6 gatilhos</em></h1>
     <p class="brand-sub">
-      O5 (stat) fundido como conector de O6 (gatilhos) — mesma tela, zero redundância.
+      O5 (stat) fundido como conector de O6 (gatilhos), mesma tela, zero redundância.
       Stat varia com a rede principal selecionada em O4. Toggle <em>"Instagram"</em> / <em>"TikTok"</em> / <em>"Outras"</em> demonstra a variação.
       6 gatilhos em linguagem natural, coluna única. Multi-select mínimo 1.
     </p>
@@ -306,7 +308,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Gatilhos — Android">
+        <section class="screen android-screen" aria-label="Brota Gatilhos, Android">
           <div class="a-blob-1"></div><div class="a-blob-2"></div><div class="a-blob-3"></div>
           <div class="a-body">
 
@@ -347,7 +349,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Gatilhos — iOS">
+        <section class="screen ios-screen" aria-label="Brota Gatilhos, iOS">
           <div class="ios-orb a"></div><div class="ios-orb b"></div><div class="ios-orb c"></div>
           <div class="ios-body">
 
@@ -377,21 +379,21 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · Material 3 Expressive</h4>
     <ul>
-      <li>O5 fundido como conector de O6 — stat dinâmica baseada na rede principal selecionada em O4; evita tela isolada sem pergunta</li>
+      <li>O5 fundido como conector de O6, stat dinâmica baseada na rede principal selecionada em O4; evita tela isolada sem pergunta</li>
       <li>Stat muda via JS: Instagram → <em>"53 min/dia"</em> · TikTok → <em>"1h20/dia"</em> · outras → genérica. Em produção, lida do dado real de O4</li>
-      <li>6 gatilhos em linguagem natural, coluna única — texto descritivo demais para grid 2-col sem truncar. Pills full-width com <code>text-align: left</code> para leitura confortável</li>
-      <li>Selected: brand-real fill + <code>wght 560</code> + glow — mesma linguagem de O2. Multi-select livre, CTA após ≥1 com spring M3E</li>
-      <li>Stagger 200ms entre opções (0.52s duration) — ritmo de leitura, cada gatilho chega quando a anterior já foi processada</li>
+      <li>6 gatilhos em linguagem natural, coluna única, texto descritivo demais para grid 2-col sem truncar. Pills full-width com <code>text-align: left</code> para leitura confortável</li>
+      <li>Selected: brand-real fill + <code>wght 560</code> + glow, mesma linguagem de O2. Multi-select livre, CTA após ≥1 com spring M3E</li>
+      <li>Ritmo padronizado do onboarding: conector 0.15s → título+stat 0.90s → opções, uma de cada vez, stagger de 130ms começando aos 1.30s (0.45s duration cada), mesma cadência de entrada usada em O6-Tempo</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>Liquid Glass pills coluna única — controles interativos, glass permitido. <code>border-radius: 999px</code> capsule — HIG para filter chips conversacionais</li>
-      <li>Stat no connector block: SF Pro Text 13pt 34% white — contexto de apoio que recua, não compete com a H1</li>
-      <li>Selected: <code>rgba(244,167,185,0.28)</code> glass tinted + inset highlight + glow — três camadas de feedback como <strong>Calm</strong> (multi-select de preferências no onboarding)</li>
-      <li>Stagger 200ms com <code>cubic-bezier(0.32,0.72,0,1)</code> — HIG timing sem overshoot; mais suave que o spring Android mas igualmente ritmado</li>
-      <li>CTA glass aprovado — consistência visual com O2, O3, O4</li>
+      <li>Liquid Glass pills coluna única, controles interativos, glass permitido. <code>border-radius: 999px</code> capsule, HIG para filter chips conversacionais</li>
+      <li>Stat no connector block: SF Pro Text 13pt 34% white, contexto de apoio que recua, não compete com a H1</li>
+      <li>Selected: <code>rgba(244,167,185,0.28)</code> glass tinted + inset highlight + glow, três camadas de feedback como <strong>Calm</strong> (multi-select de preferências no onboarding)</li>
+      <li>Mesmo stagger padronizado (130ms, começando aos 1.30s) com <code>cubic-bezier(0.32,0.72,0,1)</code>, HIG timing sem overshoot, igualmente ritmado ao spring Android</li>
+      <li>CTA glass aprovado, consistência visual com O2, O3, O4</li>
     </ul>
   </div>
 </section>
@@ -442,7 +444,7 @@ function setState(state, btnEl) {
   if (btnEl) btnEl.classList.add('active');
 
   // Clear all
-  document.querySelectorAll('.a-opt, .ios-opt').forEach(function(b) { b.classList.remove('selected'); });
+  document.querySelectorAll('.a-opt.ios-opt').forEach(function(b) { b.classList.remove('selected'); });
   document.getElementById('a-cta').classList.remove('visible');
   document.getElementById('ios-cta').classList.remove('visible');
 

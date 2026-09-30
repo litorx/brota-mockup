@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Grow Tab</title>
+<title>Brota &middot; Grow Tab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -388,19 +388,19 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .fab-pause{
   position:absolute;bottom:80px;right:16px;z-index:15;
   width:48px;height:48px;border-radius:50%;
-  background:var(--brand-real);color:white;
+  background:var(--brand-warning);color:#8A6A22;
   display:flex;align-items:center;justify-content:center;
   font-size:20px;cursor:pointer;
-  box-shadow:0 4px 20px rgba(244,167,185,0.30);
+  box-shadow:0 4px 20px rgba(255,208,122,0.38);
   transition:transform 0.2s;
 }
 .fab-pause:active{transform:scale(0.9);}
 .ios-screen .fab-pause{
   bottom:92px;right:18px;
   backdrop-filter:blur(20px) saturate(180%);
-  background:rgba(232,136,158,0.88);
+  background:rgba(255,208,122,0.92);
   border:1px solid rgba(255,255,255,0.30);
-  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(244,167,185,0.28);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
 
 /* ── BOTTOM NAV ── */
@@ -436,6 +436,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
 @media(max-width:820px){.stage{flex-direction:column;align-items:center;}}
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 <div class="studio">
@@ -460,6 +461,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <div class="stage" id="stage"></div>
 </div>
 
+<script src="../shared/plant-svgs.js"></script>
 <script>
 /* ═══════════════════════════════════════
    DATA
@@ -472,71 +474,14 @@ var plants = {
   s5:{name:'Eva',  plant:'Lotus',     color:'#D4B8D4',rgb:'212,184,212'}
 };
 
-/* Kawaii mini plant SVGs (simplified from a1-home, viewBox 0 0 80 80) */
-var FACE_MINI = '<ellipse cx="36" cy="38" rx="1.8" ry="2" fill="#4A3728"><animate attributeName="ry" values="2;0.2;2" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
-  +'<ellipse cx="44" cy="38" rx="1.8" ry="2" fill="#4A3728"><animate attributeName="ry" values="2;0.2;2" dur="3.5s" begin="1.5s" repeatCount="indefinite"/></ellipse>'
-  +'<circle cx="36.8" cy="37.2" r="0.7" fill="white" opacity="0.9"/>'
-  +'<circle cx="44.8" cy="37.2" r="0.7" fill="white" opacity="0.9"/>'
-  +'<path d="M38 42.5C39 44 41 44 42 42.5" stroke="#4A3728" stroke-width="1.2" stroke-linecap="round" fill="none"/>'
-  +'<circle cx="33" cy="40.5" r="2.5" fill="#F4A7B9" opacity="0.15"/>'
-  +'<circle cx="47" cy="40.5" r="2.5" fill="#F4A7B9" opacity="0.15"/>';
-
-var miniSVGs = {
-  Lavanda:'<svg viewBox="0 0 80 80" fill="none">'
-    +'<path d="M40 68V35" stroke="#6BA068" stroke-width="2.5" stroke-linecap="round"/>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="-1.5,40,30;1.5,40,30;-1.5,40,30" dur="3s" repeatCount="indefinite"/>'
-    +'<ellipse cx="40" cy="28" rx="4.5" ry="6" fill="__CLR__"/><ellipse cx="40" cy="21" rx="4" ry="5" fill="__CLR__" opacity="0.9"/><ellipse cx="40" cy="15" rx="3.2" ry="4" fill="__CLR__" opacity="0.8"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,30,32;-5,30,32;0,30,32" dur="3.5s" repeatCount="indefinite"/>'
-    +'<ellipse cx="30" cy="30" rx="3.5" ry="5" fill="__CLR__" opacity="0.85"/><ellipse cx="30" cy="24" rx="3" ry="4" fill="__CLR__" opacity="0.75"/></g>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="0,50,31;5,50,31;0,50,31" dur="3.2s" repeatCount="indefinite"/>'
-    +'<ellipse cx="50" cy="29" rx="3.5" ry="5" fill="__CLR__" opacity="0.85"/><ellipse cx="50" cy="23" rx="3" ry="4" fill="__CLR__" opacity="0.75"/></g>'
-    +FACE_MINI+'</svg>',
-  Girassol:'<svg viewBox="0 0 80 80" fill="none">'
-    +'<path d="M40 68V42" stroke="#5A9E54" stroke-width="3" stroke-linecap="round"/>'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="-2,40,24;2,40,24;-2,40,24" dur="4s" repeatCount="indefinite"/>'
-    +'<ellipse cx="40" cy="14" rx="5" ry="9" fill="__CLR__"><animate attributeName="ry" values="9;10;9" dur="2.5s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="22" cy="24" rx="10" ry="5" fill="__CLR__"/><ellipse cx="58" cy="24" rx="10" ry="5" fill="__CLR__"/>'
-    +'<ellipse cx="26" cy="12" rx="4" ry="8" fill="__CLR__" opacity="0.85" transform="rotate(-35 26 12)"/><ellipse cx="54" cy="12" rx="4" ry="8" fill="__CLR__" opacity="0.85" transform="rotate(35 54 12)"/>'
-    +'<ellipse cx="40" cy="38" rx="5" ry="9" fill="__CLR__" opacity="0.8"/><ellipse cx="26" cy="36" rx="4" ry="8" fill="__CLR__" opacity="0.75" transform="rotate(45 26 36)"/><ellipse cx="54" cy="36" rx="4" ry="8" fill="__CLR__" opacity="0.75" transform="rotate(-45 54 36)"/><circle cx="40" cy="24" r="11" fill="#D4960A"/><circle cx="40" cy="24" r="8.5" fill="#C48A08"/>'
-    +'<ellipse cx="36" cy="22" rx="1.8" ry="2" fill="#5A3800"><animate attributeName="ry" values="2;0.2;2" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="44" cy="22" rx="1.8" ry="2" fill="#5A3800"><animate attributeName="ry" values="2;0.2;2" dur="3.5s" begin="2s" repeatCount="indefinite"/></ellipse>'
-    +'<circle cx="36.8" cy="21" r="0.6" fill="white" opacity="0.9"/><circle cx="44.8" cy="21" r="0.6" fill="white" opacity="0.9"/>'
-    +'<path d="M38 27C39 28.5 41 28.5 42 27" stroke="#5A3800" stroke-width="1.2" stroke-linecap="round" fill="none"/>'
-    +'<circle cx="33" cy="25" r="2.5" fill="#F4A7B9" opacity="0.2"/><circle cx="47" cy="25" r="2.5" fill="#F4A7B9" opacity="0.2"/>'
-    +'</g></svg>',
-  Cacto:'<svg viewBox="0 0 80 80" fill="none">'
-    +'<g><animateTransform attributeName="transform" type="rotate" values="-0.5,40,50;0.5,40,50;-0.5,40,50" dur="5s" repeatCount="indefinite"/>'
-    +'<path d="M34 68C33 58 32 48 32 42C32 32 34 22 37 16C39 12 40 11 40 11C40 11 41 12 43 16C46 22 48 32 48 42C48 48 47 58 46 68" fill="__CLR__" opacity="0.5"/>'
-    +'<path d="M34 68C33 58 32 48 32 42C32 32 34 22 37 16C39 12 40 11 40 11C40 11 41 12 43 16C46 22 48 32 48 42C48 48 47 58 46 68" stroke="__CLR__" stroke-width="1.8" fill="none"/>'
-    +'<path d="M32 38Q24 36 20 30Q18 26 22 28Q28 32 32 38" fill="__CLR__" opacity="0.35"><animateTransform attributeName="transform" type="rotate" values="-2,32,38;2,32,38;-2,32,38" dur="4s" repeatCount="indefinite"/></path>'
-    +'<path d="M48 34Q56 32 60 26Q62 22 58 24Q52 28 48 34" fill="__CLR__" opacity="0.35"><animateTransform attributeName="transform" type="rotate" values="2,48,34;-2,48,34;2,48,34" dur="4.5s" repeatCount="indefinite"/></path>'
-    +'<ellipse cx="40" cy="9" rx="4.5" ry="3.5" fill="#F4A7B9" opacity="0.7"/>'
-    +FACE_MINI+'</g></svg>',
-  Cerejeira:'<svg viewBox="0 0 80 80" fill="none">'
-    +'<path d="M40 68C40 64 38 58 37 54C36 50 37 46 39 44" stroke="#7A5840" stroke-width="3.5" stroke-linecap="round"/>'
-    +'<path d="M39 44Q32 42 28 46" stroke="#7A5840" stroke-width="2" stroke-linecap="round"/>'
-    +'<path d="M39 44Q46 40 52 42" stroke="#7A5840" stroke-width="2" stroke-linecap="round"/>'
-    +'<ellipse cx="26" cy="40" rx="8" ry="7" fill="__CLR__" opacity="0.8"><animate attributeName="rx" values="8;8.5;8" dur="4s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="54" cy="36" rx="8" ry="7" fill="__CLR__" opacity="0.85"><animate attributeName="rx" values="8;8.5;8" dur="4.5s" repeatCount="indefinite"/></ellipse>'
-    +'<ellipse cx="40" cy="26" rx="7" ry="6" fill="__CLR__" opacity="0.9"><animate attributeName="ry" values="6;6.5;6" dur="3.8s" repeatCount="indefinite"/></ellipse>'
-    +FACE_MINI+'</svg>',
-  Lotus:'<svg viewBox="4 4 72 72" fill="none">'
-    +'<ellipse cx="40" cy="68" rx="12" ry="2.5" fill="#D4EEF8" opacity="0.25"><animate attributeName="rx" values="12;13;12" dur="4s" repeatCount="indefinite"/></ellipse>'
-    +'<path d="M40 66Q39 58 40 52" stroke="#6EAA68" stroke-width="1.8" stroke-linecap="round" opacity="0.4" fill="none"/>'
-    +'<path d="M40 50Q28 52 22 46Q20 44 24 43Q32 43 40 48Z" fill="__CLR__" opacity="0.3"><animateTransform attributeName="transform" type="rotate" values="-1,40,50;1,40,50;-1,40,50" dur="5s" repeatCount="indefinite"/></path>'
-    +'<path d="M40 50Q52 52 58 46Q60 44 56 43Q48 43 40 48Z" fill="__CLR__" opacity="0.3"><animateTransform attributeName="transform" type="rotate" values="1,40,50;-1,40,50;1,40,50" dur="5s" repeatCount="indefinite"/></path>'
-    +'<path d="M40 40Q34 34 32 24Q31.5 18 35 21Q38 26 40 38Z" fill="#EEE0F0" opacity="0.5"><animateTransform attributeName="transform" type="rotate" values="-2,40,40;2,40,40;-2,40,40" dur="4s" repeatCount="indefinite"/></path>'
-    +'<path d="M40 40Q46 34 48 24Q48.5 18 45 21Q42 26 40 38Z" fill="#EEE0F0" opacity="0.5"><animateTransform attributeName="transform" type="rotate" values="2,40,40;-2,40,40;2,40,40" dur="4s" repeatCount="indefinite"/></path>'
-    +'<ellipse cx="40" cy="44" rx="4.5" ry="3" fill="#FFE082" opacity="0.8"/>'
-    +FACE_MINI+'</svg>'
-};
+/* Plant SVGs -> fonte unica em ../shared/plant-svgs.js (renderPlantSVG) */
 
 var dayTitles = ['O Inventario','A Limpeza','O Real','O Corpo que Faz','A Pausa','O Tempo','O Jardim'];
 
 var scenes = {
   active:{
     day:4, doneCount:3,
-    task:'Escreva 5 coisas que seu corpo CONSEGUE FAZER que voce admira. Nao como ele parece — <em>o que ele FAZ.</em>',
+    task:'Escreva 5 coisas que seu corpo CONSEGUE FAZER que voce admira. Nao como ele parece, <em>o que ele FAZ.</em>',
     taskLabel:'Tarefa de hoje',
     cta:'Abrir tarefa',
     conn:{
@@ -685,14 +630,14 @@ function renderStage(){
     html += '</div>'; /* scroll-body */
 
     /* FAB */
-    html += '<div class="fab-pause" onclick="this.style.transform=\'scale(0.9)\';var f=this;setTimeout(function(){f.style.transform=\'\'},200)"><i data-icon="pause"></i></div>';
+    html += '<div class="fab-pause" data-destino="A7-Pause" onclick="this.style.transform=\'scale(0.9)\';var f=this;setTimeout(function(){f.style.transform=\'\'},200)"><i data-icon="respirar"></i></div>';
 
     /* Bottom Nav — Grow active */
     html += '<div class="bottom-nav">';
     html += '<div class="nav-item"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>';
     html += '<div class="nav-item active"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>';
     html += '<div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>';
-    html += '<div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>';
+    html += '<div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>';
     html += '<div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>';
     html += '</div>';
 
@@ -727,7 +672,7 @@ function applyState(){
   r.style.setProperty('--plant-color',s.color);
   r.style.setProperty('--plant-color-rgb',s.rgb);
 
-  var plantSvg = miniSVGs[s.plant].replace(/__CLR__/g, s.color);
+  var plantSvg = renderPlantSVG(s.plant, s.color);
 
   ['a','i'].forEach(function(p){
     /* Connector */

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota &mdash; Screen 16: Loading</title>
+<title>Brota &middot; Screen 16: Loading</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -476,6 +476,7 @@ body.dark { background: #1A1418; }
 .note li { font-size:12px; color:rgba(255,255,255,0.44); line-height:1.68; margin-bottom:7px; }
 .note code { background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:4px; font-size:11px; }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 <div class="studio">
@@ -620,19 +621,19 @@ body.dark { background: #1A1418; }
     <div class="note android">
       <h4>Android &middot; M3 Expressive</h4>
       <ul>
-        <li><strong>Spark no anel</strong>: <code>requestAnimationFrame</code> loop calcula posição XY do ponto líder da arc (angle = -90 + pct×360°) e move dois circles SVG (halo blur + core branco). Percorre 334px em 11.2s — referencia <strong>Apple Fitness</strong> (leading edge glow na ring close animation).</li>
-        <li><strong>Reativo por item</strong>: no check (1500ms), hero glow faz <code>glowPulseGentle</code> (scale 1→1.25, opacity 0.18→0.36) + ring glow suave. Sem flash de tela — feedback gentil, nunca invasivo. Referencia <strong>Gentler Streak</strong>.</li>
+        <li><strong>Spark no anel</strong>: <code>requestAnimationFrame</code> loop calcula posição XY do ponto líder da arc (angle = -90 + pct×360°) e move dois circles SVG (halo blur + core branco). Percorre 334px em 11.2s, referencia <strong>Apple Fitness</strong> (leading edge glow na ring close animation).</li>
+        <li><strong>Reativo por item</strong>: no check (1500ms), hero glow faz <code>glowPulseGentle</code> (scale 1→1.25, opacity 0.18→0.36) + ring glow suave. Sem flash de tela, feedback gentil, nunca invasivo. Referencia <strong>Gentler Streak</strong>.</li>
         <li><strong>Mensagem palavra por palavra</strong>: <code>innerHTML</code> splittado em <code>&lt;span&gt;</code> com <code>animation-delay</code> escalonado (90ms entre palavras). <code>wordUp</code> spring: scale(0.86)→overshoot. <code>msgGlow</code> text-shadow pulse 1.8s. Roboto Flex 24pt 640 weight. Referencia <strong>Calm</strong>.</li>
-        <li><strong>Shimmer de conclusão</strong>: div 40% width + 200% height com <code>shimmerSweep</code> — gradiente diagonal varre a tela em 1.0s ease-out. Remove-se do DOM após 1.5s. Referencia <strong>Procreate Dreams</strong> (2024 ADA Innovation).</li>
+        <li><strong>Shimmer de conclusão</strong>: div 40% width + 200% height com <code>shimmerSweep</code>, gradiente diagonal varre a tela em 1.0s ease-out. Remove-se do DOM após 1.5s. Referencia <strong>Procreate Dreams</strong> (2024 ADA Innovation).</li>
       </ul>
     </div>
     <div class="note ios">
       <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
       <ul>
-        <li><strong>Spark HIG</strong>: mesmo rAF loop, mesma lógica. Halo com <code>feGaussianBlur stdDeviation=2.4</code> (ligeiramente mais suave que Android). Core r=2.8 vs 3.2 no Android — minimalismo HIG. Referencia <strong>Apple Health</strong> (activity rings).</li>
-        <li><strong>Reativo sem overshoot</strong>: <code>glowPulseGentle</code> identico. Ring glow suave via <code>ringGlowSoft</code>. HIG evita spring em feedback passivo — tudo ease-out.</li>
+        <li><strong>Spark HIG</strong>: mesmo rAF loop, mesma lógica. Halo com <code>feGaussianBlur stdDeviation=2.4</code> (ligeiramente mais suave que Android). Core r=2.8 vs 3.2 no Android, minimalismo HIG. Referencia <strong>Apple Health</strong> (activity rings).</li>
+        <li><strong>Reativo sem overshoot</strong>: <code>glowPulseGentle</code> identico. Ring glow suave via <code>ringGlowSoft</code>. HIG evita spring em feedback passivo, tudo ease-out.</li>
         <li><strong>Mensagem palavra por palavra</strong>: <code>wordUpHIG</code> translateY(9px)→0 sem scale, sem overshoot. SF Pro Display 24pt 700. HIG: motion em conteúdo sempre com cubic-bezier(0.32,0.72,0,1). Referencia <strong>Day One</strong> (2024 ADA).</li>
-        <li>CTA: <code>backdrop-filter: blur(24px) saturate(180%)</code> + specular inset. Sem <code>.glassEffect()</code> em conteúdo — regra de ouro HIG. Referencia <strong>Things 3</strong>.</li>
+        <li>CTA: <code>backdrop-filter: blur(24px) saturate(180%)</code> + specular inset. Sem <code>.glassEffect()</code> em conteúdo, regra de ouro HIG. Referencia <strong>Things 3</strong>.</li>
       </ul>
     </div>
   </section>
@@ -975,7 +976,7 @@ function revealItem(idx) {
       heroGlowPulse();
     }, 1500);
 
-    // Exit at 2400ms — suave, sem pulo brusco
+    // Exit at 2400ms, suave, sem pulo brusco
     addT(function(){
       ['a','ios'].forEach(function(p){
         var disp = document.getElementById(p+'-item-display');
@@ -1033,7 +1034,7 @@ function triggerComplete() {
     if(emoji && p==='a'){ emoji.style.animation='none'; requestAnimationFrame(function(){ emoji.style.animation='emojiCelebrate 0.88s cubic-bezier(0.34,1.56,0.64,1) forwards'; }); }
   });
 
-  // Phase 1 — plant name (300ms)
+  // Phase 1, plant name (300ms)
   addT(function(){
     ['a','ios'].forEach(function(p){
       var c = document.getElementById(p+'-complete');
@@ -1041,7 +1042,7 @@ function triggerComplete() {
     });
   }, 300);
 
-  // Phase 2 — word-by-word message (1100ms)
+  // Phase 2, word-by-word message (1100ms)
   addT(function(){
     var st = states[currentState];
     ['a','ios'].forEach(function(p){

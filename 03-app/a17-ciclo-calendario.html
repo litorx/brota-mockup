@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota &middot; A17-Calendario: Calend&aacute;rio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* -- STUDIO -- */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:760px;margin:0 auto;}
+.brand-sub code{font-family:ui-monospace,monospace;font-size:11.5px;background:rgba(61,44,46,0.05);padding:1px 5px;border-radius:4px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.state-sep{width:1px;height:22px;background:var(--border);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* -- PHONE -- */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:290px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.screen{position:absolute;inset:0;background:var(--bg);}
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* -- TOPBAR: tela empilhada, entao volta (nao bottom nav) -- */
+.topbar{
+  position:absolute;top:0;left:0;right:0;height:98px;z-index:20;
+  display:flex;align-items:flex-end;gap:10px;padding:0 16px 12px;
+  background:linear-gradient(180deg,var(--bg) 62%,rgba(255,248,242,0));
+}
+.ios-screen .topbar{height:104px;background:rgba(255,248,242,0.82);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-bottom:0.5px solid var(--border);}
+.back-btn{
+  width:40px;height:40px;flex-shrink:0;border-radius:50%;border:none;background:transparent;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);
+  transition:background 0.2s,transform 0.2s;
+}
+.back-btn:hover{background:rgba(61,44,46,0.05);}
+.back-btn:active{transform:scale(0.92);}
+.back-btn svg{width:22px;height:22px;}
+.topbar-title{font-size:18px;font-weight:800;letter-spacing:-0.01em;}
+.ios-screen .topbar-title{font-size:17px;font-weight:700;}
+.back-label{font-size:15px;font-weight:600;color:var(--brand-real-deep);}
+.ios-screen .back-btn{width:auto;padding:0 4px 0 0;}
+
+/* -- SCROLL BODY -- */
+.scroll-body{
+  position:absolute;top:98px;left:0;right:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;padding:4px 20px 32px;
+  display:flex;flex-direction:column;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.ios-screen .scroll-body{top:104px;}
+.scroll-body::-webkit-scrollbar{display:none;}
+.scroll-body>*{flex-shrink:0;}
+
+/* -- BLOBS -- */
+.blob{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);}
+.blob1{width:340px;height:340px;top:-120px;left:-80px;background:var(--plant-color);opacity:0.07;}
+.blob2{width:280px;height:280px;bottom:40px;right:-60px;background:var(--brand-real);opacity:0.06;}
+
+/* -- PECAS COMUNS -- */
+.lead{font-size:13.5px;line-height:1.55;color:var(--text2);margin-bottom:16px;z-index:1;position:relative;}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin:16px 0 8px 4px;z-index:1;position:relative;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;z-index:1;position:relative;}
+.ios-screen .card{backdrop-filter:blur(10px) saturate(130%);background:rgba(255,255,255,0.88);box-shadow:var(--shadow),0 1px 0 rgba(255,255,255,0.60) inset;}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background 0.2s;}
+.row+.row{border-top:1px solid var(--border);}
+.row:hover{background:rgba(61,44,46,0.02);}
+.row-icon{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:rgba(61,44,46,0.04);display:flex;align-items:center;justify-content:center;color:var(--text2);}
+.row-info{flex:1;min-width:0;}
+.row-title{font-size:14px;font-weight:700;color:var(--text);}
+.row-desc{font-size:11.5px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.row-arrow{font-size:20px;color:var(--text3);flex-shrink:0;}
+.plant-note{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:13px 15px;border-radius:16px;margin-top:18px;z-index:1;position:relative;
+  background:rgba(var(--plant-color-rgb),0.09);border:1px solid rgba(var(--plant-color-rgb),0.16);
+}
+.plant-note .pmini{width:34px;height:34px;flex-shrink:0;}
+.plant-note .pmini svg{width:100%;height:100%;}
+.plant-note .ptext{font-size:12.5px;line-height:1.5;color:var(--text);font-style:italic;}
+.plant-note .pname{font-size:10.5px;font-weight:700;color:var(--plant-color);margin-bottom:2px;font-style:normal;}
+
+/* -- KEYFRAMES -- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes plantBreathe{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-3px) scale(1.02);}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+
+.fact{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;}
+.fact+.fact{border-top:1px solid var(--border);}
+.fact-ic{width:34px;height:34px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.fact-ic.yes{background:rgba(168,213,162,0.20);color:var(--brand-ai-deep);}
+.fact-ic.no{background:rgba(61,44,46,0.05);color:var(--text3);}
+.fact-t{font-size:13.5px;font-weight:700;}
+.fact-d{font-size:11.5px;color:var(--text2);line-height:1.45;margin-top:2px;}
+
+
+.sec-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin:20px 0 8px 4px;z-index:1;position:relative;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;z-index:1;position:relative;}
+.ios-screen .card{background:rgba(255,255,255,0.88);backdrop-filter:blur(10px) saturate(130%);}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background 0.2s;}
+.row+.row{border-top:1px solid var(--border);}
+.row:hover{background:rgba(61,44,46,0.02);}
+.row-ic{width:34px;height:34px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;line-height:0;background:rgba(var(--cycle-accent-rgb),0.15);color:var(--cycle-accent);}
+.row-in{flex:1;min-width:0;}
+.row-t{font-size:14px;font-weight:700;color:var(--text);}
+.row-d{font-size:11.5px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.row-a{font-size:20px;color:var(--text3);flex-shrink:0;}
+.priv{
+  display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:14px;margin-top:16px;
+  z-index:1;position:relative;cursor:pointer;
+  background:rgba(168,213,162,0.13);border:1px solid rgba(168,213,162,0.30);
+}
+.priv-ic{width:28px;height:28px;flex-shrink:0;border-radius:9px;background:rgba(168,213,162,0.32);color:var(--brand-ai-deep);display:flex;align-items:center;justify-content:center;font-size:15px;line-height:0;}
+.priv-t{flex:1;font-size:11.5px;line-height:1.45;color:var(--text);}
+.priv-t b{font-weight:800;}
+.cta{
+  width:100%;padding:15px;border:none;border-radius:16px;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:700;color:#fff;
+  background:var(--cycle-accent);box-shadow:0 4px 18px rgba(var(--cycle-accent-rgb),0.28);
+  transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);z-index:1;position:relative;
+}
+.ios-screen .cta{border-radius:14px;}
+.cta:active{transform:scale(0.97);}
+.cta.ghost{background:transparent;color:var(--text2);box-shadow:none;border:1.5px solid var(--border);margin-top:9px;}
+.cta.danger{background:transparent;color:#B3465F;box-shadow:none;border:1.5px solid rgba(179,70,95,0.35);}
+.a-screen svg,.ios-screen svg{max-width:100%;max-height:100%;}
+.a-screen [data-icon],.ios-screen [data-icon]{font-size:18px;line-height:0;display:inline-flex;}
+
+.topbar{
+  position:absolute;top:0;left:0;right:0;height:98px;z-index:20;
+  display:flex;align-items:flex-end;gap:10px;padding:0 16px 12px;
+  background:linear-gradient(180deg,var(--bg) 62%,rgba(255,248,242,0));
+}
+.ios-screen .topbar{height:104px;background:rgba(255,248,242,0.82);backdrop-filter:blur(20px) saturate(160%);border-bottom:0.5px solid var(--border);}
+.back-btn{width:40px;height:40px;flex-shrink:0;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);transition:background 0.2s,transform 0.2s;}
+.back-btn:hover{background:rgba(61,44,46,0.05);}
+.back-btn:active{transform:scale(0.92);}
+.back-btn svg{width:22px;height:22px;}
+.ios-screen .back-btn{width:auto;padding:0 4px 0 0;}
+.back-label{font-size:15px;font-weight:600;color:var(--brand-real-deep);}
+.topbar-title{font-size:18px;font-weight:800;letter-spacing:-0.01em;}
+.ios-screen .topbar-title{font-size:17px;font-weight:700;}
+.scroll-body{top:98px !important;padding:4px 20px 40px !important;}
+.ios-screen .scroll-body{top:104px !important;}
+
+.cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-mes{font-size:15px;font-weight:800;}
+.cal-nav{display:flex;gap:4px;}
+.cal-nav span{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:17px;cursor:pointer;}
+.cal-nav span:hover{background:rgba(61,44,46,0.05);color:var(--text);}
+.cal-dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-bottom:5px;}
+.cal-dow span{text-align:center;font-size:9.5px;font-weight:700;color:var(--text3);text-transform:uppercase;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;}
+.cal-d{aspect-ratio:1;min-width:0;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;border-radius:50%;color:var(--text);position:relative;cursor:pointer;}
+.cal-d.off{color:var(--text3);opacity:0.3;}
+.cal-d.mens{background:rgba(232,136,158,0.30);color:#8A3F53;font-weight:800;}
+.cal-d.foli{background:rgba(244,167,185,0.14);}
+.cal-d.ovul{background:rgba(255,208,122,0.22);}
+.cal-d.lute{background:rgba(196,176,224,0.22);}
+.cal-d.hoje{box-shadow:0 0 0 2px var(--cycle-accent);font-weight:800;}
+.cal-d.prev::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:rgba(232,136,158,0.75);}
+.legenda{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;padding-top:11px;border-top:1px solid var(--border);}
+.legenda span{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:var(--text2);}
+.legenda i{width:9px;height:9px;border-radius:50%;display:block;}
+.chips{display:flex;gap:7px;flex-wrap:wrap;}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:999px;cursor:pointer;border:1.5px solid var(--border);background:var(--card);font-family:inherit;font-size:12.5px;font-weight:700;color:var(--text2);transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);}
+.chip:active{transform:scale(0.95);}
+.chip.on{background:rgba(var(--cycle-accent-rgb),0.16);border-color:var(--cycle-accent);color:var(--text);}
+.chip i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:0.45;display:block;}
+.chip.on i{opacity:1;}
+.hist{display:flex;align-items:center;gap:12px;padding:12px 15px;}
+.hist+.hist{border-top:1px solid var(--border);}
+.hist-m{width:44px;flex-shrink:0;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;}
+.hist-bar{flex:1;height:8px;border-radius:99px;background:rgba(61,44,46,0.06);overflow:hidden;display:flex;}
+.hist-bar i{display:block;height:100%;}
+.hist-n{font-size:11.5px;font-weight:800;color:var(--text3);font-variant-numeric:tabular-nums;flex-shrink:0;}
+
+.cal-d.sel{box-shadow:0 0 0 2.5px var(--cycle-accent);font-weight:800;transform:scale(1.06);}
+.cal-d.marcado::before{content:'';position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:#E8889E;}
+.cal-d:active{transform:scale(0.9);}
+.dia-sel{
+  display:flex;gap:11px;align-items:center;padding:12px 14px;border-radius:15px;margin-top:12px;
+  z-index:1;position:relative;
+  background:rgba(var(--cycle-accent-rgb),0.11);border:1px solid rgba(var(--cycle-accent-rgb),0.24);
+}
+.dia-sel-n{width:38px;height:38px;flex-shrink:0;border-radius:12px;background:rgba(var(--cycle-accent-rgb),0.22);color:var(--cycle-accent);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;}
+.dia-sel-t{flex:1;font-size:13px;font-weight:700;line-height:1.35;}
+.dia-sel-d{font-size:11px;color:var(--text2);margin-top:2px;}
+.marcar-btn{
+  padding:8px 13px;border-radius:999px;border:1.5px solid var(--cycle-accent);background:transparent;
+  font-family:inherit;font-size:11.5px;font-weight:800;color:var(--cycle-accent);cursor:pointer;white-space:nowrap;
+}
+.marcar-btn.on{background:var(--cycle-accent);color:#fff;}
+.marcar-btn:active{transform:scale(0.94);}
+.toast{
+  position:absolute;left:20px;right:20px;bottom:86px;z-index:40;
+  display:flex;align-items:center;gap:10px;padding:12px 15px;border-radius:15px;
+  background:rgba(61,44,46,0.92);color:#fff;font-size:12.5px;font-weight:600;line-height:1.4;
+  animation:fadeUp 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.toast i{width:8px;height:8px;border-radius:50%;background:var(--brand-ai);flex-shrink:0;display:block;}
+
+/* Primeiro mes: nenhuma barra, porque nao ha ciclo fechado pra desenhar. */
+.vazio-hist{padding:16px 16px 18px;text-align:center;}
+.vazio-hist-t{font-size:13.5px;font-weight:800;color:var(--text2);}
+.vazio-hist-d{font-size:11.5px;color:var(--text3);line-height:1.5;margin-top:5px;max-width:230px;margin-left:auto;margin-right:auto;}
+.vazio-hist-d b{color:var(--text2);font-weight:700;}
+</style>
+<script src="../shared/responsive.js"></script>
+</head>
+<body>
+<div class="studio">
+  <header class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; A17-Calendario</div>
+    <h1 class="brand-title">Calend&aacute;rio<em>Sub-tela do Ciclo &middot; o m&ecirc;s, o registro do dia e os ciclos anteriores</em></h1>
+    <div class="brand-sub">Sai do hub <code>A5-Ciclo</code>. Junta o que &eacute; do calend&aacute;rio: o m&ecirc;s com as fases, os 4 chips de registro (<strong>um toque cada</strong>, contra os 200+ fatores em menu confuso do Clue) e a lista de ciclos anteriores. Essa lista responde ao pedido n&ordm;2 do estudo Mindtrek, <strong>&ldquo;o ciclo inteiro, n&atilde;o s&oacute; o sangramento&rdquo;</strong>, 34% das ocorr&ecirc;ncias, e ver a varia&ccedil;&atilde;o real desarma a culpa de quem tem ciclo irregular (<strong>41% abandonam</strong> porque o app n&atilde;o lida com dura&ccedil;&atilde;o vari&aacute;vel).<br><br><strong>Interativa:</strong> toque em qualquer dia para abrir o painel dele e marcar ou desmarcar menstrua&ccedil;&atilde;o, a cor do dia muda e a previs&atilde;o &eacute; refeita na hora, com aviso na tela. &Eacute; a resposta direta &agrave; reclama&ccedil;&atilde;o n&ordm;1 da categoria: <em>previs&atilde;o que n&atilde;o responde ao que voc&ecirc; registra</em>. Os chips tamb&eacute;m alternam, e o bot&atilde;o do rodap&eacute; marca o dia de hoje.</div>
+  </header>
+  <div class="controls" id="controls">
+    <button class="state-btn active" onclick="setPlant('s1',this)">Lavanda / Ana</button>
+    <button class="state-btn" onclick="setPlant('s2',this)">Girassol / Bia</button>
+    <button class="state-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
+    <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira / Dani</button>
+    <button class="state-btn" onclick="setPlant('s5',this)">Lotus / Eva</button>
+    <div class="state-sep"></div>
+    <button class="state-btn hist-btn" onclick="setHist('vazio',this)">Primeiro m&ecirc;s</button>
+    <button class="state-btn hist-btn active" onclick="setHist('cheio',this)">Com hist&oacute;rico</button>
+    <button class="state-btn phase-btn active" onclick="setFase('menstrual',this)">Menstrual</button>
+    <button class="state-btn phase-btn" onclick="setFase('folicular',this)">Folicular</button>
+    <button class="state-btn phase-btn" onclick="setFase('ovulacao',this)">Ovula&ccedil;&atilde;o</button>
+    <button class="state-btn phase-btn" onclick="setFase('lutea',this)">L&uacute;tea</button>
+    <button class="state-btn phase-btn" onclick="setFase('irregular',this)">Passou da m&eacute;dia</button>
+  </div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<script src="../shared/plant-svgs.js"></script>
+<script src="../shared/icons.js"></script>
+<script>
+var plants = {
+  s1:{name:'Ana',  plant:'Lavanda',   color:'#C4B0E0',rgb:'196,176,224'},
+  s2:{name:'Bia',  plant:'Girassol',  color:'#F2CE6B',rgb:'242,206,107'},
+  s3:{name:'Carol',plant:'Cacto',     color:'#8CC5A0',rgb:'140,197,160'},
+  s4:{name:'Dani', plant:'Cerejeira', color:'#F2B5C4',rgb:'242,181,196'},
+  s5:{name:'Eva',  plant:'Lotus',     color:'#D4B8D4',rgb:'212,184,212'}
+};
+var cur = plants.s1;
+
+/* Faixas de dia iguais as do A10-Perfil, pra as telas nao divergirem.
+   Nomes e falas seguem G3: nunca clinico, nunca "fragil", nunca "hormonios". */
+var FASES = {
+  menstrual:{nome:'Menstrua\u00e7\u00e3o', dia:2, ini:1, fim:5, cor:'#E8889E', rgb:'232,136,158',
+    curta:'Dia 2 de 5', muda:'Essa semana eu falo mais baixo e apare\u00e7o menos.'},
+  folicular:{nome:'Folicular', dia:9, ini:6, fim:13, cor:'#F4A7B9', rgb:'244,167,185',
+    curta:'Dia 9 de 28', muda:'Volto ao ritmo normal. Boa semana pra come\u00e7ar coisa.'},
+  ovulacao:{nome:'Ovula\u00e7\u00e3o', dia:15, ini:14, fim:16, cor:'#FFD07A', rgb:'255,208,122',
+    curta:'Dia 15 de 28', muda:'Voc\u00ea costuma se expor mais. Fico de olho junto.'},
+  lutea:{nome:'L\u00fatea', dia:24, ini:17, fim:28, cor:'#C4B0E0', rgb:'196,176,224',
+    curta:'Dia 24 de 28', muda:'Come\u00e7o a aparecer 3 dias antes, sem voc\u00ea pedir.'},
+  irregular:{nome:'Passou da m\u00e9dia', dia:31, ini:1, fim:28, cor:'#B8A8C8', rgb:'184,168,200',
+    curta:'Dia 31', muda:'Continuo do mesmo jeito. Atraso n\u00e3o muda nada aqui.'}
+};
+var fase = 'menstrual';
+var STATUS = '<div class="statusbar"><span class="stime">9:41</span><span class="sicons">'
+  + '<svg width="15" height="11" fill="currentColor"><rect x="0" y="4" width="3" height="7" rx="0.5" opacity="0.4"/>'
+  + '<rect x="4" y="2.5" width="3" height="8.5" rx="0.5" opacity="0.5"/><rect x="8" y="1" width="3" height="10" rx="0.5" opacity="0.7"/>'
+  + '<rect x="12" y="0" width="3" height="11" rx="0.5"/></svg></span></div>';
+function backIcon(isIos){
+  return isIos
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>';
+}
+function voltar(btn){ btn.style.transform='scale(0.85)'; setTimeout(function(){btn.style.transform='';},180); }
+function aplicarCor(){
+  var f = FASES[fase] || FASES.lutea;
+  ['a','i'].forEach(function(p){
+    var el = document.getElementById(p+'-screen');
+    if(!el) return;
+    el.style.setProperty('--plant-color', cur.color);
+    el.style.setProperty('--plant-color-rgb', cur.rgb);
+    el.style.setProperty('--cycle-accent', fase==='sem' ? cur.color : f.cor);
+    el.style.setProperty('--cycle-accent-rgb', fase==='sem' ? cur.rgb : f.rgb);
+  });
+}
+function setPlant(key, btn){
+  cur = plants[key];
+  document.querySelectorAll('.state-btn:not(.phase-btn)').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  render();
+}
+function setFase(f, btn){
+  fase = f;
+  document.querySelectorAll('.phase-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  render();
+}
+
+var marcados = [];
+var diaSel = null;          /* dia tocado no calendario */
+var diasMens = [1,2,3,4,5]; /* dias marcados como menstruacao */
+var aviso = '';
+var hist = 'cheio';
+
+function setHist(h, btn){
+  hist = h;
+  diasMens = (h === 'vazio') ? [] : [1,2,3,4,5];
+  diaSel = null;
+  document.querySelectorAll('.hist-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  render();
+}
+
+function tocarDia(d){
+  diaSel = (diaSel === d) ? null : d;
+  render();
+}
+function alternarMens(d){
+  var i = diasMens.indexOf(d);
+  if(i >= 0){ diasMens.splice(i,1); aviso = 'Dia ' + d + ' desmarcado. Refiz a previsão.'; }
+  else { diasMens.push(d); aviso = 'Dia ' + d + ' marcado. Refiz a previsão com esse dado.'; }
+  render();
+  setTimeout(function(){ aviso = ''; render(); }, 2600);
+}
+var REGISTROS = [{id:'comecou',t:'Come&ccedil;ou hoje'},{id:'colica',t:'C&oacute;lica'},
+                 {id:'cansaco',t:'Cansa&ccedil;o'},{id:'sono',t:'Dormi mal'}];
+/* Ciclos anteriores em lista: o estudo pede "o ciclo inteiro, nao so o
+   sangramento" (34% dos pedidos) e ver a variacao real desarma a culpa. */
+var CICLOS = [{m:'set',d:0,at:true},{m:'ago',d:29},{m:'jul',d:31},{m:'jun',d:28},{m:'mai',d:30},{m:'abr',d:29}];
+
+function marcar(id){
+  var i = marcados.indexOf(id);
+  if(i>=0) marcados.splice(i,1); else marcados.push(id);
+  render();
+}
+
+function corpo(){
+  var f = FASES[fase];
+  var h = '<div class="card anim-el" style="animation-delay:0.06s"><div style="padding:14px">'
+    + '<div class="cal-top"><span class="cal-mes">Setembro 2026</span>'
+    +   '<span class="cal-nav"><span>&lsaquo;</span><span>&rsaquo;</span></span></div>'
+    + '<div class="cal-dow"><span>d</span><span>s</span><span>t</span><span>q</span><span>q</span><span>s</span><span>s</span></div>'
+    + '<div class="cal-grid">';
+  for(var i=0;i<2;i++) h += '<div class="cal-d off">' + (30+i) + '</div>';
+  for(var d=1;d<=30;d++){
+    var cls = 'cal-d';
+    if(diasMens.indexOf(d) >= 0) cls += ' mens';
+    else if(d<=13) cls += ' foli';
+    else if(d<=16) cls += ' ovul'; else cls += ' lute';
+    if(d === Math.min(f.dia,30)) cls += ' hoje';
+    if(d === diaSel) cls += ' sel';
+    if(fase === 'irregular' ? (d>=24) : (d>=28)) cls += ' prev';
+    h += '<div class="' + cls + '" onclick="tocarDia(' + d + ')">' + d + '</div>';
+  }
+  h += '</div><div class="legenda">'
+    + '<span><i style="background:rgba(232,136,158,0.60)"></i>Menstrua&ccedil;&atilde;o</span>'
+    + '<span><i style="background:rgba(244,167,185,0.35)"></i>Folicular</span>'
+    + '<span><i style="background:rgba(255,208,122,0.55)"></i>Ovula&ccedil;&atilde;o</span>'
+    + '<span><i style="background:rgba(196,176,224,0.55)"></i>L&uacute;tea</span>'
+    + '<span><i style="background:rgba(232,136,158,0.75);width:5px;height:5px"></i>Previs&atilde;o</span>'
+    + '</div></div></div>';
+
+  if(diaSel !== null){
+    var eMens = diasMens.indexOf(diaSel) >= 0;
+    h += '<div class="dia-sel"><div class="dia-sel-n">' + diaSel + '</div>'
+      + '<div><div class="dia-sel-t">' + diaSel + ' de setembro</div>'
+      +   '<div class="dia-sel-d">' + (eMens ? 'Marcado como menstrua&ccedil;&atilde;o' : 'Sem registro') + '</div></div>'
+      + '<button class="marcar-btn' + (eMens?' on':'') + '" onclick="alternarMens(' + diaSel + ')">'
+      +   (eMens ? 'Desmarcar' : 'Menstruei') + '</button></div>';
+  }
+
+  h += '<div class="sec-t anim-el" style="animation-delay:0.14s">Como foi hoje</div>'
+    + '<div class="chips anim-el" style="animation-delay:0.16s">';
+  REGISTROS.forEach(function(r){
+    h += '<button class="chip' + (marcados.indexOf(r.id)>=0?' on':'') + '" onclick="marcar(\'' + r.id + '\')">'
+      + '<i></i>' + r.t + '</button>';
+  });
+  h += '</div>';
+
+  h += '<div class="sec-t anim-el" style="animation-delay:0.22s">Seus ciclos anteriores</div>';
+
+  /* Ciclo so fecha quando a proxima vem: antes disso nao existe barra nenhuma
+     pra desenhar, e desenhar uma seria inventar. */
+  if(hist === 'vazio'){
+    h += '<div class="card anim-el" style="animation-delay:0.24s"><div class="vazio-hist">'
+      + '<div class="vazio-hist-t">Nenhum ciclo fechado ainda.</div>'
+      + '<div class="vazio-hist-d">Um ciclo s&oacute; fecha quando a <b>pr&oacute;xima</b> vem. '
+      + 'Marca o primeiro dia a&iacute; em cima e eu come&ccedil;o a contar.</div></div></div>';
+  } else {
+  h += '<div class="card anim-el" style="animation-delay:0.24s">';
+  CICLOS.forEach(function(c){
+    var dias = c.at ? f.dia : c.d;
+    var pct = Math.min(dias/35*100, 100);
+    h += '<div class="hist"><div class="hist-m">' + c.m + '</div>'
+      + '<div class="hist-bar"><i style="width:' + pct.toFixed(0) + '%;background:' + (c.at?'var(--cycle-accent)':'rgba(var(--cycle-accent-rgb),0.45)') + '"></i></div>'
+      + '<div class="hist-n">' + (c.at ? 'em curso' : dias + 'd') + '</div></div>';
+  });
+  h += '</div>';
+  }
+
+  h += '<button class="cta anim-el" style="animation-delay:0.30s;margin-top:18px" onclick="alternarMens(' + Math.min(f.dia,30) + ')">'
+    + (diasMens.indexOf(Math.min(f.dia,30)) >= 0 ? 'Menstrua&ccedil;&atilde;o registrada hoje &#10003;' : 'Comecei hoje') + '</button>';
+  return h;
+}
+
+function render(){
+  var stage = document.getElementById('stage');
+  stage.innerHTML = '';
+  [['a','Android &middot; Material 3 Expressive','Grade M3 &middot; chips de registro &middot; hist&oacute;rico em barras'],
+   ['i','iOS 26 &middot; Liquid Glass','Mesma grade &middot; inset grouped']].forEach(function(cfg){
+    var p = cfg[0], isIos = (p === 'i');
+    stage.innerHTML += '<div class="phone-wrapper"><div class="phone-label">'
+      + '<span class="pill ' + (isIos ? 'ios' : 'android') + '">' + cfg[1] + '</span>'
+      + '<span class="desc">' + cfg[2] + '</span></div>'
+      + '<div class="phone"><div class="phone-screen">'
+      + '<div class="screen ' + (isIos ? 'ios-screen' : 'a-screen') + '" id="' + p + '-screen">'
+      + '<div class="blob blob1"></div><div class="blob blob2"></div>'
+      + (isIos ? '<div class="dyna"></div>' : '') + STATUS
+      + '<div class="topbar"><button class="back-btn" onclick="voltar(this)">' + backIcon(isIos) + '</button>'
+      +   (isIos ? '<span class="back-label">Ciclo</span>' : '')
+      +   '<span class="topbar-title">Calend&aacute;rio</span></div>'
+      + '<div class="scroll-body">' + corpo() + '</div>'
+      + (aviso ? '<div class="toast"><i></i>' + aviso + '</div>' : '')
+      + '</div></div></div></div>';
+  });
+  aplicarCor();
+  if (window.Icons) Icons.hydrate(document);
+}
+render();
+</script>
+</body>
+</html>

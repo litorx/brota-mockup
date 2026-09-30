@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 08: Insights</title>
+<title>Brota &middot; Screen 08: Insights</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -222,13 +222,14 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
 <header class="studio-header">
   <div class="brand-block">
     <div class="brand-eyebrow">Brota · Onboarding · Screen 08 de 19 · Insights</div>
-    <h1 class="brand-title">Insights <em>tela sem interação — 3 frases personalizadas aparecem no ritmo da leitura</em></h1>
+    <h1 class="brand-title">Insights <em>tela sem interação, 3 frases personalizadas aparecem no ritmo da leitura</em></h1>
     <p class="brand-sub">
       Nenhum botão, nenhuma escolha. Apenas texto aparecendo.
       Cada frase cita uma resposta real coletada (rede, gatilho, tempo, impacto).
@@ -263,14 +264,14 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Insights — Android">
+        <section class="screen android-screen" aria-label="Brota Insights, Android">
           <div class="a-blob-1"></div><div class="a-blob-2"></div>
           <div class="a-body" id="a-body">
             <p class="a-conn" id="a-conn">Agora eu te conheço melhor.</p>
             <p class="a-insight" id="a-i1"><span class="hi">Instagram</span> é a rede que mais te afeta.</p>
             <p class="a-insight" id="a-i2">O que mais te incomoda são <span class="hi">corpos que parecem perfeitos.</span></p>
             <p class="a-insight" id="a-i3">Você passa entre <span class="hi">1h e 2h</span> por dia nessas redes.</p>
-            <p class="a-stat" id="a-stat">Mas relaxa,<span class="pct">68%</span> das mulheres com esse perfil sentem exatamente o mesmo.</p>
+            <p class="a-stat" id="a-stat">Mas relaxa, <span class="pct">68%</span> das mulheres com esse perfil sentem exatamente o mesmo.</p>
             <p class="a-closing" id="a-closing">Voce vai ter alguem do seu lado.</p>
           </div>
           <button class="a-cta" id="a-cta">Quero mudar isso →</button>
@@ -296,14 +297,14 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Insights — iOS">
+        <section class="screen ios-screen" aria-label="Brota Insights, iOS">
           <div class="ios-orb a"></div><div class="ios-orb b"></div>
           <div class="ios-body" id="ios-body">
             <p class="ios-conn" id="ios-conn">Agora eu te conheço melhor.</p>
             <p class="ios-insight" id="ios-i1"><span class="hi">Instagram</span> é a rede que mais te afeta.</p>
             <p class="ios-insight" id="ios-i2">O que mais te incomoda são <span class="hi">corpos que parecem perfeitos.</span></p>
             <p class="ios-insight" id="ios-i3">Você passa entre <span class="hi">1h e 2h</span> por dia nessas redes.</p>
-            <p class="ios-stat" id="ios-stat">Mas relaxa,<span class="pct">68%</span> das mulheres com esse perfil sentem exatamente o mesmo.</p>
+            <p class="ios-stat" id="ios-stat">Mas relaxa, <span class="pct">68%</span> das mulheres com esse perfil sentem exatamente o mesmo.</p>
             <p class="ios-closing" id="ios-closing">Voce vai ter alguem do seu lado.</p>
           </div>
           <button class="ios-cta" id="ios-cta">Quero mudar isso →</button>
@@ -318,24 +319,24 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · M3 Expressive</h4>
     <ul>
-      <li>Tela sem interação — nenhum botão clicável até o CTA aparecer. Usuária só lê.</li>
-      <li>3 insights em Roboto Flex 22px <code>wdth 106 wght 580</code> — peso editorial, não body text</li>
-      <li>Highlights em rose <code>--brand-real</code> + <code>wght 680</code> — as palavras que a usuária reconhece das telas anteriores</li>
+      <li>Tela sem interação, nenhum botão clicável até o CTA aparecer. Usuária só lê.</li>
+      <li>3 insights em Roboto Flex 22px <code>wdth 106 wght 580</code>, peso editorial, não body text</li>
+      <li>Highlights em rose <code>--brand-real</code> + <code>wght 680</code>, as palavras que a usuária reconhece das telas anteriores</li>
       <li>Stagger: conn 0.20s → insight 1 1.10s → insight 2 2.20s → insight 3 3.20s → stat grupo 4.20s → fechamento 5.20s → CTA 6.20s</li>
-      <li>Linha de grupo: fonte mais leve <code>wght 500</code> e opacidade 68% — diferente dos insights pessoais <code>wght 580</code> 94%</li>
-      <li>Porcentagem em rose <code>--brand-real</code> + <code>wght 700</code> — dado estatístico como âncora emocional</li>
-      <li>Fechamento em <em>Instrument Serif</em> italic — mudança de voz: mais íntimo, menos analítico</li>
-      <li>CTA só aparece após todas as frases — não interrompe a leitura</li>
+      <li>Linha de grupo: fonte mais leve <code>wght 500</code> e opacidade 68%, diferente dos insights pessoais <code>wght 580</code> 94%</li>
+      <li>Porcentagem em rose <code>--brand-real</code> + <code>wght 700</code>, dado estatístico como âncora emocional</li>
+      <li>Fechamento em <em>Instrument Serif</em> italic, mudança de voz: mais íntimo, menos analítico</li>
+      <li>CTA só aparece após todas as frases, não interrompe a leitura</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>SF Pro Display 22pt weight 600 para os insights — tamanho editorial sem ser Large Title</li>
-      <li>Highlights: <code>rgba(244,167,185,0.92)</code> weight 700 — HIG usa peso + cor para enfatizar, não sublinhado</li>
-      <li>Mesmo stagger que Android — timing da leitura é cross-platform, não muda</li>
-      <li>Fechamento em <em>Instrument Serif</em> — acento tipográfico compartilhado entre plataformas</li>
-      <li>CTA: Liquid Glass <code>rgba(244,167,185,0.82)</code> — consistência com telas anteriores</li>
+      <li>SF Pro Display 22pt weight 600 para os insights, tamanho editorial sem ser Large Title</li>
+      <li>Highlights: <code>rgba(244,167,185,0.92)</code> weight 700, HIG usa peso + cor para enfatizar, não sublinhado</li>
+      <li>Mesmo stagger que Android, timing da leitura é cross-platform, não muda</li>
+      <li>Fechamento em <em>Instrument Serif</em>, acento tipográfico compartilhado entre plataformas</li>
+      <li>CTA: Liquid Glass <code>rgba(244,167,185,0.82)</code>, consistência com telas anteriores</li>
       <li>Sem overshoot: <code>cubic-bezier(0.32, 0.72, 0, 1)</code> em todas as entradas</li>
     </ul>
   </div>
@@ -348,7 +349,7 @@ var profiles = {
     i1:      '<span class="hi">Instagram</span> é a rede que mais te afeta.',
     i2:      'O que mais te incomoda são <span class="hi">corpos que parecem perfeitos.</span>',
     i3:      'Você passa entre <span class="hi">1h e 2h</span> por dia nessas redes.',
-    stat:    'Mas relaxa,<span class="pct">68%</span> das mulheres com esse perfil sentem exatamente o mesmo.',
+    stat:    'Mas relaxa, <span class="pct">68%</span> das mulheres com esse perfil sentem exatamente o mesmo.',
     closing: 'Voce vai ter alguem do seu lado.'
   },
   s2: {
@@ -356,7 +357,7 @@ var profiles = {
     i1:      '<span class="hi">TikTok</span> é a rede que mais te afeta.',
     i2:      'O que mais te incomoda é a <span class="hi">popularidade e as curtidas.</span>',
     i3:      'Você passa entre <span class="hi">2h e 4h</span> por dia nessas redes.',
-    stat:    'Mas relaxa,<span class="pct">71%</span> das mulheres com esse perfil sentem exatamente o mesmo.',
+    stat:    'Mas relaxa, <span class="pct">71%</span> das mulheres com esse perfil sentem exatamente o mesmo.',
     closing: 'Voce vai ter alguem do seu lado.'
   },
   s3: {
@@ -364,7 +365,7 @@ var profiles = {
     i1:      '<span class="hi">Instagram, TikTok e mais</span> fazem parte da sua rotina.',
     i2:      'O que mais te incomoda são <span class="hi">vidas que parecem perfeitas.</span>',
     i3:      'Você passa <span class="hi">mais de 4h</span> por dia nessas redes.',
-    stat:    'Mas relaxa,<span class="pct">74%</span> das mulheres com alto uso sentem exatamente o mesmo.',
+    stat:    'Mas relaxa, <span class="pct">74%</span> das mulheres com alto uso sentem exatamente o mesmo.',
     closing: 'Voce vai ter alguem do seu lado.'
   }
 };

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 12: Bonding</title>
+<title>Brota &middot; Screen 12: Bonding</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -269,6 +269,7 @@ body.dark .note { background: rgba(255,255,255,0.06); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -375,7 +376,7 @@ body.dark .note { background: rgba(255,255,255,0.06); }
   <div class="note ios">
     <h4>iOS 26+ &middot; Liquid Glass / HIG</h4>
     <ul>
-      <li>Mesma animacao SVG botanica — identica ao Android. Bezier HIG <code>cubic-bezier(0.32, 0.72, 0, 1)</code> aplicada automaticamente.</li>
+      <li>Mesma animacao SVG botanica, identica ao Android. Bezier HIG <code>cubic-bezier(0.32, 0.72, 0, 1)</code> aplicada automaticamente.</li>
       <li>CTA Liquid Glass: <code>backdrop-filter: blur(24px) saturate(180%)</code> + specular inset.</li>
     </ul>
   </div>
@@ -414,8 +415,8 @@ function renderPlant(containerId, plantKey, color) {
   /* Tempo total de montagem fixo para TODAS as plantas (independe do nro de pecas):
      o intervalo entre pecas e calculado para a ultima terminar em ASSEMBLE_FINISH.
      Assim o texto (que comeca em 3.10s no CSS) aparece quando a planta termina. */
-  var ASSEMBLE_FINISH = 3.1;   // s — quando a planta termina de montar
-  var PIECE_DUR = 0.4;         // s — = duracao de assembleIn no CSS
+  var ASSEMBLE_FINISH = 3.1;   // s, quando a planta termina de montar
+  var PIECE_DUR = 0.4;         // s, = duracao de assembleIn no CSS
   var n = pieces.length;
   var stagger = n > 1 ? (ASSEMBLE_FINISH - PIECE_DUR) / (n - 1) : 0;
   pieces.forEach(function(piece, idx) {

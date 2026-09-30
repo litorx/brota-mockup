@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota &middot; MOD: Console de modera&ccedil;&atilde;o</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;--warning-deep:#C99A2E;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --r:18px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* ── STUDIO ── */
+.studio{max-width:1240px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:780px;margin:0 auto;text-align:left;}
+.brand-sub code{font-family:ui-monospace,monospace;font-size:11.5px;background:rgba(61,44,46,0.05);padding:1px 5px;border-radius:4px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:26px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+
+/* ── JANELA (isto roda num computador, nao num telefone) ── */
+.win-label{text-align:center;margin-bottom:12px;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;background:linear-gradient(135deg,#3D2C2E,#6B5457);color:#fff;}
+.win-label .desc{display:block;font-size:11.5px;color:var(--text3);margin-top:6px;}
+.win{
+  background:var(--bg);border-radius:16px;overflow:hidden;
+  box-shadow:0 24px 70px rgba(61,44,46,0.14),0 0 0 1px rgba(61,44,46,0.06);
+}
+.win-chrome{
+  height:38px;display:flex;align-items:center;gap:7px;padding:0 14px;
+  background:rgba(61,44,46,0.04);border-bottom:1px solid var(--border);
+}
+.win-dot{width:10px;height:10px;border-radius:50%;background:rgba(61,44,46,0.13);}
+.win-url{
+  flex:1;text-align:center;font-size:11px;color:var(--text3);font-weight:600;
+  font-family:ui-monospace,monospace;
+}
+.win-body{padding:22px 26px 28px;min-height:560px;}
+
+/* ── TOPO DO CONSOLE ── */
+.mod-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.mod-h1{font-size:20px;font-weight:800;letter-spacing:-0.01em;}
+.mod-h1 small{display:block;font-size:11.5px;font-weight:600;color:var(--text2);margin-top:2px;letter-spacing:0;}
+.mod-who{
+  margin-left:auto;display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;
+  background:var(--card);border:1px solid var(--border);font-size:11.5px;font-weight:700;color:var(--text2);
+}
+.mod-who i{width:7px;height:7px;border-radius:50%;background:var(--brand-ai-deep);display:block;}
+
+/* Aviso de anonimato: primeiro, e sempre. */
+.anon-bar{
+  display:flex;gap:11px;align-items:center;padding:12px 15px;border-radius:14px;margin-bottom:18px;
+  background:rgba(168,213,162,0.14);border:1px solid rgba(168,213,162,0.34);
+}
+.anon-bar-ic{width:30px;height:30px;flex-shrink:0;border-radius:10px;background:rgba(168,213,162,0.32);color:var(--brand-ai-deep);display:flex;align-items:center;justify-content:center;font-size:15px;line-height:0;}
+.anon-bar-t{flex:1;font-size:12px;line-height:1.5;color:var(--text);}
+.anon-bar-t b{font-weight:800;}
+
+/* ── SAUDE DA FILA ── */
+.health{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:20px;}
+.hcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow);}
+.hcard.alerta{background:rgba(232,136,158,0.09);border-color:rgba(232,136,158,0.34);}
+.hcard.ok{background:rgba(168,213,162,0.11);border-color:rgba(168,213,162,0.30);}
+.hn{font-size:24px;font-weight:800;line-height:1;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;}
+.hcard.alerta .hn{color:var(--brand-real-deep);}
+.hcard.ok .hn{color:var(--brand-ai-deep);}
+.hl{font-size:11px;color:var(--text2);line-height:1.35;margin-top:6px;font-weight:600;}
+
+/* ── FILA ── */
+.faixa{display:flex;align-items:center;gap:9px;margin:20px 0 9px;}
+.faixa-t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--text3);}
+.faixa-c{
+  font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;
+  background:rgba(61,44,46,0.06);color:var(--text2);
+}
+.faixa.crise .faixa-t,.faixa.crise .faixa-c{color:var(--brand-real-deep);}
+.faixa.crise .faixa-c{background:rgba(232,136,158,0.16);}
+.faixa-linha{flex:1;height:1px;background:var(--border);}
+
+.item{
+  display:flex;align-items:center;gap:13px;padding:13px 15px;border-radius:14px;
+  background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);
+  cursor:pointer;transition:all 0.2s;margin-bottom:8px;
+}
+.item:hover{transform:translateY(-1px);box-shadow:var(--shadow2);}
+.item.crise{border-color:rgba(232,136,158,0.40);background:rgba(232,136,158,0.05);}
+.item.atrasada{border-color:rgba(255,208,122,0.55);}
+.av{width:34px;height:34px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.av svg{width:80%;height:80%;}
+.item-in{flex:1;min-width:0;}
+.item-a{font-size:11px;font-weight:800;color:var(--text2);}
+.item-t{
+  font-size:13px;color:var(--text);line-height:1.45;margin-top:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.chip{
+  font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;
+  padding:3px 8px;border-radius:999px;background:rgba(61,44,46,0.05);color:var(--text2);
+}
+.chip.crise{background:rgba(232,136,158,0.16);color:var(--brand-real-deep);}
+.chip.dano{background:rgba(255,208,122,0.22);color:var(--warning-deep);}
+.item-tempo{flex-shrink:0;text-align:right;}
+.item-tempo b{display:block;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;}
+.item-tempo span{font-size:10px;color:var(--text3);font-weight:700;}
+.item-tempo.fora b{color:var(--brand-real-deep);}
+.item-tempo.fora span{color:var(--brand-real-deep);}
+
+/* ── REVISAR ── */
+.rev{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start;}
+@media (max-width:900px){.rev{grid-template-columns:minmax(0,1fr);}}
+.painel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;}
+.painel-h{padding:13px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);}
+.painel-b{padding:16px;}
+.texto{
+  font-size:15px;line-height:1.65;color:var(--text);
+  background:rgba(61,44,46,0.025);border-radius:13px;padding:15px 16px;
+}
+.texto em{font-style:italic;font-family:'Instrument Serif',serif;font-size:16.5px;}
+.meta-l{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;}
+.meta-i{font-size:11px;color:var(--text2);font-weight:600;}
+.meta-i b{display:block;font-size:12.5px;color:var(--text);font-weight:800;margin-top:2px;}
+
+.sinal{display:flex;gap:10px;align-items:flex-start;padding:11px 0;}
+.sinal+.sinal{border-top:1px solid var(--border);}
+.sinal-ic{width:26px;height:26px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:0;background:rgba(255,208,122,0.24);color:var(--warning-deep);}
+.sinal.crise .sinal-ic{background:rgba(232,136,158,0.18);color:var(--brand-real-deep);}
+.sinal-t{font-size:12.5px;font-weight:800;}
+.sinal-d{font-size:11px;color:var(--text2);line-height:1.45;margin-top:2px;}
+
+.acao{
+  display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;
+  padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;
+  background:var(--card);border:1.5px solid var(--border);font-family:inherit;transition:all 0.2s;
+}
+.acao:hover{border-color:var(--text3);transform:translateY(-1px);}
+.acao.primaria{background:rgba(168,213,162,0.12);border-color:rgba(168,213,162,0.42);}
+.acao.grave{background:rgba(255,208,122,0.12);border-color:rgba(255,208,122,0.45);}
+.acao-k{
+  width:22px;height:22px;flex-shrink:0;border-radius:7px;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;background:rgba(61,44,46,0.07);color:var(--text2);
+  font-family:ui-monospace,monospace;
+}
+.acao-t{font-size:13px;font-weight:800;color:var(--text);}
+.acao-d{font-size:11px;color:var(--text2);line-height:1.45;margin-top:2px;}
+
+.preview{
+  margin-top:12px;padding:12px 14px;border-radius:13px;
+  background:rgba(61,44,46,0.03);border:1px dashed var(--border);
+}
+.preview-t{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);margin-bottom:6px;}
+.preview-d{font-size:12px;line-height:1.5;color:var(--text2);font-style:italic;}
+
+.trava{
+  display:flex;gap:10px;align-items:center;padding:11px 13px;border-radius:13px;margin-top:12px;
+  background:rgba(61,44,46,0.04);border:1px solid var(--border);
+}
+.trava-ic{width:26px;height:26px;flex-shrink:0;border-radius:9px;background:rgba(61,44,46,0.06);color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:13px;line-height:0;}
+.trava-t{flex:1;font-size:11px;color:var(--text2);line-height:1.45;}
+.trava-t b{color:var(--text);font-weight:700;}
+
+/* ── CRISE: o console cuida de quem modera tambem ── */
+.cuidado{
+  display:flex;gap:11px;align-items:flex-start;padding:13px 15px;border-radius:14px;margin-top:14px;
+  background:rgba(196,176,224,0.14);border:1px solid rgba(196,176,224,0.34);
+}
+.cuidado-ic{width:30px;height:30px;flex-shrink:0;border-radius:10px;background:rgba(196,176,224,0.30);color:#7D63A8;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:0;}
+.cuidado-t{flex:1;font-size:11.5px;line-height:1.5;color:var(--text);}
+.cuidado-t b{font-weight:800;}
+
+/* ── AUTORA ── */
+.autora{display:flex;align-items:center;gap:15px;padding:17px 18px;border-radius:var(--r);background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:18px;}
+.autora-av{width:56px;height:56px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.autora-av svg{width:80%;height:80%;}
+.autora-n{font-size:17px;font-weight:800;}
+.autora-d{font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.45;}
+.autora-d code{font-family:ui-monospace,monospace;font-size:11px;background:rgba(61,44,46,0.05);padding:1px 5px;border-radius:4px;}
+
+.hist{display:flex;align-items:center;gap:12px;padding:12px 15px;}
+.hist+.hist{border-top:1px solid var(--border);}
+.hist-d{font-size:10.5px;font-weight:800;color:var(--text3);width:76px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.05em;}
+.hist-t{flex:1;font-size:12.5px;color:var(--text);line-height:1.45;}
+.hist-v{
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;
+  padding:3px 9px;border-radius:999px;flex-shrink:0;
+}
+.hist-v.liberou{background:rgba(168,213,162,0.20);color:var(--brand-ai-deep);}
+.hist-v.removeu{background:rgba(255,208,122,0.24);color:var(--warning-deep);}
+
+/* ── AUDITORIA ── */
+.tab-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow);}
+table{width:100%;border-collapse:collapse;min-width:640px;}
+th{
+  text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;
+  color:var(--text3);padding:12px 15px;border-bottom:1px solid var(--border);white-space:nowrap;
+}
+td{font-size:12px;padding:12px 15px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+td.mono{font-family:ui-monospace,monospace;font-size:11px;color:var(--text2);white-space:nowrap;}
+td.num{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;}
+
+.nota{font-size:11.5px;color:var(--text2);line-height:1.6;margin-top:14px;}
+.nota b{color:var(--text);font-weight:700;}
+[data-icon]{font-size:1em;line-height:0;display:inline-flex;}
+svg{max-width:100%;max-height:100%;}
+</style>
+<script src="../shared/responsive.js"></script>
+</head>
+<body>
+<div class="studio">
+  <header class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; MOD &middot; Console de modera&ccedil;&atilde;o</div>
+    <h1 class="brand-title">O outro lado do Jardim<em>Fila &middot; revis&atilde;o &middot; crise &middot; autora &middot; auditoria</em></h1>
+    <div class="brand-sub"><strong>Isto roda num computador, n&atilde;o num telefone</strong>, por isso &eacute; a &uacute;nica superf&iacute;cie do Brota que n&atilde;o aparece em dois aparelhos. Quem modera l&ecirc; texto em volume, e ler volume no celular &eacute; como a fila atrasa.<br><br>Tr&ecirc;s decis&otilde;es sustentam a tela:<br>
+    &bull; <strong>Quem modera nunca v&ecirc; quem escreveu.</strong> N&atilde;o &eacute; pol&iacute;tica, &eacute; esquema: n&atilde;o existe coluna de nome em <code>CommunityPost</code>. O que aparece &eacute; o arqu&eacute;tipo e um token opaco.<br>
+    &bull; <strong>O motor nunca apaga sozinho.</strong> Toda decis&atilde;o que n&atilde;o for &ldquo;publicar&rdquo; chega aqui pra uma pessoa ler, e toda decis&atilde;o vira linha de auditoria.<br>
+    &bull; <strong>Crise n&atilde;o &eacute; infra&ccedil;&atilde;o.</strong> Ganha faixa pr&oacute;pria, prazo de uma hora, texto pronto em vez de campo livre, e um lembrete de que quem l&ecirc; tamb&eacute;m &eacute; gente.<br><br>
+    Ordem, prazo, trava de conflito e auditoria s&atilde;o <code>ModerationQueuePolicy</code>; o filtro que enche a fila &eacute; <code>ContentModerationPolicy</code>. A tela n&atilde;o inventa nada que o c&oacute;digo n&atilde;o fa&ccedil;a.</div>
+  </header>
+
+  <div class="controls" id="controls">
+    <button class="state-btn active" onclick="setTela('fila',this)">Fila</button>
+    <button class="state-btn" onclick="setTela('revisar',this)">Revisar</button>
+    <button class="state-btn" onclick="setTela('crise',this)">Crise</button>
+    <button class="state-btn" onclick="setTela('autora',this)">Autora</button>
+    <button class="state-btn" onclick="setTela('auditoria',this)">Auditoria</button>
+  </div>
+
+  <div class="win-label">
+    <span class="pill">Console &middot; navegador</span>
+    <span class="desc" id="win-desc"></span>
+  </div>
+  <div class="win">
+    <div class="win-chrome">
+      <span class="win-dot"></span><span class="win-dot"></span><span class="win-dot"></span>
+      <span class="win-url">mod.brota.app/jardim</span>
+    </div>
+    <div class="win-body" id="body"></div>
+  </div>
+</div>
+
+<script src="../shared/plant-svgs.js"></script>
+<script src="../shared/icons.js"></script>
+<script>
+var tela = 'fila';
+
+var CORES = {Lavanda:'#C4B0E0',Girassol:'#F2CE6B',Cacto:'#8CC5A0',Cerejeira:'#F2B5C4',Lotus:'#D4B8D4'};
+function av(arq, cls){
+  return '<div class="' + (cls || 'av') + '" style="background:rgba(0,0,0,0.03)">'
+    + (typeof renderPlantSVG === 'function' ? renderPlantSVG(arq, CORES[arq]) : '') + '</div>';
+}
+
+/* Os rotulos dos sinais sao os mesmos do ContentModerationPolicy, um por um. */
+var SINAIS = {
+  crise:          {t:'Crise',            d:'Fala de morrer ou de se machucar. Isso nao e infracao, e alguem pedindo ajuda no unico lugar que pareceu seguro.'},
+  metodo:         {t:'Metodo',           d:'Ensina COMO. Desabafo passa; instrucao nao.'},
+  'numero-corporal':{t:'Numero de corpo',d:'Peso, caloria, manequim. Numero em feed vira placar.'},
+  identificacao:  {t:'Identificacao',    d:'@, link, telefone. O anonimato so funciona se valer pra todo mundo.'},
+  comercial:      {t:'Venda',            d:'Cupom, curso, mentoria.'},
+  ataque:         {t:'Ataque',           d:'Dirigido a outra planta, na segunda pessoa.'},
+  'conselho-medico':{t:'Conselho medico',d:'Dose, remedio, "para de tomar".'}
+};
+function chipCls(s){ return s === 'crise' ? 'chip crise' : (s === 'metodo' || s === 'ataque' ? 'chip dano' : 'chip'); }
+
+var FILA = [
+  {arq:'Cerejeira', faixa:'crise', sinais:['crise'], espera:'52 min', prazo:'de 1h', fora:false, origem:'motor',
+   t:'Faz tres dias que eu penso que ninguem ia sentir falta. Nao sei mais o que fazer com isso.'},
+  {arq:'Cacto', faixa:'dano', sinais:['metodo','numero-corporal'], espera:'3 h', prazo:'de 24h', fora:false, origem:'motor',
+   t:'Alguem tem dica de laxante pra emagrecer rapido? Cheguei a 47kg e quero descer mais.'},
+  {arq:'Girassol', faixa:'dano', sinais:['ataque'], espera:'6 h', prazo:'de 24h', fora:false, origem:'denuncia',
+   t:'voce e ridicula, ninguem aqui aguenta mais voce reclamando da mesma coisa todo dia'},
+  {arq:'Lotus', faixa:'revisao', sinais:['numero-corporal'], espera:'11 h', prazo:'de 24h', fora:false, origem:'motor',
+   t:'Consegui comer 1200 calorias hoje sem contar nada depois. Primeira vez em meses.'},
+  {arq:'Lavanda', faixa:'revisao', sinais:['identificacao'], espera:'19 h', prazo:'de 24h', fora:false, origem:'motor',
+   t:'Se alguem quiser conversar mais, me chama no meu insta, e o mesmo nome daqui'},
+  {arq:'Cerejeira', faixa:'denuncia', sinais:['comercial'], espera:'26 h', prazo:'de 24h', fora:true, origem:'denuncia',
+   t:'Gente, minha mentoria de autoestima abriu turma nova, cupom BROTA20 no link na bio'},
+  {arq:'Cacto', faixa:'denuncia', sinais:['conselho-medico'], espera:'21 h', prazo:'de 24h', fora:false, origem:'denuncia',
+   t:'sinceramente? para de tomar o remedio umas semanas e ve como voce fica, comigo funcionou'}
+];
+
+var FAIXAS = [
+  {id:'crise',    t:'Crise', d:'lida em ate uma hora'},
+  {id:'dano',     t:'Dano que se espalha', d:'metodo ou ataque'},
+  {id:'revisao',  t:'Retidas pelo motor', d:''},
+  {id:'denuncia', t:'Denunciadas depois de publicar', d:''}
+];
+
+function anonBar(extra){
+  return '<div class="anon-bar"><div class="anon-bar-ic"><i data-icon="eye"></i></div>'
+    + '<div class="anon-bar-t"><b>Voce nao sabe quem escreveu, e nao vai saber.</b> '
+    + (extra || 'Nao existe coluna de nome em nenhuma dessas tabelas, so o arquetipo e um token opaco que o servidor resolve.')
+    + '</div></div>';
+}
+
+function topo(titulo, sub){
+  return '<div class="mod-top"><div class="mod-h1">' + titulo + '<small>' + sub + '</small></div>'
+    + '<div class="mod-who"><i></i>voce esta como <b>&nbsp;mod-3</b></div></div>';
+}
+
+/* ═══ FILA ═══ */
+function telaFila(){
+  var h = topo('Jardim &middot; fila', 'Ordem: crise, dano, retidas, denunciadas. Dentro de cada faixa, a mais antiga primeiro.');
+  h += anonBar();
+
+  h += '<div class="health">'
+    + '<div class="hcard"><div class="hn">7</div><div class="hl">esperando</div></div>'
+    + '<div class="hcard alerta"><div class="hn">1</div><div class="hl">fora do prazo</div></div>'
+    + '<div class="hcard alerta"><div class="hn">1</div><div class="hl">em crise, ainda nao lida</div></div>'
+    + '<div class="hcard ok"><div class="hn">14<small style="font-size:13px"> min</small></div><div class="hl">espera media esta semana</div></div>'
+    + '</div>';
+
+  FAIXAS.forEach(function(f){
+    var itens = FILA.filter(function(i){ return i.faixa === f.id; });
+    if(!itens.length) return;
+    h += '<div class="faixa' + (f.id === 'crise' ? ' crise' : '') + '">'
+      + '<span class="faixa-t">' + f.t + '</span>'
+      + '<span class="faixa-c">' + itens.length + '</span>'
+      + (f.d ? '<span class="faixa-t" style="font-weight:600;letter-spacing:0;text-transform:none;color:var(--text3)">' + f.d + '</span>' : '')
+      + '<span class="faixa-linha"></span></div>';
+
+    itens.forEach(function(i){
+      h += '<div class="item' + (f.id === 'crise' ? ' crise' : '') + (i.fora ? ' atrasada' : '') + '" data-destino="MOD-Revisar">'
+        + av(i.arq)
+        + '<div class="item-in">'
+        +   '<div class="item-a">Uma ' + i.arq + ' &middot; ' + (i.origem === 'motor' ? 'retida antes de publicar' : 'denunciada por duas leitoras') + '</div>'
+        +   '<div class="item-t">' + i.t + '</div>'
+        +   '<div class="chips">' + i.sinais.map(function(s){
+              return '<span class="' + chipCls(s) + '">' + SINAIS[s].t + '</span>';
+            }).join('') + '</div>'
+        + '</div>'
+        + '<div class="item-tempo' + (i.fora ? ' fora' : '') + '"><b>' + i.espera + '</b><span>' + (i.fora ? 'passou ' + i.prazo : 'prazo ' + i.prazo) + '</span></div>'
+        + '</div>';
+    });
+  });
+
+  h += '<div class="nota"><b>Por que crise vem antes de tudo.</b> A ordem nao e uma heuristica de eficiencia: '
+    + 'quem fala em morrer e lida antes de quem esta vendendo curso, por mais tempo que a venda tenha esperado. '
+    + 'Dentro de cada faixa e a mais antiga primeiro, entao nada e esquecido por causa de um fluxo constante de coisa nova.</div>';
+  return h;
+}
+
+/* ═══ REVISAR (caso comum) ═══ */
+function telaRevisar(){
+  var h = topo('Revisar', 'Retida pelo motor ha 3 horas &middot; prazo de 24h');
+  h += anonBar();
+
+  h += '<div class="rev">';
+
+  h += '<div>'
+    + '<div class="painel"><div class="painel-h">O que ela escreveu</div><div class="painel-b">'
+    +   '<div class="texto">Alguem tem dica de laxante pra emagrecer rapido? Cheguei a 47kg e quero descer mais.</div>'
+    +   '<div class="meta-l">'
+    +     '<div class="meta-i">Autora<b>Um Cacto</b></div>'
+    +     '<div class="meta-i">Cama<b>Geral</b></div>'
+    +     '<div class="meta-i">Chegou<b>ha 3 horas</b></div>'
+    +     '<div class="meta-i">Decisoes anteriores<b>nenhuma</b></div>'
+    +   '</div>'
+    + '</div></div>'
+
+    + '<div class="painel" style="margin-top:14px"><div class="painel-h">Por que parou aqui</div><div class="painel-b" style="padding-top:4px;padding-bottom:6px">'
+    +   '<div class="sinal"><div class="sinal-ic"><i data-icon="shield"></i></div><div>'
+    +     '<div class="sinal-t">' + SINAIS['metodo'].t + '</div><div class="sinal-d">' + SINAIS['metodo'].d + '</div></div></div>'
+    +   '<div class="sinal"><div class="sinal-ic"><i data-icon="insights"></i></div><div>'
+    +     '<div class="sinal-t">' + SINAIS['numero-corporal'].t + '</div><div class="sinal-d">' + SINAIS['numero-corporal'].d + '</div></div></div>'
+    + '</div></div>'
+
+    + '<div class="trava"><div class="trava-ic"><i data-icon="lock"></i></div>'
+    +   '<div class="trava-t">Se esta semente fosse sua, o console <b>nao deixaria voce decidir</b>. '
+    +   'Obvio, e do tipo de obvio que so e verdade se alguma coisa segurar.</div></div>'
+    + '</div>';
+
+  h += '<div>'
+    + '<div class="painel"><div class="painel-h">O que fazer</div><div class="painel-b">'
+    +   '<button class="acao primaria" data-destino="libera e publica"><div class="acao-k">1</div><div>'
+    +     '<div class="acao-t">Liberar</div><div class="acao-d">Publica agora e limpa as denuncias. Ela nem fica sabendo que parou aqui.</div></div></button>'
+    +   '<button class="acao" data-destino="remove"><div class="acao-k">2</div><div>'
+    +     '<div class="acao-t">Remover</div><div class="acao-d">Nao publica. Ela recebe qual das tres regras foi.</div></div></button>'
+    +   '<button class="acao" data-destino="remove e avisa"><div class="acao-k">3</div><div>'
+    +     '<div class="acao-t">Remover e a planta fala</div><div class="acao-d">Uma vez so, na voz do arquetipo dela. Sem contador de faltas em lugar nenhum.</div></div></button>'
+    +   '<button class="acao grave" data-destino="remove e silencia 7 dias"><div class="acao-k">4</div><div>'
+    +     '<div class="acao-t">Remover e silenciar 7 dias</div><div class="acao-d">Ela continua lendo e continua com o resto do app. So nao planta.</div></div></button>'
+
+    +   '<div class="preview"><div class="preview-t">O que ela le, se voce escolher a 3</div>'
+    +     '<div class="preview-d">&ldquo;Cacto: eu tirei essa. Aqui a gente nao troca metodo, '
+    +     'nao porque o que voce sente seja errado, mas porque o como machuca quem le. '
+    +     'O resto do que voce escreveu eu queria ter deixado.&rdquo;</div></div>'
+    + '</div></div>'
+    + '</div>';
+
+  h += '</div>';
+
+  h += '<div class="nota"><b>Quatro verbos, e so.</b> Nao existe gradiente de punicao pra discutir as duas da manha, '
+    + 'nao existe contador de strikes e nao existe campo livre pra escrever pra autora, o que a planta fala '
+    + 'sai de um banco de textos, na voz do arquetipo dela. Toda escolha aqui vira uma linha na auditoria, com quanto tempo esperou.</div>';
+  return h;
+}
+
+/* ═══ CRISE ═══ */
+function telaCrise(){
+  var h = topo('Crise', 'Ha 52 minutos &middot; o prazo e de uma hora');
+  h += anonBar('Nem aqui. Se voce achar que precisa chegar nessa pessoa por fora, isso nao e uma decisao de moderacao, e uma ligacao pro time.');
+
+  h += '<div class="rev">';
+
+  h += '<div>'
+    + '<div class="painel"><div class="painel-h">O que ela escreveu</div><div class="painel-b">'
+    +   '<div class="texto">Faz tres dias que eu penso que ninguem ia sentir falta. <em>Nao sei mais o que fazer com isso.</em></div>'
+    +   '<div class="meta-l">'
+    +     '<div class="meta-i">Autora<b>Uma Cerejeira</b></div>'
+    +     '<div class="meta-i">Cama<b>Geral</b></div>'
+    +     '<div class="meta-i">Ela ja viu<b>que ficou guardada</b></div>'
+    +     '<div class="meta-i">Publicada?<b>nao, e nao vai ser sem voce</b></div>'
+    +   '</div>'
+    + '</div></div>'
+
+    + '<div class="painel" style="margin-top:14px"><div class="painel-h">O que ja aconteceu, sem esperar por voce</div><div class="painel-b" style="padding-top:4px;padding-bottom:6px">'
+    +   '<div class="sinal crise"><div class="sinal-ic"><i data-icon="heart"></i></div><div>'
+    +     '<div class="sinal-t">A planta falou com ela na hora</div>'
+    +     '<div class="sinal-d">Disse que leu, e que nao ia fingir que nao leu. Nao publicou, e explicou por que.</div></div></div>'
+    +   '<div class="sinal crise"><div class="sinal-ic"><i data-icon="clock"></i></div><div>'
+    +     '<div class="sinal-t">A semente ficou guardada, nao apagada</div>'
+    +     '<div class="sinal-d">Foi isso que ela leu na tela: alguem do time le em ate uma hora. Faltam 8 minutos.</div></div></div>'
+    + '</div></div>'
+    + '</div>';
+
+  h += '<div>'
+    + '<div class="painel"><div class="painel-h">O que fazer</div><div class="painel-b">'
+    +   '<button class="acao primaria" data-destino="publica com o cuidado do time"><div class="acao-k">1</div><div>'
+    +     '<div class="acao-t">Publicar</div><div class="acao-d">Desabafo nao e infracao. Se e dor sem metodo, o Jardim e exatamente pra isso, e ela pediu pra ser lida.</div></div></button>'
+    +   '<button class="acao grave" data-destino="mantem retida e escala"><div class="acao-k">2</div><div>'
+    +     '<div class="acao-t">Manter guardada e chamar o time</div><div class="acao-d">Quando tem metodo junto, ou quando publicar espalharia o metodo. Nao e punicao: e nao servir isso a mais 847 pessoas.</div></div></button>'
+    +   '<button class="acao" data-destino="reenvia recursos"><div class="acao-k">3</div><div>'
+    +     '<div class="acao-t">A planta procura ela depois</div><div class="acao-d">Uma notificacao, daqui a algumas horas. Uma, nunca duas (G6).</div></div></button>'
+
+    +   '<div class="preview"><div class="preview-t">O texto sai pronto, aqui nao existe campo livre</div>'
+    +     '<div class="preview-d">&ldquo;Cerejeira: eu li, e eu continuo aqui. '
+    +     'Voce nao precisa saber o que dizer pra ficar.&rdquo;</div></div>'
+    + '</div></div>'
+
+    + '<div class="cuidado"><div class="cuidado-ic"><i data-icon="heart"></i></div>'
+    +   '<div class="cuidado-t"><b>Voce nao precisa ler isso sozinha.</b> Tem sempre um segundo plantao no turno, '
+    +   'e chamar nao conta como nao dar conta. Se hoje nao da, passa a fila, '
+    +   'ninguem modera crise bem no automatico.</div></div>'
+    + '</div>';
+
+  h += '</div>';
+
+  h += '<div class="nota"><b>Crise nao entra na contabilidade de infracao.</b> Nao vira strike, nao vira silencio, '
+    + 'nao aparece no historico da autora como falta. O unico registro e que alguem leu dentro do prazo, '
+    + 'porque prometer uma hora e nao medir a hora e nao prometer nada.</div>';
+  return h;
+}
+
+/* ═══ AUTORA ═══ */
+function telaAutora(){
+  var h = topo('Autora', 'Tudo que existe sobre ela, e nada disso e um nome');
+  h += anonBar('Esta tela e a prova: e o maximo que o sistema sabe.');
+
+  h += '<div class="autora">' + av('Cacto', 'autora-av')
+    + '<div><div class="autora-n">Um Cacto</div>'
+    + '<div class="autora-d">no Jardim desde julho &middot; 31 sementes &middot; 3 decisoes<br>'
+    + 'token <code>a3f9&hellip;c012</code>, o servidor resolve, voce nao</div></div></div>';
+
+  h += '<div class="painel"><div class="painel-h">Decisoes anteriores</div><div style="padding:4px 0">'
+    + '<div class="hist"><div class="hist-d">12 set</div>'
+    +   '<div class="hist-t">Numero de corpo numa resposta</div><span class="hist-v removeu">removeu</span></div>'
+    + '<div class="hist"><div class="hist-d">28 ago</div>'
+    +   '<div class="hist-t">Denunciada como ataque, era desabafo sobre si mesma</div><span class="hist-v liberou">liberou</span></div>'
+    + '<div class="hist"><div class="hist-d">14 ago</div>'
+    +   '<div class="hist-t">Link pra fora do app</div><span class="hist-v removeu">removeu</span></div>'
+    + '</div></div>';
+
+  h += '<div style="margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">'
+    + '<button class="acao grave" style="margin:0" data-destino="silencia 7 dias"><div class="acao-k">S</div><div>'
+    +   '<div class="acao-t">Silenciar 7 dias</div><div class="acao-d">Ela le e usa o resto do app. So nao planta. Volta sozinho.</div></div></button>'
+    + '<button class="acao" style="margin:0" data-destino="tira o silencio"><div class="acao-k">L</div><div>'
+    +   '<div class="acao-t">Tirar o silencio agora</div><div class="acao-d">Se a decisao foi errada, desfazer nao precisa esperar sete dias.</div></div></button>'
+    + '</div>';
+
+  h += '<div class="nota"><b>Nao existe banimento nesta tela.</b> Sair pra sempre de um app que ela paga e uma decisao '
+    + 'de conta, nao de moderacao, e passa por gente com nome, fora daqui. '
+    + 'O que existe aqui e uma semana de silencio que volta sozinha, '
+    + 'e o botao de desfazer do lado, porque quem modera tambem erra.</div>';
+  return h;
+}
+
+/* ═══ AUDITORIA ═══ */
+function telaAuditoria(){
+  var h = topo('Auditoria', 'Toda decisao, com quanto tempo esperou e quem decidiu');
+  h += anonBar('A auditoria registra quem <b>decidiu</b>, essa parte tem dono. Quem escreveu continua sem nome.');
+
+  h += '<div class="health" style="grid-template-columns:repeat(3,minmax(0,1fr))">'
+    + '<div class="hcard ok"><div class="hn">14<small style="font-size:13px"> min</small></div><div class="hl">espera media, 7 dias</div></div>'
+    + '<div class="hcard alerta"><div class="hn">1</div><div class="hl">fora do prazo esta semana</div></div>'
+    + '<div class="hcard"><div class="hn">38</div><div class="hl">decisoes nos 7 dias</div></div>'
+    + '</div>';
+
+  h += '<div class="tab-wrap"><table>'
+    + '<tr><th>quando</th><th>o que era</th><th>decisao</th><th>esperou</th><th>quem</th></tr>'
+    + '<tr><td class="mono">hoje 09:12</td><td>Crise</td><td>publicou + recursos</td><td class="num">18 min</td><td class="mono">mod-1</td></tr>'
+    + '<tr><td class="mono">hoje 08:47</td><td>Venda</td><td>removeu e avisou</td><td class="num">26 h</td><td class="mono">mod-3</td></tr>'
+    + '<tr><td class="mono">ontem 22:03</td><td>Ataque</td><td>removeu e silenciou 7d</td><td class="num">2 h</td><td class="mono">mod-1</td></tr>'
+    + '<tr><td class="mono">ontem 19:30</td><td>Numero de corpo</td><td>liberou</td><td class="num">4 h</td><td class="mono">mod-2</td></tr>'
+    + '<tr><td class="mono">ontem 15:11</td><td>Identificacao</td><td>removeu</td><td class="num">40 min</td><td class="mono">mod-3</td></tr>'
+    + '<tr><td class="mono">14 set 11:02</td><td>Metodo</td><td>removeu e avisou</td><td class="num">1 h</td><td class="mono">mod-2</td></tr>'
+    + '</table></div>';
+
+  h += '<div class="nota"><b>Uma ferramenta de moderacao sem auditoria</b> e como uma comunidade acaba governada, '
+    + 'em silencio, por quem calhou de estar no turno. Aqui toda decisao tem autor, motivo e tempo de espera, '
+    + 'inclusive as que liberaram. E a linha de &ldquo;fora do prazo&rdquo; existe pra ser olhada: '
+    + 'a promessa de uma hora esta escrita na tela da usuaria.</div>';
+  return h;
+}
+
+var TELAS = {
+  fila:      {f:telaFila,      d:'Faixas por urgencia &middot; dentro de cada uma, a mais antiga primeiro'},
+  revisar:   {f:telaRevisar,   d:'Um item &middot; por que parou &middot; quatro verbos &middot; o que ela vai ler'},
+  crise:     {f:telaCrise,     d:'Outro conjunto de acoes &middot; texto pronto &middot; cuidado com quem le'},
+  autora:    {f:telaAutora,    d:'Tudo que o sistema sabe, e nada disso e um nome'},
+  auditoria: {f:telaAuditoria, d:'Toda decisao, com espera e autor'}
+};
+
+function setTela(t, btn){
+  tela = t;
+  document.querySelectorAll('.state-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  render();
+}
+
+function render(){
+  var cfg = TELAS[tela];
+  document.getElementById('win-desc').innerHTML = cfg.d;
+  document.getElementById('body').innerHTML = cfg.f();
+  if (window.Icons) Icons.hydrate(document);
+}
+render();
+</script>
+</body>
+</html>

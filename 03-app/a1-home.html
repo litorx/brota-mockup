@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — A1: Home</title>
+<title>Brota &middot; A1: Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -327,7 +327,23 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .setup-arrow{margin-left:auto;color:var(--text3);font-size:16px;flex-shrink:0;}
 
 /* ── CYCLE PILL ── */
-.cycle-pill{
+/* A oferta de respirar so aparece no humor pesado -- a planta ja dizia
+   "vamos so respirar juntas" e nao tinha como. Some sozinha nos outros humores:
+   oferecer respiracao pra quem esta bem e transformar cuidado em cobranca. */
+.respirar-oferta{
+  display:none;align-items:center;gap:7px;
+  margin:9px auto 0;padding:8px 15px;border-radius:999px;
+  background:rgba(255,208,122,0.16);border:1px solid rgba(255,208,122,0.40);
+  color:#8A6A22;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;
+  transition:all 0.22s;
+}
+.respirar-oferta.on{display:inline-flex;animation:fadeUp 0.45s ease-out both;}
+.respirar-oferta:hover{background:rgba(255,208,122,0.26);}
+.respirar-oferta:active{transform:scale(0.96);}
+.respirar-oferta i{font-size:14px;line-height:0;}
+.ios-screen .respirar-oferta{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
+
+.cycle-pill{cursor:pointer;
   display:inline-flex;align-items:center;gap:6px;
   padding:5px 12px;border-radius:999px;
   background:rgba(var(--cycle-accent-rgb),0.10);
@@ -406,20 +422,20 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .fab-pause{
   position:absolute;bottom:80px;right:16px;z-index:15;
   width:48px;height:48px;border-radius:50%;
-  background:var(--brand-real);color:white;
+  background:var(--brand-warning);color:#8A6A22;
   display:flex;align-items:center;justify-content:center;
   font-size:20px;cursor:pointer;
-  box-shadow:0 4px 20px rgba(244,167,185,0.30);
+  box-shadow:0 4px 20px rgba(255,208,122,0.38);
   transition:transform 0.2s,box-shadow 0.2s;
 }
-.fab-pause:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(244,167,185,0.40);}
+.fab-pause:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(255,208,122,0.48);}
 .fab-pause:active{transform:scale(0.94);}
 .ios-screen .fab-pause{
   bottom:92px;right:18px;
   backdrop-filter:blur(20px) saturate(180%);
-  background:rgba(232,136,158,0.88);
+  background:rgba(255,208,122,0.92);
   border:1px solid rgba(255,255,255,0.30);
-  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(244,167,185,0.28);
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
 
 /* ── PLANT PART ANIMATIONS ── */
@@ -440,16 +456,15 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .wilted .pcircle-wrap::before{animation-duration:7s;opacity:0.15;}
 .wilted .plabel{opacity:0.6;}
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 <div class="studio">
 
 <div class="studio-header">
   <div class="brand-eyebrow">Brota &middot; A1-Home</div>
-  <div class="brand-title">Home &mdash; O Abra&ccedil;o Di&aacute;rio <em>Planta respirando &middot; Mood check-in &middot; Daily Bloom &middot; Bottom nav &middot; FAB Pause</em></div>
-  <div class="brand-sub">
-    Primeira tela do app. Refs: <strong>Finch</strong> (pet home) &middot; <strong>Flo</strong> (cycle-centered) &middot; <strong>Calm</strong> (Daily Calm) &middot; <strong>Gentler Streak</strong> (shame-free)
-  </div>
+  <div class="brand-title">Home &middot; O Abra&ccedil;o Di&aacute;rio <em>Planta respirando &middot; Mood check-in &middot; Daily Bloom &middot; Bottom nav &middot; FAB Pause</em></div>
+  <div class="brand-sub"><strong>Daily Bloom leva para onde a miss&atilde;o mora:</strong> Feed Cleanse &rarr; <code>F1</code> &middot; Inner Voice &rarr; <code>F4</code> &middot; Jardim &rarr; <code>F13</code> (canteiro privado; o F12 &eacute; da comunidade, V3) &middot; respirar &rarr; <code>A7</code> &middot; cuidar da planta &rarr; <code>A2</code>. Cada variante declara o destino em <code>data-destino</code>.<br>Primeira tela do app. Refs: <strong>Finch</strong> (pet home) &middot; <strong>Flo</strong> (cycle-centered) &middot; <strong>Calm</strong> (Daily Calm) &middot; <strong>Gentler Streak</strong> (shame-free)<br><strong>Destino dos cards de setup:</strong> &ldquo;Ativar prote&ccedil;&atilde;o&rdquo; &rarr; <strong>P2-MirrorSetup</strong> (config de apps protegidos) &middot; &ldquo;Deixar sua planta te avisar&rdquo; &rarr; <strong>P3-Push</strong> (permiss&atilde;o de notifica&ccedil;&atilde;o). Marcados em <code>data-destino</code> no markup.</div>
 </div>
 
 <div class="controls">
@@ -463,6 +478,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <button class="state-btn scene-btn" onclick="setScene('daily',this)">Di&aacute;rio (manh&atilde;)</button>
   <button class="state-btn scene-btn" onclick="setScene('luteal',this)">Fase l&uacute;tea</button>
   <button class="state-btn scene-btn" onclick="setScene('wilted',this)">Planta murcha</button>
+
+  <div class="state-sep"></div>
+  <button class="state-btn mission-btn active" onclick="setMissao('feed',this)">Miss&atilde;o: Feed Cleanse</button>
+  <button class="state-btn mission-btn" onclick="setMissao('voz',this)">Miss&atilde;o: Inner Voice</button>
+  <button class="state-btn mission-btn" onclick="setMissao('jardim',this)">Miss&atilde;o: Jardim</button>
 </div>
 
 <div class="stage">
@@ -486,7 +506,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
         <div class="scroll-body" id="abody">
           <!-- Cycle pill -->
-          <div class="cycle-pill anim-el" style="animation-delay:0.20s" id="acycle">
+          <div class="cycle-pill anim-el" data-destino="A5-Ciclo" style="animation-delay:0.20s" id="acycle">
             <span class="cycle-dot"></span>
             <span id="acycle-text">Fase folicular &middot; dia 9</span>
           </div>
@@ -541,10 +561,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="plant-response" id="aresponse">
             <div class="pr-name" id="apr-name">Lavanda:</div>
             <div class="pr-text" id="apr-text">Ei... ta tudo bem. Vamos s&oacute; respirar juntas, ok?</div>
+            <button class="respirar-oferta" id="aresp-breathe" data-destino="A7-Pause"><i data-icon="respirar"></i>Respirar junto agora</button>
           </div>
 
           <!-- Daily Bloom -->
-          <div class="bloom-card anim-el" style="animation-delay:0.94s">
+          <div class="bloom-card anim-el" id="abloom-card" style="animation-delay:0.94s">
             <div class="bloom-header">
               <div class="bloom-icon"><i data-icon="leaf"></i></div>
               <div class="bloom-eyebrow" id="abloom-eye">Daily Bloom</div>
@@ -564,7 +585,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
           <!-- Setup cards (first-launch only) -->
           <div id="asetup-cards">
-            <div class="setup-card anim-el" style="animation-delay:1.22s">
+            <div class="setup-card anim-el" data-destino="P2-MirrorSetup" style="animation-delay:1.22s">
               <div class="setup-icon" style="background:rgba(255,208,122,0.18);color:#D99A2B"><i data-icon="shieldCheck"></i></div>
               <div>
                 <div class="setup-title">Ativar prote&ccedil;&atilde;o no Instagram</div>
@@ -572,7 +593,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               </div>
               <div class="setup-arrow">&rsaquo;</div>
             </div>
-            <div class="setup-card anim-el" style="animation-delay:1.34s">
+            <div class="setup-card anim-el" data-destino="P3-Push" style="animation-delay:1.34s">
               <div class="setup-icon" style="background:rgba(244,167,185,0.18);color:var(--brand-real-deep)"><i data-icon="bell"></i></div>
               <div>
                 <div class="setup-title">Deixar sua planta te avisar</div>
@@ -586,14 +607,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         </div>
 
         <!-- FAB Pause -->
-        <div class="fab-pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="pause"></i></div>
+        <div class="fab-pause" data-destino="A7-Pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="respirar"></i></div>
 
         <!-- Bottom Nav -->
         <div class="bottom-nav">
           <div class="nav-item active"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
         </div>
       </div>
@@ -617,7 +638,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
         <div class="scroll-body" id="iosbody">
           <!-- Cycle pill -->
-          <div class="cycle-pill anim-el" style="animation-delay:0.20s" id="ioscycle">
+          <div class="cycle-pill anim-el" data-destino="A5-Ciclo" style="animation-delay:0.20s" id="ioscycle">
             <span class="cycle-dot"></span>
             <span id="ioscycle-text">Fase folicular &middot; dia 9</span>
           </div>
@@ -672,10 +693,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="plant-response" id="iosresponse">
             <div class="pr-name" id="iospr-name">Lavanda:</div>
             <div class="pr-text" id="iospr-text">Ei... ta tudo bem. Vamos s&oacute; respirar juntas, ok?</div>
+            <button class="respirar-oferta" id="iosresp-breathe" data-destino="A7-Pause"><i data-icon="respirar"></i>Respirar junto agora</button>
           </div>
 
           <!-- Daily Bloom -->
-          <div class="bloom-card anim-el" style="animation-delay:0.94s">
+          <div class="bloom-card anim-el" id="iosbloom-card" style="animation-delay:0.94s">
             <div class="bloom-header">
               <div class="bloom-icon"><i data-icon="leaf"></i></div>
               <div class="bloom-eyebrow" id="iosbloom-eye">Daily Bloom</div>
@@ -695,7 +717,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
           <!-- Setup cards (first-launch only) -->
           <div id="iossetup-cards">
-            <div class="setup-card anim-el" style="animation-delay:1.22s">
+            <div class="setup-card anim-el" data-destino="P2-MirrorSetup" style="animation-delay:1.22s">
               <div class="setup-icon" style="background:rgba(255,208,122,0.18);color:#D99A2B"><i data-icon="shieldCheck"></i></div>
               <div>
                 <div class="setup-title">Ativar prote&ccedil;&atilde;o no Instagram</div>
@@ -703,7 +725,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               </div>
               <div class="setup-arrow">&rsaquo;</div>
             </div>
-            <div class="setup-card anim-el" style="animation-delay:1.34s">
+            <div class="setup-card anim-el" data-destino="P3-Push" style="animation-delay:1.34s">
               <div class="setup-icon" style="background:rgba(244,167,185,0.18);color:var(--brand-real-deep)"><i data-icon="bell"></i></div>
               <div>
                 <div class="setup-title">Deixar sua planta te avisar</div>
@@ -717,14 +739,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         </div>
 
         <!-- FAB Pause -->
-        <div class="fab-pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="pause"></i></div>
+        <div class="fab-pause" data-destino="A7-Pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="respirar"></i></div>
 
         <!-- Bottom Nav -->
         <div class="bottom-nav">
           <div class="nav-item active"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="insights"></i></span><span class="nav-label">Insights</span></div>
+          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
           <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
         </div>
       </div>
@@ -807,28 +829,55 @@ var wiltedGreetings = {
   Lotus:'Eva... preciso de \u00e1gua.'
 };
 
+/* Cada Bloom leva para onde a missao mora. O `dest` nao e decoracao:
+   e o contrato de navegacao do card, e vira data-destino no markup. */
 var bloomContent = {
   first:{
     title:'Bem-vinda ao seu primeiro Bloom.',
-    desc:'Todo dia, sua planta traz uma miss\u00e3o pequena. Hoje: s\u00f3 respira e conhece o app.',
-    cta:'Explorar'
-  },
-  daily:{
-    title:'Abre o Instagram e desativa 3 contas que te fazem comparar.',
-    desc:'Sua __PLANT__ vai estar com voc\u00ea quando voc\u00ea abrir. S\u00f3 5 minutos.',
-    cta:'Vamos l\u00e1'
+    desc:'Todo dia, sua planta traz uma miss\u00e3o pequena. Hoje: s\u00f3 respira comigo por um minuto.',
+    cta:'Respirar',
+    dest:'A7-Pause'
   },
   luteal:{
     title:'Hoje n\u00e3o precisa de esfor\u00e7o. S\u00f3 respira.',
     desc:'Sua __PLANT__ entende que essa semana \u00e9 mais dif\u00edcil. Um exerc\u00edcio leve.',
-    cta:'Respirar juntas'
+    cta:'Respirar juntas',
+    dest:'A7-Pause'
   },
   wilted:{
     title:'Sua planta precisa de voc\u00ea.',
     desc:'Um cuidado r\u00e1pido e ela volta a florescer. 60 segundos.',
-    cta:'Cuidar da minha planta'
+    cta:'Cuidar da minha planta',
+    dest:'A2-Mirror (modo cuidado)'
   }
 };
+
+/* A missao do dia rotaciona entre as tres superficies onde ela pode morar.
+   O card e o mesmo; o destino muda com o conteudo. */
+var bloomMissoes = {
+  feed:{
+    title:'Abre o Instagram e desativa 3 contas que te fazem comparar.',
+    desc:'Sua __PLANT__ vai estar com voc\u00ea quando voc\u00ea abrir. S\u00f3 5 minutos.',
+    cta:'Vamos l\u00e1',
+    dest:'F1-FeedCleanseDay'
+  },
+  voz:{
+    title:'Teve um pensamento que ficou martelando hoje?',
+    desc:'A gente olha pra ele junto, em cinco passos. Sua __PLANT__ conduz.',
+    cta:'Olhar junto',
+    dest:'F4-InnerVoiceCBT'
+  },
+  jardim:{
+    /* A comunidade e V3. No MVP esta missao leva ao canteiro privado -- se
+       apontasse pro F12, apontaria pra uma tela que ainda nao existe. */
+    title:'Escreve uma coisa s\u00f3 sobre hoje.',
+    desc:'Fica no seu canteiro. Ningu\u00e9m l\u00ea al\u00e9m de voc\u00ea e da sua __PLANT__.',
+    cta:'Escrever',
+    dest:'F13-NovaReflexao'
+  }
+};
+var missaoDoDia = 'feed';
+
 
 /* Plant SVGs (FACE_HAPPY, FACE_SAD, SPARKLES, POT, POT_DRY, plantSVGs,
    wiltedSVGs) -> fonte unica em ../shared/plant-svgs.js */
@@ -859,7 +908,16 @@ function restartAnims(){
 
 function setPlant(key,btn){
   currentPlant = plants[key];
-  document.querySelectorAll('.state-btn:not(.scene-btn)').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.state-btn:not(.scene-btn):not(.mission-btn)').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyState();
+}
+
+/* Troca a missao do dia. So tem efeito no cenario diario -- nos outros
+   (primeiro acesso, lutea, murcha) o Bloom e ditado pelo estado. */
+function setMissao(m, btn){
+  missaoDoDia = m;
+  document.querySelectorAll('.mission-btn').forEach(function(b){b.classList.remove('active');});
   if(btn) btn.classList.add('active');
   applyState();
 }
@@ -940,11 +998,19 @@ function applyState(){
   });
 
   // Daily Bloom content
-  var bc = isFirst ? bloomContent.first : isWilted ? bloomContent.wilted : isLuteal ? bloomContent.luteal : bloomContent.daily;
+  var bc = isFirst  ? bloomContent.first
+         : isWilted ? bloomContent.wilted
+         : isLuteal ? bloomContent.luteal
+         : bloomMissoes[missaoDoDia];
   ['a','ios'].forEach(function(p){
     document.getElementById(p+'bloom-title').textContent = bc.title;
     document.getElementById(p+'bloom-desc').textContent = bc.desc.replace('__PLANT__', s.plant);
     document.getElementById(p+'bloom-cta').textContent = bc.cta;
+    /* o destino vive no markup, do mesmo jeito que nos cards de setup */
+    var card = document.getElementById(p+'bloom-card');
+    if(card) card.setAttribute('data-destino', bc.dest);
+    var cta = document.getElementById(p+'bloom-cta');
+    if(cta) cta.setAttribute('data-destino', bc.dest);
   });
 
   // Progress numbers
@@ -985,6 +1051,11 @@ function selectMood(btn, platform, mood){
   } else {
     text.textContent = responses[currentPlant.plant][mood];
   }
+
+  /* A porta so abre quando a fala ja ofereceu. Oferecer respiracao pra quem
+     marcou "otima" transforma cuidado em cobranca. */
+  var oferta = document.getElementById(prefix+'resp-breathe');
+  if(oferta) oferta.classList.toggle('on', isLuteal || mood === 'down' || mood === 'meh');
 
   resp.classList.remove('visible');
   void resp.offsetWidth;

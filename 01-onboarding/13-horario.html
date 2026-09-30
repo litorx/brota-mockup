@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 13: Horario</title>
+<title>Brota &middot; Screen 13: Horario</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -303,6 +303,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -311,8 +312,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <div class="brand-eyebrow">Brota · Onboarding · Screen 13 de 19 · O13-Horario</div>
     <h1 class="brand-title">Quando voce mais cai no scroll? <em>planta fala · speaker pill · 5 opcoes comportamentais</em></h1>
     <p class="brand-sub">
-      Primeira pergunta da planta como protetora. O speaker pill mostra o nome da planta na cor do arquetipo —
-      sinal visual claro de que agora e ela quem fala. CTA aparece apos selecao. Studio toggle por arquetipo.
+      Primeira pergunta da planta como protetora. O speaker pill mostra o nome da planta na cor do arquetipo, sinal visual claro de que agora e ela quem fala. CTA aparece apos selecao. Studio toggle por arquetipo.
     </p>
   </div>
   <div class="controls-col">
@@ -415,18 +415,18 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · M3 Expressive</h4>
     <ul>
-      <li>Speaker pill: dot 8px na cor da planta + nome. <code>speakerPop</code> keyframe (scale 0.88 com overshoot 1.08) abre a conversa. Troca de voz — antes era a app falando (rose), agora e a planta (arquetipo).</li>
-      <li>Multi-select: opcao selecionada ganha <code>background</code> na cor da planta + <code>border-left</code> colorido. Demais ficam dim. Logica toggleable — pode deselecionar.</li>
-      <li>CTA aparece na primeira selecao e permanece mesmo ao deselecionar — comportamento correto para multi-select progressivo.</li>
+      <li>Speaker pill: dot 8px na cor da planta + nome. <code>speakerPop</code> keyframe (scale 0.88 com overshoot 1.08) abre a conversa. Troca de voz, antes era a app falando (rose), agora e a planta (arquetipo).</li>
+      <li>Multi-select: opcao selecionada ganha <code>background</code> na cor da planta + <code>border-left</code> colorido. Demais ficam dim. Logica toggleable, pode deselecionar.</li>
+      <li>CTA aparece na primeira selecao e permanece mesmo ao deselecionar, comportamento correto para multi-select progressivo.</li>
       <li>Dados coletados (Peak time) vao para o plano personalizado em O16-Loading. A planta usa esse horario para acionar Mirror 2.0 / Pause no app.</li>
-      <li>Opcoes em linguagem natural, nao clinica. Referencia <strong>Quittr</strong> — shame-free habit intervention.</li>
+      <li>Opcoes em linguagem natural, nao clinica. Referencia <strong>Quittr</strong>, shame-free habit intervention.</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26+ · Liquid Glass / HIG</h4>
     <ul>
       <li>Speaker pill: dot 8px + nome em SF Pro Text 13pt, peso 500. <code>speakerPop</code> sem overshoot (<code>cubic-bezier(0.32, 0.72, 0, 1)</code>).</li>
-      <li>Opcoes com <code>.regularMaterial</code>. Selected: <code>border-color</code> na cor da planta + <code>background: rgba(color, 0.10)</code>. Nao usa glass filled — conteudo nunca recebe glassEffect, so controles.</li>
+      <li>Opcoes com <code>.regularMaterial</code>. Selected: <code>border-color</code> na cor da planta + <code>background: rgba(color, 0.10)</code>. Nao usa glass filled, conteudo nunca recebe glassEffect, so controles.</li>
       <li>CTA Liquid Glass: <code>backdrop-filter: blur(24px) saturate(180%)</code> + cor da planta em <code>rgba(color, 0.82)</code>.</li>
       <li>Multi-select toggleable identico ao Android em UX. Diferenca so na linguagem visual de cada plataforma.</li>
     </ul>

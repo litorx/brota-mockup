@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 07: Impacto</title>
+<title>Brota &middot; Screen 07: Impacto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -252,16 +252,17 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
 <header class="studio-header">
   <div class="brand-block">
     <div class="brand-eyebrow">Brota · Onboarding · Screen 07 de 18</div>
-    <h1 class="brand-title">Impacto <em>O9 — como as redes afetam a autoimagem</em></h1>
+    <h1 class="brand-title">Impacto <em>O9, como as redes afetam a autoimagem</em></h1>
     <p class="brand-sub">
-      Connector dinâmico referencia o tempo selecionado em O6 — 4 variações via toggle.
-      Pergunta de severidade em linguagem natural — não escala clínica.
+      Connector dinâmico referencia o tempo selecionado em O6, 4 variações via toggle.
+      Pergunta de severidade em linguagem natural, não escala clínica.
       4 opções ordenadas do mais leve ao mais intenso; coluna única (texto longo).
       CTA aparece após selecionar qualquer opção.
     </p>
@@ -295,7 +296,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Impacto — Android">
+        <section class="screen android-screen" aria-label="Brota Impacto, Android">
           <div class="a-blob-1"></div><div class="a-blob-2"></div><div class="a-blob-3"></div>
           <div class="a-body">
             <span class="a-conn-1" id="a-conn">Menos de 1h por dia. Esse tempo ainda deixa rastros.</span>
@@ -330,7 +331,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Impacto — iOS">
+        <section class="screen ios-screen" aria-label="Brota Impacto, iOS">
           <div class="ios-orb a"></div><div class="ios-orb b"></div><div class="ios-orb c"></div>
           <div class="ios-body">
             <span class="ios-conn-1" id="ios-conn">Menos de 1h por dia. Esse tempo ainda deixa rastros.</span>
@@ -354,25 +355,25 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · M3 Expressive</h4>
     <ul>
-      <li>Connector <code>a-conn-1</code>: Roboto Flex 14px wdth 100 wght 500 — rose <code>#F4A7B9</code> 86%</li>
-      <li>H1: Roboto Flex 24px <code>wdth 104 wght 640 opsz 24</code> — 2 linhas, lh 1.25</li>
-      <li>Opções coluna única: <code>text-align: left</code> — texto longo não cabe em grid 2×2</li>
+      <li>Connector <code>a-conn-1</code>: Roboto Flex 14px wdth 100 wght 500, rose <code>#F4A7B9</code> 86%</li>
+      <li>H1: Roboto Flex 24px <code>wdth 104 wght 640 opsz 24</code>, 2 linhas, lh 1.25</li>
+      <li>Opções coluna única: <code>text-align: left</code>, texto longo não cabe em grid 2×2</li>
       <li>Selected: fill <code>brand-real</code> sólido + glow <code>rgba(244,167,185,0.38)</code></li>
       <li>Spring M3E no hover/press: <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code></li>
       <li>Stagger de entrada: connector 0.15s → H1 0.90s → opt1 1.55s → opt4 2.30s</li>
-      <li>Referência motion: <em>Gentler Streak</em> (2024 ADA) — opções entram suave, sem bounce</li>
+      <li>Referência motion: <em>Gentler Streak</em> (2024 ADA), opções entram suave, sem bounce</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>Connector: SF Pro Text 14px weight 500 — rose <code>#F4A7B9</code> 86%</li>
+      <li>Connector: SF Pro Text 14px weight 500, rose <code>#F4A7B9</code> 86%</li>
       <li>H1: SF Pro Display 24px weight 600 tracking <code>-0.4px</code> lh 1.25</li>
       <li>Opções: <code>.regularMaterial</code> translúcido + <code>backdrop-filter blur(16px) saturate(150%)</code></li>
-      <li>Selected: <code>rgba(244,167,185,0.28)</code> + blur 24px saturate 200% — glass tint, não fill sólido</li>
+      <li>Selected: <code>rgba(244,167,185,0.28)</code> + blur 24px saturate 200%, glass tint, não fill sólido</li>
       <li>Sem overshoot: <code>cubic-bezier(0.32, 0.72, 0, 1)</code> HIG canonical</li>
       <li>CTA: Liquid Glass <code>rgba(244,167,185,0.82)</code> + inset highlight specular</li>
-      <li>Referência: <em>Gentler Streak</em> (2024 ADA Social Impact) — entrada suave de lista, sem brutalidade</li>
+      <li>Referência: <em>Gentler Streak</em> (2024 ADA Social Impact), entrada suave de lista, sem brutalidade</li>
     </ul>
   </div>
 </section>

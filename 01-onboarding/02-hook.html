@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 02: Hook</title>
+<title>Brota &middot; Screen 02: Hook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -307,18 +307,19 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
 <header class="studio-header">
   <div class="brand-block">
     <div class="brand-eyebrow">Brota · Onboarding · Screen 02 de 18</div>
-    <h1 class="brand-title">Hook <em>conector + pergunta + subtítulo — conversa, não quiz</em></h1>
+    <h1 class="brand-title">Hook <em>conector + pergunta + subtítulo, conversa, não quiz</em></h1>
     <p class="brand-sub">
       Estrutura conversacional: conector rose → H1 bold → subtítulo que reduz ansiedade → opções staggeradas.
-      Conector: <em>"Agora conta uma coisa pra mim."</em> — faz a ponte com o acolhimento da O1.
-      Android: Roboto Flex <code>wdth 115, wght 620</code> — bold deliberado, conversa direta.
-      iOS: SF Pro Display 30pt <code>weight 600</code> — semibold, mesma intenção.
+      Conector: <em>"Agora conta uma coisa pra mim."</em>, faz a ponte com o acolhimento da O1.
+      Android: Roboto Flex <code>wdth 115, wght 620</code>, bold deliberado, conversa direta.
+      iOS: SF Pro Display 30pt <code>weight 600</code>, semibold, mesma intenção.
       7 elementos entram no ritmo da leitura: conector → linha 1 → linha 2 → subtítulo → opção 1 → opção 2 → opção 3.
     </p>
   </div>
@@ -349,7 +350,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Hook — Android">
+        <section class="screen android-screen" aria-label="Brota Hook, Android">
           <div class="a-blob-1"></div>
           <div class="a-blob-2"></div>
           <div class="a-blob-3"></div>
@@ -392,7 +393,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Hook — iOS">
+        <section class="screen ios-screen" aria-label="Brota Hook, iOS">
           <div class="ios-orb a"></div>
           <div class="ios-orb b"></div>
           <div class="ios-orb c"></div>
@@ -424,23 +425,23 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · Material 3 Expressive</h4>
     <ul>
-      <li>Background <code>#0D0A0B</code> — mesma cor de O1, continuidade visual — o ambiente não quebra entre telas</li>
-      <li>Pergunta: M3E <code>headlineLarge</code> — Roboto Flex 32px <code>wdth 115, wght 400, opsz 32</code> — peso 400 deliberado: conversa, não declaração de autoridade</li>
-      <li>"Instagram" — Instrument Serif italic rose: acento emocional, humaniza a pergunta técnica — referência ao toque humano de <strong>Finch</strong> nos prompts de check-in</li>
-      <li>Opções unselected: tint sutil <code>rgba(244,167,185,0.05)</code> + border <code>rgba(244,167,185,0.18)</code> — a cor da marca já presente, não neutro</li>
-      <li>Opção selected: brand-real fill + scale(1.02) + glow — spring M3E <code>cubic-bezier(0.34,1.56,0.64,1)</code>, referência <strong>Quittr</strong> (seleção afirmativa, não clínica)</li>
-      <li>Dimmed: <code>opacity 0.26 + scale(0.98) + pointer-events none</code> — opções rejeitadas recuam suavemente</li>
-      <li>CTA "Continuar →" oculto até seleção: <code>opacity 0 → 1</code> + <code>translateY(14px→0)</code> em <code>350ms spring</code> — o próximo passo só aparece quando pronta</li>
+      <li>Background <code>#0D0A0B</code>, mesma cor de O1, continuidade visual, o ambiente não quebra entre telas</li>
+      <li>Pergunta: M3E <code>headlineLarge</code>, Roboto Flex 32px <code>wdth 115, wght 400, opsz 32</code>, peso 400 deliberado: conversa, não declaração de autoridade</li>
+      <li>"Instagram", Instrument Serif italic rose: acento emocional, humaniza a pergunta técnica, referência ao toque humano de <strong>Finch</strong> nos prompts de check-in</li>
+      <li>Opções unselected: tint sutil <code>rgba(244,167,185,0.05)</code> + border <code>rgba(244,167,185,0.18)</code>, a cor da marca já presente, não neutro</li>
+      <li>Opção selected: brand-real fill + scale(1.02) + glow, spring M3E <code>cubic-bezier(0.34,1.56,0.64,1)</code>, referência <strong>Quittr</strong> (seleção afirmativa, não clínica)</li>
+      <li>Dimmed: <code>opacity 0.26 + scale(0.98) + pointer-events none</code>, opções rejeitadas recuam suavemente</li>
+      <li>CTA "Continuar →" oculto até seleção: <code>opacity 0 → 1</code> + <code>translateY(14px→0)</code> em <code>350ms spring</code>, o próximo passo só aparece quando pronta</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>SF Pro Display 32pt Regular — peso 400 = conversacional; tracking -0.5px padrão HIG para display text</li>
-      <li>Opções: Liquid Glass é permitido — são <em>controles interativos</em>, não conteúdo estático. <code>backdrop-filter: blur(20px) saturate(160%)</code> base; selected: <code>blur(28px) saturate(200%)</code></li>
-      <li>Border opção unselected: <code>0.5px</code> — HIG spec (mais delicado que Android <code>1.5px</code>)</li>
-      <li>Opção selected: <code>rgba(244,167,185,0.30)</code> — nativa de <code>.glassEffect(.regular.tint(.brandReal))</code> no SwiftUI, com specular inset highlight</li>
-      <li>CTA <code>.borderedProminent</code> glass: <code>rgba(244,167,185,0.82)</code> + specular — mesmo tratamento aprovado em O1. Aparece com HIG bezier <code>(0.32,0.72,0,1)</code></li>
+      <li>SF Pro Display 32pt Regular, peso 400 = conversacional; tracking -0.5px padrão HIG para display text</li>
+      <li>Opções: Liquid Glass é permitido, são <em>controles interativos</em>, não conteúdo estático. <code>backdrop-filter: blur(20px) saturate(160%)</code> base; selected: <code>blur(28px) saturate(200%)</code></li>
+      <li>Border opção unselected: <code>0.5px</code>, HIG spec (mais delicado que Android <code>1.5px</code>)</li>
+      <li>Opção selected: <code>rgba(244,167,185,0.30)</code>, nativa de <code>.glassEffect(.regular.tint(.brandReal))</code> no SwiftUI, com specular inset highlight</li>
+      <li>CTA <code>.borderedProminent</code> glass: <code>rgba(244,167,185,0.82)</code> + specular, mesmo tratamento aprovado em O1. Aparece com HIG bezier <code>(0.32,0.72,0,1)</code></li>
       <li>Referências: <strong>Quittr</strong> (opções afirmativas de onboarding) · <strong>Calm</strong> (pergunta emocional sem pressão) · <strong>Apple Health</strong> (onboarding de permissão com tom empático)</li>
     </ul>
   </div>

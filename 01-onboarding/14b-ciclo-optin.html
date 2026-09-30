@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 14B: Ciclo Opt-in</title>
+<title>Brota &middot; Screen 14B: Ciclo Opt-in</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -409,6 +409,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -417,7 +418,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <div class="brand-eyebrow">Brota · Onboarding · Screen 14B de 19 · O14B-Ciclo Opt-in · V2.4</div>
     <h1 class="brand-title">Posso ficar mais perto nesses dias? <em>toggle explicito · fases inline · opt-out gentil · re-offer pos-paywall</em></h1>
     <p class="brand-sub">
-      Agora sim vem o convite. Toggle explicito: "Adaptar [Planta] ao meu ciclo" — on/off.
+      Agora sim vem o convite. Toggle explicito: "Adaptar [Planta] ao meu ciclo", on/off.
       Se ON, fases revelam inline com spring. Se OFF, planta responde com acolhimento e flag para re-offer pos-paywall.
       Dado coletado: cycle_opted_in (bool) + fase_atual (se ON).
     </p>
@@ -469,7 +470,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
               <span class="a-h1-l2">nesses dias?</span>
             </h1>
 
-            <p class="a-explain">Quando essa semana chegar, eu fico mais gentil. <strong>Menos cobranca, mais presenca.</strong> Sem nenhum dado clinico — so eu adaptando meu jeito de cuidar de voce.</p>
+            <p class="a-explain">Quando essa semana chegar, eu fico mais gentil. <strong>Menos cobranca, mais presenca.</strong> Sem nenhum dado clinico, so eu adaptando meu jeito de cuidar de voce.</p>
 
             <div class="a-toggle-row">
               <span class="a-toggle-label" id="a-toggle-label">Adaptar Lavanda ao meu ciclo</span>
@@ -520,7 +521,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
               <span class="ios-h1-l2">nesses dias?</span>
             </h1>
 
-            <p class="ios-explain">Quando essa semana chegar, eu fico mais gentil. <strong>Menos cobranca, mais presenca.</strong> Sem nenhum dado clinico — so eu adaptando meu jeito de cuidar de voce.</p>
+            <p class="ios-explain">Quando essa semana chegar, eu fico mais gentil. <strong>Menos cobranca, mais presenca.</strong> Sem nenhum dado clinico, so eu adaptando meu jeito de cuidar de voce.</p>
 
             <div class="ios-toggle-row">
               <span class="ios-toggle-label" id="ios-toggle-label">Adaptar Lavanda ao meu ciclo</span>
@@ -553,7 +554,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · M3 Expressive</h4>
     <ul>
-      <li><strong>Toggle explicito.</strong> "Adaptar [Planta] ao meu ciclo" — decisao binaria clara. Diferente da V2.3 onde selecionar fase = ativacao implicita. Agora a usuaria escolhe conscientemente.</li>
+      <li><strong>Toggle explicito.</strong> "Adaptar [Planta] ao meu ciclo", decisao binaria clara. Diferente da V2.3 onde selecionar fase = ativacao implicita. Agora a usuaria escolhe conscientemente.</li>
       <li><strong>Toggle ON:</strong> fases revelam inline com spring M3E (<code>max-height</code> transition). Mesmas 5 opcoes em linguagem natural. "Nao sei bem" → resposta calorosa inline.</li>
       <li><strong>Toggle OFF:</strong> fases escondem. Planta responde: <em>"Tudo bem. Quando quiser, e so me pedir."</em> CTA muda para "Continuar". Flag <code>cycle_opted_out=true</code> salva para re-offer pos-paywall.</li>
       <li><strong>Separacao insight vs. acao.</strong> O14A criou o "aha moment". O14B e so o convite. A usuaria ja entende POR QUE antes de decidir SE QUER. Conversao do toggle deve ser maior que a do opt-in implicito da V2.3.</li>
@@ -564,9 +565,9 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note ios">
     <h4>iOS 26+ · Liquid Glass / HIG</h4>
     <ul>
-      <li><strong>UISwitch HIG:</strong> 51x31px, thumb 27px. <code>.on</code> = cor da planta. Semantica identica a Settings do iOS — a usuaria ja sabe usar.</li>
-      <li>Fases: cards <code>.regularMaterial</code> — <code>backdrop-filter: blur(20px) saturate(150%)</code>. Border na cor da planta quando selected.</li>
-      <li>Opt-out message: SF Pro Text 14pt, cor da planta. Tom identico ao Android — caloroso, sem guilt, sem perda.</li>
+      <li><strong>UISwitch HIG:</strong> 51x31px, thumb 27px. <code>.on</code> = cor da planta. Semantica identica a Settings do iOS, a usuaria ja sabe usar.</li>
+      <li>Fases: cards <code>.regularMaterial</code>, <code>backdrop-filter: blur(20px) saturate(150%)</code>. Border na cor da planta quando selected.</li>
+      <li>Opt-out message: SF Pro Text 14pt, cor da planta. Tom identico ao Android, caloroso, sem guilt, sem perda.</li>
       <li>CTA Liquid Glass: <code>rgba(plant-color, 0.82)</code> + specular. Aparece apos toggle interaction (ON com fase ou OFF).</li>
       <li><strong>Dado coletado:</strong> <code>cycle_opted_in</code> (bool) + <code>current_phase</code> (enum, se ON). Se OFF, <code>cycle_reoffer_eligible=true</code> para trigger pos-paywall.</li>
       <li>Refs: <strong>Stardust</strong> (toggle de tracking sem pressao), <strong>Gentler Streak</strong> (zero culpa), <strong>Finch</strong> (companion adapta).</li>

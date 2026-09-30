@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 00: Splash</title>
+<title>Brota &middot; Screen 00: Splash</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -253,6 +253,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -263,7 +264,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <p class="brand-sub">
       Wordmark <em>Brota</em> em Instrument Serif italic sobre fundo botânico escuro.
       Orbs rosa mais vivos: Android 38% / 24% / 16% · iOS 44% / 28% / 16%.
-      CTA iOS alinhado com a screen 01 aprovada — <em>borderedProminent</em> glass rose <code>rgba(244,167,185,0.82)</code>.
+      CTA iOS alinhado com a screen 01 aprovada, <em>borderedProminent</em> glass rose <code>rgba(244,167,185,0.82)</code>.
     </p>
   </div>
   <div class="controls-col">
@@ -299,7 +300,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
           <div class="a-splash-content">
             <div class="a-wordmark">Brota</div>
             <div class="a-divider"></div>
-            <div class="a-tagline">bloom from within</div>
+            <div class="a-tagline">floresça por dentro</div>
           </div>
           <p class="a-hint" id="a-hint">Toque para começar</p>
           <button class="a-cta" id="a-cta">Começar</button>
@@ -331,7 +332,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
           <div class="ios-splash-content">
             <div class="ios-wordmark">Brota</div>
             <div class="ios-divider"></div>
-            <div class="ios-tagline">bloom from within</div>
+            <div class="ios-tagline">floresça por dentro</div>
           </div>
           <p class="ios-hint" id="ios-hint">Toque para começar</p>
           <button class="ios-cta" id="ios-cta">Começar</button>
@@ -346,20 +347,20 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note">
     <h4>Android · Material 3 Expressive</h4>
     <ul>
-      <li>Background <code>#080C09</code> — noite botânica; undertone quente, não preto neutro</li>
+      <li>Background <code>#080C09</code>, noite botânica; undertone quente, não preto neutro</li>
       <li>Blobs rosa mais vivos: Blob 1 <code>38%</code> (era 28%) · Blob 2 <code>24%</code> (era 16%) · Blob 3 <code>16%</code> (era 10%)</li>
-      <li>Ritmos nunca sincronizados: 20s / 28s / 17s — o fundo respira, nunca congela</li>
-      <li>Halo do wordmark reforçado: <code>text-shadow: 0 0 100px rgba(244,167,185,0.55)</code> — glow orgânico, não neon</li>
+      <li>Ritmos nunca sincronizados: 20s / 28s / 17s, o fundo respira, nunca congela</li>
+      <li>Halo do wordmark reforçado: <code>text-shadow: 0 0 100px rgba(244,167,185,0.55)</code>, glow orgânico, não neon</li>
       <li>Wordmark: Instrument Serif italic 80px, spring M3E <code>(0.34,1.56,0.64,1)</code> scale 0.86→1.0</li>
-      <li>Estado Pronta: CTA Filled M3E pill <code>var(--brand-real)</code> — glow <code>rgba(244,167,185,0.45)</code></li>
+      <li>Estado Pronta: CTA Filled M3E pill <code>var(--brand-real)</code>, glow <code>rgba(244,167,185,0.45)</code></li>
     </ul>
   </div>
   <div class="note">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>Background <code>#09080D</code> — profundidade rose-púrpura; 3 orbs estáticos (HIG spec)</li>
+      <li>Background <code>#09080D</code>, profundidade rose-púrpura; 3 orbs estáticos (HIG spec)</li>
       <li>Orbs mais vivos: Orb A <code>44%</code> (era 34%) · Orb B <code>28%</code> (era 20%) · Orb C <code>16%</code> (era 11%)</li>
-      <li>Wordmark: HIG bezier <code>(0.32,0.72,0,1)</code> — sem overshoot; scale 0.92→1.0 + translateY(10px→0)</li>
+      <li>Wordmark: HIG bezier <code>(0.32,0.72,0,1)</code>, sem overshoot; scale 0.92→1.0 + translateY(10px→0)</li>
       <li>CTA alinhado com screen 01 aprovada: <code>rgba(244,167,185,0.82)</code> + <code>blur(24px) saturate(180%)</code> + specular highlight <code>rgba(255,255,255,0.30)</code></li>
       <li>Regra de cor mantida: verde sálvia aparece <em>apenas</em> em O10-PlantSelect em diante</li>
     </ul>

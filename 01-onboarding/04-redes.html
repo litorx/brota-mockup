@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 04: Redes</title>
+<title>Brota &middot; Screen 04: Redes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -249,6 +249,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -257,7 +258,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <div class="brand-eyebrow">Brota · Onboarding · Screen 04 de 18</div>
     <h1 class="brand-title">Redes <em>[Nome] personalizado · grid 2×3 · multi-select mín. 1</em></h1>
     <p class="brand-sub">
-      Conector usa o nome coletado em O3 — <em>"Maria, me conta mais uma coisa."</em>
+      Conector usa o nome coletado em O3, <em>"Maria, me conta mais uma coisa."</em>
       Grid 2 colunas: ícone SVG + nome da rede. Mínimo 1 seleção para liberar o CTA.
       Android: M3E filter chip com spring. iOS: Liquid Glass tinted multi-select.
     </p>
@@ -289,7 +290,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Redes — Android">
+        <section class="screen android-screen" aria-label="Brota Redes, Android">
           <div class="a-blob-1"></div><div class="a-blob-2"></div><div class="a-blob-3"></div>
           <div class="a-body">
             <p class="a-connector" id="a-conn">Maria, me conta mais uma coisa.</p>
@@ -345,7 +346,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Redes — iOS">
+        <section class="screen ios-screen" aria-label="Brota Redes, iOS">
           <div class="ios-orb a"></div><div class="ios-orb b"></div><div class="ios-orb c"></div>
           <div class="ios-body">
             <p class="ios-connector" id="ios-conn">Maria, me conta mais uma coisa.</p>
@@ -390,21 +391,21 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · Material 3 Expressive</h4>
     <ul>
-      <li>Conector <em>"[Nome], me conta mais uma coisa."</em> — o nome de O3 personaliza cada tela do onboarding a partir daqui; intimidade cresce progressivamente</li>
-      <li>Grid 2×3: M3E filter chip estilo — <code>border-radius 16dp</code>, tint rose sutil unselected, brand-real fill selected com spring <code>cubic-bezier(0.34,1.56,0.64,1)</code> e <code>scale(1.02)</code></li>
-      <li>Ícones SVG inline 20px — sem dependência de CDN externa; paths das marcas simplificados para legibilidade em tamanho pequeno</li>
-      <li>Multi-select: cada chip toggl independente. CTA aparece após qualquer seleção (mínimo 1). Sem limite máximo — todas as redes podem ser selecionadas</li>
-      <li>Subtitle <em>"Pode marcar mais de uma."</em> — reduz fricção imediata, sinaliza que não é escolha exclusiva antes de tocar</li>
+      <li>Conector <em>"[Nome], me conta mais uma coisa."</em>, o nome de O3 personaliza cada tela do onboarding a partir daqui; intimidade cresce progressivamente</li>
+      <li>Grid 2×3: M3E filter chip estilo, <code>border-radius 16dp</code>, tint rose sutil unselected, brand-real fill selected com spring <code>cubic-bezier(0.34,1.56,0.64,1)</code> e <code>scale(1.02)</code></li>
+      <li>Ícones SVG inline 20px, sem dependência de CDN externa; paths das marcas simplificados para legibilidade em tamanho pequeno</li>
+      <li>Multi-select: cada chip toggl independente. CTA aparece após qualquer seleção (mínimo 1). Sem limite máximo, todas as redes podem ser selecionadas</li>
+      <li>Subtitle <em>"Pode marcar mais de uma."</em>, reduz fricção imediata, sinaliza que não é escolha exclusiva antes de tocar</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>Liquid Glass tinted: <code>backdrop-filter: blur(16px) saturate(150%)</code> unselected → <code>blur(24px) saturate(200%)</code> selected — os controles interativos podem usar glass (regra de ouro HIG respeitada)</li>
-      <li>Border <code>0.5px</code> unselected (HIG delicadeza) → <code>rgba(244,167,185,0.50)</code> selected — progressão clara sem vibrar</li>
-      <li>Selected: <code>rgba(244,167,185,0.28)</code> + <code>inset highlight</code> + <code>box-shadow glow</code> — três camadas de feedback visual simultâneas, como <strong>Quittr</strong> (multi-select onboarding)</li>
-      <li>SF Pro Text 14pt Regular nos cards — Footnote/Subheadline HIG para itens de lista curta; espaço suficiente para ícone + texto no grid de 2 col</li>
-      <li>CTA glass aprovado — mesmo tratamento de O2 e O3</li>
+      <li>Liquid Glass tinted: <code>backdrop-filter: blur(16px) saturate(150%)</code> unselected → <code>blur(24px) saturate(200%)</code> selected, os controles interativos podem usar glass (regra de ouro HIG respeitada)</li>
+      <li>Border <code>0.5px</code> unselected (HIG delicadeza) → <code>rgba(244,167,185,0.50)</code> selected, progressão clara sem vibrar</li>
+      <li>Selected: <code>rgba(244,167,185,0.28)</code> + <code>inset highlight</code> + <code>box-shadow glow</code>, três camadas de feedback visual simultâneas, como <strong>Quittr</strong> (multi-select onboarding)</li>
+      <li>SF Pro Text 14pt Regular nos cards, Footnote/Subheadline HIG para itens de lista curta; espaço suficiente para ícone + texto no grid de 2 col</li>
+      <li>CTA glass aprovado, mesmo tratamento de O2 e O3</li>
     </ul>
   </div>
 </section>
@@ -445,7 +446,7 @@ function setState(state, btnEl) {
   if (btnEl) btnEl.classList.add('active');
 
   aSelected.clear(); iosSelected.clear();
-  document.querySelectorAll('.a-net, .ios-net').forEach(function(b) { b.classList.remove('selected'); });
+  document.querySelectorAll('.a-net.ios-net').forEach(function(b) { b.classList.remove('selected'); });
 
   if (state === 'selected') {
     ['instagram','tiktok'].forEach(function(net) {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Paywall V2 (Pastel/Warm)</title>
+<title>Brota &middot; Paywall V2 (Pastel/Warm)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -159,6 +159,10 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .ficon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .ftitle{font-size:13px;font-weight:700;color:var(--text);line-height:1.28;margin-bottom:1px;}
 .fdesc{font-size:11px;font-weight:400;color:var(--text2);line-height:1.28;}
+/* Cycle feature — promoted to first, distinct treatment so it reads as central, not a bullet in a list */
+.feat-cycle{background:rgba(196,176,224,0.09);border-left:3px solid #C4B0E0;padding-left:13px;}
+.feat-cycle .ficon{box-shadow:0 0 0 1px rgba(196,176,224,0.30);}
+.feat-cycle-tag{display:inline-flex;align-items:center;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#8A76BE;background:rgba(196,176,224,0.22);padding:2px 7px;border-radius:999px;margin-left:6px;vertical-align:1px;}
 
 /* ── STATS ── */
 .stats{display:flex;background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:visible;margin-bottom:18px;z-index:1;position:relative;}
@@ -228,9 +232,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 }
 .cta:hover{transform:scale(1.02);}
 .cta:active{transform:scale(0.97);}
-.trialnote{font-size:11.5px;font-weight:500;color:var(--text3);text-align:center;margin-bottom:14px;z-index:1;position:relative;}
+.trialnote{font-size:11.5px;font-weight:500;color:var(--text3);text-align:center;line-height:1.5;margin-bottom:14px;z-index:1;position:relative;}
 .guarantee{font-size:11px;font-weight:500;color:var(--text3);text-align:center;padding-top:12px;border-top:1px solid var(--border);z-index:1;position:relative;}
+.legalrow{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;font-size:10.5px;font-weight:600;color:var(--text3);text-align:center;margin-top:8px;z-index:1;position:relative;}
+.legalrow a{color:var(--text3);text-decoration:none;border-bottom:1px solid var(--border);cursor:pointer;}
+.legalrow a:hover{color:var(--text2);}
+.legalrow span{opacity:0.45;}
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 <div class="studio">
@@ -250,7 +259,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <button class="state-btn" onclick="setState('s4',this)">Cerejeira / Dani</button>
   <button class="state-btn" onclick="setState('s5',this)">Lotus / Eva</button>
   <div class="state-sep"></div>
-  <button class="state-btn" onclick="selectPlan('weekly')">Semanal</button>
   <button class="state-btn" onclick="selectPlan('monthly')">Mensal</button>
   <button class="state-btn" onclick="selectPlan('annual')">Anual</button>
 </div>
@@ -301,10 +309,10 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="sdivider anim-el" style="animation-delay:1.30s"></div>
           <div class="shead anim-el" style="animation-delay:1.40s">O que sua <span id="apfeat" class="pac">Lavanda</span> faz por voc&ecirc;</div>
           <div class="fcard">
-            <div class="feat anim-el" style="animation-delay:1.52s"><div class="ficon" style="background:rgba(255,208,122,0.18)"><i data-icon="shield"></i></div><div><div class="ftitle">Apare&ccedil;o antes das redes te pegarem</div><div class="fdesc">Prote&ccedil;&atilde;o ativa toda vez que voc&ecirc; abre o <span class="netw">Instagram</span>.</div></div></div>
-            <div class="feat anim-el" style="animation-delay:1.62s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="scissors"></i></div><div><div class="ftitle">Feed limpo em 7 dias</div><div class="fdesc">Removemos juntas o que te afeta.</div></div></div>
-            <div class="feat anim-el" style="animation-delay:1.72s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="chat"></i></div><div><div class="ftitle">Voc&ecirc; escreve, eu entendo</div><div class="fdesc">Di&aacute;rio com voz. Sem jarg&atilde;o.</div></div></div>
-            <div class="feat anim-el" style="animation-delay:1.82s"><div class="ficon" style="background:rgba(196,176,224,0.18)"><i data-icon="moon"></i></div><div><div class="ftitle">Me adapto ao seu ciclo</div><div class="fdesc">Nos dias mais sens&iacute;veis, fico mais gentil.</div></div></div>
+            <div class="feat feat-cycle anim-el" style="animation-delay:1.52s"><div class="ficon" style="background:rgba(196,176,224,0.22)"><i data-icon="moon"></i></div><div><div class="ftitle">Me adapto ao seu ciclo<span class="feat-cycle-tag">pra voc&ecirc;</span></div><div class="fdesc">Nos dias mais sens&iacute;veis, fico mais gentil, sem voc&ecirc; ter que pedir.</div></div></div>
+            <div class="feat anim-el" style="animation-delay:1.62s"><div class="ficon" style="background:rgba(255,208,122,0.18)"><i data-icon="shield"></i></div><div><div class="ftitle">Apare&ccedil;o antes das redes te pegarem</div><div class="fdesc">Prote&ccedil;&atilde;o ativa toda vez que voc&ecirc; abre o <span class="netw">Instagram</span>.</div></div></div>
+            <div class="feat anim-el" style="animation-delay:1.72s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="scissors"></i></div><div><div class="ftitle">Feed limpo em 7 dias</div><div class="fdesc">Removemos juntas o que te afeta.</div></div></div>
+            <div class="feat anim-el" style="animation-delay:1.82s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="chat"></i></div><div><div class="ftitle">Voc&ecirc; escreve, eu entendo</div><div class="fdesc">Di&aacute;rio com voz. Sem jarg&atilde;o.</div></div></div>
             <div class="feat anim-el" style="animation-delay:1.92s"><div class="ficon" style="background:rgba(125,212,163,0.18)"><i data-icon="jardim"></i></div><div><div class="ftitle">Um jardim de mulheres</div><div class="fdesc">Comunidade an&ocirc;nima. Sem rostos, s&oacute; plantas.</div></div></div>
             <div class="feat anim-el" style="animation-delay:2.02s"><div class="ficon" style="background:rgba(168,213,162,0.18)"><i data-icon="insights"></i></div><div><div class="ftitle">Voc&ecirc; v&ecirc; a mudan&ccedil;a acontecer</div><div class="fdesc">Insights semanais do seu progresso real.</div></div></div>
           </div>
@@ -331,14 +339,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="sdivider anim-el" style="animation-delay:2.40s"></div>
           <div class="planslabel anim-el" style="animation-delay:2.50s">Escolha seu plano</div>
           <div class="plans anim-el" style="animation-delay:2.60s">
-            <div class="plan" id="aplan-weekly" onclick="selectPlan('weekly')"><div class="pprice">R$12,90<span>/sem</span></div><div class="pdetail">Cobrado semanalmente<br>Cancele quando quiser</div></div>
             <div class="plan sel" id="aplan-monthly" onclick="selectPlan('monthly')"><div class="pbadge">Mais popular</div><div class="pprice">R$19,90<span>/m&ecirc;s</span></div><div class="pdetail">Cobrado mensalmente<br>Cancele quando quiser</div></div>
             <div class="plan" id="aplan-annual" onclick="selectPlan('annual')"><div class="pbadge">49% off</div><div class="pprice">R$9,99<span>/m&ecirc;s</span></div><div class="pdetail">R$119,90/ano<br>cobrado anualmente</div></div>
           </div>
 
           <button class="cta" id="acta" onclick="ctaTap(this)">Come&ccedil;ar 14 dias gr&aacute;tis</button>
-          <div class="trialnote">Sem cobran&ccedil;as agora &middot; Cancele quando quiser</div>
+          <div class="trialnote" id="atrialnote">Gr&aacute;tis por 14 dias, depois R$19,90/m&ecirc;s<br>Cancele quando quiser</div>
           <div class="guarantee"><i data-icon="leaf"></i> Sisterhood Guarantee &middot; 30 dias, sem perguntas</div>
+          <div class="legalrow"><a>Restaurar compras</a><span>&middot;</span><a>Termos</a><span>&middot;</span><a>Privacidade</a></div>
         </div>
       </div>
     </div>
@@ -377,10 +385,10 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="sdivider anim-el" style="animation-delay:1.30s"></div>
           <div class="shead anim-el" style="animation-delay:1.40s">O que sua <span id="iospfeat" class="pac">Lavanda</span> faz por voc&ecirc;</div>
           <div class="fcard">
-            <div class="feat anim-el" style="animation-delay:1.52s"><div class="ficon" style="background:rgba(255,208,122,0.18)"><i data-icon="shield"></i></div><div><div class="ftitle">Apare&ccedil;o antes das redes te pegarem</div><div class="fdesc">Prote&ccedil;&atilde;o ativa toda vez que voc&ecirc; abre o <span class="netw">Instagram</span>.</div></div></div>
-            <div class="feat anim-el" style="animation-delay:1.62s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="scissors"></i></div><div><div class="ftitle">Feed limpo em 7 dias</div><div class="fdesc">Removemos juntas o que te afeta.</div></div></div>
-            <div class="feat anim-el" style="animation-delay:1.72s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="chat"></i></div><div><div class="ftitle">Voc&ecirc; escreve, eu entendo</div><div class="fdesc">Di&aacute;rio com voz. Sem jarg&atilde;o.</div></div></div>
-            <div class="feat anim-el" style="animation-delay:1.82s"><div class="ficon" style="background:rgba(196,176,224,0.18)"><i data-icon="moon"></i></div><div><div class="ftitle">Me adapto ao seu ciclo</div><div class="fdesc">Nos dias mais sens&iacute;veis, fico mais gentil.</div></div></div>
+            <div class="feat feat-cycle anim-el" style="animation-delay:1.52s"><div class="ficon" style="background:rgba(196,176,224,0.22)"><i data-icon="moon"></i></div><div><div class="ftitle">Me adapto ao seu ciclo<span class="feat-cycle-tag">pra voc&ecirc;</span></div><div class="fdesc">Nos dias mais sens&iacute;veis, fico mais gentil, sem voc&ecirc; ter que pedir.</div></div></div>
+            <div class="feat anim-el" style="animation-delay:1.62s"><div class="ficon" style="background:rgba(255,208,122,0.18)"><i data-icon="shield"></i></div><div><div class="ftitle">Apare&ccedil;o antes das redes te pegarem</div><div class="fdesc">Prote&ccedil;&atilde;o ativa toda vez que voc&ecirc; abre o <span class="netw">Instagram</span>.</div></div></div>
+            <div class="feat anim-el" style="animation-delay:1.72s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="scissors"></i></div><div><div class="ftitle">Feed limpo em 7 dias</div><div class="fdesc">Removemos juntas o que te afeta.</div></div></div>
+            <div class="feat anim-el" style="animation-delay:1.82s"><div class="ficon" style="background:rgba(244,167,185,0.18)"><i data-icon="chat"></i></div><div><div class="ftitle">Voc&ecirc; escreve, eu entendo</div><div class="fdesc">Di&aacute;rio com voz. Sem jarg&atilde;o.</div></div></div>
             <div class="feat anim-el" style="animation-delay:1.92s"><div class="ficon" style="background:rgba(125,212,163,0.18)"><i data-icon="jardim"></i></div><div><div class="ftitle">Um jardim de mulheres</div><div class="fdesc">Comunidade an&ocirc;nima. Sem rostos, s&oacute; plantas.</div></div></div>
             <div class="feat anim-el" style="animation-delay:2.02s"><div class="ficon" style="background:rgba(168,213,162,0.18)"><i data-icon="insights"></i></div><div><div class="ftitle">Voc&ecirc; v&ecirc; a mudan&ccedil;a acontecer</div><div class="fdesc">Insights semanais do seu progresso real.</div></div></div>
           </div>
@@ -407,14 +415,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="sdivider anim-el" style="animation-delay:2.40s"></div>
           <div class="planslabel anim-el" style="animation-delay:2.50s">Escolha seu plano</div>
           <div class="plans anim-el" style="animation-delay:2.60s">
-            <div class="plan" id="iosplan-weekly" onclick="selectPlan('weekly')"><div class="pprice">R$12,90<span>/sem</span></div><div class="pdetail">Cobrado semanalmente<br>Cancele quando quiser</div></div>
             <div class="plan sel" id="iosplan-monthly" onclick="selectPlan('monthly')"><div class="pbadge">Mais popular</div><div class="pprice">R$19,90<span>/m&ecirc;s</span></div><div class="pdetail">Cobrado mensalmente<br>Cancele quando quiser</div></div>
             <div class="plan" id="iosplan-annual" onclick="selectPlan('annual')"><div class="pbadge">49% off</div><div class="pprice">R$9,99<span>/m&ecirc;s</span></div><div class="pdetail">R$119,90/ano<br>cobrado anualmente</div></div>
           </div>
 
           <button class="cta" id="ioscta" onclick="ctaTap(this)">Come&ccedil;ar 14 dias gr&aacute;tis</button>
-          <div class="trialnote">Sem cobran&ccedil;as agora &middot; Cancele quando quiser</div>
+          <div class="trialnote" id="iostrialnote">Gr&aacute;tis por 14 dias, depois R$19,90/m&ecirc;s<br>Cancele quando quiser</div>
           <div class="guarantee"><i data-icon="leaf"></i> Sisterhood Guarantee &middot; 30 dias, sem perguntas</div>
+          <div class="legalrow"><a>Restaurar compras</a><span>&middot;</span><a>Termos</a><span>&middot;</span><a>Privacidade</a></div>
         </div>
       </div>
     </div>
@@ -475,12 +483,19 @@ function setState(key,btn){
   restartAnims();
 }
 
+var renewalNote={
+  monthly:'Grátis por 14 dias, depois R$19,90/mês<br>Cancele quando quiser',
+  annual:'Grátis por 14 dias, depois R$119,90/ano<br>Cancele quando quiser'
+};
+
 function selectPlan(plan){
   ['a','ios'].forEach(function(p){
-    ['weekly','monthly','annual'].forEach(function(t){
+    ['monthly','annual'].forEach(function(t){
       var el=document.getElementById(p+'plan-'+t);
       if(el)el.classList.toggle('sel',plan===t);
     });
+    var note=document.getElementById(p+'trialnote');
+    if(note)note.innerHTML=renewalNote[plan];
   });
 }
 
@@ -536,7 +551,7 @@ function initSwipe(){
   });
 }
 
-// CTA tap — visual feedback (prototype only)
+// CTA tap, visual feedback (prototype only)
 function ctaTap(btn){
   btn.style.transform='scale(0.95)';
   btn.style.opacity='0.7';

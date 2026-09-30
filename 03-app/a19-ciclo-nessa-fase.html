@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brota &middot; A19-NessaFase: Nessa fase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand-real:#F4A7B9;--brand-real-deep:#E8889E;
+  --brand-ai:#A8D5A2;--brand-ai-deep:#7EBF78;
+  --brand-correct:#7DD4A3;--brand-warning:#FFD07A;
+  --bg:#FFF8F2;--bg2:#FFF0E8;--card:#FFFFFF;
+  --text:#3D2C2E;--text2:#9B8A8C;--text3:#C4B5B7;
+  --border:rgba(61,44,46,0.08);
+  --shadow:0 2px 12px rgba(61,44,46,0.06);
+  --shadow2:0 6px 24px rgba(61,44,46,0.10);
+  --plant-color:#C4B0E0;--plant-color-rgb:196,176,224;
+  --r:20px;
+}
+body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;}
+
+/* -- STUDIO -- */
+.studio{max-width:1260px;margin:0 auto;padding:40px 24px 64px;}
+.studio-header{text-align:center;margin-bottom:28px;}
+.brand-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.brand-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.brand-title em{font-style:normal;font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;}
+.brand-sub{font-size:12.5px;color:var(--text2);line-height:1.65;max-width:760px;margin:0 auto;}
+.brand-sub code{font-family:ui-monospace,monospace;font-size:11.5px;background:rgba(61,44,46,0.05);padding:1px 5px;border-radius:4px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.state-btn{padding:7px 18px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
+.state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
+.state-sep{width:1px;height:22px;background:var(--border);}
+.stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
+
+/* -- PHONE -- */
+.phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.phone-label{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.pill{display:inline-flex;align-items:center;padding:4px 13px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;}
+.pill.android{background:linear-gradient(135deg,#34A853,#4285F4);color:white;}
+.pill.ios{background:linear-gradient(135deg,#1C1C1E,#48484A);color:white;}
+.phone-label .desc{font-size:11.5px;color:var(--text3);max-width:290px;line-height:1.4;}
+.phone{width:375px;height:740px;background:var(--bg);border-radius:48px;box-shadow:0 24px 80px rgba(61,44,46,0.12),0 0 0 1px rgba(61,44,46,0.06);overflow:hidden;position:relative;}
+.phone-screen{width:100%;height:100%;position:relative;overflow:hidden;}
+.screen{position:absolute;inset:0;background:var(--bg);}
+.statusbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;}
+.stime{font-size:15px;font-weight:700;color:var(--text);}
+.sicons{display:flex;gap:5px;color:var(--text2);font-size:11px;}
+.dyna{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:rgba(61,44,46,0.10);border-radius:999px;z-index:30;pointer-events:none;}
+.a-screen .dyna{display:none;}
+
+/* -- TOPBAR: tela empilhada, entao volta (nao bottom nav) -- */
+.topbar{
+  position:absolute;top:0;left:0;right:0;height:98px;z-index:20;
+  display:flex;align-items:flex-end;gap:10px;padding:0 16px 12px;
+  background:linear-gradient(180deg,var(--bg) 62%,rgba(255,248,242,0));
+}
+.ios-screen .topbar{height:104px;background:rgba(255,248,242,0.82);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-bottom:0.5px solid var(--border);}
+.back-btn{
+  width:40px;height:40px;flex-shrink:0;border-radius:50%;border:none;background:transparent;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);
+  transition:background 0.2s,transform 0.2s;
+}
+.back-btn:hover{background:rgba(61,44,46,0.05);}
+.back-btn:active{transform:scale(0.92);}
+.back-btn svg{width:22px;height:22px;}
+.topbar-title{font-size:18px;font-weight:800;letter-spacing:-0.01em;}
+.ios-screen .topbar-title{font-size:17px;font-weight:700;}
+.back-label{font-size:15px;font-weight:600;color:var(--brand-real-deep);}
+.ios-screen .back-btn{width:auto;padding:0 4px 0 0;}
+
+/* -- SCROLL BODY -- */
+.scroll-body{
+  position:absolute;top:98px;left:0;right:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;padding:4px 20px 32px;
+  display:flex;flex-direction:column;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.ios-screen .scroll-body{top:104px;}
+.scroll-body::-webkit-scrollbar{display:none;}
+.scroll-body>*{flex-shrink:0;}
+
+/* -- BLOBS -- */
+.blob{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);}
+.blob1{width:340px;height:340px;top:-120px;left:-80px;background:var(--plant-color);opacity:0.07;}
+.blob2{width:280px;height:280px;bottom:40px;right:-60px;background:var(--brand-real);opacity:0.06;}
+
+/* -- PECAS COMUNS -- */
+.lead{font-size:13.5px;line-height:1.55;color:var(--text2);margin-bottom:16px;z-index:1;position:relative;}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin:16px 0 8px 4px;z-index:1;position:relative;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;z-index:1;position:relative;}
+.ios-screen .card{backdrop-filter:blur(10px) saturate(130%);background:rgba(255,255,255,0.88);box-shadow:var(--shadow),0 1px 0 rgba(255,255,255,0.60) inset;}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background 0.2s;}
+.row+.row{border-top:1px solid var(--border);}
+.row:hover{background:rgba(61,44,46,0.02);}
+.row-icon{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:rgba(61,44,46,0.04);display:flex;align-items:center;justify-content:center;color:var(--text2);}
+.row-info{flex:1;min-width:0;}
+.row-title{font-size:14px;font-weight:700;color:var(--text);}
+.row-desc{font-size:11.5px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.row-arrow{font-size:20px;color:var(--text3);flex-shrink:0;}
+.plant-note{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:13px 15px;border-radius:16px;margin-top:18px;z-index:1;position:relative;
+  background:rgba(var(--plant-color-rgb),0.09);border:1px solid rgba(var(--plant-color-rgb),0.16);
+}
+.plant-note .pmini{width:34px;height:34px;flex-shrink:0;}
+.plant-note .pmini svg{width:100%;height:100%;}
+.plant-note .ptext{font-size:12.5px;line-height:1.5;color:var(--text);font-style:italic;}
+.plant-note .pname{font-size:10.5px;font-weight:700;color:var(--plant-color);margin-bottom:2px;font-style:normal;}
+
+/* -- KEYFRAMES -- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fadeUpBounce{from{opacity:0;transform:translateY(16px) scale(0.97);}to{opacity:1;transform:none;}}
+@keyframes plantBreathe{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-3px) scale(1.02);}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+.anim-el{opacity:0;animation:fadeUpBounce 0.50s cubic-bezier(0.34,1.56,0.64,1) both;}
+.ios-screen .anim-el{animation-name:fadeUp;animation-timing-function:cubic-bezier(0.32,0.72,0,1);}
+
+.fact{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;}
+.fact+.fact{border-top:1px solid var(--border);}
+.fact-ic{width:34px;height:34px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.fact-ic.yes{background:rgba(168,213,162,0.20);color:var(--brand-ai-deep);}
+.fact-ic.no{background:rgba(61,44,46,0.05);color:var(--text3);}
+.fact-t{font-size:13.5px;font-weight:700;}
+.fact-d{font-size:11.5px;color:var(--text2);line-height:1.45;margin-top:2px;}
+
+
+.sec-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin:20px 0 8px 4px;z-index:1;position:relative;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;z-index:1;position:relative;}
+.ios-screen .card{background:rgba(255,255,255,0.88);backdrop-filter:blur(10px) saturate(130%);}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background 0.2s;}
+.row+.row{border-top:1px solid var(--border);}
+.row:hover{background:rgba(61,44,46,0.02);}
+.row-ic{width:34px;height:34px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;line-height:0;background:rgba(var(--cycle-accent-rgb),0.15);color:var(--cycle-accent);}
+.row-in{flex:1;min-width:0;}
+.row-t{font-size:14px;font-weight:700;color:var(--text);}
+.row-d{font-size:11.5px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.row-a{font-size:20px;color:var(--text3);flex-shrink:0;}
+.priv{
+  display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:14px;margin-top:16px;
+  z-index:1;position:relative;cursor:pointer;
+  background:rgba(168,213,162,0.13);border:1px solid rgba(168,213,162,0.30);
+}
+.priv-ic{width:28px;height:28px;flex-shrink:0;border-radius:9px;background:rgba(168,213,162,0.32);color:var(--brand-ai-deep);display:flex;align-items:center;justify-content:center;font-size:15px;line-height:0;}
+.priv-t{flex:1;font-size:11.5px;line-height:1.45;color:var(--text);}
+.priv-t b{font-weight:800;}
+.cta{
+  width:100%;padding:15px;border:none;border-radius:16px;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:700;color:#fff;
+  background:var(--cycle-accent);box-shadow:0 4px 18px rgba(var(--cycle-accent-rgb),0.28);
+  transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);z-index:1;position:relative;
+}
+.ios-screen .cta{border-radius:14px;}
+.cta:active{transform:scale(0.97);}
+.cta.ghost{background:transparent;color:var(--text2);box-shadow:none;border:1.5px solid var(--border);margin-top:9px;}
+.cta.danger{background:transparent;color:#B3465F;box-shadow:none;border:1.5px solid rgba(179,70,95,0.35);}
+.a-screen svg,.ios-screen svg{max-width:100%;max-height:100%;}
+.a-screen [data-icon],.ios-screen [data-icon]{font-size:18px;line-height:0;display:inline-flex;}
+
+.topbar{
+  position:absolute;top:0;left:0;right:0;height:98px;z-index:20;
+  display:flex;align-items:flex-end;gap:10px;padding:0 16px 12px;
+  background:linear-gradient(180deg,var(--bg) 62%,rgba(255,248,242,0));
+}
+.ios-screen .topbar{height:104px;background:rgba(255,248,242,0.82);backdrop-filter:blur(20px) saturate(160%);border-bottom:0.5px solid var(--border);}
+.back-btn{width:40px;height:40px;flex-shrink:0;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);transition:background 0.2s,transform 0.2s;}
+.back-btn:hover{background:rgba(61,44,46,0.05);}
+.back-btn:active{transform:scale(0.92);}
+.back-btn svg{width:22px;height:22px;}
+.ios-screen .back-btn{width:auto;padding:0 4px 0 0;}
+.back-label{font-size:15px;font-weight:600;color:var(--brand-real-deep);}
+.topbar-title{font-size:18px;font-weight:800;letter-spacing:-0.01em;}
+.ios-screen .topbar-title{font-size:17px;font-weight:700;}
+.scroll-body{top:98px !important;padding:4px 20px 40px !important;}
+.ios-screen .scroll-body{top:104px !important;}
+
+.muda{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;}
+.muda+.muda{border-top:1px solid var(--border);}
+.muda-ic{width:34px;height:34px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;line-height:0;background:rgba(var(--cycle-accent-rgb),0.16);color:var(--cycle-accent);}
+.muda-t{font-size:13.5px;font-weight:700;}
+.muda-d{font-size:11.5px;color:var(--text2);line-height:1.45;margin-top:2px;}
+.set{display:flex;align-items:center;gap:12px;padding:14px 16px;}
+.set+.set{border-top:1px solid var(--border);}
+.set-in{flex:1;min-width:0;}
+.set-t{font-size:13.5px;font-weight:700;}
+.set-d{font-size:11.5px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.sw{width:44px;height:26px;border-radius:99px;background:rgba(61,44,46,0.14);position:relative;flex-shrink:0;cursor:pointer;transition:background 0.28s;}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.18);transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1);}
+.sw.on{background:var(--cycle-accent);}
+.sw.on::after{transform:translateX(18px);}
+.faixa{display:flex;gap:11px;align-items:flex-start;padding:13px 15px;border-radius:16px;margin-bottom:16px;z-index:1;position:relative;background:rgba(var(--cycle-accent-rgb),0.11);border:1px solid rgba(var(--cycle-accent-rgb),0.24);}
+.faixa-ic{width:32px;height:32px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:0;background:rgba(var(--cycle-accent-rgb),0.22);color:var(--cycle-accent);}
+.faixa-t{font-size:13.5px;font-weight:800;}
+.faixa-d{font-size:12px;color:var(--text2);line-height:1.5;margin-top:2px;}
+
+/* Metodo contraceptivo nao cabe num toggle: cada um muda o calculo de um
+   jeito diferente. Combinada tem sangramento de pausa (previsivel pela
+   cartela, nao pelo ciclo); DIU hormonal e implante costumam suspender a
+   menstruacao (prever nao faz sentido); DIU de cobre nao mexe no ciclo;
+   laqueadura tambem nao. Por isso e ESCOLHA, nao chave. */
+.met-op{
+  display:flex;gap:11px;align-items:flex-start;padding:12px 13px;border-radius:14px;cursor:pointer;
+  border:1.5px solid var(--border);background:var(--card);transition:all 0.22s;text-align:left;font-family:inherit;
+}
+.met-op:hover{border-color:rgba(var(--cycle-accent-rgb),0.4);}
+.met-op.on{border-color:var(--cycle-accent);background:rgba(var(--cycle-accent-rgb),0.09);}
+.met-ck{width:19px;height:19px;flex-shrink:0;margin-top:1px;border-radius:50%;border:1.8px solid var(--border);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;}
+.met-op.on .met-ck{background:var(--cycle-accent);border-color:var(--cycle-accent);}
+.met-in{flex:1;min-width:0;}
+.met-t{font-size:13.5px;font-weight:700;color:var(--text);}
+.met-d{font-size:11.5px;color:var(--text2);line-height:1.45;margin-top:2px;}
+.met-efeito{
+  display:flex;gap:10px;align-items:flex-start;padding:12px 13px;border-radius:14px;
+  background:rgba(var(--cycle-accent-rgb),0.11);border:1px solid rgba(var(--cycle-accent-rgb),0.24);
+}
+.met-ef-ic{width:28px;height:28px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:0;background:rgba(var(--cycle-accent-rgb),0.22);color:var(--cycle-accent);}
+.met-ef-t{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--cycle-accent);margin-bottom:2px;}
+.met-ef-d{font-size:12px;color:var(--text);line-height:1.5;}
+
+/* Linha de escolha dentro de Ajustes: fechada mostra o que esta valendo,
+   aberta mostra as opcoes. Escolher fecha. */
+.set.escolha{cursor:pointer;}
+.set.escolha .set-val{font-size:12.5px;font-weight:700;color:var(--cycle-accent);margin-right:2px;text-align:right;white-space:nowrap;}
+.set-chev{font-size:19px;color:var(--text3);flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+.set.escolha.aberta .set-chev{transform:rotate(90deg);}
+.met-lista{display:flex;flex-direction:column;gap:7px;padding:4px 16px 14px;background:rgba(61,44,46,0.015);border-top:1px solid var(--border);}
+.ios-screen .met-lista{background:rgba(61,44,46,0.02);}
+</style>
+<script src="../shared/responsive.js"></script>
+</head>
+<body>
+<div class="studio">
+  <header class="studio-header">
+    <div class="brand-eyebrow">Brota &middot; A19-NessaFase</div>
+    <h1 class="brand-title">Nessa fase<em>Sub-tela do Ciclo &middot; o que muda no app, e os ajustes</em></h1>
+    <div class="brand-sub">Sai do hub <code>A5-Ciclo</code>. &Eacute; a tela que carrega o posicionamento da &sect;8 da pesquisa: quatro concorrentes (Moody Month, Wild.AI, Stardust, Flo) j&aacute; adaptam <strong>conte&uacute;do</strong> ao ciclo, <strong>ningu&eacute;m muda a intensidade da prote&ccedil;&atilde;o e a voz do companheiro</strong>. Por isso a lista fala do comportamento do produto, nunca de treino ou dieta: a &sect;7 mostra que prescri&ccedil;&atilde;o por fase &eacute; onde a categoria vira pseudoci&ecirc;ncia (&ldquo;a fase l&uacute;tea n&atilde;o &eacute; uma patologia&rdquo;). O bloco <strong>&ldquo;O que voc&ecirc; usa&rdquo;</strong> responde &agrave;s 26 ocorr&ecirc;ncias do estudo e &agrave; P36 (<em>&ldquo;fiz laqueadura, n&atilde;o preciso de informa&ccedil;&atilde;o de gravidez empurrada goela abaixo&rdquo;</em>). N&atilde;o &eacute; chave liga-desliga: <strong>cada m&eacute;todo muda o c&aacute;lculo de um jeito diferente</strong>, e a tela diz qual. A linha fica <strong>fechada mostrando o que est&aacute; valendo</strong>; toca, abre a listinha, escolhe, fecha sozinha. Ao lado dela entrou <strong>Previs&atilde;o</strong>: quem tem ciclo que varia muito (41% dos abandonos da pesquisa) ou uma condi&ccedil;&atilde;o de sa&uacute;de (13%) desliga a cobran&ccedil;a de data ali, <strong>sem precisar declarar diagn&oacute;stico</strong>, que seria clinicar (G3). Combinada d&aacute; sangramento de pausa, que segue a cartela e n&atilde;o o corpo. DIU hormonal e implante costumam suspender a menstrua&ccedil;&atilde;o, a&iacute; <strong>prever deixa de fazer sentido</strong> e o app passa a se guiar pelo que ela registra. DIU de cobre e laqueadura n&atilde;o mexem no ciclo. Sem essa distin&ccedil;&atilde;o, o app erra a previs&atilde;o e ainda faz a pessoa achar que o corpo dela que est&aacute; errado.</div>
+  </header>
+  <div class="controls" id="controls">
+    <button class="state-btn active" onclick="setPlant('s1',this)">Lavanda / Ana</button>
+    <button class="state-btn" onclick="setPlant('s2',this)">Girassol / Bia</button>
+    <button class="state-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
+    <button class="state-btn" onclick="setPlant('s4',this)">Cerejeira / Dani</button>
+    <button class="state-btn" onclick="setPlant('s5',this)">Lotus / Eva</button>
+    <div class="state-sep"></div>
+    <button class="state-btn phase-btn active" onclick="setFase('menstrual',this)">Menstrual</button>
+    <button class="state-btn phase-btn" onclick="setFase('folicular',this)">Folicular</button>
+    <button class="state-btn phase-btn" onclick="setFase('ovulacao',this)">Ovula&ccedil;&atilde;o</button>
+    <button class="state-btn phase-btn" onclick="setFase('lutea',this)">L&uacute;tea</button>
+    <button class="state-btn phase-btn" onclick="setFase('irregular',this)">Passou da m&eacute;dia</button>
+  </div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<script src="../shared/plant-svgs.js"></script>
+<script src="../shared/icons.js"></script>
+<script>
+var plants = {
+  s1:{name:'Ana',  plant:'Lavanda',   color:'#C4B0E0',rgb:'196,176,224'},
+  s2:{name:'Bia',  plant:'Girassol',  color:'#F2CE6B',rgb:'242,206,107'},
+  s3:{name:'Carol',plant:'Cacto',     color:'#8CC5A0',rgb:'140,197,160'},
+  s4:{name:'Dani', plant:'Cerejeira', color:'#F2B5C4',rgb:'242,181,196'},
+  s5:{name:'Eva',  plant:'Lotus',     color:'#D4B8D4',rgb:'212,184,212'}
+};
+var cur = plants.s1;
+
+/* Faixas de dia iguais as do A10-Perfil, pra as telas nao divergirem.
+   Nomes e falas seguem G3: nunca clinico, nunca "fragil", nunca "hormonios". */
+var FASES = {
+  menstrual:{nome:'Menstrua\u00e7\u00e3o', dia:2, ini:1, fim:5, cor:'#E8889E', rgb:'232,136,158',
+    curta:'Dia 2 de 5', muda:'Essa semana eu falo mais baixo e apare\u00e7o menos.'},
+  folicular:{nome:'Folicular', dia:9, ini:6, fim:13, cor:'#F4A7B9', rgb:'244,167,185',
+    curta:'Dia 9 de 28', muda:'Volto ao ritmo normal. Boa semana pra come\u00e7ar coisa.'},
+  ovulacao:{nome:'Ovula\u00e7\u00e3o', dia:15, ini:14, fim:16, cor:'#FFD07A', rgb:'255,208,122',
+    curta:'Dia 15 de 28', muda:'Voc\u00ea costuma se expor mais. Fico de olho junto.'},
+  lutea:{nome:'L\u00fatea', dia:24, ini:17, fim:28, cor:'#C4B0E0', rgb:'196,176,224',
+    curta:'Dia 24 de 28', muda:'Come\u00e7o a aparecer 3 dias antes, sem voc\u00ea pedir.'},
+  irregular:{nome:'Passou da m\u00e9dia', dia:31, ini:1, fim:28, cor:'#B8A8C8', rgb:'184,168,200',
+    curta:'Dia 31', muda:'Continuo do mesmo jeito. Atraso n\u00e3o muda nada aqui.'}
+};
+var fase = 'menstrual';
+var STATUS = '<div class="statusbar"><span class="stime">9:41</span><span class="sicons">'
+  + '<svg width="15" height="11" fill="currentColor"><rect x="0" y="4" width="3" height="7" rx="0.5" opacity="0.4"/>'
+  + '<rect x="4" y="2.5" width="3" height="8.5" rx="0.5" opacity="0.5"/><rect x="8" y="1" width="3" height="10" rx="0.5" opacity="0.7"/>'
+  + '<rect x="12" y="0" width="3" height="11" rx="0.5"/></svg></span></div>';
+function backIcon(isIos){
+  return isIos
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>';
+}
+function voltar(btn){ btn.style.transform='scale(0.85)'; setTimeout(function(){btn.style.transform='';},180); }
+function aplicarCor(){
+  var f = FASES[fase] || FASES.lutea;
+  ['a','i'].forEach(function(p){
+    var el = document.getElementById(p+'-screen');
+    if(!el) return;
+    el.style.setProperty('--plant-color', cur.color);
+    el.style.setProperty('--plant-color-rgb', cur.rgb);
+    el.style.setProperty('--cycle-accent', fase==='sem' ? cur.color : f.cor);
+    el.style.setProperty('--cycle-accent-rgb', fase==='sem' ? cur.rgb : f.rgb);
+  });
+}
+function setPlant(key, btn){
+  cur = plants[key];
+  document.querySelectorAll('.state-btn:not(.phase-btn)').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  render();
+}
+function setFase(f, btn){
+  fase = f;
+  document.querySelectorAll('.phase-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  render();
+}
+
+/* O que muda no COMPORTAMENTO do produto -- nao conteudo de bem-estar.
+   Secao 8 da pesquisa: quatro concorrentes ja adaptam conteudo; ninguem
+   muda a intensidade da protecao e a voz do companheiro. */
+var MUDANCAS = {
+  menstrual:[
+    {i:'shield',t:'Prote&ccedil;&atilde;o mais leve',d:'O Mirror aparece menos. Voc&ecirc; j&aacute; tem com o que lidar.'},
+    {i:'chat',  t:'Eu falo mais baixo',d:'Frases curtas, sem empolga&ccedil;&atilde;o, sem propor desafio.'},
+    {i:'leaf',  t:'Exerc&iacute;cios s&oacute; de presen&ccedil;a',d:'Nada de CBT. S&oacute; respirar, se voc&ecirc; quiser.'}
+  ],
+  folicular:[
+    {i:'shield',t:'Prote&ccedil;&atilde;o normal',d:'Na frequ&ecirc;ncia que voc&ecirc; configurou.'},
+    {i:'sun',   t:'Volto ao meu tom',d:'Um pouco mais animada, sem forçar.'},
+    {i:'grow',  t:'Feed Cleanse rende mais',d:'Sua toler&acirc;ncia a mexer no que incomoda costuma estar maior.'}
+  ],
+  ovulacao:[
+    {i:'eye',   t:'Fico mais atenta ao feed',d:'&Eacute; quando voc&ecirc; costuma postar e comparar mais.'},
+    {i:'shield',t:'Prote&ccedil;&atilde;o mantida',d:'Estar bem n&atilde;o desliga o pico de scroll.'},
+    {i:'sparkle',t:'Cor mais quente',d:'O app veste &acirc;mbar nesses dias.'}
+  ],
+  lutea:[
+    {i:'shield',t:'Chego 3 dias antes',d:'O Mirror come&ccedil;a a aparecer mais cedo, sem voc&ecirc; pedir.'},
+    {i:'moon',  t:'Tom mais gentil',d:'Menos pergunta, mais presen&ccedil;a.'},
+    {i:'pause', t:'Respirar vira o padr&atilde;o',d:'O Daily Bloom troca desafio por pausa.'}
+  ],
+  irregular:[
+    {i:'shield',t:'Nada muda por atraso',d:'Continuo na mesma frequ&ecirc;ncia. Atraso n&atilde;o &eacute; falha.'},
+    {i:'pencil',t:'O que voc&ecirc; registra vale mais',d:'Em ciclo vari&aacute;vel, o que voc&ecirc; sente prev&ecirc; melhor que o calend&aacute;rio.'},
+    {i:'chat',  t:'Se preocupar &eacute; justo',d:'Se vier junto de outras coisas, vale conversar com quem entende.'}
+  ]
+};
+
+/* Cada metodo muda o calculo de um jeito. O app precisa saber QUAL, nao SE. */
+var METODOS = [
+  {id:'nenhum', curto:'Nenhum', t:'Nenhum ou de barreira',
+   d:'Camisinha, diafragma, tabelinha',
+   ef:'Ciclo natural. Eu prevejo pelos seus registros, do jeito que voc&ecirc; j&aacute; viu.'},
+  {id:'combinada', curto:'P&iacute;lula', t:'P&iacute;lula combinada ou anel',
+   d:'Com pausa ou cartela de placebo',
+   ef:'O que desce na pausa <b>n&atilde;o &eacute; menstrua&ccedil;&atilde;o</b>, &eacute; sangramento de pausa, e ele segue a cartela, n&atilde;o o seu corpo. Passo a contar pela cartela e paro de tentar adivinhar.'},
+  {id:'continuo', curto:'DIU hormonal', t:'DIU hormonal, implante ou inje&ccedil;&atilde;o',
+   d:'Mirena, Kyleena, Implanon, trimestral',
+   ef:'Muita gente <b>para de menstruar</b> ou sangra sem padr&atilde;o. Ent&atilde;o eu <b>paro de prever</b> e paro de esperar menstrua&ccedil;&atilde;o todo m&ecirc;s. Voc&ecirc; registra quando acontecer, e eu me adapto pelo que voc&ecirc; sente, n&atilde;o pelo calend&aacute;rio.'},
+  {id:'minipilula', curto:'Minip&iacute;lula', t:'Minip&iacute;lula (s&oacute; progest&aacute;geno)',
+   d:'Cerazette, Norestin e similares',
+   ef:'O padr&atilde;o varia muito de pessoa pra pessoa. Alargo a janela de previs&atilde;o e dou mais peso ao que voc&ecirc; registra.'},
+  {id:'cobre', curto:'DIU de cobre', t:'DIU de cobre',
+   d:'Sem horm&ocirc;nio',
+   ef:'Seu ciclo continua igual, ent&atilde;o sigo prevendo normal. S&oacute; costuma vir mais intenso nos primeiros meses.'},
+  {id:'definitivo', curto:'Definitivo', t:'Laqueadura ou vasectomia',
+   d:'Do seu lado ou do parceiro',
+   ef:'N&atilde;o mexe no ciclo, sigo igual. Marquei aqui pra <b>nunca mais te mostrar nada sobre gravidez</b>.'}
+];
+/* O quanto eu arrisco dizer quando vem. Nao pergunto o que ela tem -- pergunto
+   o que ela quer que eu faca. Quem tem SOP, endometriose ou ciclo que varia
+   muito desliga a cobranca aqui, sem precisar declarar diagnostico (G3). */
+var PREVISOES = [
+  {id:'auto',  curto:'Autom&aacute;tica', t:'Deixa comigo',
+   d:'Eu decido pelo que voc&ecirc; registra e pelo m&eacute;todo'},
+  {id:'larga', curto:'Janela larga', t:'Sempre com janela larga',
+   d:'Meu ciclo varia. Prefiro um intervalo a uma data'},
+  {id:'off',   curto:'N&atilde;o prever', t:'N&atilde;o prever nada',
+   d:'S&oacute; registrar. Eu n&atilde;o te cobro data'}
+];
+var metodo = 'nenhum';
+var previsao = 'auto';
+var aberto = null;   /* 'metodo' | 'previsao' | null -- uma lista por vez */
+
+function abrir(qual){ aberto = (aberto === qual) ? null : qual; render(); }
+/* Escolher tambem fecha: a pessoa ja terminou o que veio fazer. */
+function setMetodo(id){ metodo = id; aberto = null; render(); }
+function setPrevisao(id){ previsao = id; aberto = null; render(); }
+
+function escolha(qual, titulo, desc, sel, lista, onset){
+  var h = '<div class="set escolha' + (aberto===qual?' aberta':'') + '" onclick="abrir(\'' + qual + '\')">'
+    + '<div class="set-in"><div class="set-t">' + titulo + '</div>'
+    +   '<div class="set-d">' + desc + '</div></div>'
+    + '<div class="set-val">' + sel.curto + '</div><div class="set-chev">&rsaquo;</div></div>';
+  if(aberto === qual){
+    h += '<div class="met-lista">';
+    lista.forEach(function(m){
+      h += '<button class="met-op' + (sel.id===m.id?' on':'') + '" onclick="' + onset + '(\'' + m.id + '\')">'
+        + '<div class="met-ck">&#10003;</div>'
+        + '<div class="met-in"><div class="met-t">' + m.t + '</div><div class="met-d">' + m.d + '</div></div></button>';
+    });
+    h += '</div>';
+  }
+  return h;
+}
+
+function corpo(){
+  var f = FASES[fase];
+  var h = '<div class="faixa anim-el" style="animation-delay:0.06s">'
+    + '<div class="faixa-ic"><i data-icon="moon"></i></div>'
+    + '<div><div class="faixa-t">' + f.nome + ' &middot; ' + f.curta + '</div>'
+    + '<div class="faixa-d">' + f.muda + '</div></div></div>';
+
+  h += '<div class="sec-t anim-el" style="animation-delay:0.10s">O que muda em mim</div>'
+    + '<div class="card anim-el" style="animation-delay:0.12s">';
+  MUDANCAS[fase].forEach(function(m){
+    h += '<div class="muda"><div class="muda-ic"><i data-icon="' + m.i + '"></i></div>'
+      + '<div><div class="muda-t">' + m.t + '</div><div class="muda-d">' + m.d + '</div></div></div>';
+  });
+  h += '</div>';
+
+  h += '<div class="sec-t anim-el" style="animation-delay:0.20s">Ajustes</div>'
+    + '<div class="card anim-el" style="animation-delay:0.22s">'
+    + '<div class="set"><div class="set-in"><div class="set-t">Adaptar a ' + cur.plant + ' ao ciclo</div>'
+    +   '<div class="set-d">Tom, cor e prote&ccedil;&atilde;o acompanham a fase</div></div><div class="sw on"></div></div>'
+    + '<div class="set"><div class="set-in"><div class="set-t">Prote&ccedil;&atilde;o extra na semana dif&iacute;cil</div>'
+    +   '<div class="set-d">O Mirror come&ccedil;a 3 dias antes</div></div><div class="sw on"></div></div>'
+    + '<div class="set"><div class="set-in"><div class="set-t">Me avisar quando a fase virar</div>'
+    +   '<div class="set-d">Uma mensagem, nunca duas</div></div><div class="sw"></div></div>';
+
+  /* Duas linhas que abrem. Fechadas, cada uma mostra o que esta valendo. */
+  var sel = METODOS.filter(function(m){return m.id===metodo;})[0];
+  var pv  = PREVISOES.filter(function(m){return m.id===previsao;})[0];
+  h += escolha('metodo', 'M&eacute;todo contraceptivo',
+               'Cada um muda o que eu consigo prever', sel, METODOS, 'setMetodo');
+  h += escolha('previsao', 'Previs&atilde;o',
+               'O quanto eu arrisco dizer quando vem', pv, PREVISOES, 'setPrevisao');
+  h += '</div>';
+
+  /* O efeito das duas escolhas fica visivel mesmo com as listas fechadas. */
+  var efeito = (previsao === 'off')
+    ? 'N&atilde;o vou te dizer quando vem. Voc&ecirc; registra, eu guardo, e <b>paro de te cobrar regularidade</b>. '
+      + 'A prote&ccedil;&atilde;o continua igual, s&oacute; deixa de andar pelo calend&aacute;rio.'
+    : (previsao === 'larga')
+      ? sel.ef + ' Como voc&ecirc; pediu, eu mostro sempre um <b>intervalo</b>, nunca um dia exato.'
+      : sel.ef;
+  h += '<div class="met-efeito anim-el" style="animation-delay:0.30s;margin:10px 0 0">'
+    + '<div class="met-ef-ic"><i data-icon="calendar"></i></div>'
+    + '<div><div class="met-ef-t">O que muda no c&aacute;lculo</div><div class="met-ef-d">' + efeito + '</div></div></div>';
+
+  h += '<div class="card anim-el" style="animation-delay:0.36s">'
+    + '<div class="row" data-destino="M10-ApagarCiclo"><div class="row-ic"><i data-icon="lock"></i></div>'
+    +   '<div class="row-in"><div class="row-t">Apagar meus dados de ciclo</div>'
+    +   '<div class="row-d">S&oacute; o ciclo. Sua conta e sua planta ficam</div></div><div class="row-a">&rsaquo;</div></div>'
+    + '<div class="row" data-destino="A12-Privacidade"><div class="row-ic"><i data-icon="shield"></i></div>'
+    +   '<div class="row-in"><div class="row-t">Onde isso fica guardado</div>'
+    +   '<div class="row-d">No seu aparelho. Nenhum servidor nosso v&ecirc;</div></div><div class="row-a">&rsaquo;</div></div>'
+    + '</div>';
+  return h;
+}
+
+function render(){
+  var stage = document.getElementById('stage');
+  stage.innerHTML = '';
+  [['a','Android &middot; Material 3 Expressive','Lista do que muda &middot; switches Material'],
+   ['i','iOS 26 &middot; Liquid Glass','Inset grouped &middot; mesmos ajustes']].forEach(function(cfg){
+    var p = cfg[0], isIos = (p === 'i');
+    stage.innerHTML += '<div class="phone-wrapper"><div class="phone-label">'
+      + '<span class="pill ' + (isIos ? 'ios' : 'android') + '">' + cfg[1] + '</span>'
+      + '<span class="desc">' + cfg[2] + '</span></div>'
+      + '<div class="phone"><div class="phone-screen">'
+      + '<div class="screen ' + (isIos ? 'ios-screen' : 'a-screen') + '" id="' + p + '-screen">'
+      + '<div class="blob blob1"></div><div class="blob blob2"></div>'
+      + (isIos ? '<div class="dyna"></div>' : '') + STATUS
+      + '<div class="topbar"><button class="back-btn" onclick="voltar(this)">' + backIcon(isIos) + '</button>'
+      +   (isIos ? '<span class="back-label">Ciclo</span>' : '')
+      +   '<span class="topbar-title">Nessa fase</span></div>'
+      + '<div class="scroll-body">' + corpo() + '</div>'
+      + '</div></div></div></div>';
+  });
+  aplicarCor();
+  if (window.Icons) Icons.hydrate(document);
+}
+render();
+</script>
+</body>
+</html>

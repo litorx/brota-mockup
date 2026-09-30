@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 09: Revelação da Planta</title>
+<title>Brota &middot; Screen 09: Revelação da Planta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -272,13 +272,14 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
 <header class="studio-header">
   <div class="brand-block">
     <div class="brand-eyebrow">Brota · Onboarding · Screen 09 de 18 · Revelação do companion</div>
-    <h1 class="brand-title">Sua planta <em>tela não-interativa — revela o companion antes da personalização</em></h1>
+    <h1 class="brand-title">Sua planta <em>tela não-interativa, revela o companion antes da personalização</em></h1>
     <p class="brand-sub">
       Ponte emocional entre Block 1 (dor) e Block 2 (crescimento). Sem input, sem escolha.
       A semente SVG cresce sequencialmente: corpo → caule → folhas → raízes → respira.
@@ -313,7 +314,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen android-screen" aria-label="Brota Planta — Android">
+        <section class="screen android-screen" aria-label="Brota Planta, Android">
           <div class="a-blob-rose"></div>
           <div class="a-blob-sage"></div>
           <div class="a-body">
@@ -370,7 +371,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h16v10H3zm17 3h2v4h-2z"/></svg>
           </span>
         </div>
-        <section class="screen ios-screen" aria-label="Brota Planta — iOS">
+        <section class="screen ios-screen" aria-label="Brota Planta, iOS">
           <div class="ios-orb rose"></div>
           <div class="ios-orb sage"></div>
           <div class="ios-body">
@@ -416,23 +417,23 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · M3 Expressive</h4>
     <ul>
-      <li>Tela não-interativa: zero input até o CTA. Usuária só assiste e lê — zero friction antes da primeira escolha real</li>
+      <li>Tela não-interativa: zero input até o CTA. Usuária só assiste e lê, zero friction antes da primeira escolha real</li>
       <li>Seed SVG sequencial: corpo entra com spring <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> → caule draw-on → folhas unfold → raízes fade → respira. Referência: <em>Finch</em> (companion reveal)</li>
-      <li>Blobs: rose 10% + sage 20% — transição visual de Block 1 → Block 2 já começando aqui</li>
-      <li>H1 28px <code>wght 680</code> — maior e mais pesado que telas anteriores. Esse é o momento de impacto do onboarding</li>
-      <li>Closing em <em>Instrument Serif</em> italic: "Só sua." — duas palavras que criam pertencimento e exclusividade</li>
-      <li>CTA rose (<code>--brand-real</code>) retorna após bloco de sage — promessa de ação pessoal, não da planta</li>
+      <li>Blobs: rose 10% + sage 20%, transição visual de Block 1 → Block 2 já começando aqui</li>
+      <li>H1 28px <code>wght 680</code>, maior e mais pesado que telas anteriores. Esse é o momento de impacto do onboarding</li>
+      <li>Closing em <em>Instrument Serif</em> italic: "Só sua.", duas palavras que criam pertencimento e exclusividade</li>
+      <li>CTA rose (<code>--brand-real</code>) retorna após bloco de sage, promessa de ação pessoal, não da planta</li>
     </ul>
   </div>
   <div class="note ios">
     <h4>iOS 26 · Liquid Glass / HIG</h4>
     <ul>
-      <li>Seed SVG com <code>cubic-bezier(0.32, 0.72, 0, 1)</code> HIG — sem overshoot, crescimento natural sem bounce</li>
-      <li>Orbs: rose fraco (10%) no canto oposto ao sage (22%) — blend sutil da transição de bloco</li>
-      <li>H1 28pt SF Pro Display weight 700 — Large Title feel sem a barra de navegação nativa</li>
-      <li>Body text 17pt SF Pro Text weight 400 — tamanho canônico HIG para leitura confortável</li>
-      <li>CTA Liquid Glass rose: <code>rgba(244,167,185,0.82)</code> + <code>backdrop-filter blur(24px)</code> — padrão aprovado desde O1</li>
-      <li>Breathing animation começa em 3.00s — a planta "vive" antes da usuária interagir. Referência: <em>Headspace</em> (mascot breathing idle)</li>
+      <li>Seed SVG com <code>cubic-bezier(0.32, 0.72, 0, 1)</code> HIG, sem overshoot, crescimento natural sem bounce</li>
+      <li>Orbs: rose fraco (10%) no canto oposto ao sage (22%), blend sutil da transição de bloco</li>
+      <li>H1 28pt SF Pro Display weight 700, Large Title feel sem a barra de navegação nativa</li>
+      <li>Body text 17pt SF Pro Text weight 400, tamanho canônico HIG para leitura confortável</li>
+      <li>CTA Liquid Glass rose: <code>rgba(244,167,185,0.82)</code> + <code>backdrop-filter blur(24px)</code>, padrão aprovado desde O1</li>
+      <li>Breathing animation começa em 3.00s, a planta "vive" antes da usuária interagir. Referência: <em>Headspace</em> (mascot breathing idle)</li>
     </ul>
   </div>
 </section>

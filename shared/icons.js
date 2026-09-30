@@ -62,6 +62,8 @@
     sparkle:  '<path d="M12 3.5 13.5 9 19 10.5 13.5 12 12 17.5 10.5 12 5 10.5 10.5 9Z"/>',
     play:     '<path d="M8 5.5 18 12 8 18.5Z"/>',
     pause:    '<path d="M8.5 5.5v13M15.5 5.5v13"/>',
+    // Folha com uma gota dentro. Nunca duas barras: o app nao chama isso de pausa.
+    respirar: '<path d="M19 5c0 7.2-3.6 11-8 11a5.6 5.6 0 0 1-5.6-5.6C5.4 6 9.6 5 19 5Z"/><path d="M12.2 9.2c1 1.2 1.6 2.1 1.6 2.9a1.6 1.6 0 0 1-3.2 0c0-.8.6-1.7 1.6-2.9Z"/><path d="M5.4 19c1.4-2.6 3-4.6 4.8-6"/>',
     bolt:     '<path d="M13 3 5 13.5h5L9 21l8-11h-5Z"/>',
     globe:    '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.3 2.6 14.7 0 17M12 3.5c-2.6 2.3-2.6 14.7 0 17"/>',
     scissors: '<circle cx="7" cy="6.5" r="2.4"/><circle cx="7" cy="17.5" r="2.4"/><path d="M9 8 20 18M9 16 20 6"/>',
@@ -106,6 +108,7 @@
     sparkle:  '<path d="M12 2.8c.3 0 .5.2.6.5l1.3 4.8 4.8 1.3c.6.2.6 1 0 1.2l-4.8 1.3-1.3 4.8c-.2.6-1 .6-1.2 0l-1.3-4.8-4.8-1.3c-.6-.2-.6-1 0-1.2l4.8-1.3 1.3-4.8c.1-.3.3-.5.6-.5Z"/>',
     play:     '<path d="M7.5 5.2c0-.7.8-1.2 1.4-.8l9.4 6c.6.4.6 1.3 0 1.7l-9.4 6c-.6.4-1.4-.1-1.4-.8Z"/>',
     pause:    '<rect x="7" y="5" width="3.4" height="14" rx="1.4"/><rect x="13.6" y="5" width="3.4" height="14" rx="1.4"/>',
+    respirar: '<path d="M19.4 4.6c.3 0 .5.2.5.5 0 7.7-3.9 11.8-8.6 11.8a6.1 6.1 0 0 1-6.1-6.1c0-5 4.6-6.2 14.2-6.2Z"/><path d="M5.1 19.4c1.5-2.9 3.3-5.1 5.3-6.7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12.4 8.6c1.1 1.4 1.8 2.4 1.8 3.3a1.8 1.8 0 0 1-3.6 0c0-.9.7-1.9 1.8-3.3Z" fill="#fff"/>',
     bolt:     '<path d="M13.2 2.8a.5.5 0 0 1 .79.52L12.5 9h4.3a.6.6 0 0 1 .47.97l-8.3 10.6a.5.5 0 0 1-.88-.44L9.5 13.4H5.2a.6.6 0 0 1-.47-.97Z"/>',
     globe:    '<path d="M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Z"/><path d="M3.6 12h16.8M12 3.6c2.6 2.4 2.6 14.4 0 16.8M12 3.6c-2.6 2.4-2.6 14.4 0 16.8" fill="none" stroke="#fff" stroke-width="1.3"/>',
     scissors: '<circle cx="6.8" cy="6.5" r="2.6"/><circle cx="6.8" cy="17.5" r="2.6"/><path d="M8.8 8 19.6 18M8.8 16 19.6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',

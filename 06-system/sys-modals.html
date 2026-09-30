@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Modais & Confirmacoes</title>
+<title>Brota &middot; Modais & Confirmacoes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -217,6 +217,32 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
 /* ── DURATION PILLS ── */
 .duration-pills{display:flex;gap:10px;justify-content:center;margin-bottom:20px;}
+/* Escolha unica em lista, para M8 (tom) e M9 (silencio noturno) */
+.opt-list{display:flex;flex-direction:column;gap:8px;margin:4px 0 4px;}
+.opt{
+  display:flex;align-items:center;gap:12px;padding:13px 14px;
+  border:1.5px solid var(--border);border-radius:14px;background:var(--card);
+  cursor:pointer;transition:all 0.22s;text-align:left;font-family:inherit;
+}
+.opt:hover{border-color:rgba(var(--plant-color-rgb),0.35);}
+.opt.selected{border-color:var(--plant-color);background:rgba(var(--plant-color-rgb),0.08);}
+.opt-info{flex:1;min-width:0;}
+.opt-t{font-size:13.5px;font-weight:700;color:var(--text);}
+.opt-d{font-size:11.5px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.opt-check{
+  width:20px;height:20px;flex-shrink:0;border-radius:50%;
+  border:1.8px solid var(--border);display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:12px;font-weight:800;
+}
+.opt.selected .opt-check{background:var(--plant-color);border-color:var(--plant-color);}
+.opt-range{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:14px;margin:4px 0;border-radius:16px;
+  background:rgba(var(--plant-color-rgb),0.08);border:1px solid rgba(var(--plant-color-rgb),0.18);
+}
+.opt-range .hh{font-size:26px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
+.opt-range .sep{font-size:13px;color:var(--text2);font-weight:600;}
+
 .dur-pill{
   padding:10px 22px;border:1.5px solid var(--border);border-radius:999px;
   background:transparent;font-family:inherit;font-size:14px;font-weight:700;
@@ -338,7 +364,40 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 /* ── SMALL PLANT for M3 ── */
 .small-plant{width:64px;height:64px;margin:0 auto;display:flex;align-items:center;justify-content:center;}
 .small-plant svg{width:56px;height:56px;filter:drop-shadow(0 3px 8px rgba(var(--plant-color-rgb),0.2));}
+
+/* M10: o que NAO some. Peach amber -- e momento de cuidado, nao alarme. */
+.fica{
+  display:flex;flex-direction:column;gap:7px;width:100%;
+  padding:12px 14px;margin:2px 0 16px;border-radius:14px;
+  background:rgba(255,208,122,0.14);border:1px solid rgba(255,208,122,0.34);
+}
+.fica-t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#C99A2E;}
+.fica-i{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--text);line-height:1.45;}
+.fica-i b{font-weight:800;}
+.fica-i span{color:var(--brand-ai-deep);font-weight:800;flex-shrink:0;}
+
+/* M11: motivo de denuncia. Lista fechada -- sem campo livre. */
+.mot{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:11px 13px;border-radius:14px;cursor:pointer;text-align:left;
+  background:var(--card);border:1.5px solid var(--border);
+  font-family:inherit;transition:all 0.2s;
+}
+.mot:hover{border-color:var(--text3);}
+.mot.on{border-color:var(--brand-real);background:rgba(244,167,185,0.10);}
+.mot-ck{
+  width:19px;height:19px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;
+}
+.mot.on .mot-ck{background:var(--brand-real);border-color:var(--brand-real);color:#fff;}
+.mot-t{font-size:13px;font-weight:700;color:var(--text);}
+.mot-d{font-size:11px;color:var(--text2);line-height:1.4;margin-top:1px;}
+.sheet-foot{
+  font-size:11.5px;color:var(--text2);text-align:center;line-height:1.5;margin:2px 0 14px;
+}
+.sheet-foot b{color:var(--text);font-weight:700;}
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -346,9 +405,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
   <!-- STUDIO HEADER -->
   <div class="studio-header">
-    <div class="brand-eyebrow">Brota &middot; Modals &amp; Confirmacoes &middot; M1-M7</div>
+    <div class="brand-eyebrow">Brota &middot; Modals &amp; Confirmacoes &middot; M1-M12</div>
     <div class="brand-title">Modais, popups e confirmacoes</div>
-    <div class="brand-sub">Todo action destrutiva pede confirmacao. Todo dialog fala com a voz da planta.</div>
+    <div class="brand-sub">Todo action destrutiva pede confirmacao. Todo dialog fala com a voz da planta. O M10 existe porque apagar o ciclo, cancelar a assinatura e deletar a conta sao tres coisas diferentes, confundir as tres e uma das reclamacoes que derrubam a nota das concorrentes. M11 e M12 sao duas das quatro coisas que a diretriz 1.2 da App Store exige de conteudo de usuaria, denuncia e bloqueio; o filtro e o <code>ContentModerationPolicy</code> e o contato publicado e a A21.</div>
   </div>
 
   <!-- MODAL TOGGLES -->
@@ -361,6 +420,12 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
     <button class="state-btn" data-modal="m6">M6 Pausar</button>
     <div class="state-sep"></div>
     <button class="state-btn" data-modal="m7">M7 Mood</button>
+    <div class="state-sep"></div>
+    <button class="state-btn" data-modal="m8">M8 Tom</button>
+    <button class="state-btn" data-modal="m9">M9 Silencio</button>
+    <button class="state-btn" data-modal="m10">M10 Apagar ciclo</button>
+    <button class="state-btn" data-modal="m11">M11 Denunciar</button>
+    <button class="state-btn" data-modal="m12">M12 Sumir</button>
   </div>
 
   <!-- M7 MOOD SUB-TOGGLES -->
@@ -500,6 +565,94 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             <div class="cta-stack">
               <button class="btn-primary">Ficar</button>
               <button class="btn-outline">Sair</button>
+            </div>
+          </div>
+
+          <!-- ── M8: Tom da planta ── -->
+          <div class="bottom-sheet" data-sheet="m8">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Como voce quer que eu fale?</div>
+            <div class="sheet-body">Da pra mudar quando quiser. Eu continuo sendo eu.</div>
+            <div class="opt-list">
+              <button class="opt selected"><div class="opt-info"><div class="opt-t">Do jeito dela</div><div class="opt-d">O tom proprio da Lavanda, calmo e vagaroso</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">Mais direta</div><div class="opt-d">Menos rodeio, frases curtas</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">Mais quieta</div><div class="opt-d">Fala pouco, so quando precisa</div></div><div class="opt-check">&#10003;</div></button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary">Salvar</button>
+            </div>
+          </div>
+
+          <!-- ── M9: Silencio noturno ── -->
+          <div class="bottom-sheet" data-sheet="m9">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Silencio noturno</div>
+            <div class="sheet-body">Nesse intervalo eu nao te chamo. Nem pra dar bom dia.</div>
+            <div class="opt-range">
+              <span class="hh">22:00</span><span class="sep">ate</span><span class="hh">08:00</span>
+            </div>
+            <div class="opt-list">
+              <button class="opt selected"><div class="opt-info"><div class="opt-t">22h &ndash; 8h</div><div class="opt-d">O padrao, e o que a maioria escolhe</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">23h &ndash; 7h</div><div class="opt-d">Janela mais curta</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">Escolher horario</div><div class="opt-d">Abre o seletor do sistema</div></div><div class="opt-check">&#10003;</div></button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary">Salvar</button>
+            </div>
+          </div>
+
+          <!-- ── M10: Apagar dados de ciclo ── -->
+          <div class="bottom-sheet" data-sheet="m10">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Apagar seus dados de ciclo?</div>
+            <div class="sheet-body">Some o calendario, os registros e a data que voce me deu de ancora. Eu volto a te tratar igual em todo dia do mes.</div>
+            <div class="fica">
+              <div class="fica-t">Isso aqui nao muda</div>
+              <div class="fica-i"><span>&#10003;</span><div>Sua <b>conta</b> continua, e sua planta tambem.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>Sua <b>assinatura</b> segue ativa. Apagar dado nao cancela nada.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>O <b>Mirror</b> continua te protegendo, so para de andar pelo calendario.</div></div>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary safe">Manter meus dados</button>
+              <button class="btn-outline">Apagar dados de ciclo</button>
+            </div>
+          </div>
+
+          <!-- ── M11: Denunciar uma semente ── -->
+          <div class="bottom-sheet" data-sheet="m11">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">O que tem de errado?</div>
+            <div class="sheet-body">Escolhe o mais perto. Uma pessoa do time le, nao e so o programa que decide.</div>
+            <div class="opt-list">
+              <button class="mot on"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Ela nao parece bem</div><div class="mot-d">Isso a gente le em ate uma hora</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Ensina a se machucar</div><div class="mot-d">Metodo, nao desabafo</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Ataque a alguem</div><div class="mot-d">Dirigido a outra planta</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Propaganda ou venda</div><div class="mot-d">Cupom, curso, mentoria</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Tem contato ou link</div><div class="mot-d">Quebra o anonimato de todo mundo</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Conselho medico</div><div class="mot-d">Dose, remedio, "para de tomar"</div></div></button>
+            </div>
+            <div class="sheet-foot"><b>Ninguem fica sabendo que foi voce.</b> Nem ela, nem quem le.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Enviar</button>
+              <button class="btn-outline">Deixa pra la</button>
+            </div>
+          </div>
+
+          <!-- ── M12: Sumir com uma planta ── -->
+          <div class="bottom-sheet" data-sheet="m12">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Sumir com essa planta?</div>
+            <div class="sheet-body">Voce para de ver tudo que ela planta e tudo que ela responde, inclusive no meio das conversas que voce ja acompanha.</div>
+            <div class="fica">
+              <div class="fica-t">Como isso funciona</div>
+              <div class="fica-i"><span>&#10003;</span><div><b>Ela nao e avisada.</b> Avisar transformaria isso numa briga.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>Vale <b>so pra voce</b>. As outras continuam vendo.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>Da pra desfazer no Perfil, quando quiser.</div></div>
+            </div>
+            <div class="sheet-foot">Sumir nao e denunciar. Se ela passou de uma regra, <b>denuncia tambem</b>. Sumir nao avisa ninguem.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Sumir com ela</button>
+              <button class="btn-outline">Cancelar</button>
             </div>
           </div>
 
@@ -681,6 +834,94 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
           </div>
 
+          <!-- ── M8: Tom da planta ── -->
+          <div class="bottom-sheet" data-sheet="m8">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Como voce quer que eu fale?</div>
+            <div class="sheet-body">Da pra mudar quando quiser. Eu continuo sendo eu.</div>
+            <div class="opt-list">
+              <button class="opt selected"><div class="opt-info"><div class="opt-t">Do jeito dela</div><div class="opt-d">O tom proprio da Lavanda, calmo e vagaroso</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">Mais direta</div><div class="opt-d">Menos rodeio, frases curtas</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">Mais quieta</div><div class="opt-d">Fala pouco, so quando precisa</div></div><div class="opt-check">&#10003;</div></button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary">Salvar</button>
+            </div>
+          </div>
+
+          <!-- ── M9: Silencio noturno ── -->
+          <div class="bottom-sheet" data-sheet="m9">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Silencio noturno</div>
+            <div class="sheet-body">Nesse intervalo eu nao te chamo. Nem pra dar bom dia.</div>
+            <div class="opt-range">
+              <span class="hh">22:00</span><span class="sep">ate</span><span class="hh">08:00</span>
+            </div>
+            <div class="opt-list">
+              <button class="opt selected"><div class="opt-info"><div class="opt-t">22h &ndash; 8h</div><div class="opt-d">O padrao, e o que a maioria escolhe</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">23h &ndash; 7h</div><div class="opt-d">Janela mais curta</div></div><div class="opt-check">&#10003;</div></button>
+              <button class="opt"><div class="opt-info"><div class="opt-t">Escolher horario</div><div class="opt-d">Abre o seletor do sistema</div></div><div class="opt-check">&#10003;</div></button>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary">Salvar</button>
+            </div>
+          </div>
+
+          <!-- ── M10: Apagar dados de ciclo ── -->
+          <div class="bottom-sheet" data-sheet="m10">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Apagar seus dados de ciclo?</div>
+            <div class="sheet-body">Some o calendario, os registros e a data que voce me deu de ancora. Eu volto a te tratar igual em todo dia do mes.</div>
+            <div class="fica">
+              <div class="fica-t">Isso aqui nao muda</div>
+              <div class="fica-i"><span>&#10003;</span><div>Sua <b>conta</b> continua, e sua planta tambem.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>Sua <b>assinatura</b> segue ativa. Apagar dado nao cancela nada.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>O <b>Mirror</b> continua te protegendo, so para de andar pelo calendario.</div></div>
+            </div>
+            <div class="cta-stack">
+              <button class="btn-primary safe">Manter meus dados</button>
+              <button class="btn-outline">Apagar dados de ciclo</button>
+            </div>
+          </div>
+
+          <!-- ── M11: Denunciar uma semente ── -->
+          <div class="bottom-sheet" data-sheet="m11">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">O que tem de errado?</div>
+            <div class="sheet-body">Escolhe o mais perto. Uma pessoa do time le, nao e so o programa que decide.</div>
+            <div class="opt-list">
+              <button class="mot on"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Ela nao parece bem</div><div class="mot-d">Isso a gente le em ate uma hora</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Ensina a se machucar</div><div class="mot-d">Metodo, nao desabafo</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Ataque a alguem</div><div class="mot-d">Dirigido a outra planta</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Propaganda ou venda</div><div class="mot-d">Cupom, curso, mentoria</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Tem contato ou link</div><div class="mot-d">Quebra o anonimato de todo mundo</div></div></button>
+              <button class="mot"><div class="mot-ck">&#10003;</div><div><div class="mot-t">Conselho medico</div><div class="mot-d">Dose, remedio, "para de tomar"</div></div></button>
+            </div>
+            <div class="sheet-foot"><b>Ninguem fica sabendo que foi voce.</b> Nem ela, nem quem le.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Enviar</button>
+              <button class="btn-outline">Deixa pra la</button>
+            </div>
+          </div>
+
+          <!-- ── M12: Sumir com uma planta ── -->
+          <div class="bottom-sheet" data-sheet="m12">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Sumir com essa planta?</div>
+            <div class="sheet-body">Voce para de ver tudo que ela planta e tudo que ela responde, inclusive no meio das conversas que voce ja acompanha.</div>
+            <div class="fica">
+              <div class="fica-t">Como isso funciona</div>
+              <div class="fica-i"><span>&#10003;</span><div><b>Ela nao e avisada.</b> Avisar transformaria isso numa briga.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>Vale <b>so pra voce</b>. As outras continuam vendo.</div></div>
+              <div class="fica-i"><span>&#10003;</span><div>Da pra desfazer no Perfil, quando quiser.</div></div>
+            </div>
+            <div class="sheet-foot">Sumir nao e denunciar. Se ela passou de uma regra, <b>denuncia tambem</b>. Sumir nao avisa ninguem.</div>
+            <div class="cta-stack">
+              <button class="btn-primary">Sumir com ela</button>
+              <button class="btn-outline">Cancelar</button>
+            </div>
+          </div>
+
           <!-- ── M5: Modo Trabalho ── -->
           <div class="bottom-sheet" data-sheet="m5">
             <div class="sheet-handle"></div>
@@ -760,7 +1001,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
       const phone = document.getElementById(phoneId);
 
       // Hide all sheets and overlays
-      phone.querySelectorAll('.bottom-sheet, .center-overlay').forEach(el => {
+      phone.querySelectorAll('.bottom-sheet.center-overlay').forEach(el => {
         el.classList.remove('active-modal');
       });
 

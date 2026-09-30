@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brota — Screen 14A: Ciclo Insight</title>
+<title>Brota &middot; Screen 14A: Ciclo Insight</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -310,6 +310,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
+<script src="../shared/responsive.js"></script>
 </head>
 <body>
 
@@ -319,7 +320,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
     <h1 class="brand-title">Tem uma semana que tudo pesa mais, ne? <em>revelacao emocional · 28 dots visuais · zero pedido · zero configuracao</em></h1>
     <p class="brand-sub">
       Tela de puro reconhecimento. A planta nomeia a experiencia antes de pedir qualquer coisa.
-      28 dots — os ultimos 8 acesos em blush — mostram "tem uma janela, todo mes" sem texto clinico.
+      28 dots, os ultimos 8 acesos em blush, mostram "tem uma janela, todo mes" sem texto clinico.
       Nenhuma interacao de dados aqui. So o "aha moment." O convite vem na proxima tela (O14B).
     </p>
   </div>
@@ -369,7 +370,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
               <!-- 28 dots rendered by JS -->
             </div>
 
-            <p class="a-explain">Nao e fraqueza, nao e exagero. <strong>E previsivel.</strong> Nesses dias, tudo que voce ve nas redes pesa mais — seu corpo, as comparacoes, a ansiedade. E isso tem um porque.</p>
+            <p class="a-explain">Nao e fraqueza, nao e exagero. <strong>E previsivel.</strong> Nesses dias, tudo que voce ve nas redes pesa mais, seu corpo, as comparacoes, a ansiedade. E isso tem um porque.</p>
           </div>
           <button class="a-cta" id="a-cta">E da pra fazer algo?</button>
         </div>
@@ -405,7 +406,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
               <!-- 28 dots rendered by JS -->
             </div>
 
-            <p class="ios-explain">Nao e fraqueza, nao e exagero. <strong>E previsivel.</strong> Nesses dias, tudo que voce ve nas redes pesa mais — seu corpo, as comparacoes, a ansiedade. E isso tem um porque.</p>
+            <p class="ios-explain">Nao e fraqueza, nao e exagero. <strong>E previsivel.</strong> Nesses dias, tudo que voce ve nas redes pesa mais, seu corpo, as comparacoes, a ansiedade. E isso tem um porque.</p>
           </div>
           <button class="ios-cta" id="ios-cta">E da pra fazer algo?</button>
         </div>
@@ -419,10 +420,10 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · M3 Expressive</h4>
     <ul>
-      <li><strong>Tela de puro reconhecimento.</strong> Nenhum dado coletado. Nenhuma interacao. So a planta nomeando algo que a usuaria sente mas nunca viu explicado assim. O "aha moment" precisa de espaco proprio — por isso virou tela separada do opt-in.</li>
+      <li><strong>Tela de puro reconhecimento.</strong> Nenhum dado coletado. Nenhuma interacao. So a planta nomeando algo que a usuaria sente mas nunca viu explicado assim. O "aha moment" precisa de espaco proprio, por isso virou tela separada do opt-in.</li>
       <li><strong>28 dots visuais.</strong> Dias 1-20 em cinza muted. Dias 21-28 em blush (<code>#F4A7B9</code>) com glow pulsante. Comunicam "tem uma janela, todo mes" em 2 segundos, sem nenhuma palavra clinica. Sem rotulo "fase lutea". Sem calendario.</li>
-      <li><strong>Dots aparecem em sequencia</strong> — cada dot anima com 40ms de delay, criando efeito de "preenchimento" do ciclo. Os ultimos 8 acendem com glow. Efeito emocional: a usuaria ve o padrao antes de ler.</li>
-      <li><strong>CTA "E da pra fazer algo?"</strong> — a usuaria entendeu o problema, agora quer solucao. Transicao natural para O14B onde a planta oferece: "Posso ficar mais perto nesses dias?"</li>
+      <li><strong>Dots aparecem em sequencia</strong>, cada dot anima com 40ms de delay, criando efeito de "preenchimento" do ciclo. Os ultimos 8 acendem com glow. Efeito emocional: a usuaria ve o padrao antes de ler.</li>
+      <li><strong>CTA "E da pra fazer algo?"</strong>, a usuaria entendeu o problema, agora quer solucao. Transicao natural para O14B onde a planta oferece: "Posso ficar mais perto nesses dias?"</li>
       <li>Connector per arch: Lavanda <em>"Tem algo sobre voce que aprendi."</em> · Girassol <em>"Uma coisa que notei sobre voce."</em> · Cacto <em>"Preciso te contar uma coisa."</em></li>
     </ul>
   </div>
@@ -432,8 +433,8 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
       <li><strong>Mesmo principio:</strong> revelacao emocional pura. Zero coleta de dados. A tela existe para criar o "aha" que torna o opt-in da proxima tela (O14B) significativo em vez de burocratico.</li>
       <li>Dots container: <code>.regularMaterial</code> com <code>backdrop-filter: blur(20px) saturate(150%)</code>. Dots lit com <code>dotGlow</code> suave (blur 0→1px, scale 1→1.15). Mais contido que Android.</li>
       <li>Labels abaixo dos dots: "dia 1" e "essa semana" em <code>#C4B5B7</code>. Label dos lit days em <code>--brand-real</code>. Minimo de texto.</li>
-      <li>CTA Liquid Glass: <code>rgba(plant-color, 0.82)</code> + specular. Auto-reveal aos 2.30s — tela nao exige nenhuma acao da usuaria para progredir.</li>
-      <li>Refs: <strong>Stardust</strong> (ciclo sem linguagem medica), <strong>Flo</strong> (ciclo visual mas com excesso de UI clinica — Brota faz o oposto).</li>
+      <li>CTA Liquid Glass: <code>rgba(plant-color, 0.82)</code> + specular. Auto-reveal aos 2.30s, tela nao exige nenhuma acao da usuaria para progredir.</li>
+      <li>Refs: <strong>Stardust</strong> (ciclo sem linguagem medica), <strong>Flo</strong> (ciclo visual mas com excesso de UI clinica, Brota faz o oposto).</li>
     </ul>
   </div>
 </section>
