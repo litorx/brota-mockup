@@ -35,11 +35,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .state-btn.active{background:var(--brand-real);color:white;border-color:var(--brand-real);}
 .state-btn:hover:not(.active){border-color:var(--brand-real);color:var(--brand-real-deep);}
 .state-sep{width:1px;height:20px;background:var(--border);}
-.sub-controls{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:36px;display:none;}
-.sub-controls.visible{display:flex;}
-.sub-btn{padding:5px 14px;border:1.5px solid var(--border);border-radius:999px;background:transparent;color:var(--text3);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.25s;}
-.sub-btn.active{background:var(--plant-color);color:white;border-color:var(--plant-color);}
-.sub-btn:hover:not(.active){border-color:var(--plant-color);color:var(--plant-color);}
 .stage{display:flex;gap:56px;justify-content:center;align-items:flex-start;}
 
 /* ── PHONE ── */
@@ -279,33 +274,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .notif-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
 .notif-body{font-size:12px;color:var(--text2);line-height:1.4;}
 
-/* ── M7 CENTER OVERLAY ── */
-.center-overlay{
-  position:absolute;inset:0;z-index:25;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;
-  transition:opacity 0.35s ease;
-}
-.modal-active .center-overlay.active-modal{opacity:1;pointer-events:auto;}
-.overlay-card{
-  width:240px;padding:28px 24px;
-  border-radius:28px;text-align:center;
-}
-.a-screen .overlay-card{
-  background:#FFFFFF;
-  box-shadow:0 16px 48px rgba(61,44,46,0.18);
-}
-.ios-screen .overlay-card{
-  background:rgba(255,248,242,0.92);
-  backdrop-filter:blur(40px) saturate(180%);
-  -webkit-backdrop-filter:blur(40px) saturate(180%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.4),0 16px 48px rgba(61,44,46,0.14);
-}
-.overlay-plant{margin:0 auto 14px;width:80px;height:80px;display:flex;align-items:center;justify-content:center;}
-.overlay-plant svg{width:70px;height:70px;filter:drop-shadow(0 4px 12px rgba(var(--plant-color-rgb),0.25));}
-.overlay-text{font-size:16px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:6px;}
-.overlay-dismiss{font-size:11px;color:var(--text3);margin-top:8px;}
-
 /* ── PLANT SVGs ── */
 .plant-svg-lavanda{--leaf:#C4B0E0;--leaf2:#A892CC;--pot:#E8DDF5;--soil:#B8A3D6;}
 .plant-svg-understand{--leaf:#C4B0E0;--leaf2:#D4C6E8;--pot:#E8DDF5;--soil:#B8A3D6;}
@@ -407,7 +375,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <div class="studio-header">
     <div class="brand-eyebrow">Brota &middot; Modals &amp; Confirmacoes &middot; M1-M12</div>
     <div class="brand-title">Modais, popups e confirmacoes</div>
-    <div class="brand-sub">Todo action destrutiva pede confirmacao. Todo dialog fala com a voz da planta. O M10 existe porque apagar o ciclo, cancelar a assinatura e deletar a conta sao tres coisas diferentes, confundir as tres e uma das reclamacoes que derrubam a nota das concorrentes. M11 e M12 sao duas das quatro coisas que a diretriz 1.2 da App Store exige de conteudo de usuaria, denuncia e bloqueio; o filtro e o <code>ContentModerationPolicy</code> e o contato publicado e a A21.</div>
+    <div class="brand-sub">Todo action destrutiva pede confirmacao. Todo dialog fala com a voz da planta. O M10 existe porque apagar o ciclo, cancelar a assinatura e deletar a conta sao tres coisas diferentes, confundir as tres e uma das reclamacoes que derrubam a nota das concorrentes. M11 e M12 sao duas das quatro coisas que a diretriz 1.2 da App Store exige de conteudo de usuaria, denuncia e bloqueio; o filtro e o <code>ContentModerationPolicy</code> e o contato publicado e a A21. <b>O M7 foi aposentado.</b> Ele mostrava a resposta da planta ao check-in de humor numa cobertura central, e essa resposta j&aacute; acontece dentro da <b>A1</b>, com 25 falas, cinco por planta, na voz de cada arqu&eacute;tipo. A do M7 tinha cinco frases iguais pra qualquer planta, chamava a pessoa de &ldquo;Lina&rdquo; (nome fora do elenco) e usava outra lista de humor (<code>happy/sad/anxious/angry/neutral</code>) em vez da congelada (<code>pesada/meh/ok/bem/otima</code>). Fora o toque a mais, todo dia, no gesto mais frequente do app. <b>A numera&ccedil;&atilde;o fica com buraco de prop&oacute;sito</b>: M8 a M12 s&atilde;o citados em <code>data-destino</code> de outras telas e no doc 1, e identificador renomeado &eacute; identificador quebrado.</div>
   </div>
 
   <!-- MODAL TOGGLES -->
@@ -419,8 +387,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
     <button class="state-btn" data-modal="m5">M5 Trabalho</button>
     <button class="state-btn" data-modal="m6">M6 Pausar</button>
     <div class="state-sep"></div>
-    <button class="state-btn" data-modal="m7">M7 Mood</button>
-    <div class="state-sep"></div>
     <button class="state-btn" data-modal="m8">M8 Tom</button>
     <button class="state-btn" data-modal="m9">M9 Silencio</button>
     <button class="state-btn" data-modal="m10">M10 Apagar ciclo</button>
@@ -428,14 +394,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
     <button class="state-btn" data-modal="m12">M12 Sumir</button>
   </div>
 
-  <!-- M7 MOOD SUB-TOGGLES -->
-  <div class="sub-controls" id="mood-sub">
-    <button class="sub-btn active" data-mood="happy">Feliz</button>
-    <button class="sub-btn" data-mood="sad">Triste</button>
-    <button class="sub-btn" data-mood="anxious">Ansiosa</button>
-    <button class="sub-btn" data-mood="angry">Raiva</button>
-    <button class="sub-btn" data-mood="neutral">Neutra</button>
-  </div>
 
   <!-- DUAL PHONES -->
   <div class="stage">
@@ -682,25 +640,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
           </div>
 
-          <!-- ── M7: Mood Response (center overlay) ── -->
-          <div class="center-overlay" data-sheet="m7">
-            <div class="overlay-card">
-              <div class="overlay-plant bounce-anim" id="a-m7-plant">
-                <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="24" y="65" width="32" height="32" rx="6" fill="#E8DDF5"/>
-                  <rect x="27" y="68" width="26" height="8" rx="3" fill="#B8A3D6" opacity="0.5"/>
-                  <path d="M40 65 C40 35,22 28,18 44" stroke="#C4B0E0" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-                  <path d="M40 58 C40 30,58 22,62 38" stroke="#A892CC" stroke-width="4" stroke-linecap="round" fill="none"/>
-                  <circle cx="18" cy="42" r="7" fill="#C4B0E0" opacity="0.5"/>
-                  <circle cx="62" cy="36" r="6" fill="#A892CC" opacity="0.4"/>
-                </svg>
-              </div>
-              <div class="overlay-text" id="a-m7-text">Que bom, Lina!</div>
-              <div class="overlay-dismiss">toque para fechar</div>
-            </div>
-          </div>
-
-        </div>
+                  </div>
       </div>
     </div>
 
@@ -948,25 +888,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
           </div>
 
-          <!-- ── M7: Mood Response (center overlay) ── -->
-          <div class="center-overlay" data-sheet="m7">
-            <div class="overlay-card">
-              <div class="overlay-plant bounce-anim" id="ios-m7-plant">
-                <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="24" y="65" width="32" height="32" rx="6" fill="#E8DDF5"/>
-                  <rect x="27" y="68" width="26" height="8" rx="3" fill="#B8A3D6" opacity="0.5"/>
-                  <path d="M40 65 C40 35,22 28,18 44" stroke="#C4B0E0" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-                  <path d="M40 58 C40 30,58 22,62 38" stroke="#A892CC" stroke-width="4" stroke-linecap="round" fill="none"/>
-                  <circle cx="18" cy="42" r="7" fill="#C4B0E0" opacity="0.5"/>
-                  <circle cx="62" cy="36" r="6" fill="#A892CC" opacity="0.4"/>
-                </svg>
-              </div>
-              <div class="overlay-text" id="ios-m7-text">Que bom, Lina!</div>
-              <div class="overlay-dismiss">toque para fechar</div>
-            </div>
-          </div>
-
-        </div>
+                  </div>
       </div>
     </div>
 
@@ -978,30 +900,17 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
   // ── Modal Toggle Logic ──
   const modalBtns = document.querySelectorAll('.state-btn[data-modal]');
-  const moodSub = document.getElementById('mood-sub');
-  const moodBtns = document.querySelectorAll('.sub-btn[data-mood]');
-
-  const moodData = {
-    happy:  { text: 'Que bom, Lina!', anim: 'bounce-anim' },
-    sad:    { text: 'To aqui com voce.', anim: 'lean-anim' },
-    anxious:{ text: 'Respira comigo.', anim: 'breathe-anim' },
-    angry:  { text: 'Faz sentido sentir isso.', anim: 'space-anim' },
-    neutral:{ text: 'Dia tranquilo. Tudo bem.', anim: 'wave-anim' }
-  };
 
   function setActiveModal(modalId) {
     // Update toggle buttons
     modalBtns.forEach(b => b.classList.toggle('active', b.dataset.modal === modalId));
 
-    // Show/hide mood sub-controls
-    moodSub.classList.toggle('visible', modalId === 'm7');
-
     // Update both phones
     ['phone-android', 'phone-ios'].forEach(phoneId => {
       const phone = document.getElementById(phoneId);
 
-      // Hide all sheets and overlays
-      phone.querySelectorAll('.bottom-sheet.center-overlay').forEach(el => {
+      // Hide all sheets
+      phone.querySelectorAll('.bottom-sheet').forEach(el => {
         el.classList.remove('active-modal');
       });
 
@@ -1011,40 +920,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         target.classList.add('active-modal');
       }
     });
-
-    // If M7, apply current mood
-    if (modalId === 'm7') {
-      const activeMood = document.querySelector('.sub-btn.active');
-      if (activeMood) setMood(activeMood.dataset.mood);
-    }
   }
 
-  function setMood(mood) {
-    const data = moodData[mood];
-    if (!data) return;
-
-    moodBtns.forEach(b => b.classList.toggle('active', b.dataset.mood === mood));
-
-    // Update both phones
-    ['a', 'ios'].forEach(prefix => {
-      const plantEl = document.getElementById(prefix + '-m7-plant');
-      const textEl = document.getElementById(prefix + '-m7-text');
-
-      if (plantEl) {
-        plantEl.className = 'overlay-plant ' + data.anim;
-      }
-      if (textEl) {
-        textEl.textContent = data.text;
-      }
-    });
-  }
 
   modalBtns.forEach(btn => {
     btn.addEventListener('click', () => setActiveModal(btn.dataset.modal));
-  });
-
-  moodBtns.forEach(btn => {
-    btn.addEventListener('click', () => setMood(btn.dataset.mood));
   });
 
   // ── Reason pill toggle (M3) ──
