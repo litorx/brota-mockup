@@ -113,7 +113,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .ios-screen .blob2{opacity:0.05;filter:blur(84px);}
 
 /* ── TRIAL BANNER ── */
-.trial-banner{
+.trial-banner{cursor:pointer;
   position:relative;z-index:5;margin-bottom:14px;
 }
 /* Android: M3 card */
@@ -451,7 +451,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
         <div class="scroll-body" id="abody">
           <!-- Trial Banner -->
-          <div class="trial-banner anim-el" style="animation-delay:0.10s">
+          <div class="trial-banner anim-el" style="animation-delay:0.10s" data-destino="A15-Assinatura" onclick="this.style.opacity='.6';setTimeout(()=>this.style.opacity='',180)">
             <div class="trial-banner-inner">
               <div class="trial-banner-row">
                 <div class="trial-banner-text" id="abanner-text">Dia 5 de 14 do seu per&iacute;odo gr&aacute;tis.</div>
@@ -565,7 +565,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
         <div class="scroll-body" id="iosbody">
           <!-- Trial Banner iOS capsule -->
-          <div class="trial-banner anim-el" style="animation-delay:0.10s">
+          <div class="trial-banner anim-el" style="animation-delay:0.10s" data-destino="A15-Assinatura" onclick="this.style.opacity='.6';setTimeout(()=>this.style.opacity='',180)">
             <div class="trial-banner-inner">
               <div class="ios-trial-dot"></div>
               <div class="trial-banner-text" id="iosbanner-text">Dia 5 de 14, per&iacute;odo gr&aacute;tis</div>

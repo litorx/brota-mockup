@@ -382,6 +382,24 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .stat-item.full .stat-num{color:var(--plant-color);}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+/* ── DISPENSAR ───────────────────────────────────────────────────────── */
+/* Cobertura de tela inteira sem dispensar prende a pessoa na comemoracao.
+   Leva pro mesmo lugar do botao: e atalho, nao recusa. */
+.cel-fechar{
+  position:absolute;top:52px;right:14px;z-index:30;
+  width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0;
+  background:rgba(61,44,46,0.06);color:var(--text2);
+  transition:background .2s,opacity .2s;
+}
+.cel-fechar:hover{background:rgba(61,44,46,0.12);}
+.cel-fechar:active{opacity:.5;}
+.cel-fechar svg{width:17px;height:17px;}
+.ios-screen .cel-fechar{
+  background:rgba(255,255,255,0.55);
+  backdrop-filter:blur(14px) saturate(150%);
+}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -502,6 +520,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           </div>
 
           <!-- CTA -->
+        <button class="cel-fechar" id="a-fechar" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
           <button class="cel-cta anim-el" style="animation-delay:0.90s" id="a-cta">Continuar</button>
         </div>
       </div>
@@ -592,6 +613,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           </div>
 
           <!-- CTA -->
+        <button class="cel-fechar" id="ios-fechar" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
           <button class="cel-cta anim-el" style="animation-delay:0.90s" id="ios-cta">Continuar</button>
         </div>
       </div>
@@ -616,6 +640,7 @@ var plants = {
 
 var celebrations = {
   c1:{
+    volta: 'A1-Home',
     connector: function(s){ return 'Voc\u00ea deu o primeiro passo, '+s.name+'.'; },
     h1: 'Primeiro check-in!',
     sub: function(s){ return 'Agora sua <span class="pac">'+s.plant+'</span> come\u00e7a a te conhecer.'; },
@@ -635,6 +660,7 @@ var celebrations = {
     }
   },
   c2:{
+    volta: 'A1-Home',
     connector: function(s){ return 'Voc\u00ea cuidou de si mesma, '+s.name+'.'; },
     h1: 'Primeira prote\u00e7\u00e3o!',
     sub: function(s){ return 'Voc\u00ea cuidou da sua <span class="pac">'+s.plant+'</span> pela primeira vez.'; },
@@ -654,6 +680,7 @@ var celebrations = {
     }
   },
   c3:{
+    volta: 'A1-Home',
     connector: function(s){ return 'Uma semana inteira com voc\u00ea, '+s.name+'.'; },
     h1: '7 dias seguidos!',
     sub: function(s){ return 'Uma semana inteira cuidando de voc\u00ea.'; },
@@ -673,6 +700,7 @@ var celebrations = {
     }
   },
   c4:{
+    volta: 'A1-Home',
     connector: function(s){ return 'Cada cuidado faz diferen\u00e7a, '+s.name+'.'; },
     h1: function(s){ return 'Sua '+s.plant+' cresceu!'; },
     sub: function(s){ return 'Cada cuidado faz ela crescer.'; },
@@ -692,6 +720,7 @@ var celebrations = {
     }
   },
   c5:{
+    volta: 'A8-Insights',
     connector: function(s){ return 'Voc\u00ea foi constante esse m\u00eas, '+s.name+'.'; },
     h1: 'Seu m\u00eas em resumo',
     sub: function(s){ return 'Voc\u00ea cuidou de voc\u00ea 28 dias esse m\u00eas.'; },
@@ -711,6 +740,7 @@ var celebrations = {
     }
   },
   c6:{
+    volta: 'A20-Canteiro',
     connector: function(s){ return 'Voc\u00ea plantou algo bonito, '+s.name+'.'; },
     h1: 'Sua primeira semente no Jardim!',
     sub: function(s){ return 'Voc\u00ea compartilhou com a comunidade.\u00a0Anonimamente, com coragem.'; },
@@ -879,7 +909,7 @@ function applyCelebration(){
 
     // Labels
     document.getElementById(prefix+'plabel').textContent = s.plant;
-    document.getElementById(prefix+'pmsg-name').textContent = s.plant+':';
+    document.getElementById(prefix+'-pmsg-name').textContent = s.plant+':';
 
     // Glow
     var wrap = document.getElementById(prefix+'-pcircle-wrap');
@@ -905,7 +935,12 @@ function applyCelebration(){
     document.getElementById(prefix+'-badge').innerHTML = cel.badge;
 
     // CTA text
-    document.getElementById(prefix+'-cta').textContent = cel.ctaText;
+    var cta = document.getElementById(prefix+'-cta');
+    cta.textContent = cel.ctaText;
+    /* o destino fica no markup pra auditoria enxergar sem abrir o JS */
+    cta.setAttribute('data-destino', cel.volta);
+    var fechar = document.getElementById(prefix+'-fechar');
+    if(fechar) fechar.setAttribute('data-destino', cel.volta);
 
     // Streak (C3)
     document.getElementById(prefix+'-streak').style.display = cel.showStreak ? 'flex' : 'none';

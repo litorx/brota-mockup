@@ -457,6 +457,18 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   border:1px solid rgba(255,255,255,0.30);
   box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
+
+/* ── PAUSAR ──────────────────────────────────────────────────────────── */
+/* Discreto de proposito: existe pra quem precisa, nao compete com o "Fiz!". */
+.pausar-link{
+  display:block;width:100%;margin-top:10px;padding:8px;
+  background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:12.5px;font-weight:600;
+  color:var(--text3);text-align:center;
+  transition:color .2s;
+}
+.pausar-link:hover{color:var(--text2);}
+.pausar-link:active{opacity:.55;}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -546,6 +558,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               <span>Fiz!</span>
               <span class="task-check-icon">&#10003;</span>
             </button>
+            <button class="pausar-link" data-destino="M6-PausarFeedCleanse" onclick="this.style.opacity='.5';setTimeout(()=>this.style.opacity='',200)">Hoje n&atilde;o d&aacute;. Pausar por enquanto</button>
           </div>
 
           <!-- Plant reaction (hidden until CTA tapped) -->
@@ -630,6 +643,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               <span>Fiz!</span>
               <span class="task-check-icon">&#10003;</span>
             </button>
+            <button class="pausar-link" data-destino="M6-PausarFeedCleanse" onclick="this.style.opacity='.5';setTimeout(()=>this.style.opacity='',200)">Hoje n&atilde;o d&aacute;. Pausar por enquanto</button>
           </div>
 
           <!-- Plant reaction (hidden until CTA tapped) -->

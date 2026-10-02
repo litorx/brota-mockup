@@ -328,6 +328,28 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .hist-vazio-d{font-size:12.5px;color:var(--text2);line-height:1.6;margin-top:8px;max-width:258px;margin-left:auto;margin-right:auto;}
 .hist-vazio-d b{color:var(--text);font-weight:700;}
 .state-sep{width:1px;height:20px;background:var(--border);}
+
+/* ── VOLTAR ──────────────────────────────────────────────────────────── */
+.back-row{
+  display:flex;align-items:center;gap:6px;cursor:pointer;
+  align-self:flex-start;margin-bottom:10px;padding:4px 6px 4px 0;
+  transition:opacity .2s;
+}
+.back-row:active{opacity:.55;}
+.back-row .rot{font-size:12.5px;font-weight:600;line-height:1;}
+.back-row svg{display:block;}
+/* Material: botao redondo com a seta, igual ao da A4 */
+.a-screen .back-row{color:var(--text2);}
+.a-screen .back-row .ico-and{
+  width:32px;height:32px;border-radius:50%;padding:7px;
+  background:var(--card);border:1px solid var(--border);
+}
+.a-screen .back-row .ico-ios{display:none;}
+/* HIG: chevron mais o nome de onde veio, na cor de acento */
+.ios-screen .back-row{color:var(--plant-color);transition:color .7s;}
+.ios-screen .back-row .ico-and{display:none;}
+.ios-screen .back-row .ico-ios{width:17px;height:17px;}
+.a-screen .back-row .rot{color:var(--text3);}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -375,6 +397,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         <div class="scroll-body" id="abody">
 
           <!-- Top header: small plant + title -->
+          <div class="back-row anim-el" style="animation-delay:0.10s" data-destino="A4-InnerVoice" onclick="this.style.opacity='.5';setTimeout(()=>this.style.opacity='',180)">
+            <svg class="ico-and" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg class="ico-ios" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <span class="rot">Inner Voice</span>
+          </div>
           <div class="top-header anim-el" style="animation-delay:0.15s">
             <div class="mini-plant-wrap">
               <span class="mini-pemoji" id="amini-pemoji"></span>
@@ -492,6 +519,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         <div class="scroll-body" id="iosbody">
 
           <!-- Top header -->
+          <div class="back-row anim-el" style="animation-delay:0.10s" data-destino="A4-InnerVoice" onclick="this.style.opacity='.5';setTimeout(()=>this.style.opacity='',180)">
+            <svg class="ico-and" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg class="ico-ios" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <span class="rot">Inner Voice</span>
+          </div>
           <div class="top-header anim-el" style="animation-delay:0.15s">
             <div class="mini-plant-wrap">
               <span class="mini-pemoji" id="iosmini-pemoji"></span>

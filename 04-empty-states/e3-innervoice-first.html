@@ -410,6 +410,28 @@ body.ja-viu .iv-aviso{display:none;}
 .iv-aviso{margin-top:10px;padding:10px 12px;}
 .prompt-pill{padding:9px 12px 9px 13px;}
 .prompts-area{padding-bottom:62px;}
+
+/* ── VOLTAR ──────────────────────────────────────────────────────────── */
+/* Fica absoluto pra nao empurrar o titulo, que continua centralizado. */
+.topbar-back{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;gap:2px;cursor:pointer;
+  padding:4px 4px 4px 2px;border-radius:10px;
+  transition:opacity .2s,background .2s;
+}
+.topbar-back:active{opacity:.55;}
+.topbar-back .rot{font-size:13px;font-weight:600;line-height:1;}
+.topbar-back svg{display:block;}
+/* Material: seta sozinha, cor de texto */
+.a-screen .topbar-back{color:var(--text2);}
+.a-screen .topbar-back:hover{background:var(--bg2);}
+.a-screen .topbar-back .ico-ios,
+.a-screen .topbar-back .rot{display:none;}
+.a-screen .topbar-back .ico-and{width:21px;height:21px;}
+/* HIG: chevron mais o nome de onde veio, na cor de acento */
+.ios-screen .topbar-back{color:var(--plant-color);transition:color .7s;}
+.ios-screen .topbar-back .ico-and{display:none;}
+.ios-screen .topbar-back .ico-ios{width:17px;height:17px;}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -457,6 +479,11 @@ body.ja-viu .iv-aviso{display:none;}
 
           <!-- Top bar -->
           <div class="chat-topbar anim-el" style="animation-delay:0.10s">
+            <div class="topbar-back" data-destino="A9-Grow" onclick="this.style.transform='translateY(-50%) scale(0.88)';setTimeout(()=>this.style.transform='translateY(-50%)',180)">
+              <svg class="ico-and" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              <svg class="ico-ios" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              <span class="rot">Grow</span>
+            </div>
             <div class="topbar-center">
               <div class="topbar-title">Inner Voice</div>
               <div class="topbar-sub" id="atopbar-sub">Exerc&iacute;cios guiados</div>
@@ -560,6 +587,11 @@ body.ja-viu .iv-aviso{display:none;}
 
           <!-- Top bar -->
           <div class="chat-topbar anim-el" style="animation-delay:0.10s">
+            <div class="topbar-back" data-destino="A9-Grow" onclick="this.style.transform='translateY(-50%) scale(0.88)';setTimeout(()=>this.style.transform='translateY(-50%)',180)">
+              <svg class="ico-and" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              <svg class="ico-ios" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              <span class="rot">Grow</span>
+            </div>
             <div class="topbar-center">
               <div class="topbar-title">Inner Voice</div>
               <div class="topbar-sub" id="iostopbar-sub">Exerc&iacute;cios guiados</div>

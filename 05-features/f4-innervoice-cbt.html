@@ -399,6 +399,36 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   border:1px solid rgba(255,255,255,0.30);
   box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
+
+/* ── BARRA DO EXERCICIO ──────────────────────────────────────────────── */
+/* Fluxo em etapas nao e aba: a barra de cima diz onde ela esta e as duas
+   saidas, e o rodape de abas sumiu. */
+.ex-bar{
+  position:absolute;left:0;right:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 10px;
+}
+.a-screen .ex-bar{top:44px;background:var(--bg);border-bottom:1px solid var(--border);}
+.ios-screen .ex-bar{
+  top:50px;background:rgba(255,248,242,0.80);
+  backdrop-filter:blur(20px) saturate(160%);
+  border-bottom:1px solid rgba(255,255,255,0.30);
+}
+.ex-bar-btn{
+  width:34px;height:34px;border-radius:50%;border:none;background:transparent;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  color:var(--text2);padding:0;transition:opacity .2s,background .2s;
+}
+.ex-bar-btn svg{width:19px;height:19px;}
+.ex-bar-btn:active{opacity:.5;}
+.a-screen .ex-bar-btn:hover{background:var(--bg2);}
+.ex-bar-btn[disabled]{opacity:.22;cursor:default;}
+.ex-passo{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.01em;}
+.ios-screen .ex-passo{color:var(--text2);}
+
+/* o corpo desce pra caber a barra, e sobe porque nao ha mais rodape de abas */
+.a-screen .scroll-body{top:82px;padding-bottom:36px;}
+.ios-screen .scroll-body{padding-top:98px;padding-bottom:36px;}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -449,6 +479,16 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         <div class="blob blob2"></div>
         <div class="blob blob3"></div>
 
+        <div class="ex-bar">
+          <button class="ex-bar-btn" id="avoltar" onclick="voltarPasso()" aria-label="Voltar um passo" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="ex-passo" id="apasso">Passo 1 de 5</span>
+          <button class="ex-bar-btn" data-destino="A4-InnerVoice" onclick="this.style.transform='scale(0.88)';setTimeout(()=>this.style.transform='',180)" aria-label="Sair do exerc&iacute;cio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
         <div class="scroll-body" id="abody">
           <!-- Plant mini header -->
           <div class="plant-mini-header anim-el" style="animation-delay:0.10s">
@@ -485,13 +525,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
         <div class="fab-pause" data-destino="A7-Pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="respirar"></i></div>
 
-        <div class="bottom-nav">
-          <div class="nav-item"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
-          <div class="nav-item active"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
-        </div>
       </div>
     </div>
   </div>
@@ -510,6 +543,16 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
         <div class="blob blob1"></div>
         <div class="blob blob2"></div>
         <div class="blob blob3"></div>
+
+        <div class="ex-bar">
+          <button class="ex-bar-btn" id="iosvoltar" onclick="voltarPasso()" aria-label="Voltar um passo" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="ex-passo" id="iospasso">Passo 1 de 5</span>
+          <button class="ex-bar-btn" data-destino="A4-InnerVoice" onclick="this.style.transform='scale(0.88)';setTimeout(()=>this.style.transform='',180)" aria-label="Sair do exerc&iacute;cio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
 
         <div class="scroll-body" id="iosbody">
           <!-- Plant mini header -->
@@ -547,13 +590,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
         <div class="fab-pause" data-destino="A7-Pause" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)"><i data-icon="respirar"></i></div>
 
-        <div class="bottom-nav">
-          <div class="nav-item"><span class="nav-icon"><i data-icon="home"></i></span><span class="nav-label">Home</span></div>
-          <div class="nav-item active"><span class="nav-icon"><i data-icon="grow"></i></span><span class="nav-label">Grow</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="jardim"></i></span><span class="nav-label">Jardim</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="moon"></i></span><span class="nav-label">Ciclo</span></div>
-          <div class="nav-item"><span class="nav-icon"><i data-icon="person"></i></span><span class="nav-label">Perfil</span></div>
-        </div>
       </div>
     </div>
   </div>
@@ -711,6 +747,7 @@ function renderCards(step){
   ic.classList.remove('reinit'); void ic.offsetWidth;
   updateDots('a', step);
   updateDots('ios', step);
+  pintarBarra(step);
 
   // Update connector
   var conn = connectors[step-1];
@@ -728,6 +765,24 @@ function advanceStep(){
     setStepBtns(currentStep);
     renderCards(currentStep);
   }
+}
+
+/* No passo 1 nao ha passo anterior: o botao fica desabilitado em vez de
+   existir e nao fazer nada. */
+function voltarPasso(){
+  if(currentStep <= 1) return;
+  currentStep--;
+  setStepBtns(currentStep);
+  renderCards(currentStep);
+}
+
+function pintarBarra(step){
+  ['a','ios'].forEach(function(p){
+    var r = document.getElementById(p+'passo');
+    if(r) r.textContent = 'Passo ' + step + ' de 5';
+    var b = document.getElementById(p+'voltar');
+    if(b) b.disabled = (step <= 1);
+  });
 }
 
 function finishExercise(){

@@ -340,6 +340,31 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   border:1px solid rgba(255,255,255,0.30);
   box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
+
+/* ── TODOS OS EXERCICIOS ─────────────────────────────────────────────── */
+/* A A9 ganhou a lista completa depois; sem ela aqui, quem chega no primeiro
+   dia ve menos caminho do que quem chega no segundo. */
+.lista-toda{
+  display:flex;align-items:center;gap:11px;cursor:pointer;
+  margin-top:12px;padding:13px 14px;border-radius:16px;
+  background:var(--card);border:1px solid var(--border);
+  transition:transform .2s,border-color .2s;
+}
+.lista-toda:hover{transform:translateY(-1px);border-color:rgba(var(--plant-color-rgb),0.4);}
+.lista-toda:active{opacity:.6;}
+.ios-screen .lista-toda{
+  background:rgba(255,255,255,0.62);
+  backdrop-filter:blur(14px) saturate(150%);
+  border:1px solid rgba(255,255,255,0.5);
+}
+.lista-toda-ico{
+  width:34px;height:34px;border-radius:11px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  background:rgba(var(--plant-color-rgb),0.10);color:var(--plant-color);
+}
+.lista-toda-t{font-size:13.5px;font-weight:700;color:var(--text);line-height:1.25;}
+.lista-toda-d{font-size:11.5px;color:var(--text2);line-height:1.35;margin-top:1px;}
+.lista-toda-seta{margin-left:auto;color:var(--text3);font-size:17px;line-height:1;}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -405,7 +430,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="feature-cards anim-el" style="animation-delay:0.66s">
 
             <!-- Card 1: Feed Cleanse — PRIMARY -->
-            <div class="feature-card primary">
+            <div class="feature-card primary" data-destino="F1-FeedCleanseDay">
               <div class="fc-badge primary-badge"><span class="fc-badge-dot"></span> Primeira miss&atilde;o</div>
               <div class="fc-title">Feed Cleanse de 7 dias</div>
               <div class="fc-desc">Limpe o que te faz comparar. Uma rede por vez.</div>
@@ -417,7 +442,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
 
             <!-- Card 2: Inner Voice — SECONDARY -->
-            <div class="feature-card secondary" style="position:relative;">
+            <div class="feature-card secondary" style="position:relative;" data-destino="A4-InnerVoice">
               <div class="fc-badge plant-badge" id="abadge2"><span class="fc-badge-dot"></span> Novo</div>
               <div class="fc-body">
                 <div class="fc-title">Di&aacute;rio com sua planta</div>
@@ -427,13 +452,22 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
 
             <!-- Card 3: Daily Bloom — SECONDARY -->
-            <div class="feature-card secondary" style="position:relative;">
+            <div class="feature-card secondary" style="position:relative;" data-destino="A1-Home">
               <div class="fc-badge plant-badge" id="abadge3"><span class="fc-badge-dot"></span> Novo</div>
               <div class="fc-body">
                 <div class="fc-title">Micro-exerc&iacute;cio di&aacute;rio</div>
                 <div class="fc-desc" style="margin-bottom:0;">Uma coisa por dia. S&oacute; uma.</div>
               </div>
               <div class="fc-arrow">&#8594;</div>
+            </div>
+
+            <div class="lista-toda" data-destino="A16-Biblioteca">
+              <div class="lista-toda-ico"><i data-icon="book"></i></div>
+              <div>
+                <div class="lista-toda-t">Todos os exerc&iacute;cios</div>
+                <div class="lista-toda-d">Respira&ccedil;&atilde;o, aten&ccedil;&atilde;o no corpo, gratid&atilde;o e mais.</div>
+              </div>
+              <div class="lista-toda-seta">&rsaquo;</div>
             </div>
 
           </div>
@@ -495,7 +529,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="feature-cards anim-el" style="animation-delay:0.66s">
 
             <!-- Card 1: Feed Cleanse — PRIMARY -->
-            <div class="feature-card primary">
+            <div class="feature-card primary" data-destino="F1-FeedCleanseDay">
               <div class="fc-badge primary-badge"><span class="fc-badge-dot"></span> Primeira miss&atilde;o</div>
               <div class="fc-title">Feed Cleanse de 7 dias</div>
               <div class="fc-desc">Limpe o que te faz comparar. Uma rede por vez.</div>
@@ -507,7 +541,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
 
             <!-- Card 2: Inner Voice — SECONDARY -->
-            <div class="feature-card secondary" style="position:relative;">
+            <div class="feature-card secondary" style="position:relative;" data-destino="A4-InnerVoice">
               <div class="fc-badge plant-badge" id="iosbadge2"><span class="fc-badge-dot"></span> Novo</div>
               <div class="fc-body">
                 <div class="fc-title">Di&aacute;rio com sua planta</div>
@@ -517,13 +551,22 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
 
             <!-- Card 3: Daily Bloom — SECONDARY -->
-            <div class="feature-card secondary" style="position:relative;">
+            <div class="feature-card secondary" style="position:relative;" data-destino="A1-Home">
               <div class="fc-badge plant-badge" id="iosbadge3"><span class="fc-badge-dot"></span> Novo</div>
               <div class="fc-body">
                 <div class="fc-title">Micro-exerc&iacute;cio di&aacute;rio</div>
                 <div class="fc-desc" style="margin-bottom:0;">Uma coisa por dia. S&oacute; uma.</div>
               </div>
               <div class="fc-arrow">&#8594;</div>
+            </div>
+
+            <div class="lista-toda" data-destino="A16-Biblioteca">
+              <div class="lista-toda-ico"><i data-icon="book"></i></div>
+              <div>
+                <div class="lista-toda-t">Todos os exerc&iacute;cios</div>
+                <div class="lista-toda-d">Respira&ccedil;&atilde;o, aten&ccedil;&atilde;o no corpo, gratid&atilde;o e mais.</div>
+              </div>
+              <div class="lista-toda-seta">&rsaquo;</div>
             </div>
 
           </div>

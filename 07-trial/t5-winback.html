@@ -280,6 +280,17 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 }
 .main-cta:hover{transform:scale(1.02);box-shadow:0 7px 28px rgba(244,167,185,0.40);}
 .main-cta:active{transform:scale(0.97);}
+
+/* ── RESTAURAR COMPRAS ───────────────────────────────────────────────── */
+/* Exigencia de loja (App Store 3.1.1), nao oferta: fica discreto. */
+.restaurar{
+  display:block;width:100%;margin-top:2px;padding:9px;
+  background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:11.5px;font-weight:600;
+  color:var(--text3);text-align:center;transition:color .2s;
+}
+.restaurar:hover{color:var(--text2);}
+.restaurar:active{opacity:.55;}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -384,6 +395,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <!-- CTA -->
           <div class="cta-wrap anim-el" style="animation-delay:0.92s">
             <button class="main-cta">Reativar</button>
+            <button class="restaurar">Restaurar compras</button>
           </div>
 
           <div style="height:16px;"></div>
@@ -470,6 +482,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <!-- CTA -->
           <div class="cta-wrap anim-el" style="animation-delay:0.92s">
             <button class="main-cta">Reativar</button>
+            <button class="restaurar">Restaurar compras</button>
           </div>
 
           <div style="height:16px;"></div>
