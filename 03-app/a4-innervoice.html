@@ -349,11 +349,13 @@ var plants = {
 };
 
 var exercises = [
-  {icon:'<i data-icon="chat"></i>',title:'Pensamento do dia',desc:'Reestruture um pensamento que te incomodou',tag:'Novo',tagClass:'new'},
-  {icon:'<i data-icon="heart"></i>',title:'Espelho invertido',desc:'E se uma amiga dissesse isso sobre ela?',tag:'',tagClass:''},
-  {icon:'<i data-icon="book"></i>',title:'Diário livre',desc:'Escreva livremente, sua planta ouve',tag:'',tagClass:''},
-  {icon:'<i data-icon="grow"></i>',title:'Gratidão corporal',desc:'3 coisas que seu corpo fez por você hoje',tag:'feito',tagClass:'done'},
-  {icon:'<i data-icon="sparkle"></i>',title:'Afirmação do dia',desc:'Planta te dá uma afirmação personalizada',tag:'',tagClass:''}
+  /* Quatro, nao cinco. Todos abrem a F4, que tem duas formas: cinco passos
+     (guiado) ou um prompt com um ou tres campos (aberto). "Afirmacao do dia"
+     saiu: nela a planta fala e a pessoa so le, e isso ja e a F10. */
+  {icon:'<i data-icon="chat"></i>',title:'Pensamento do dia',desc:'Reestruture um pensamento que te incomodou',tag:'Novo',tagClass:'new',destino:'F4-InnerVoiceCBT (guiado)'},
+  {icon:'<i data-icon="heart"></i>',title:'Espelho invertido',desc:'E se uma amiga dissesse isso sobre ela?',tag:'',tagClass:'',destino:'F4-InnerVoiceCBT (aberto)'},
+  {icon:'<i data-icon="book"></i>',title:'Diário livre',desc:'Escreva livremente, sua planta ouve',tag:'',tagClass:'',destino:'F4-InnerVoiceCBT (aberto)'},
+  {icon:'<i data-icon="grow"></i>',title:'Gratidão corporal',desc:'3 coisas que seu corpo fez por você hoje',tag:'feito',tagClass:'done',destino:'F4-InnerVoiceCBT (aberto)'}
 ];
 
 var lutealSpeeches = {
@@ -432,7 +434,7 @@ function buildContent(prefix){
 
     html += '<div class="exercise-grid">';
     exercises.forEach(function(ex,i){
-      html += '<div class="exercise-card anim-el" style="animation-delay:'+((d+i*80)*0.001)+'s">';
+      html += '<div class="exercise-card anim-el" data-destino="'+ex.destino+'" style="animation-delay:'+((d+i*80)*0.001)+'s">';
       html += '<div class="ex-icon" style="background:rgba(var(--plant-color-rgb),0.15);">'+ex.icon+'</div>';
       html += '<div class="ex-body"><div class="ex-label">'+ex.title+'</div><div class="ex-desc">'+ex.desc+'</div></div>';
       html += '<div class="ex-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>';
@@ -464,12 +466,13 @@ function buildContent(prefix){
     /* Gentler exercises for luteal */
     html += '<div class="exercise-grid" style="margin-top:16px;">';
     var lutealExercises = [
-      {icon:'<i data-icon="heart"></i>',title:'Você não precisa fazer nada',desc:'Sua planta só quer ouvir você'},
-      {icon:'<i data-icon="grow"></i>',title:'Gratidão corporal (gentil)',desc:'1 coisa que seu corpo fez por você hoje'},
-      {icon:'<i data-icon="sleep"></i>',title:'Respiração com a planta',desc:'3 ciclos de respiração guiada'}
+      {icon:'<i data-icon="heart"></i>',title:'Você não precisa fazer nada',desc:'Sua planta só quer ouvir você',destino:'F4-InnerVoiceCBT (aberto)'},
+      {icon:'<i data-icon="grow"></i>',title:'Gratidão corporal (gentil)',desc:'1 coisa que seu corpo fez por você hoje',destino:'F4-InnerVoiceCBT (aberto)'},
+      /* respiracao nao e escrita: quem faz isso e a A7 */
+      {icon:'<i data-icon="sleep"></i>',title:'Respiração com a planta',desc:'3 ciclos de respiração guiada',destino:'A7-Pause'}
     ];
     lutealExercises.forEach(function(ex,i){
-      html += '<div class="exercise-card anim-el" style="animation-delay:'+((d+i*80)*0.001)+'s">';
+      html += '<div class="exercise-card anim-el" data-destino="'+ex.destino+'" style="animation-delay:'+((d+i*80)*0.001)+'s">';
       html += '<div class="ex-icon" style="background:rgba(196,176,224,0.15);">'+ex.icon+'</div>';
       html += '<div class="ex-body"><div class="ex-label">'+ex.title+'</div><div class="ex-desc">'+ex.desc+'</div></div>';
       html += '<div class="ex-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>';
@@ -539,7 +542,7 @@ function buildContent(prefix){
     ];
 
     historyItems.forEach(function(item,i){
-      html += '<div class="exercise-card anim-el" style="animation-delay:'+((d+i*80)*0.001)+'s">';
+      html += '<div class="exercise-card anim-el" data-destino="F11-InnerVoiceSessao" style="animation-delay:'+((d+i*80)*0.001)+'s">';
       html += '<div class="ex-icon" style="background:rgba(var(--plant-color-rgb),0.15);"><i data-icon="pencil"></i></div>';
       html += '<div class="ex-body"><div class="ex-label">'+item.title+'</div><div class="ex-desc">'+item.date+' \u00b7 '+item.desc+'</div></div>';
       html += '<div class="ex-tag done">'+item.mood+'</div>';

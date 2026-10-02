@@ -429,6 +429,22 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 /* o corpo desce pra caber a barra, e sobe porque nao ha mais rodape de abas */
 .a-screen .scroll-body{top:82px;padding-bottom:36px;}
 .ios-screen .scroll-body{padding-top:98px;padding-bottom:36px;}
+
+/* ── FORMA ABERTA ────────────────────────────────────────────────────── */
+/* Um prompt, um ou tres campos. Sem passo, sem progresso: nao ha o que
+   progredir quando a pergunta e uma so. */
+.aberto-prompt{
+  font-size:16.5px;font-weight:800;color:var(--text);line-height:1.35;
+  margin-bottom:4px;
+}
+.aberto-ajuda{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:14px;}
+.campo-rotulo{
+  font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--text3);margin:12px 0 5px;
+}
+.campo-rotulo:first-of-type{margin-top:0;}
+/* sem passos, o indicador de pontos nao tem o que indicar */
+body.forma-aberta .step-dots{display:none;}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -440,7 +456,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <div class="brand-title">Inner Voice &middot; Exerc&iacute;cio CBT guiado <em>5 passos guiados pela planta. Formato cards empilhados. Reconhecimento cognitivo sem jarg&atilde;o.</em></div>
   <div class="brand-sub">
     Exerc&iacute;cio de Terapia Cognitivo-Comportamental mediado pela planta. Cada card aparece um por vez. A planta guia sem julgamento, com tip pr&oacute;pria por passo. Concluir faz a planta crescer, os pontos GROW s&atilde;o internos e nunca aparecem na UI.
-  </div>
+   <b>Esta tela tem duas formas.</b> <code>guiado</code> s&atilde;o os cinco passos do CBT; <code>aberto</code> &eacute; um prompt com um ou tr&ecirc;s campos, que &eacute; o formato descrito na se&ccedil;&atilde;o 5.3 do blueprint (planta apresenta prompt, usu&aacute;ria escreve, planta responde). Os <b>quatro</b> exerc&iacute;cios da A4 moram todos aqui: &ldquo;Pensamento do dia&rdquo; &eacute; guiado, os outros tr&ecirc;s s&atilde;o abertos. Antes a A4 prometia cinco exerc&iacute;cios e existia uma tela s&oacute;, de uma forma s&oacute;.</div>
 </div>
 
 <div class="controls">
@@ -453,6 +469,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
 <div class="step-controls">
   <span class="step-label">Passo:</span>
+  <button class="state-btn ex-btn active" onclick="setExercicio('pensamento',this)">Pensamento do dia</button>
+  <button class="state-btn ex-btn" onclick="setExercicio('espelho',this)">Espelho invertido</button>
+  <button class="state-btn ex-btn" onclick="setExercicio('gratidao',this)">Gratid&atilde;o corporal</button>
+  <button class="state-btn ex-btn" onclick="setExercicio('diario',this)">Di&aacute;rio livre</button>
+  <div style="width:100%;height:0"></div>
   <button class="step-btn active" onclick="setStep(1,this)">1 &ndash; Situacao</button>
   <button class="step-btn" onclick="setStep(2,this)">2 &ndash; Pensamento</button>
   <button class="step-btn" onclick="setStep(3,this)">3 &ndash; Emocao</button>
@@ -497,7 +518,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
             <div class="mini-plant-info">
               <div class="mini-plant-name" id="amini-name">Lavanda</div>
-              <div class="mini-plant-subtitle">Inner Voice &middot; Exerc&iacute;cio CBT</div>
+              <div class="mini-plant-subtitle" id="amini-subtitulo">Inner Voice &middot; Pensamento do dia</div>
             </div>
           </div>
 
@@ -562,7 +583,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
             </div>
             <div class="mini-plant-info">
               <div class="mini-plant-name" id="iosmini-name">Lavanda</div>
-              <div class="mini-plant-subtitle">Inner Voice &middot; Exerc&iacute;cio CBT</div>
+              <div class="mini-plant-subtitle" id="iosmini-subtitulo">Inner Voice &middot; Pensamento do dia</div>
             </div>
           </div>
 
@@ -620,6 +641,51 @@ var connectors = [
   'Quase l\u00e1. Voc\u00ea t\u00e1 indo muito bem.'
 ];
 
+/* Os quatro exercicios do Inner Voice. O nome e a descricao sao os mesmos da
+   A4 e da E3: nome diferente em cada tela e nome que ela nunca mais encontra.
+   Os prompts da forma aberta vem do banco da secao 5.3 do blueprint. */
+var EXERCICIOS = {
+  pensamento: {
+    nome: 'Pensamento do dia',
+    forma: 'guiado'
+  },
+  espelho: {
+    nome: 'Espelho invertido',
+    forma: 'aberto',
+    conector: 'Vamos trocar o lugar por um minuto.',
+    prompt: 'Se uma amiga dissesse isso sobre ela, o que voc\u00ea responderia?',
+    ajuda: 'Agora leia a sua resposta de novo, como se fosse pra voc\u00ea.',
+    campos: [{rotulo: 'O que voc\u00ea diria pra ela', dica: 'Do jeito que sairia na hora.'}],
+    tip: 'A gente costuma ser mais justa com as outras. Empresta um pouco disso.',
+    cta: 'Guardar'
+  },
+  gratidao: {
+    nome: 'Gratid\u00e3o corporal',
+    forma: 'aberto',
+    conector: 'Sem espelho. S\u00f3 o que ele fez.',
+    prompt: 'Tr\u00eas coisas que seu corpo fez por voc\u00ea hoje.',
+    ajuda: 'Pelo que ele te permite fazer, n\u00e3o por como ele parece.',
+    campos: [
+      {rotulo: 'Primeira', dica: 'Pode ser pequena. Respirar conta.'},
+      {rotulo: 'Segunda',  dica: 'Te levou a algum lugar?'},
+      {rotulo: 'Terceira', dica: 'Te deu algum prazer hoje?'}
+    ],
+    tip: 'N\u00e3o precisa ser bonito. Precisa ser verdade.',
+    cta: 'Guardar'
+  },
+  diario: {
+    nome: 'Di\u00e1rio livre',
+    forma: 'aberto',
+    conector: 'Sem pergunta hoje. S\u00f3 espa\u00e7o.',
+    prompt: 'Voc\u00ea n\u00e3o precisa produzir nada agora.',
+    ajuda: 'Escreve o que vier. Eu leio no seu ritmo, e isso fica no seu aparelho.',
+    campos: [{rotulo: 'Hoje', dica: 'Come\u00e7a por qualquer lugar.', alto: true}],
+    tip: 'Sem come\u00e7o, meio e fim. S\u00f3 o que estiver a\u00ed.',
+    cta: 'Guardar'
+  }
+};
+var exercicioAtual = 'pensamento';
+
 var stepData = {
   1:{
     label:'Passo 1',
@@ -668,6 +734,8 @@ var stepData = {
 };
 
 function buildCard(platform, step) {
+  var ex = EXERCICIOS[exercicioAtual];
+  if(ex.forma === 'aberto') return buildAberto(platform, ex);
   var d = stepData[step];
   var s = currentPlant;
   var isAndroid = (platform === 'a');
@@ -727,6 +795,24 @@ function buildCard(platform, step) {
   return html;
 }
 
+/* A forma aberta nao tem passo: tem uma pergunta e os campos dela. */
+function buildAberto(platform, ex){
+  var s = currentPlant;
+  var html = '<div class="cbt-card-accent"></div>';
+  html += '<div class="aberto-prompt">' + ex.prompt + '</div>';
+  html += '<div class="aberto-ajuda">' + ex.ajuda + '</div>';
+  ex.campos.forEach(function(c){
+    html += '<div class="campo-rotulo">' + c.rotulo + '</div>';
+    html += '<textarea class="cbt-textarea" placeholder="' + c.dica + '" rows="' + (c.alto ? 6 : 2) + '"></textarea>';
+  });
+  html += '<div class="plant-tip">'
+    + '<div class="plant-tip-icon"><i data-icon="leaf"></i></div>'
+    + '<div class="plant-tip-text"><span class="plant-tip-name">' + s.plant + ':</span> ' + ex.tip + '</div>'
+    + '</div>';
+  html += '<button class="step-cta finish" onclick="finishExercise()">' + ex.cta + ' &#10003;</button>';
+  return html;
+}
+
 function updateDots(platform, step){
   var container = document.getElementById(platform+'dots');
   var dots = container.querySelectorAll('.sdot');
@@ -750,7 +836,8 @@ function renderCards(step){
   pintarBarra(step);
 
   // Update connector
-  var conn = connectors[step-1];
+  var exAtual = EXERCICIOS[exercicioAtual];
+  var conn = (exAtual.forma === 'aberto') ? exAtual.conector : connectors[step-1];
   document.getElementById('aconn').textContent = conn;
   document.getElementById('iosconn').textContent = conn;
 
@@ -777,12 +864,28 @@ function voltarPasso(){
 }
 
 function pintarBarra(step){
+  var ex = EXERCICIOS[exercicioAtual];
+  var aberto = (ex.forma === 'aberto');
+  document.body.classList.toggle('forma-aberta', aberto);
   ['a','ios'].forEach(function(p){
     var r = document.getElementById(p+'passo');
-    if(r) r.textContent = 'Passo ' + step + ' de 5';
+    if(r) r.textContent = aberto ? ex.nome : 'Passo ' + step + ' de 5';
     var b = document.getElementById(p+'voltar');
-    if(b) b.disabled = (step <= 1);
+    if(b) b.disabled = aberto || (step <= 1);
+    /* o subtitulo do cabecalho dizia "Exercicio CBT" pra qualquer exercicio */
+    var sub = document.getElementById(p+'mini-subtitulo');
+    if(sub) sub.textContent = aberto ? 'Inner Voice \u00b7 ' + ex.nome
+                                     : 'Inner Voice \u00b7 Pensamento do dia';
   });
+}
+
+function setExercicio(chave, btn){
+  exercicioAtual = chave;
+  document.querySelectorAll('.ex-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  currentStep = 1;
+  setStepBtns(1);
+  renderCards(1);
 }
 
 function finishExercise(){
