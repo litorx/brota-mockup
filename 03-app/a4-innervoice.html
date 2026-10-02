@@ -351,9 +351,9 @@ var plants = {
 var exercises = [
   {icon:'<i data-icon="chat"></i>',title:'Pensamento do dia',desc:'Reestruture um pensamento que te incomodou',tag:'Novo',tagClass:'new'},
   {icon:'<i data-icon="heart"></i>',title:'Espelho invertido',desc:'E se uma amiga dissesse isso sobre ela?',tag:'',tagClass:''},
-  {icon:'<i data-icon="book"></i>',title:'Diario livre',desc:'Escreva livremente, sua planta ouve',tag:'',tagClass:''},
-  {icon:'<i data-icon="grow"></i>',title:'Gratidao corporal',desc:'3 coisas que seu corpo fez por voce hoje',tag:'feito',tagClass:'done'},
-  {icon:'<i data-icon="sparkle"></i>',title:'Afirmacao do dia',desc:'Planta te da uma afirmacao personalizada',tag:'',tagClass:''}
+  {icon:'<i data-icon="book"></i>',title:'Diário livre',desc:'Escreva livremente, sua planta ouve',tag:'',tagClass:''},
+  {icon:'<i data-icon="grow"></i>',title:'Gratidão corporal',desc:'3 coisas que seu corpo fez por você hoje',tag:'feito',tagClass:'done'},
+  {icon:'<i data-icon="sparkle"></i>',title:'Afirmação do dia',desc:'Planta te dá uma afirmação personalizada',tag:'',tagClass:''}
 ];
 
 var lutealSpeeches = {
@@ -426,7 +426,7 @@ function buildContent(prefix){
     html += '<div class="iv-header anim-el" style="animation-delay:'+(d*0.001)+'s">';
     html += '<div class="iv-conector">'+s.plant+' quer conversar.</div>';
     html += '<div class="iv-title">Sua voz <em>de dentro</em></div>';
-    html += '<div class="iv-subtitle">Exercicios guiados pra reestruturar pensamentos sobre corpo e aparencia.</div>';
+    html += '<div class="iv-subtitle">Exercícios guiados pra reestruturar pensamentos sobre corpo e aparência.</div>';
     html += '</div>';
     d += 100;
 
@@ -464,9 +464,9 @@ function buildContent(prefix){
     /* Gentler exercises for luteal */
     html += '<div class="exercise-grid" style="margin-top:16px;">';
     var lutealExercises = [
-      {icon:'<i data-icon="heart"></i>',title:'Voce nao precisa fazer nada',desc:'Sua planta so quer ouvir voce'},
-      {icon:'<i data-icon="grow"></i>',title:'Gratidao corporal (gentil)',desc:'1 coisa que seu corpo fez por voce hoje'},
-      {icon:'<i data-icon="sleep"></i>',title:'Respiracao com a planta',desc:'3 ciclos de respiracao guiada'}
+      {icon:'<i data-icon="heart"></i>',title:'Você não precisa fazer nada',desc:'Sua planta só quer ouvir você'},
+      {icon:'<i data-icon="grow"></i>',title:'Gratidão corporal (gentil)',desc:'1 coisa que seu corpo fez por você hoje'},
+      {icon:'<i data-icon="sleep"></i>',title:'Respiração com a planta',desc:'3 ciclos de respiração guiada'}
     ];
     lutealExercises.forEach(function(ex,i){
       html += '<div class="exercise-card anim-el" style="animation-delay:'+((d+i*80)*0.001)+'s">';

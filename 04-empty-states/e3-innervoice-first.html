@@ -245,9 +245,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
 /* ── PROMPT PILLS ── */
 .prompts-area{
-  padding:0 16px 8px;
+  /* dentro da area que rola: a lista e conteudo, nao composer */
+  padding:4px 0 86px;
   display:flex;flex-direction:column;gap:7px;
-  flex-shrink:0;
   position:relative;z-index:2;
 }
 .prompts-label{
@@ -288,68 +288,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 .prompt-pill-text{
   font-size:13px;font-weight:600;color:var(--text);line-height:1;
 }
-
-/* ── INPUT AREA ── */
-.input-area{
-  display:flex;align-items:flex-end;gap:10px;
-  padding:10px 16px 12px;
-  flex-shrink:0;
-  position:relative;z-index:10;
-}
-.a-screen .input-area{
-  border-top:1px solid var(--border);
-  background:var(--bg);
-}
-.ios-screen .input-area{
-  background:rgba(255,248,242,0.85);
-  backdrop-filter:blur(24px) saturate(160%);
-  border-top:1px solid rgba(255,255,255,0.30);
-}
-.chat-input{
-  flex:1;padding:10px 16px;
-  border-radius:24px;
-  border:1.5px solid var(--border);
-  background:var(--card);
-  font-family:'Nunito',sans-serif;font-size:13.5px;font-weight:500;
-  color:var(--text);outline:none;resize:none;
-  line-height:1.4;min-height:40px;max-height:88px;
-  transition:border-color 0.2s,box-shadow 0.2s;
-}
-.chat-input::placeholder{color:var(--text3);}
-.chat-input:focus{border-color:rgba(var(--plant-color-rgb),0.45);box-shadow:0 0 0 3px rgba(var(--plant-color-rgb),0.10);}
-.ios-screen .chat-input{
-  background:rgba(255,255,255,0.80);
-  backdrop-filter:blur(10px);
-  border:1.5px solid rgba(var(--plant-color-rgb),0.18);
-  box-shadow:0 1px 0 rgba(255,255,255,0.50) inset;
-}
-.send-btn{
-  width:40px;height:40px;border-radius:50%;
-  border:none;cursor:pointer;
-  background:var(--plant-color);
-  color:white;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-  box-shadow:0 3px 12px rgba(var(--plant-color-rgb),0.28);
-  transition:transform 0.2s,box-shadow 0.2s,background 0.7s;
-  position:relative;overflow:hidden;
-}
-.a-screen .send-btn::after{
-  content:'';position:absolute;top:0;left:0;bottom:0;width:55%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);
-  transform:translateX(-200%) skewX(-14deg);
-  animation:shimmer 4s ease-in-out 2.5s infinite;
-  pointer-events:none;
-}
-.ios-screen .send-btn{
-  backdrop-filter:blur(20px) saturate(180%);
-  background:rgba(var(--plant-color-rgb),0.85);
-  border:1px solid rgba(255,255,255,0.30);
-  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 3px 12px rgba(var(--plant-color-rgb),0.22);
-}
-.send-btn:hover{transform:scale(1.08);}
-.send-btn:active{transform:scale(0.93);}
-.send-icon{width:18px;height:18px;fill:none;stroke:white;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
 
 /* ── BOTTOM NAV ── */
 .bottom-nav{
@@ -428,6 +366,50 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   border:1px solid rgba(255,255,255,0.30);
   box-shadow:0 1px 0 rgba(255,255,255,0.30) inset,0 4px 20px rgba(255,208,122,0.36);
 }
+
+/* ── PRIMEIRA SESSAO: escolha, nao conversa ──────────────────────────── */
+/* A pilula virou cartao porque agora carrega nome E o que o exercicio faz,
+   igual a A4. Sem isso a pessoa escolhe no escuro. */
+.prompt-pill{border-radius:18px;align-items:center;gap:10px;padding:11px 13px 11px 14px;}
+.prompt-pill:hover{transform:translateX(2px);}
+.pill-body{flex:1;min-width:0;}
+.prompt-pill-text{display:block;font-size:13.5px;line-height:1.25;margin-bottom:1px;}
+.prompt-pill-desc{font-size:11.5px;color:var(--text2);line-height:1.4;}
+.pill-chevron{width:15px;height:15px;flex-shrink:0;color:var(--plant-color);opacity:0.55;}
+.pill-chevron svg{width:100%;height:100%;display:block;}
+
+/* O aviso do G2. Aparece na primeira sessao e nunca mais. */
+.iv-aviso{
+  margin:14px 2px 2px;padding:11px 13px;border-radius:14px;
+  background:rgba(var(--plant-color-rgb),0.07);
+  border:1px solid rgba(var(--plant-color-rgb),0.18);
+}
+.ios-screen .iv-aviso{
+  background:rgba(255,255,255,0.62);
+  backdrop-filter:blur(14px) saturate(150%);
+  border:1px solid rgba(var(--plant-color-rgb),0.16);
+}
+.iv-aviso-t{font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;}
+.iv-aviso-d{font-size:11px;color:var(--text2);line-height:1.5;}
+body.ja-viu .iv-aviso{display:none;}
+
+/* A lista inteira mora na A16; aqui so tres, pra primeira vez nao pesar. */
+.ver-todos{
+  margin-top:3px;text-align:center;font-size:11.5px;font-weight:700;
+  color:var(--plant-color);cursor:pointer;padding:6px;
+}
+
+/* ── CABE NA PRIMEIRA OLHADA ─────────────────────────────────────────── */
+/* A planta grande, o balao, o aviso e tres opcoes nao cabiam juntos. A
+   identidade da planta ja aparece no balao (avatar + nome), entao o cabecalho
+   encolhe em vez de sumir. */
+.chat-plant-header{margin-bottom:2px;}
+.chat-plant-header .plant-avatar-sm{width:46px;height:46px;}
+.chat-plant-header .plant-name-sm{font-size:12.5px;}
+.chat-scroll{gap:8px;}
+.iv-aviso{margin-top:10px;padding:10px 12px;}
+.prompt-pill{padding:9px 12px 9px 13px;}
+.prompts-area{padding-bottom:62px;}
 </style>
 <script src="../shared/responsive.js"></script>
 </head>
@@ -436,13 +418,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
 <div class="studio-header">
   <div class="brand-eyebrow">Brota &middot; Empty States &middot; E3-InnerVoiceFirst</div>
-  <div class="brand-title">Inner Voice &middot; Primeira sess&atilde;o <em>Empty state, primeiro acesso ao chat. Nenhuma conversa anterior. A planta acolhe e convida.</em></div>
-  <div class="brand-sub">Sem chat livre: as pilhas levam aos <strong>exerc&iacute;cios guiados</strong> (F4), nao a uma conversa aberta. 
-    Usu&aacute;ria abre o Inner Voice pela primeira vez. O chat est&aacute; vazio. A planta j&aacute; est&aacute; l&aacute;, com uma mensagem de boas-vindas e tr&ecirc;s pil&uacute;las de conversa para reduzir a barreira de in&iacute;cio.
-  </div>
+  <div class="brand-title">Inner Voice &middot; Primeira sess&atilde;o <em>Primeiro acesso. A planta acolhe, avisa o que n&atilde;o &eacute;, e oferece tr&ecirc;s exerc&iacute;cios.</em></div>
+  <div class="brand-sub"><strong>Aqui n&atilde;o se escreve solto.</strong> A tela tinha caixa de texto e bal&atilde;o com pergunta aberta, enquanto a propria nota dizia "sem chat livre". Saiu a caixa: a planta convida a <strong>escolher</strong>, e as tr&ecirc;s op&ccedil;&otilde;es s&atilde;o os tr&ecirc;s primeiros exerc&iacute;cios da <strong>A4</strong>, com o mesmo nome e a mesma descri&ccedil;&atilde;o, destino em <code>data-destino</code> no markup. Nome diferente aqui seria nome que ela nunca mais encontra. O aviso <strong>&ldquo;companheira, n&atilde;o terapeuta&rdquo;</strong> (guardrail G2) ganhou tela: aparece na primeira sess&atilde;o e nunca mais, e o bot&atilde;o de estado prova isso. Destinos: os tr&ecirc;s cart&otilde;es &rarr; <code>F4-InnerVoiceCBT</code> &middot; &ldquo;Ver os 5&rdquo; &rarr; <code>A16-Biblioteca</code> &middot; sess&atilde;o feita &rarr; <code>A4</code> &middot; hist&oacute;rico &rarr; <code>F6</code>.</div>
 </div>
 
 <div class="controls">
+  <button class="state-btn cena-btn active" onclick="setCena('primeira',this)">1&ordf; sess&atilde;o</button>
+  <button class="state-btn cena-btn" onclick="setCena('volta',this)">2&ordf; em diante</button>
+  <span style="width:1px;height:20px;background:var(--border);"></span>
   <button class="state-btn active" onclick="setPlant('s1',this)">Lavanda / Ana</button>
   <button class="state-btn" onclick="setPlant('s2',this)">Girassol / Bia</button>
   <button class="state-btn" onclick="setPlant('s3',this)">Cacto / Carol</button>
@@ -493,7 +476,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 
             <!-- Plant welcome bubble -->
             <div class="chat-bubble-wrap anim-el" style="animation-delay:0.40s">
-              <div class="bubble-avatar" id="ababble-avatar">
+              <div class="bubble-avatar" id="abubble-avatar">
                 <!-- mini svg injected by JS -->
               </div>
               <div class="chat-bubble">
@@ -504,43 +487,41 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               </div>
             </div>
 
-            <!-- Empty chat hint -->
-            <div class="chat-empty-hint">
-              <div class="hint-dots">
-                <div class="hint-dot"></div>
-                <div class="hint-dot" style="opacity:0.14;"></div>
-                <div class="hint-dot" style="opacity:0.08;"></div>
-              </div>
-              <div class="hint-label">Seus exerc&iacute;cios v&atilde;o aparecer aqui</div>
+            <!-- Aviso do G2: uma vez so, na primeira sessao -->
+            <div class="iv-aviso anim-el" style="animation-delay:0.48s">
+              <div class="iv-aviso-t">Companheira, n&atilde;o terapeuta</div>
+              <div class="iv-aviso-d">N&atilde;o fa&ccedil;o diagn&oacute;stico nem substituo ajuda profissional. Aqui a gente faz exerc&iacute;cios curtos, e o que voc&ecirc; escreve fica no seu aparelho.</div>
             </div>
 
-          </div>
-
-          <!-- Prompt pills -->
+          <!-- Os tres primeiros exercicios da A4, com o mesmo nome e a mesma
+               descricao. Nome novo aqui seria nome que ela nunca mais ve. -->
           <div class="prompts-area">
             <div class="prompts-label">Por onde come&ccedil;ar</div>
-            <div class="prompt-pill anim-el" style="animation-delay:0.56s" onclick="this.style.transform='scale(0.96)';setTimeout(()=>this.style.transform='',180)">
-              <div class="pill-dot"></div>
-              <span class="prompt-pill-text">Reenquadrar um pensamento</span>
+            <div class="prompt-pill anim-el" style="animation-delay:0.56s" data-destino="F4-InnerVoiceCBT" onclick="this.style.transform='scale(0.97)';setTimeout(()=>this.style.transform='',180)">
+              <div class="pill-body">
+                <span class="prompt-pill-text">Pensamento do dia</span>
+                <span class="prompt-pill-desc">Reestruture um pensamento que te incomodou</span>
+              </div>
+              <span class="pill-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
             </div>
-            <div class="prompt-pill anim-el" style="animation-delay:0.68s" onclick="this.style.transform='scale(0.96)';setTimeout(()=>this.style.transform='',180)">
-              <div class="pill-dot"></div>
-              <span class="prompt-pill-text">Vi algo que me incomodou</span>
+            <div class="prompt-pill anim-el" style="animation-delay:0.66s" data-destino="F4-InnerVoiceCBT" onclick="this.style.transform='scale(0.97)';setTimeout(()=>this.style.transform='',180)">
+              <div class="pill-body">
+                <span class="prompt-pill-text">Espelho invertido</span>
+                <span class="prompt-pill-desc">E se uma amiga dissesse isso sobre ela?</span>
+              </div>
+              <span class="pill-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
             </div>
-            <div class="prompt-pill anim-el" style="animation-delay:0.80s" onclick="this.style.transform='scale(0.96)';setTimeout(()=>this.style.transform='',180)">
-              <div class="pill-dot"></div>
-              <span class="prompt-pill-text">Gratid&atilde;o corporal</span>
+            <div class="prompt-pill anim-el" style="animation-delay:0.76s" data-destino="F4-InnerVoiceCBT" onclick="this.style.transform='scale(0.97)';setTimeout(()=>this.style.transform='',180)">
+              <div class="pill-body">
+                <span class="prompt-pill-text">Gratid&atilde;o corporal</span>
+                <span class="prompt-pill-desc">3 coisas que seu corpo fez por voc&ecirc; hoje</span>
+              </div>
+              <span class="pill-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
             </div>
+            <div class="ver-todos anim-el" style="animation-delay:0.86s" data-destino="A16-Biblioteca">Ver os 5 exerc&iacute;cios</div>
           </div>
 
-          <!-- Input area -->
-          <div class="input-area anim-el" style="animation-delay:0.90s">
-            <textarea class="chat-input" placeholder="Escreve aqui..." rows="1"
-              oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,88)+'px'"></textarea>
-            <button class="send-btn" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)">
-              <svg class="send-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
+          </div><!-- /chat-scroll -->
 
         </div><!-- /chat-container -->
 
@@ -609,43 +590,41 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
               </div>
             </div>
 
-            <!-- Empty chat hint -->
-            <div class="chat-empty-hint">
-              <div class="hint-dots">
-                <div class="hint-dot"></div>
-                <div class="hint-dot" style="opacity:0.14;"></div>
-                <div class="hint-dot" style="opacity:0.08;"></div>
-              </div>
-              <div class="hint-label">Seus exerc&iacute;cios v&atilde;o aparecer aqui</div>
+            <!-- Aviso do G2: uma vez so, na primeira sessao -->
+            <div class="iv-aviso anim-el" style="animation-delay:0.48s">
+              <div class="iv-aviso-t">Companheira, n&atilde;o terapeuta</div>
+              <div class="iv-aviso-d">N&atilde;o fa&ccedil;o diagn&oacute;stico nem substituo ajuda profissional. Aqui a gente faz exerc&iacute;cios curtos, e o que voc&ecirc; escreve fica no seu aparelho.</div>
             </div>
 
-          </div>
-
-          <!-- Prompt pills -->
+          <!-- Os tres primeiros exercicios da A4, com o mesmo nome e a mesma
+               descricao. Nome novo aqui seria nome que ela nunca mais ve. -->
           <div class="prompts-area">
             <div class="prompts-label">Por onde come&ccedil;ar</div>
-            <div class="prompt-pill anim-el" style="animation-delay:0.56s" onclick="this.style.transform='scale(0.96)';setTimeout(()=>this.style.transform='',180)">
-              <div class="pill-dot"></div>
-              <span class="prompt-pill-text">Reenquadrar um pensamento</span>
+            <div class="prompt-pill anim-el" style="animation-delay:0.56s" data-destino="F4-InnerVoiceCBT" onclick="this.style.transform='scale(0.97)';setTimeout(()=>this.style.transform='',180)">
+              <div class="pill-body">
+                <span class="prompt-pill-text">Pensamento do dia</span>
+                <span class="prompt-pill-desc">Reestruture um pensamento que te incomodou</span>
+              </div>
+              <span class="pill-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
             </div>
-            <div class="prompt-pill anim-el" style="animation-delay:0.68s" onclick="this.style.transform='scale(0.96)';setTimeout(()=>this.style.transform='',180)">
-              <div class="pill-dot"></div>
-              <span class="prompt-pill-text">Vi algo que me incomodou</span>
+            <div class="prompt-pill anim-el" style="animation-delay:0.66s" data-destino="F4-InnerVoiceCBT" onclick="this.style.transform='scale(0.97)';setTimeout(()=>this.style.transform='',180)">
+              <div class="pill-body">
+                <span class="prompt-pill-text">Espelho invertido</span>
+                <span class="prompt-pill-desc">E se uma amiga dissesse isso sobre ela?</span>
+              </div>
+              <span class="pill-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
             </div>
-            <div class="prompt-pill anim-el" style="animation-delay:0.80s" onclick="this.style.transform='scale(0.96)';setTimeout(()=>this.style.transform='',180)">
-              <div class="pill-dot"></div>
-              <span class="prompt-pill-text">Gratid&atilde;o corporal</span>
+            <div class="prompt-pill anim-el" style="animation-delay:0.76s" data-destino="F4-InnerVoiceCBT" onclick="this.style.transform='scale(0.97)';setTimeout(()=>this.style.transform='',180)">
+              <div class="pill-body">
+                <span class="prompt-pill-text">Gratid&atilde;o corporal</span>
+                <span class="prompt-pill-desc">3 coisas que seu corpo fez por voc&ecirc; hoje</span>
+              </div>
+              <span class="pill-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
             </div>
+            <div class="ver-todos anim-el" style="animation-delay:0.86s" data-destino="A16-Biblioteca">Ver os 5 exerc&iacute;cios</div>
           </div>
 
-          <!-- Input area -->
-          <div class="input-area anim-el" style="animation-delay:0.90s">
-            <textarea class="chat-input" placeholder="Escreve aqui..." rows="1"
-              oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,88)+'px'"></textarea>
-            <button class="send-btn" onclick="this.style.transform='scale(0.9)';setTimeout(()=>this.style.transform='',200)">
-              <svg class="send-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
+          </div><!-- /chat-scroll -->
 
         </div><!-- /chat-container -->
 
@@ -680,12 +659,15 @@ var plants = {
 };
 
 /* Plant welcome messages — per archetype */
+/* Todas terminam convidando a ESCOLHER. A versao antiga fazia pergunta
+   aberta ("o que voce quer me contar?"), e pergunta aberta pede caixa de
+   texto, que e justamente o que o produto nao tem. */
 var welcomeMessages = {
-  Lavanda: function(name){ return 'Oi, <em>'+name+'</em>. Esse espa&ccedil;o &eacute; s&oacute; nosso. Sem julgamento. O que voc&ecirc; quer me contar?'; },
-  Girassol: function(name){ return 'Ei, <em>'+name+'</em>! To aqui pra ouvir. Pode falar qualquer coisa. O que t&aacute; na sua cabe&ccedil;a?'; },
-  Cacto: function(name){ return '<em>'+name+'</em>. Aqui &eacute; s&oacute; entre n&oacute;s. Sem frescura. Fala.'; },
-  Cerejeira: function(name){ return '<em>'+name+'</em>... que bom que voc&ecirc; veio. Esse espa&ccedil;o &eacute; sagrado. O que voc&ecirc; quer compartilhar?'; },
-  Lotus: function(name){ return '<em>'+name+'</em>. Respira. Esse momento &eacute; seu. O que precisa sair?'; }
+  Lavanda: function(name){ return 'Oi, <em>'+name+'</em>. Esse espa&ccedil;o &eacute; s&oacute; nosso. Escolhe um e eu vou com voc&ecirc;.'; },
+  Girassol: function(name){ return 'Ei, <em>'+name+'</em>! Que bom te ver aqui. Escolhe um e a gente faz junto.'; },
+  Cacto: function(name){ return '<em>'+name+'</em>. Aqui &eacute; s&oacute; entre n&oacute;s. Escolhe um e a gente vai.'; },
+  Cerejeira: function(name){ return '<em>'+name+'</em>... que bom que voc&ecirc; veio. Escolhe um pra gente come&ccedil;ar devagar.'; },
+  Lotus: function(name){ return '<em>'+name+'</em>. Respira. Quando quiser, escolhe um dos tr&ecirc;s.'; }
 };
 
 /* ── Plant SVGs — kawaii faces, rich animation ── */
@@ -725,9 +707,18 @@ function restartAnims(){
 
 function setPlant(key, btn){
   currentPlant = plants[key];
-  document.querySelectorAll('.state-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.state-btn:not(.cena-btn)').forEach(function(b){b.classList.remove('active');});
   if(btn) btn.classList.add('active');
   applyState();
+}
+
+/* O G2 pede que o aviso seja mostrado uma vez e que de pra verificar. Sem o
+   segundo estado nao da pra provar que ele some. */
+function setCena(cena, btn){
+  document.querySelectorAll('.cena-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  document.body.classList.toggle('ja-viu', cena === 'volta');
+  restartAnims();
 }
 
 function applyState(){
@@ -742,7 +733,7 @@ function applyState(){
   /* Topbar subtitle */
   ['a','ios'].forEach(function(p){
     var el = document.getElementById(p+'topbar-sub');
-    if(el) el.textContent = 'Conversa com ' + s.plant;
+    if(el) el.textContent = 'Exerc\u00edcios guiados';
   });
 
   /* Plant name in avatar label */
