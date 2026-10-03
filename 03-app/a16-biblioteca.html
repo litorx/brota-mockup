@@ -256,23 +256,26 @@ function setPlant(key, btn){
 }
 
 var EXS = [
-  /* Dez prompts, duas superficies. Respirar e ancorar e corpo: isso e a A7.
-     O resto e escrita com a planta: isso e a F4. Linha sem destino declarado
-     e promessa de tela que ninguem construiu. */
-  {t:'Respiração 4-4-4',      d:'Inspira, segura, solta. Três tempos iguais.',        m:'3 min',  c:'respirar',  i:'wind',   o:'A7-Pause'},
-  {t:'Respiração pra dormir', d:'Expira mais longo que inspira. O corpo desacelera.', m:'6 min',  c:'respirar',  i:'moon',   o:'A7-Pause'},
-  {t:'Suspiro fisiológico',   d:'Duas inspiradas curtas, uma saída longa.',           m:'1 min',  c:'respirar',  i:'wind',   o:'A7-Pause'},
-  {t:'Atenção no corpo',      d:'Da testa aos pés, sem consertar nada.',              m:'8 min',  c:'corpo',     i:'person', o:'A7-Pause'},
-  {t:'O que meu corpo faz',   d:'Cinco coisas que ele consegue. Não como parece.',    m:'5 min',  c:'corpo',     i:'heart',  o:'F4-InnerVoiceCBT (aberto)'},
-  {t:'Ancorar os pés',        d:'Sentir o chão quando a cabeça some.',                m:'2 min',  c:'corpo',     i:'leaf',   o:'A7-Pause'},
-  {t:'Fato ou interpretação', d:'Separar o que aconteceu do que você concluiu.',      m:'7 min',  c:'comparacao',i:'brain',  o:'F4-InnerVoiceCBT (guiado)'},
-  {t:'A vida editada',        d:'Lembrar o que o post não mostra.',                   m:'4 min',  c:'comparacao',i:'eye',    o:'F4-InnerVoiceCBT (aberto)'},
-  {t:'Carta pra você',        d:'Escrever pra si como escreveria pra uma amiga.',     m:'10 min', c:'comparacao',i:'pencil', o:'F4-InnerVoiceCBT (aberto)'},
-  {t:'Três coisas boas',      d:'Pequenas. De hoje. Sem esforço pra impressionar.',   m:'3 min',  c:'gratidao',  i:'sun',    o:'F4-InnerVoiceCBT (aberto)'}
+  /* Dez exercicios, duas superficies: cinco de respirar e ancorar levam pra
+     A7, cinco de escrever levam pra F4. Os nomes dos de escrever sao os
+     MESMOS da A4: nome diferente pro mesmo exercicio faz a pessoa achar que
+     sao dois. As descricoes daqui eram melhores e ficaram. */
+  {t:'Respiração 4-4-4',      d:'Inspira, segura, solta. Três tempos iguais.',          m:'3 min',  c:'respirar', i:'wind',   o:'A7-Pause'},
+  {t:'Respiração pra dormir', d:'Expira mais longo que inspira. O corpo desacelera.',   m:'6 min',  c:'respirar', i:'moon',   o:'A7-Pause'},
+  {t:'Suspiro fisiológico',   d:'Duas inspiradas curtas, uma saída longa.',             m:'1 min',  c:'respirar', i:'wind',   o:'A7-Pause'},
+  {t:'Atenção no corpo',      d:'Da testa aos pés, sem consertar nada.',                m:'8 min',  c:'respirar', i:'person', o:'A7-Pause'},
+  {t:'Ancorar os pés',        d:'Sentir o chão quando a cabeça some.',                  m:'2 min',  c:'respirar', i:'leaf',   o:'A7-Pause'},
+  {t:'Pensamento do dia',     d:'Separar o que aconteceu do que você concluiu.',        m:'7 min',  c:'escrever', i:'brain',  o:'F4-InnerVoiceCBT (guiado)'},
+  {t:'Espelho invertido',     d:'E se uma amiga dissesse isso sobre ela?',       m:'10 min', c:'escrever', i:'pencil', o:'F4-InnerVoiceCBT (aberto)'},
+  {t:'Gratidão corporal',     d:'3 coisas que seu corpo fez por você hoje.',       m:'5 min',  c:'escrever', i:'heart',  o:'F4-InnerVoiceCBT (aberto)'},
+  {t:'A vida editada',        d:'Lembrar o que o post não mostra.',                     m:'4 min',  c:'escrever', i:'eye',    o:'F4-InnerVoiceCBT (aberto)'},
+  {t:'Diário livre',          d:'Escreve o que vier. Sem começo, meio e fim.',          m:'sem tempo', c:'escrever', i:'book', o:'F4-InnerVoiceCBT (aberto)'}
 ];
 
 function corpo(p, isIos){
-  var cats = [['todos','Todos'],['respirar','Respirar'],['corpo','Corpo'],['comparacao','Comparação'],['gratidao','Gratidão']];
+  /* O filtro vira o que ela faz, nao o tema: cinco de respirar, cinco de
+     escrever. Tema dava chip com uma linha so dentro. */
+  var cats = [['todos','Todos'],['respirar','Respirar'],['escrever','Escrever']];
   var h = '<div class="chips anim-el" style="animation-delay:0.06s">';
   cats.forEach(function(c){
     h += '<button class="chip' + (cat===c[0]?' on':'') + '" onclick="setCat(\'' + c[0] + '\')">' + c[1] + '</button>';
@@ -298,7 +301,7 @@ function corpo(p, isIos){
 
 function setCat(c, btn){
   cat = c;
-  var rot = {todos:'Todos', respirar:'Respirar', corpo:'Corpo', comparacao:'Comparação', gratidao:'Gratidao'}[c];
+  var rot = {todos:'Todos', respirar:'Respirar', escrever:'Escrever'}[c];
   document.querySelectorAll('.scene-btn').forEach(function(b){ b.classList.toggle('active', b.textContent === rot); });
   render();
 }
