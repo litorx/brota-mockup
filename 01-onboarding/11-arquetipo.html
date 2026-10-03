@@ -525,7 +525,8 @@ function renderCards() {
   archetypes.forEach(function(a) {
     var html = renderPlantSVG(a.id, a.color, false);
     document.querySelectorAll(
-      '.a-card[data-id="' + a.id + '"] .card-emoji.ios-card[data-id="' + a.id + '"] .card-emoji'
+      '.a-card[data-id="' + a.id + '"] .card-emoji, ' +
+      '.ios-card[data-id="' + a.id + '"] .card-emoji'
     ).forEach(function(span) { span.innerHTML = html; });
   });
 }
