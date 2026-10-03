@@ -276,7 +276,11 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   font-size:0;
   transition:background 0.7s;
 }
-.ios-homescreen .w4x2-action-icon{font-size:18px;}
+.ios-homescreen .w4x2-action-icon{font-size:18px;color:rgba(255,255,255,0.90);}
+/* o coracao e a folha do iOS sao SVG com currentColor: sem cor explicita
+   eles pegam o marrom da pagina e desaparecem no cartao escuro */
+.ios-homescreen .w4x2-action-icon svg,
+.ios-homescreen .streak-leaf svg{stroke:currentColor;fill:none;}
 
 .w4x2-streak{
   display:flex;flex-direction:column;align-items:center;gap:2px;
@@ -289,7 +293,13 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   text-transform:uppercase;letter-spacing:0.06em;
 }
 /* Folha, nao chama: streak com chama e o simbolo que o produto evita */
-.streak-leaf{font-size:14px;line-height:1;}
+.streak-leaf{
+  font-size:14px;line-height:1;
+  /* o widget tem fundo escuro: a folha segue o branco do numero ao lado,
+     puxado pro verde. Sem isso o SVG herda a cor de texto da pagina
+     (marrom escuro) e some dentro do cartao. */
+  color:#A8D5A2;
+}
 /* Android: CSS leaf shape */
 .a-homescreen .streak-leaf{
   width:16px;height:16px;border-radius:0 60% 0 60%;
