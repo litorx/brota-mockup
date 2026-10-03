@@ -261,6 +261,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   <div class="state-sep"></div>
   <button class="state-btn" onclick="selectPlan('monthly')">Mensal</button>
   <button class="state-btn" onclick="selectPlan('annual')">Anual</button>
+  <div class="state-sep"></div>
+  <button class="state-btn dep-btn active" onclick="setDepoimentos(true,this)">Com depoimentos</button>
+  <button class="state-btn dep-btn" onclick="setDepoimentos(false,this)">Sem depoimentos</button>
 </div>
 
 <div class="stage">
@@ -318,14 +321,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           </div>
 
           <div class="sdivider anim-el" style="animation-delay:2.16s"></div>
-          <div class="shead anim-el" style="animation-delay:2.26s">O que outras mulheres dizem</div>
-          <div class="stats" style="opacity:1" id="astats">
+          <div class="shead anim-el dep" id="ashead" style="animation-delay:2.26s">O que outras mulheres dizem</div>
+          <div class="stats dep" style="opacity:1" id="astats">
             <div class="stat"><div class="snum" data-target="87" data-suffix="%">87%</div><div class="slabel">sentiram menos compara&ccedil;&atilde;o</div></div>
             <div class="stat"><div class="snum" data-target="14" data-suffix=" dias">14 dias</div><div class="slabel">pra sentir a diferen&ccedil;a</div></div>
             <div class="stat"><div class="snum" data-target="12" data-suffix="mil">12mil</div><div class="slabel">mulheres j&aacute; come&ccedil;aram</div></div>
           </div>
 
-          <div class="tcarousel" style="opacity:1" id="atcar">
+          <div class="tcarousel dep" style="opacity:1" id="atcar">
             <div class="ttrack" id="attrack">
               <div class="tslide"><div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tquote">&ldquo;Em 3 dias eu j&aacute; n&atilde;o abria o celular no autom&aacute;tico. Nunca pensei que uma planta fosse fazer isso.&rdquo;</div><div class="tauthor">Mariana C., 24 &middot; S&atilde;o Paulo</div></div>
               <div class="tslide"><div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tquote">&ldquo;Ela apareceu na hora certa. Senti que algu&eacute;m estava do meu lado sem me julgar.&rdquo;</div><div class="tauthor">Julia R., 22 &middot; Belo Horizonte</div></div>
@@ -339,13 +342,13 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="sdivider anim-el" style="animation-delay:2.40s"></div>
           <div class="planslabel anim-el" style="animation-delay:2.50s">Escolha seu plano</div>
           <div class="plans anim-el" style="animation-delay:2.60s">
-            <div class="plan sel" id="aplan-monthly" onclick="selectPlan('monthly')"><div class="pbadge">Mais popular</div><div class="pprice">R$19,90<span>/m&ecirc;s</span></div><div class="pdetail">Cobrado mensalmente<br>Cancele quando quiser</div></div>
+            <div class="plan sel" id="aplan-monthly" onclick="selectPlan('monthly')"><div class="pbadge">Mais popular</div><div class="pprice">R$19,90<span>/m&ecirc;s</span></div><div class="pdetail">Cobrado mensalmente<br>Cancela na App Store</div></div>
             <div class="plan" id="aplan-annual" onclick="selectPlan('annual')"><div class="pbadge">49% off</div><div class="pprice">R$9,99<span>/m&ecirc;s</span></div><div class="pdetail">R$119,90/ano<br>cobrado anualmente</div></div>
           </div>
 
           <button class="cta" id="acta" onclick="ctaTap(this)">Come&ccedil;ar 14 dias gr&aacute;tis</button>
-          <div class="trialnote" id="atrialnote">Gr&aacute;tis por 14 dias, depois R$19,90/m&ecirc;s<br>Cancele quando quiser</div>
-          <div class="guarantee"><i data-icon="leaf"></i> Sisterhood Guarantee &middot; 30 dias, sem perguntas</div>
+          <div class="trialnote" id="atrialnote">Gr&aacute;tis por 14 dias, depois R$19,90/m&ecirc;s<br>Renova sozinho</div>
+          <div class="guarantee"><i data-icon="leaf"></i> Reembolso pela App Store em at&eacute; 14 dias</div>
           <div class="legalrow"><a>Restaurar compras</a><span>&middot;</span><a>Termos</a><span>&middot;</span><a>Privacidade</a></div>
         </div>
       </div>
@@ -394,14 +397,14 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           </div>
 
           <div class="sdivider anim-el" style="animation-delay:2.16s"></div>
-          <div class="shead anim-el" style="animation-delay:2.26s">O que outras mulheres dizem</div>
-          <div class="stats" style="opacity:1" id="iostats">
+          <div class="shead anim-el dep" id="iosshead" style="animation-delay:2.26s">O que outras mulheres dizem</div>
+          <div class="stats dep" style="opacity:1" id="iostats">
             <div class="stat"><div class="snum" data-target="87" data-suffix="%">87%</div><div class="slabel">sentiram menos compara&ccedil;&atilde;o</div></div>
             <div class="stat"><div class="snum" data-target="14" data-suffix=" dias">14 dias</div><div class="slabel">pra sentir a diferen&ccedil;a</div></div>
             <div class="stat"><div class="snum" data-target="12" data-suffix="mil">12mil</div><div class="slabel">mulheres j&aacute; come&ccedil;aram</div></div>
           </div>
 
-          <div class="tcarousel" style="opacity:1" id="iostcar">
+          <div class="tcarousel dep" style="opacity:1" id="iostcar">
             <div class="ttrack" id="iosttrack">
               <div class="tslide"><div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tquote">&ldquo;Em 3 dias eu j&aacute; n&atilde;o abria o celular no autom&aacute;tico. Nunca pensei que uma planta fosse fazer isso.&rdquo;</div><div class="tauthor">Mariana C., 24 &middot; S&atilde;o Paulo</div></div>
               <div class="tslide"><div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tquote">&ldquo;Ela apareceu na hora certa. Senti que algu&eacute;m estava do meu lado sem me julgar.&rdquo;</div><div class="tauthor">Julia R., 22 &middot; Belo Horizonte</div></div>
@@ -415,13 +418,13 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
           <div class="sdivider anim-el" style="animation-delay:2.40s"></div>
           <div class="planslabel anim-el" style="animation-delay:2.50s">Escolha seu plano</div>
           <div class="plans anim-el" style="animation-delay:2.60s">
-            <div class="plan sel" id="iosplan-monthly" onclick="selectPlan('monthly')"><div class="pbadge">Mais popular</div><div class="pprice">R$19,90<span>/m&ecirc;s</span></div><div class="pdetail">Cobrado mensalmente<br>Cancele quando quiser</div></div>
+            <div class="plan sel" id="iosplan-monthly" onclick="selectPlan('monthly')"><div class="pbadge">Mais popular</div><div class="pprice">R$19,90<span>/m&ecirc;s</span></div><div class="pdetail">Cobrado mensalmente<br>Cancela na App Store</div></div>
             <div class="plan" id="iosplan-annual" onclick="selectPlan('annual')"><div class="pbadge">49% off</div><div class="pprice">R$9,99<span>/m&ecirc;s</span></div><div class="pdetail">R$119,90/ano<br>cobrado anualmente</div></div>
           </div>
 
           <button class="cta" id="ioscta" onclick="ctaTap(this)">Come&ccedil;ar 14 dias gr&aacute;tis</button>
-          <div class="trialnote" id="iostrialnote">Gr&aacute;tis por 14 dias, depois R$19,90/m&ecirc;s<br>Cancele quando quiser</div>
-          <div class="guarantee"><i data-icon="leaf"></i> Sisterhood Guarantee &middot; 30 dias, sem perguntas</div>
+          <div class="trialnote" id="iostrialnote">Gr&aacute;tis por 14 dias, depois R$19,90/m&ecirc;s<br>Renova sozinho</div>
+          <div class="guarantee"><i data-icon="leaf"></i> Reembolso pela App Store em at&eacute; 14 dias</div>
           <div class="legalrow"><a>Restaurar compras</a><span>&middot;</span><a>Termos</a><span>&middot;</span><a>Privacidade</a></div>
         </div>
       </div>
@@ -468,6 +471,9 @@ function setState(key,btn){
   var s=states[key];
   document.querySelectorAll('.state-btn').forEach(function(b){b.classList.remove('active');});
   if(btn)btn.classList.add('active');
+  // o interruptor de depoimentos nao e um estado de planta: mantem a marca
+  var dep=document.querySelector('.tcarousel');
+  if(dep)document.querySelectorAll('.dep-btn')[dep.style.display==='none'?1:0].classList.add('active');
   document.documentElement.style.setProperty('--plant-color',s.color);
   document.documentElement.style.setProperty('--plant-color-rgb',s.rgb);
   updatePlantSVGs(s);
@@ -484,8 +490,8 @@ function setState(key,btn){
 }
 
 var renewalNote={
-  monthly:'Grátis por 14 dias, depois R$19,90/mês<br>Cancele quando quiser',
-  annual:'Grátis por 14 dias, depois R$119,90/ano<br>Cancele quando quiser'
+  monthly:'Grátis por 14 dias, depois R$19,90/mês<br>Renova sozinho',
+  annual:'Grátis por 14 dias, depois R$119,90/ano<br>Renova sozinho'
 };
 
 function selectPlan(plan){
@@ -497,6 +503,19 @@ function selectPlan(plan){
     var note=document.getElementById(p+'trialnote');
     if(note)note.innerHTML=renewalNote[plan];
   });
+}
+
+/* Depoimentos ligados/desligados: CA-001. A prova de que a tela vende
+   sem numero de terceiro. */
+function setDepoimentos(on,btn){
+  document.querySelectorAll('.dep').forEach(function(el){
+    el.style.display = on ? '' : 'none';
+  });
+  if(on){startCarTimer();}else{clearInterval(carTimer);}
+  document.querySelectorAll('.dep-btn').forEach(function(b){
+    b.classList.toggle('active', b===btn);
+  });
+  if(on&&!btn)document.querySelectorAll('.dep-btn')[0].classList.add('active');
 }
 
 function animateCounter(el){
