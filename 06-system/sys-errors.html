@@ -595,9 +595,12 @@ function renderState(stateKey) {
   androidBody.innerHTML = '';
   iosBody.innerHTML = '';
 
+  // O conteudo entra direto: dentro de um rAF, a tela fica vazia quando a aba
+  // carrega em segundo plano, porque o rAF so dispara no primeiro frame pintado.
+  androidBody.innerHTML = html;
+  iosBody.innerHTML = html;
+
   requestAnimationFrame(() => {
-    androidBody.innerHTML = html;
-    iosBody.innerHTML = html;
     // Re-trigger animations
     androidBody.querySelectorAll('.anim-el').forEach(el => {
       el.classList.add('reinit');
