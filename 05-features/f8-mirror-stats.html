@@ -846,19 +846,9 @@ function cancelPicker(p){
   document.getElementById(p+'picker').classList.remove('visible');
 }
 
-function activateShield(p){
-  var cta=document.getElementById(p+'cta');
-  cta.style.transform='scale(0.95)';cta.style.opacity='0.7';cta.textContent='Ativando...';
-  setTimeout(function(){cta.style.transform='scale(1.02)';cta.style.opacity='1';cta.textContent='Prote\u00e7\u00e3o ativa \u2713';cta.style.background='var(--brand-correct)';cta.style.pointerEvents='none';document.getElementById(p+'skip').style.display='none';},1200);
-}
-
-function denyShield(p){
-  var d=document.getElementById(p+'denied');d.classList.remove('visible');void d.offsetWidth;d.classList.add('visible');
-  var c=document.getElementById(p+'cta');c.textContent='Continuar sem prote\u00e7\u00e3o';c.style.background='var(--text3)';c.style.boxShadow='none';c.style.animation='none';
-  c.onclick=function(){c.textContent='Seguindo...';c.style.pointerEvents='none';};
-  document.getElementById(p+'skip').style.display='none';
-}
-
+/* As duas funcoes do fluxo de permissao sairam daqui: eram heranca da
+   P2-ShieldSetup, nao eram chamadas por nada nesta tela, e escreviam em
+   tres ids que a F8 nao tem. Esse fluxo mora na F9. */
 
 /* Reflete a escolha nas pills desta tela */
 function renderPills(p){

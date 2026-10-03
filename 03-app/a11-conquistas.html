@@ -171,6 +171,9 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
     <div class="state-sep"></div>
     <button class="state-btn scene-btn active" onclick="setAba('selos',this)">Selos</button>
     <button class="state-btn scene-btn" onclick="setAba('vasos',this)">Vasos</button>
+    <div class="state-sep"></div>
+    <button class="state-btn dia-btn" onclick="setDia1(false,this)">Com histórico</button>
+    <button class="state-btn dia-btn" onclick="setDia1(true,this)">Dia 1</button>
   </div>
   <div class="stage" id="stage"></div>
 </div>
@@ -273,21 +276,34 @@ function corpo(p, isIos){
   h += '<div class="grid anim-el" style="animation-delay:0.20s">';
   if(aba === 'selos'){
     SELOS.forEach(function(b){
-      h += '<div class="badge' + (b.on?'':' off') + '"><div class="bi"><i data-icon="' + b.i + '"></i></div>'
+      h += '<div class="badge' + ((b.on && !dia1)?'':' off') + '"><div class="bi"><i data-icon="' + b.i + '"></i></div>'
         + '<div class="bn">' + b.n + '</div><div class="bd">' + b.d + '</div></div>';
     });
   } else {
     VASOS.forEach(function(v){
-      h += '<div class="vaso' + (v.on?'':' off') + '"><div class="vp">' + renderPlantSVG(cur.plant, cur.color) + '</div>'
+      h += '<div class="vaso' + ((v.on && !dia1)?'':' off') + '"><div class="vp">' + renderPlantSVG(cur.plant, cur.color) + '</div>'
         + '<div class="vn">' + v.n + '</div><div class="vd">' + v.d + '</div></div>';
     });
   }
   h += '</div>';
-  var texto = (aba === 'selos')
-    ? 'Cada selo e um dia em que voce escolheu voce, ' + cur.name + '.'
-    : 'Os vasos chegam quando eu cresco. Voce nao precisa correr atras deles.';
+  var texto = dia1
+    ? ((aba === 'selos')
+        ? 'Nenhum ainda, ' + cur.name + '. O primeiro chega hoje, sem pressa.'
+        : 'Meu primeiro vaso e de barro. Os outros vem com o tempo.')
+    : ((aba === 'selos')
+        ? 'Cada selo e um dia em que voce escolheu voce, ' + cur.name + '.'
+        : 'Os vasos chegam quando eu cresco. Voce nao precisa correr atras deles.');
   h += '<div class="plant-note anim-el" style="animation-delay:0.30s">' + '<div class="pmini">' + renderPlantSVG(cur.plant, cur.color) + '</div>' + '<div><div class="pname">' + cur.plant + ':</div>' + '<div class="ptext">' + texto + '</div></div></div>';
   return h;
+}
+
+var dia1 = false;
+function setDia1(v, btn){
+  dia1 = v;
+  document.querySelectorAll('.dia-btn').forEach(function(b){
+    b.classList.toggle('active', b === btn);
+  });
+  render();
 }
 
 function setAba(a, btn){

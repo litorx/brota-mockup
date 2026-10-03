@@ -283,11 +283,6 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
 /* ═══════════════════════════════════════
    LOGOUT + VERSION
    ═══════════════════════════════════════ */
-.logout-btn{
-  text-align:center;padding:12px;font-size:13px;font-weight:600;
-  color:var(--brand-real-deep);cursor:pointer;
-  margin-top:4px;z-index:1;position:relative;
-}
 .version-footer{
   text-align:center;font-size:10.5px;color:var(--text3);
   margin-top:6px;z-index:1;position:relative;padding-bottom:8px;
@@ -373,7 +368,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
     <button class="state-btn dia1-btn" onclick="setDia1(true,this)">Primeiro dia</button>
     <button class="state-btn dia1-btn active" onclick="setDia1(false,this)">Com jornada</button>
     <button class="state-btn scene-btn active" onclick="setScene('normal',this)">Normal</button>
-    <button class="state-btn scene-btn" onclick="setScene('luteal',this)">Luteal</button>
+    <button class="state-btn scene-btn" onclick="setScene('luteal',this)">Lutea</button>
   </div>
 
   <div class="stage" id="stage"></div>
@@ -532,7 +527,7 @@ function renderStage(){
     html += '<div class="cphase-item"><div class="cphase-name">Menstr.</div><div class="cphase-days">d1-5</div></div>';
     html += '<div class="cphase-item"><div class="cphase-name">Folic.</div><div class="cphase-days">d6-13</div></div>';
     html += '<div class="cphase-item"><div class="cphase-name">Ovul.</div><div class="cphase-days">d14-16</div></div>';
-    html += '<div class="cphase-item"><div class="cphase-name">Luteal</div><div class="cphase-days">d17-28</div></div>';
+    html += '<div class="cphase-item"><div class="cphase-name">Lutea</div><div class="cphase-days">d17-28</div></div>';
     html += '</div></div>';
 
     /* ── 5. PROTECAO ── */
@@ -562,7 +557,7 @@ function renderStage(){
     html += '<div class="section-group anim-el" style="animation-delay:0.68s">';
     html += '<div class="section-label">Conta</div>';
     html += '<div class="section-card">';
-    html += '<div class="row-item" data-destino="A12-Privacidade"><div class="row-icon" style="background:rgba(61,44,46,0.04)"><i data-icon="lock"></i></div><div class="row-info"><div class="row-title">Privacidade</div><div class="row-desc">Dados criptografados localmente</div></div><div class="row-right"><div class="row-arrow">&rsaquo;</div></div></div>';
+    html += '<div class="row-item" data-destino="A12-Privacidade"><div class="row-icon" style="background:rgba(61,44,46,0.04)"><i data-icon="lock"></i></div><div class="row-info"><div class="row-title">Privacidade</div><div class="row-desc">Protegidos pelo seu aparelho</div></div><div class="row-right"><div class="row-arrow">&rsaquo;</div></div></div>';
     html += '<div class="row-item" data-destino="A13-Ajuda"><div class="row-icon" style="background:rgba(61,44,46,0.04)"><i data-icon="chat"></i></div><div class="row-info"><div class="row-title">Ajuda</div><div class="row-desc">Fale com a gente</div></div><div class="row-right"><div class="row-arrow">&rsaquo;</div></div></div>';
     html += '<div class="row-item" data-destino="M3-CancelSubscription"><div class="row-icon" style="background:rgba(61,44,46,0.04)"><i data-icon="sparkle"></i></div><div class="row-info"><div class="row-title">Assinatura</div><div class="row-desc">Ativa &middot; renova 12 jun 2026</div></div><div class="row-right"><div class="row-arrow">&rsaquo;</div></div></div>';
     /* LGPD art. 18: eliminacao e portabilidade precisam de porta na UI.
@@ -571,8 +566,6 @@ function renderStage(){
     html += '<div class="row-item" data-destino="M2-DeleteAccount"><div class="row-icon" style="background:rgba(61,44,46,0.04)"><i data-icon="leaf"></i></div><div class="row-info"><div class="row-title">Deletar conta</div><div class="row-desc">Apaga sua planta e todo o progresso</div></div><div class="row-right"><div class="row-arrow">&rsaquo;</div></div></div>';
     html += '</div></div>';
 
-    /* Logout */
-    html += '<div class="logout-btn anim-el" data-destino="M4-Logout" style="animation-delay:0.74s">Sair da conta</div>';
 
     /* Version */
     html += '<div class="version-footer anim-el" style="animation-delay:0.78s">Brota v1.0.0 &middot; <em>bloom from within</em></div>';

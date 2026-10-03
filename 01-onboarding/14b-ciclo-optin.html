@@ -151,6 +151,12 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   margin-bottom: 18px;
   opacity: 0; animation: fadeUp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.50s forwards;
 }
+.a-consent {
+  font-family: 'Nunito', sans-serif;
+  font-size: 12px; line-height: 1.45; color: rgba(61,44,46,0.58);
+  margin: -10px 2px 14px; 
+  opacity: 0; animation: fadeUp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.62s forwards;
+}
 .a-toggle-label {
   font-family: 'Nunito', sans-serif;
   font-variation-settings: 'wdth' 104, 'wght' 500, 'opsz' 15;
@@ -303,6 +309,13 @@ body.dark .phone { box-shadow: 0 60px 100px -20px rgba(0,0,0,0.7), 0 30px 60px -
   -webkit-backdrop-filter: blur(20px) saturate(150%);
   margin-bottom: 18px;
   opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.50s forwards;
+}
+.ios-consent {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 12px; line-height: 1.42; letter-spacing: -0.1px;
+  color: rgba(61,44,46,0.55);
+  margin: -10px 2px 14px;
+  opacity: 0; animation: fadeUp 0.50s cubic-bezier(0.32, 0.72, 0, 1) 1.62s forwards;
 }
 .ios-toggle-label {
   font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
@@ -476,6 +489,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
               <span class="a-toggle-label" id="a-toggle-label">Adaptar Lavanda ao meu ciclo</span>
               <button class="a-toggle on" id="a-toggle" onclick="toggleCycle('a')"></button>
             </div>
+            <p class="a-consent">Data de ciclo é dado de saúde. Fica no seu aparelho, e some de vez se você desativar.</p>
 
             <div class="a-phase-section visible" id="a-phase-section">
               <p class="a-phase-q">Mais ou menos quando essa semana costuma vir?</p>
@@ -527,6 +541,7 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
               <span class="ios-toggle-label" id="ios-toggle-label">Adaptar Lavanda ao meu ciclo</span>
               <button class="ios-toggle on" id="ios-toggle" onclick="toggleCycle('ios')"></button>
             </div>
+            <p class="ios-consent">Data de ciclo é dado de saúde. Fica no seu aparelho, e some de vez se você desativar.</p>
 
             <div class="ios-phase-section visible" id="ios-phase-section">
               <p class="ios-phase-q">Mais ou menos quando essa semana costuma vir?</p>

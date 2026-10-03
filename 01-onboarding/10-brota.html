@@ -265,10 +265,10 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
 
 <header class="studio-header">
   <div class="brand-block">
-    <div class="brand-eyebrow">Brota · Onboarding · Screen 10 de 18 · O10-Brota</div>
-    <h1 class="brand-title">Semente brota <em>automática, 3s · na cor escolhida · sunk cost visual</em></h1>
+    <div class="brand-eyebrow">Brota · Onboarding · Screen 10 de 19 · O10-Brota</div>
+    <h1 class="brand-title">Semente brota <em>automática, 3s · verde-sálvia · sunk cost visual</em></h1>
     <p class="brand-sub">
-      Sem interação. A planta cresce na cor que a usuária escolheu em O10.
+      Sem interação. O broto nasce em verde-sálvia: ele ainda não tem flor, e a cor da planta só chega na O11, quando ela escolhe o arquétipo. Os três botões aqui são prévia das famílias de cor que os arquétipos usam.
       "Ela está crescendo..." aparece e desaparece durante o crescimento.
       CTA só aparece após o bloom completo. Studio toggle simula as 3 cores principais.
     </p>
@@ -402,11 +402,11 @@ body.dark .note li code { background: rgba(255,255,255,0.1); }
   <div class="note android">
     <h4>Android · M3 Expressive</h4>
     <ul>
-      <li>Tela automática: zero input. A planta cresce na cor exata escolhida em O10 via <code>--plant-color</code> e <code>--plant-glow</code></li>
+      <li>Tela automática: zero input. O broto usa <code>--plant-color</code> e <code>--plant-glow</code>, que aqui valem verde-sálvia e só recebem a cor do arquétipo na O11</li>
       <li>Sequência: semente (0.20s) → caule draw-on (0.60s, 1.10s) → folha par 1 (1.50/1.70s) → folha par 2 (2.00/2.18s) → broto (2.45s)</li>
       <li><code>bloomGlow</code>: <code>drop-shadow</code> expande e settle em 1.20s, pulso único de "chegou". Referência: <em>Finch</em> (companion reveal bloom)</li>
       <li>"Ela está crescendo..." aparece com 0.60 opacity e desaparece à medida que a planta completa, texto vivo, não estático</li>
-      <li>CTA adota <code>background: var(--plant-color)</code> da cor escolhida, coerência com O10</li>
+      <li>CTA adota <code>background: var(--plant-color)</code>, a mesma variável do broto, então a tela inteira troca de cor de uma vez quando a O11 define o arquétipo</li>
       <li>Spring M3E nas folhas: <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> com micro-overshoot, cada folha "bate" suave ao abrir</li>
     </ul>
   </div>

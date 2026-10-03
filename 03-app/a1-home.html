@@ -1013,11 +1013,10 @@ function applyState(){
     if(cta) cta.setAttribute('data-destino', bc.dest);
   });
 
-  // Progress numbers
-  var grow = isFirst ? '0' : isWilted ? '8' : '42';
+  /* So o contador de dias. O numero de GROW nao existe na UI por decisao de
+     produto (guardrail 10): a planta crescendo e o feedback. */
   var days = isFirst ? '0' : isWilted ? '0' : '5';
   ['a','ios'].forEach(function(p){
-    document.getElementById(p+'grow').textContent = grow;
     document.getElementById(p+'days').textContent = days;
   });
 

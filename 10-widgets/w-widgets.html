@@ -288,11 +288,12 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
   font-size:9px;font-weight:600;color:rgba(255,255,255,0.45);
   text-transform:uppercase;letter-spacing:0.06em;
 }
-.streak-flame{font-size:14px;line-height:1;}
-/* Android: CSS circle for flame */
-.a-homescreen .streak-flame{
-  width:16px;height:16px;border-radius:50% 50% 40% 40%;
-  background:linear-gradient(160deg,#FFD07A,#F4A7B9);
+/* Folha, nao chama: streak com chama e o simbolo que o produto evita */
+.streak-leaf{font-size:14px;line-height:1;}
+/* Android: CSS leaf shape */
+.a-homescreen .streak-leaf{
+  width:16px;height:16px;border-radius:0 60% 0 60%;
+  background:linear-gradient(150deg,#A8D5A2,#7BA87A);
   font-size:0;display:inline-block;
   vertical-align:middle;
 }
@@ -428,7 +429,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
                 <div class="w4x2-action-icon a-screen"></div>
               </div>
               <div class="w4x2-streak">
-                <div class="streak-flame a-screen"></div>
+                <div class="streak-leaf a-screen"></div>
                 <div class="w4x2-streak-num">5</div>
                 <div class="w4x2-streak-label">dias</div>
               </div>
@@ -516,7 +517,7 @@ body{background:#F4F2EF;color:var(--text);font-family:'Nunito',system-ui,sans-se
                 <div class="w4x2-action-icon ios-screen"><i data-icon="heart"></i></div>
               </div>
               <div class="w4x2-streak">
-                <span class="streak-flame ios-screen"><i data-icon="fire"></i></span>
+                <span class="streak-leaf ios-screen"><i data-icon="leaf"></i></span>
                 <div class="w4x2-streak-num">5</div>
                 <div class="w4x2-streak-label">dias</div>
               </div>
