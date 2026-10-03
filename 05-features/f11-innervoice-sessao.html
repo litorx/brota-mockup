@@ -212,7 +212,7 @@ function render(){
       + '<div class="blob blob1"></div><div class="blob blob2"></div>'
       + (isIos ? '<div class="dyna"></div>' : '') + STATUS
       + '<div class="topbar">'
-      +   '<button class="back-btn" onclick="voltar(this)">' + backIcon(isIos) + '</button>'
+      +   '<button class="back-btn" data-destino="F6-InnerVoiceHistory" onclick="voltar(this)">' + backIcon(isIos) + '</button>'
       +   (isIos ? '<span class="back-label">Conversas</span>' : '')
       +   '<span class="topbar-title">Ontem, 22:14</span>'
       + '</div>'
@@ -279,7 +279,7 @@ function corpo(p, isIos){
   h += '<div class="section-label anim-el" style="animation-delay:0.40s">Esta sess&atilde;o</div>';
   h += '<div class="card anim-el" style="animation-delay:0.44s">'
     + '<div class="danger-row"><div class="row-icon"><i data-icon="leaf"></i></div>'
-    + '<div class="row-info"><div class="row-title">Apagar esta conversa</div>'
+    + '<div class="row-info"><div class="row-title">Apagar essa conversa</div>'
     + '<div class="row-desc">So esta. As outras ficam.</div></div></div></div>';
   return h;
 }
