@@ -4,69 +4,88 @@
 <meta charset="utf-8">
 <title>QA · estados lado a lado</title>
 <!--
-  Ferramenta de QA, nao faz parte do mockup e nao aparece no index.
+  Ferramenta de QA, fora do index, nao faz parte do mockup.
 
   Mostra TODOS os estados de estudio de uma tela de uma vez, um telefone por
   estado, pra conferir no olho o que script nenhum pega: contraste, layout que
-  estoura, texto que some num fundo, sentido da copy.
+  estoura, texto que some no fundo, sentido da copy.
 
   Precisa estar no mesmo dominio das telas: o harness clica o botao de estado
   dentro do iframe, e isso e bloqueado entre origens diferentes.
 
+  A primeira versao escondia o cabecalho do estudio por seletor e escondia o
+  telefone junto, porque cada tela monta a casca de um jeito. Agora nao esconde
+  nada: mede onde o telefone esta e recorta ali. Funciona em qualquer tela sem
+  saber como ela foi montada.
+
   Uso:  qa/estados.html?t=03-app/a1-home.html
+        &c=2   quantos telefones por celula (1 = so o Android)
 -->
 <style>
   :root { color-scheme: light; }
-  body { margin:0; background:#E9E2DC; font:13px/1.4 system-ui, sans-serif; color:#3D2C2E; }
-  h1 { font-size:15px; margin:0; padding:10px 14px; background:#fff; position:sticky; top:0; z-index:5;
-       box-shadow:0 1px 0 rgba(0,0,0,0.08); }
-  h1 small { font-weight:400; opacity:0.6; }
-  .grade { display:flex; flex-wrap:wrap; gap:6px; padding:8px; }
-  .cel { width:300px; }
-  .rot { font-size:11px; font-weight:700; padding:3px 6px; background:#fff; border-radius:5px 5px 0 0;
-         white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .janela { width:300px; height:620px; overflow:hidden; background:#F6F1EC; border-radius:0 0 5px 5px; }
-  iframe { width:1500px; height:1400px; border:0; transform:scale(0.42); transform-origin:0 0; }
+  body { margin:0; background:#DCD3CC; font:13px/1.4 system-ui, sans-serif; color:#3D2C2E; }
+  h1 { font-size:14px; margin:0; padding:9px 14px; background:#fff; position:sticky; top:0; z-index:5;
+       box-shadow:0 1px 0 rgba(0,0,0,0.1); }
+  h1 small { font-weight:400; opacity:0.55; }
+  .grade { display:flex; flex-wrap:wrap; gap:7px; padding:8px; align-items:flex-start; }
+  .rot { font-size:11px; font-weight:700; padding:3px 7px; background:#fff;
+         border-radius:5px 5px 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .janela { overflow:hidden; background:#F6F1EC; border-radius:0 0 5px 5px; position:relative; }
+  iframe { border:0; position:absolute; top:0; left:0; transform-origin:0 0; }
 </style>
 </head>
 <body>
 <h1 id="t">carregando…</h1>
 <div class="grade" id="g"></div>
 <script>
-var tela = new URLSearchParams(location.search).get('t') || '03-app/a1-home.html';
+var q = new URLSearchParams(location.search);
+var tela = q.get('t') || '03-app/a1-home.html';
+var fones = parseInt(q.get('c') || '1', 10);     /* 1 = so o Android */
+var ESCALA = fones > 1 ? 0.30 : 0.46;
 var alvo = '../' + tela;
-document.getElementById('t').textContent = tela;
-
-/* Esconde tudo que nao e telefone: cabecalho do estudio, notas de handoff e os
-   proprios botoes de estado. O que sobra e o que a usuaria veria. */
-var LIMPAR = 'header,.brand,.brand-eyebrow,.brand-title,.brand-sub,.controls,' +
-             '.annotations,.note,.studio,.state-toggle,.theme-toggle,.platform-label,.desc';
+var LARG = 1500, ALT = 1500;
 
 function cela(i, rotulo) {
   var d = document.createElement('div');
-  d.className = 'cel';
-  d.innerHTML = '<div class="rot">' + (i === -1 ? 'INICIAL' : (i + 1) + '. ' + rotulo) + '</div>' +
-                '<div class="janela"></div>';
+  d.innerHTML = '<div class="rot">' + (i === -1 ? 'INICIAL' : (i + 1) + '. ' + rotulo) + '</div>';
+  var jan = document.createElement('div');
+  jan.className = 'janela';
   var f = document.createElement('iframe');
-  f.src = alvo;
+  f.width = LARG; f.height = ALT; f.src = alvo;
+
   f.onload = function () {
-    var doc = f.contentDocument;
+    var doc = f.contentDocument, win = f.contentWindow;
     setTimeout(function () {
       if (i >= 0) {
         var b = doc.querySelectorAll('.state-btn')[i];
         if (b) b.click();
       }
       setTimeout(function () {
-        doc.querySelectorAll(LIMPAR).forEach(function (e) { e.style.display = 'none'; });
-        doc.body.style.background = '#F6F1EC';
-      }, 300);
-    }, 700);
+        /* Mede onde os telefones estao e recorta ali: nenhuma suposicao sobre
+           como a tela montou a casca do estudio. */
+        var ph = doc.querySelectorAll('.phone, .phone-wrapper, .a-screen, .ios-screen');
+        var x0 = 1e9, y0 = 1e9, x1 = 0, y1 = 0, achou = 0;
+        for (var k = 0; k < ph.length && k < fones; k++) {
+          var r = ph[k].getBoundingClientRect();
+          if (r.width < 80 || r.height < 200) continue;
+          x0 = Math.min(x0, r.left + win.scrollX); y0 = Math.min(y0, r.top + win.scrollY);
+          x1 = Math.max(x1, r.right + win.scrollX); y1 = Math.max(y1, r.bottom + win.scrollY);
+          achou++;
+        }
+        if (!achou) { x0 = 0; y0 = 0; x1 = 760; y1 = 1200; }
+        var pad = 10;
+        x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
+        f.style.transform = 'scale(' + ESCALA + ') translate(' + (-x0) + 'px,' + (-y0) + 'px)';
+        jan.style.width = Math.round((x1 - x0) * ESCALA) + 'px';
+        jan.style.height = Math.round((y1 - y0) * ESCALA) + 'px';
+      }, 500);
+    }, 900);
   };
-  d.querySelector('.janela').appendChild(f);
+  jan.appendChild(f);
+  d.appendChild(jan);
   return d;
 }
 
-/* Le a lista de estados numa carga de sondagem, depois monta uma celula por estado. */
 var sonda = document.createElement('iframe');
 sonda.style.cssText = 'width:1500px;height:900px;position:absolute;left:-4000px';
 sonda.src = alvo;
@@ -76,7 +95,7 @@ sonda.onload = function () {
     var g = document.getElementById('g');
     g.appendChild(cela(-1, ''));
     for (var i = 0; i < btns.length; i++) {
-      g.appendChild(cela(i, btns[i].textContent.replace(/\s+/g, ' ').trim().slice(0, 30)));
+      g.appendChild(cela(i, btns[i].textContent.replace(/\s+/g, ' ').trim().slice(0, 28)));
     }
     document.getElementById('t').innerHTML = tela +
       ' <small>· ' + btns.length + ' estados + inicial</small>';
