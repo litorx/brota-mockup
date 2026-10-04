@@ -600,17 +600,10 @@ function renderState(stateKey) {
   androidBody.innerHTML = html;
   iosBody.innerHTML = html;
 
-  requestAnimationFrame(() => {
-    // Re-trigger animations
-    androidBody.querySelectorAll('.anim-el').forEach(el => {
-      el.classList.add('reinit');
-      requestAnimationFrame(() => el.classList.remove('reinit'));
-    });
-    iosBody.querySelectorAll('.anim-el').forEach(el => {
-      el.classList.add('reinit');
-      requestAnimationFrame(() => el.classList.remove('reinit'));
-    });
-  });
+  // Sem reinit aqui: o innerHTML acabou de ser trocado, entao os elementos sao
+  // novos e a entrada ja comeca do zero. O reinit antigo dependia de um rAF
+  // aninhado pra TIRAR a classe `.reinit` (opacity:0 !important) — e quando o
+  // rAF nao dispara, a classe fica e a tela inteira some.
 }
 
 buttons.forEach(btn => {
