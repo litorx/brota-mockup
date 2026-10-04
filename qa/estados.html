@@ -51,7 +51,10 @@ function cela(i, rotulo) {
   var jan = document.createElement('div');
   jan.className = 'janela';
   var f = document.createElement('iframe');
-  f.width = LARG; f.height = ALT; f.src = alvo;
+  f.width = LARG; f.height = ALT;
+  // Em serie: seis iframes da mesma URL subindo juntos deixam telas que montam
+  // tudo em JS (a sys-errors) em branco, o que se confunde com defeito.
+  setTimeout(function () { f.src = alvo; }, (i + 1) * 600);
 
   f.onload = function () {
     var doc = f.contentDocument, win = f.contentWindow;
